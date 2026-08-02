@@ -1,0 +1,110 @@
+---
+title: "Practice projects: flowers and a soccer field"
+---
+
+You now know everything you need for bigger tasks: shapes, arcs, colors,
+coordinates, planning on paper, and a careful way of working. Time to put
+it all together. This chapter contains two larger practice projects. Both
+are written like real job briefings: in one you're part of a game
+development team, in the other you work for a TV station.
+
+Take these projects seriously. They are practice for exactly the kind of
+task you'll get in an assessment, and the flower project even states the
+areas you'd be graded on. Plan on paper, work in small steps, and hand in
+formatted code, just as you've learned.
+
+## Coordinates come in many forms {#sec-coordinate-forms}
+
+With the house and the cat, you invented the coordinates yourself. With the
+Olympic rings, you read them from a symbol. These two projects add the two
+forms that professionals meet most often:
+
+- **A dimensioned drawing.** The flower project gives you a designer's
+  figure with guide lines, diameters, and distances, the way technical
+  drawings do. Nobody hands you ready-made x and y values; you have to
+  *compute* them. For example, if a petal with a diameter of 40 sits
+  directly on top of a flower center with a diameter of 60, then the
+  petal's center lies 50 pixels above the flower's center: half of 60 plus
+  half of 40. Working out coordinates like this, from sizes and distances,
+  is a core skill this project trains.
+- **Real-world measurements.** The soccer field project gives you the
+  dimensions of a real field, in meters. Your job is to bring them onto a
+  canvas that is measured in pixels, without distorting the proportions.
+  You'll get two new tools for that in a moment.
+
+In both cases, your graph paper sketch is the bridge: draw the figure,
+write the given measurements next to it, and turn them into canvas
+coordinates before you type a single statement.
+
+## Project 1: Flowers {#sec-flowers}
+
+Your team's designers have specified two flowers. The right flower is the
+easier one: it's symmetrical both horizontally and vertically, so once you
+know one petal's position, the mirrored petals follow by symmetry. The left
+flower is only vertically symmetrical, which makes its petal positions
+trickier to work out. The stem of each flower is an arc, drawn by eye; not
+every part of a design is specified to the pixel, and deciding the
+unspecified parts tastefully is part of the job too.
+
+Use the symmetry when you compute your coordinates: mirrored parts lie at
+the same distance from the flower's center line, once to the left and once
+to the right, or once above and once below. If you compute the top petal's
+position, you get the bottom petal's position almost for free.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/flower_basics.yaml >}}
+
+## Project 2: A soccer field {#sec-soccer}
+
+The TV station wants a background graphic of a soccer field, true to the
+real thing: penalty areas, center circle, penalty points, corner arcs. The
+task links to a diagram with the real measurements in meters. A real field
+is about 100 meters wide and 70 meters deep, and your drawing must keep
+those proportions.
+
+Converting every measurement from meters to pixels by hand would be
+painful. The starter code of this exercise shows you a much better way, and
+it introduces three new ideas.
+
+### Constants give numbers a name {#sec-constants}
+
+At the top of the starter code, outside the `setup` function, you'll find
+lines like these:
+
+```typescript
+const SCALE = 5;
+const MARGIN = 4;
+```
+
+The keyword `const` creates a **constant**: a value with a name. From then
+on you write `SCALE` in your code instead of the number `5`. That has two
+advantages. First, `MARGIN` tells a reader what the number *means*, where a
+bare `4` explains nothing. Second, the value lives in exactly one place: if
+you change the `5` to a `10`, every part of the program that uses `SCALE`
+changes with it. By convention, constant names are written in capital
+letters.
+
+### scale multiplies everything {#sec-scale}
+
+The statement `scale(SCALE)` stretches everything that is drawn after it by
+that factor. This is the trick that makes the meter measurements usable:
+you write all coordinates and sizes *in meters, as if a meter were a
+pixel*, for example a line of length 70 for the halfway line. With
+`scale(5)`, that line is drawn 350 pixels long. Want a bigger graphic?
+Change the constant `SCALE` from 5 to 10, and the whole field doubles,
+proportions intact, without touching a single coordinate.
+
+### translate moves the origin {#sec-translate}
+
+Normally the origin (0, 0) sits in the top left corner of the canvas. The
+statement `translate(MARGIN, MARGIN)` moves it to the right and down by the
+margin. After that, the point (0, 0) is the top left corner *of the field*,
+not of the canvas, and the grass margin around the field appears by itself.
+You can then use the field's own measurements directly as coordinates,
+which keeps all your numbers simple.
+
+One more thing you'll see in the starter code: a statement called `push()`.
+It saves the current drawing state, and it belongs to the `scale` and
+`translate` machinery. Leave it where it is; you'll learn the details
+behind it later in the course.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/soccer-field-basics.yaml >}}

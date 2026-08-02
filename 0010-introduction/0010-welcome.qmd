@@ -1,0 +1,102 @@
+---
+title: "Welcome"
+---
+
+## Welcome to Creative Coding {#sec-welcome}
+
+Welcome to this course! Over the next months you'll learn how to program a
+computer, and you'll do it in a creative way. Instead of only printing text on
+a black screen, you'll draw shapes, build animations, and create small
+interactive artworks and games. That's why the course is called *Creative
+Coding*: you learn programming by making things you can see, change, and show
+to your friends.
+
+You don't need any programming experience to start. The course begins at zero
+and builds up step by step. If you can use a computer and you're curious, you
+have everything you need.
+
+## The tools you'll use {#sec-tools}
+
+In this course you'll work with two tools: a programming language called
+**TypeScript** and a graphics library called **p5.js**. Together they let you
+write real, professional-style code and see the results on screen right away.
+
+### TypeScript, the language {#sec-typescript}
+
+TypeScript is one of the most popular programming languages in the world.
+Many well-known websites and apps are built with it, and professional
+developers use it every day. So you're not learning a toy language made only
+for classrooms: the skills you pick up here are the same skills used in real
+software teams.
+
+At the same time, TypeScript is friendly to beginners. It watches your code
+while you type and warns you about many mistakes before you even run the
+program. Think of it as a language with a built-in spell checker for code.
+
+### p5.js, the graphics library {#sec-p5js}
+
+p5.js is a **library** for creating interactive graphics and animations. A
+library is a collection of ready-made code that you can use in your own
+programs. Instead of writing hundreds of lines yourself just to draw a circle,
+you call one short command from the library and the circle appears. Libraries
+let you build on the work of other programmers, which is how almost all
+software is made.
+
+p5.js was created for students and artists. It's designed so that your very
+first program can be just a few lines that draw something on screen. From
+there you can build up: shapes become patterns, patterns become animations,
+and animations become games and interactive art.
+
+::: {.callout-tip}
+## Simple start, no limits
+With p5.js you can draw your first circle in minutes, but people also use it
+for serious generative art and data visualizations. You won't outgrow it
+during this course.
+:::
+
+## Why learn to code when AI writes code? {#sec-why-code}
+
+Maybe you're thinking: "AI tools can write code now. Why should I learn it
+myself?" That's a fair question, and it deserves an honest answer. Here are
+four reasons.
+
+### Programming is more than typing code {#sec-problem-solving}
+
+When you program, the typing is the smallest part. The real work is thinking:
+you take a big, fuzzy problem, break it into small clear steps, and put those
+steps in a logical order. You also make creative decisions, because there is
+almost never just one way to solve a problem. These skills, breaking problems
+down, thinking logically, and finding creative solutions, help you far beyond
+programming: in school, in any job, and whenever you face something
+complicated.
+
+### AI is like a genie in a lamp {#sec-genie}
+
+You may know the old story of the genie in the lamp: a magical being appears
+and grants your wishes. But there's a catch. The genie gives you exactly what
+you *say*, not what you *mean*. Wish carelessly and you get something you
+didn't want at all.
+
+AI works the same way. It will happily produce code for you, but the result is
+only as good as your wish. To get useful code, you need to know what is
+possible, what to ask for, and how to judge what you get back. Learning to
+program by hand teaches you exactly that. You learn what a computer can do,
+how software is built, and what a good solution looks like. In short: you
+learn what to wish for.
+
+### Someone has to fix the last few percent {#sec-last-percent}
+
+AI makes mistakes. It writes code that looks correct but sometimes isn't, and
+it can get stuck on the tricky final details of a program. Professionals are
+the people who spot those mistakes and fix the last few percent that the AI
+can't get right. You can only do that if you understand the code yourself.
+The better you understand programming, the more powerful AI becomes as your
+assistant instead of your replacement.
+
+### Programming is fun {#sec-fun}
+
+Last but definitely not least: programming is fun. There's a special feeling
+when you imagine something, write the code for it, and watch the computer
+bring it to life exactly the way you pictured it (or in a surprising way
+that's even better). In this course that feeling comes quickly, because your
+programs draw, move, and react from the very first lessons.

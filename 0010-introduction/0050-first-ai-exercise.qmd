@@ -1,0 +1,100 @@
+---
+title: "From cat to elephant: coding with AI"
+---
+
+You've now written several programs completely by hand, and that was on
+purpose: you know what a drawing statement is, how coordinates work, and
+what tidy code looks like. That makes you ready for the next step. In this
+exercise you'll work with an AI for the first time, and you'll use it the
+way professionals do: as a tool for generating code, not just as a toy.
+
+The task: take your finished cat program from the last exercise and get an
+AI to turn it into a different animal. An elephant, a dog, a penguin,
+whatever you like. You won't type the new code yourself. Your job is to
+write the instructions, judge the result, and make it work.
+
+## Writing a good prompt {#sec-prompt}
+
+The message you send to an AI is called a **prompt**, and writing good
+prompts is a real skill. Remember the genie in the lamp from the start of
+this course: it grants exactly what you say, not what you mean. An AI works
+the same way. A vague prompt like "make an elephant" gives the AI room to
+guess, and it will guess something, just often not what you had in mind.
+
+A good prompt is precise. It says what you want, what the result has to look
+like, and what the AI must not change. Compare:
+
+> Make an elephant.
+
+> Here is a TypeScript program that draws a cat using the p5.js library.
+> I am a programming beginner, and this code shows everything I have
+> learned so far. Change the program so that it draws an elephant instead.
+> Keep the same structure: everything stays inside the `setup` function,
+> and the canvas keeps its size of 400 by 500 pixels. Only use the kinds
+> of commands that already appear in my code.
+>
+> [your cat code]
+
+The second prompt tells the AI the language, the library, the structure to
+keep, the goal, and, just as important, **your level of knowledge**. The
+more clearly you describe your wish, the better the result. This skill,
+describing exactly what you want, is the same skill you practice when you
+sketch a picture before coding it. Precision is what makes both the
+computer and the AI do what you actually want.
+
+Telling the AI that you're a beginner is not embarrassing, it's smart.
+Without that information, the AI writes code the way it would for a
+professional, full of features you haven't learned yet. Code like that
+might even run, but it's useless to you: you can't explain it when you hand
+it in, and, much worse, you can't fix it when something is wrong. Code you
+don't understand is code you can't control. With the beginner sentence in
+your prompt, the AI stays inside what you know, and the result remains
+*your* program.
+
+## Show the AI your working code {#sec-context}
+
+The most important part of your prompt is your own cat code. Always paste
+it in. Here's why.
+
+The AI cannot see your screen. It doesn't know that you work in a web
+playground, that your language is TypeScript, that you draw with the p5.js
+library, or that your whole program lives inside one `setup` function. If
+you just ask for "code that draws an elephant", the AI will happily produce
+something, in some programming language, for some graphics library, in some
+structure, and there's a good chance it won't run in your environment
+at all.
+
+Your working cat code solves that problem. Code that runs is the most
+precise description of your environment that exists: it shows the AI the
+exact language, the exact library, and the exact structure that your
+playground expects. When the AI sees it, it will answer with code of the
+same kind. That's why the rule is: **first make it work, then show it to
+the AI.**
+
+## Your exercise: a new animal {#sec-animal}
+
+Your teacher will tell you which AI tool you'll use in class. Then work
+like this:
+
+1. Open your finished cat program in the web playground and check that it
+   still runs. Copy the whole code with `Ctrl` + `C`.
+2. Write your prompt: say which animal you want, what the AI should keep
+   (the `setup` function, the canvas size, the p5.js drawing commands), and
+   paste your cat code below it.
+3. Copy the AI's answer, paste it into the playground in place of your old
+   code, and run it.
+4. Judge the result. Does it run? Are there red squiggly lines? Does it
+   actually look like the animal you asked for? If something is wrong, you
+   have two options, and both are part of the job: fix small things
+   yourself by adjusting coordinates and colors, or tell the AI in a
+   follow-up prompt what it should change.
+5. Keep your code formatted before you show or hand in your result. That
+   rule doesn't change just because an AI wrote the first draft.
+
+Save your cat code somewhere before you replace it, for example in a text
+file, so you can always go back.
+
+One more thing: read the code the AI gives you. You know every command in
+it, `rect`, `circle`, `triangle`, `fill`, and friends, so you can follow
+what it does. You are the programmer here. The AI types faster than you,
+but you decide what is good enough, and you are responsible for the result.

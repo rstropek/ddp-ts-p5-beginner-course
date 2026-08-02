@@ -1,0 +1,74 @@
+---
+title: "When the picture is given: the Olympic rings"
+---
+
+With the house and the cat, you invented the picture yourself. If a window
+ended up a little further left than planned, nobody minded. This exercise is
+different: you'll draw the Olympic symbol, the five interlocking rings. Now
+the picture is *given*, and your job is to reproduce it: the right colors,
+the right sizes, the right positions.
+
+This is a very common situation in real projects. A customer brings a logo,
+a designer delivers a layout, a game needs an existing character, and the
+programmer's task is to match the original exactly. Working precisely from
+a given design is a skill of its own, and this exercise trains it.
+
+## A ring is a circle without a fill {#sec-ring}
+
+You already know everything you need to draw a ring. A ring is simply a
+circle where only the outline is visible:
+
+- `noFill()` switches the filling off, so the inside stays transparent.
+- `stroke` sets the color of the outline.
+- `strokeWeight` sets the thickness of the outline. Give it a generous
+  value, and the thin circle line becomes a bold ring.
+
+Remember that these three commands are settings: they stay active for every
+shape that follows until you change them. For the Olympic rings, you set
+`noFill` and `strokeWeight` once at the top, and then only change the
+`stroke` color from ring to ring.
+
+## Find the pattern before you measure {#sec-pattern}
+
+You could put your sketch on graph paper and measure the position of every
+single ring with a ruler. That works, but take a closer look at the symbol
+first, because it's full of regularity:
+
+- All five rings have the same diameter.
+- The three upper rings sit on one line, at equal distances from each other.
+- The two lower rings sit on a second, deeper line, and each one hangs
+  exactly halfway between two upper rings.
+
+Once you see that, you barely need the ruler. Choose a diameter and a
+position for the first ring, and the coordinates of the other four follow
+almost automatically: same y for the upper row, a fixed step in x from ring
+to ring, and the lower row shifted right by half a step and down by a fixed
+amount.
+
+Looking for structure before reaching for the ruler is a designer's habit
+and a programmer's habit at the same time. Regular patterns mean fewer
+numbers to invent, and fewer numbers mean fewer mistakes.
+
+## The right colors {#sec-colors}
+
+Part of matching a given design is matching its colors. The five Olympic
+rings are blue, black, red, yellow, and green, and p5.js understands all
+five as color names: `stroke("blue")`, `stroke("black")`, and so on. Check
+your result against the original image: if your rings are there but the
+colors are in the wrong order, the symbol is still wrong.
+
+## Your exercise: Olympic rings {#sec-rings}
+
+Open the **Olympic Rings** exercise in the web playground. Sketch the five
+rings on graph paper, use the regularities you found to work out the
+coordinates, and then draw ring by ring, running your program after each
+one.
+
+One thing you may notice: in the real symbol, the rings don't just lie on
+top of each other, they are *woven* together, each ring passing over and
+under its neighbors. Ignore that for now and simply draw five overlapping
+rings; the exercise doesn't count the overlapping order. Weaving the rings
+properly is a much trickier puzzle, and it gets its own exercise a little
+later in the course.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/olympic_rings.yaml >}}

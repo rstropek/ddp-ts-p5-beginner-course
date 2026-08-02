@@ -1,0 +1,79 @@
+---
+title: "Fixing code you didn't write"
+---
+
+So far, every program in this course started with you (or your AI) writing
+the code. This exercise turns the situation around: you get a program that
+someone else wrote. It almost works, but not quite, and your job is to find
+the problem and fix it.
+
+Don't underestimate this exercise. Professional programmers spend most of
+their time exactly like this: reading code they didn't write, understanding
+it, and carefully changing it. Whoever wrote the original, a colleague, an
+AI, or you-three-weeks-ago, the skill is the same.
+
+## The puzzle: weaving the rings {#sec-weaving}
+
+In the Olympic Rings exercise you drew five overlapping rings and ignored
+*how* they overlap. Now look closely at the real symbol: the rings are
+woven together. Follow the blue ring with your eyes: where it crosses the
+yellow ring, it passes **over** it in one crossing and **under** it in the
+other.
+
+Here's the catch: you can't draw that with five full circles. The computer
+paints shapes in order, so a later circle always lies completely on top of
+an earlier one. A full circle can be over or under a neighbor, but never
+both at once.
+
+The trick is to stop thinking of a ring as one shape. Split it into
+**arcs**: draw most of the ring early, and paint the small missing piece
+*after* the neighbor ring, right where it has to pass over. The eye sees a
+woven ring; the code sees a few arcs in a well-chosen order. The layering
+rule you know, later statements paint over earlier ones, is exactly what
+makes this work.
+
+## Read before you change {#sec-read}
+
+The starter code of the exercise already solves most of this puzzle. Before
+you change anything, spend time understanding it:
+
+1. **Run the program** and put its output next to the target image. Compare
+   crossing by crossing: where do the rings weave correctly, and where not?
+   Finding the difference between "what it should do" and "what it does" is
+   always the first step of fixing a program.
+2. **Read the code from top to bottom.** You know every command in it,
+   including `arc` and `angleMode(DEGREES)` from the smiley exercise. The
+   comments tell you which statement belongs to which ring.
+3. **Study how the finished rings do it.** The blue and black rings are
+   already woven correctly, and they show the pattern: a ring appears
+   several times in the code, as arcs, with other rings drawn in between.
+   Work out which piece of the ring each arc paints. The angle diagram from
+   the arcs chapter helps: 0° points right, and angles grow clockwise.
+
+Reading code this way takes patience, and that's normal. Understanding a
+program you didn't write is slower than writing your own, even for
+professionals.
+
+## Fix the red ring {#sec-fix}
+
+The broken part is the red ring: it's still drawn as one full `circle`, so
+it can't weave with its neighbor. That's your repair job:
+
+1. Look at the target image and decide where the red ring must pass over
+   and where it must pass under the ring it crosses.
+2. Replace the red `circle` with arcs, following the same pattern that the
+   blue and black rings use. Think about the angles each arc needs, and
+   about *where in the code* each arc has to stand: before or after the
+   neighbor it crosses.
+3. Change a little, run, compare with the image, and repeat. If a change
+   makes things worse, `Ctrl` + `Z` takes you back.
+
+Be careful to change only what's broken. The other four rings are correct,
+and a fix that breaks something else is not a fix. Comparing the picture
+with the target after every run is your safety net.
+
+When the five rings finally weave like the original, take a moment: you've
+just read a foreign program, understood a genuinely tricky idea in it, and
+repaired it without breaking the rest. That's real programming work.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/olympic_rings_advanced.yaml >}}
