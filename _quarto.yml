@@ -57,6 +57,11 @@ book:
 # The server's FQDN may change — when it does, edit ONLY this line.
 playground-base-url: "https://ts-web-playground-server-bfdfbjcthubcardq.westeurope-01.azurewebsites.net"
 
+# Base URL of the novedu chat app. The `quiz` shortcode turns a minted
+# activity code into a "Take the quiz" link built from this base
+# (<base>/<code>). If the app ever moves, edit ONLY this line.
+novedu-base-url: "https://novedu.at"
+
 # --- Output formats --------------------------------------------------------
 format:
   html:

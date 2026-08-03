@@ -1,0 +1,24 @@
+/* Styling for {{< quiz >}} callouts — HTML output only.
+   (PDF gets equivalent styling automatically from Quarto's callout support.)
+   Mirrors the button in _extensions/example/example.css, but blue to match
+   the `note` callout (the exercise button is green to match its `tip`). */
+
+.quiz-cta p {
+  margin: 0;
+}
+
+.quiz-cta a {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.4rem;
+  background: var(--bs-primary, #0d6efd);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.quiz-cta a:hover,
+.quiz-cta a:focus {
+  filter: brightness(1.08);
+  text-decoration: none;
+}

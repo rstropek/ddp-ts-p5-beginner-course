@@ -14,32 +14,24 @@ description: |
   Eight short questions about the chapter *Your first program*. Answer in
   your own words. There are no answer options to pick from, and this quiz is
   anonymous: it's here for you, so you can see what you already understand
-  and what you should read again. Answering in German is fine too.
+  and what you should read again. One or two sentences are enough for most
+  answers, and answering in German is fine too.
 
 llm:
   model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
 
-# This block is shared context for BOTH the grader and the discussion chat
-# (the app prepends it to both system prompts). Keep it audience-neutral and
-# chapter-agnostic, and keep the text BYTE-IDENTICAL across all chapter
-# quizzes: the compound quiz deduplicates identical preambles, so a shared
-# text appears once instead of once per chapter. Chapter-specific limits
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
 # belong in discussion.instructions below (that field does not travel into
 # compound quizzes).
+fragment_files:
+  - id: shared
+    url: "./ddp-quiz-fragments" # sibling app-hosted file
 instructions: |
-  The students are beginners in a creative-coding course (TypeScript with
-  the p5.js drawing library), age 15 to 17, working in a web playground.
-  The course book is in English; the students are Austrian and speak German
-  as their first language.
-
-  - Answers in English or German are equally fine. Respond to the content,
-    not the language; spelling and grammar mistakes never count.
-  - The students use their own words. Accept everyday wording whenever the
-    idea is right; never require technical terms the criteria don't demand.
-  - Write in simple English that a 15-year-old English learner understands:
-    short sentences, common words.
-  - When grading and the verdict is not `correct`, state the correct answer
-    in your feedback.
+  {{fragment "shared.quiz_context"}}
 
 discussion:
   # Appended AFTER the app's built-in discussion prompt (which already sets
@@ -86,9 +78,10 @@ questions:
   - id: statement-order
     title: "Order of statements"
     question: |
-      A program contains these two statements in exactly this order:
+      A program contains these statements in exactly this order:
 
       ```typescript
+      createCanvas(400, 400);
       circle(200, 200, 100);
       background("pink");
       ```
@@ -154,26 +147,40 @@ questions:
 
   - id: red-squiggles
     title: "Red squiggly lines"
+    # The image is app-hosted (uploaded on /images, name below); it renders
+    # above the question Markdown and demonstrates content images in quizzes.
+    image:
+      hosted: true
+      src: first-program-red-squiggles
+      alt: >-
+        Two lines of code in an editor: a comment reading "// Set background
+        color", and below it the statement Background("pink");. The word
+        Background is underlined with a red squiggly line.
     question: |
-      While you type, a red squiggly line appears under a part of your code.
+      While you type, the editor sometimes underlines part of your code with
+      a red squiggly line. The picture shows an example.
 
-      What is the editor telling you, and what do you do next to get rid of
-      the squiggle?
+      What is the editor telling you, and what do you do to find out what
+      is wrong?
     evaluation: |
       Expected: the editor found a problem in the code (like a spell checker
-      in a text document). Next step: hover the mouse over it to read the
-      message, and/or compare the code with the example character by
-      character and fix the difference.
+      in a text document). To find out what is wrong: hover the mouse over
+      the underlined code to read the message, and/or compare the code with
+      the example character by character.
 
       - `correct`   - squiggle = a mistake the editor found AND at least one
-                      sensible next step (hover for the message, or compare
-                      with the example and fix it).
-      - `partial`   - knows it means an error but has no plan for finding
-                      or fixing it.
-      - `incorrect` - anything else, e.g. decoration or "ignore it".
+                      way to find it (hover for the message, or compare with
+                      the example). Naming the actual mistake in the picture
+                      (capital `B`, the computer only knows `background`)
+                      also counts as finding it.
+      - `partial`   - one half only: knows what the squiggle means but no
+                      way to find the problem, or names a step without
+                      saying what the squiggle means.
+      - `incorrect` - anything else, e.g. decoration, "ignore it", or
+                      blaming the comment line.
 
-      Feedback: reassure the student — squiggles are completely normal,
-      every programmer sees them all day.
+      Feedback: reassure the student — squiggles are completely normal, and
+      the fix in the picture is writing `background` with a lowercase `b`.
 
   - id: comments
     title: "Lines that start with //"
@@ -234,10 +241,11 @@ questions:
       (indentation, one statement per line, spacing) is a bonus, not
       required.
 
-      - `correct`   - the reason: code is for people / easier to read /
-                      mistakes easier to find.
-      - `partial`   - stays vague ("it looks better") without who benefits
-                      or why it helps.
+      - `correct`   - says who benefits (people: yourself later, classmates,
+                      the teacher) or what it enables (reading the code,
+                      finding mistakes like a missing curly brace).
+      - `partial`   - stays with appearance only ("it looks better", "it's
+                      tidier") — no who or what named.
       - `incorrect` - formatting doesn't matter because the computer
                       ignores it.
 

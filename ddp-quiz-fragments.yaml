@@ -1,0 +1,45 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/fragments/fragment-yaml.schema.json
+# Shared fragment library for the Creative Coding book's novedu quizzes.
+#
+# Every chapter quiz pulls `quiz_context` into its top-level `instructions:`
+# via {{fragment "shared.quiz_context"}}. That guarantees all chapter quizzes
+# render a BYTE-IDENTICAL preamble, which the compound (section) quiz
+# deduplicates to a single copy in its discussion prompt. Edit the text here,
+# upload this file, and every chapter quiz plus the compound quiz serve the
+# new wording immediately (app-hosted files are read live).
+#
+# App-hosted as: ddp-quiz-fragments  (upload: npm run cli -- files upload
+# ddp-quiz-fragments --kind fragment --file ddp-quiz-fragments.yaml)
+# Chapter quizzes reference it as a sibling hosted file: ./ddp-quiz-fragments
+#
+# NOTE: `discussion.instructions` cannot use fragments (only the top-level
+# `instructions` is a template host). The shared discussion guidance stays
+# copy-paste; its canonical version lives in
+# 0010-introduction/0020-first-program-quiz.yaml.
+
+id: ddp-quiz-fragments
+fragments:
+  # Shared context for BOTH the quiz grader and the discussion chat (the app
+  # prepends the rendered `instructions:` to both system prompts). Keep it
+  # audience-neutral and chapter-agnostic: no "students don't know X yet"
+  # claims — those belong in each chapter's discussion.instructions.
+  - id: quiz_context
+    version: 1
+    content: |
+      The students are beginners in a creative-coding course (TypeScript with
+      the p5.js drawing library), age 15 to 17, working in a web playground.
+      The course book is in English; the students are Austrian and speak German
+      as their first language.
+
+      - Answers in English or German are equally fine. Respond to the content,
+        not the language; spelling and grammar mistakes never count.
+      - The students use their own words. Accept everyday wording whenever the
+        idea is right; never require technical terms the criteria don't demand.
+      - Write in simple English that a 15-year-old English learner understands:
+        short sentences, common words.
+      - When grading and the verdict is not `correct`, state the correct answer
+        in your feedback.
+      - Short answers are fine: a concise answer scores equal to or better
+        than a long one at the same correctness. Never reward length.
+      - When unsure between two verdicts, choose the lower one (partial
+        rather than correct).
