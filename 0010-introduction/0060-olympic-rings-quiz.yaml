@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "When the picture is given: Olympic rings"
+# (0010-introduction/0060-olympic-rings.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: rings as
+# circles without a fill (noFill, stroke, strokeWeight), settings staying
+# active, and finding the pattern in a given design before measuring.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: olympic-rings-quiz
+name: "Quiz: Olympic rings"
+
+title: "Check your understanding: Olympic rings"
+description: |
+  Four short questions about the chapter *When the picture is given: Olympic
+  rings*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `stroke("blue");` where it helps. Stay strictly within what a beginner
+    knows after the Olympic rings chapter: statements, the drawing commands
+    `rect`, `circle`, `triangle`, and `line` with their parameters, the
+    canvas, comments, the color and outline settings `fill`, `noFill`,
+    `stroke`, and `strokeWeight`, drawing order, and code formatting. Do not
+    introduce variables, loops, or functions the student writes themselves.
+    If the student writes in German, you may answer in German; keep code and
+    command names in English.
+
+questions:
+  - id: no-fill-ring
+    title: "A circle without a fill"
+    question: |
+      A program contains these statements:
+
+      ```typescript
+      createCanvas(400, 400);
+      background("white");
+      noFill();
+      strokeWeight(12);
+      stroke("red");
+      circle(200, 200, 150);
+      ```
+
+      What do you see on the canvas, and why is the inside of the circle
+      white?
+    evaluation: |
+      Expected: a red ring (a thick circle outline, 12 pixels wide). The
+      inside is white because `noFill()` switches the filling off, so the
+      inside stays transparent and the white background shows through.
+
+      - `correct`   - describes a ring / only the outline AND explains the
+                      inside with `noFill` (accept "transparent", "no color
+                      inside", "you see the background").
+      - `partial`   - sees the ring but can't explain the white inside, or
+                      explains `noFill` but describes a filled circle.
+      - `incorrect` - anything else, e.g. a solid red circle.
+
+      Feedback: if `strokeWeight` went unmentioned, you may add that 12 is
+      what makes the thin circle line a bold ring.
+
+  - id: settings-stay-active
+    title: "Write the settings once"
+    question: |
+      All five Olympic rings need `noFill()` and the same thick
+      `strokeWeight`. The chapter says to write these two commands only
+      once, at the top of the program.
+
+      Why is writing them once enough, and which command do you still have
+      to repeat from ring to ring?
+    evaluation: |
+      Expected: these commands are settings, not actions. A setting stays
+      active for every shape that follows until you change it. Only
+      `stroke` (the outline color) has to change from ring to ring, because
+      each ring has a different color.
+
+      - `correct`   - says the settings stay active / apply to all following
+                      shapes AND names `stroke` (or "the color command") as
+                      the one to repeat.
+      - `partial`   - only one of the two: the stays-active idea without
+                      naming `stroke`, or names `stroke` without the reason.
+      - `incorrect` - anything else, e.g. every circle needs all commands
+                      repeated.
+
+      Feedback: reinforce the wording from the book — settings, not
+      actions; they change how every shape after them is drawn.
+
+  - id: upper-ring-centers
+    title: "Coordinates from the pattern"
+    question: |
+      The three upper rings of the Olympic symbol sit on one line, at equal
+      distances from each other. Suppose the center of the first upper ring
+      is at (100, 100), and the centers are 120 pixels apart.
+
+      What are the center coordinates of the other two upper rings?
+    evaluation: |
+      Expected: (220, 100) and (340, 100). The x value grows by 120 per
+      ring; the y value stays 100 because the centers sit on one line.
+
+      - `correct`   - both centers right: (220, 100) and (340, 100).
+      - `partial`   - one center right, e.g. added 120 only once, or right
+                      x values but a changed y value.
+      - `incorrect` - anything else, e.g. added 120 to y.
+
+      Feedback: if y changed, remind that "on one line" means the same y
+      for all three centers.
+
+  - id: pattern-before-ruler
+    title: "Look before you measure"
+    question: |
+      You could put your sketch on graph paper and measure the position of
+      every single ring with a ruler. The chapter tells you to look for
+      patterns in the symbol first.
+
+      Why is finding the pattern the better start?
+    evaluation: |
+      Expected: the symbol is regular (same diameter, upper row on one
+      line with equal steps, lower row halfway between). Once you choose
+      the first ring's position and the diameter, the other coordinates
+      follow almost automatically. Fewer numbers to invent means fewer
+      mistakes.
+
+      - `correct`   - says the other coordinates follow from the first ring
+                      / the pattern, or that you need fewer measured numbers
+                      and so make fewer mistakes.
+      - `partial`   - stays with "it's faster / easier" without saying what
+                      the pattern gives you.
+      - `incorrect` - anything else, e.g. measuring is wrong or forbidden.
+
+      Feedback: name one concrete regularity, e.g. all five rings share one
+      diameter, so you choose it once.

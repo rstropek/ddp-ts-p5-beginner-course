@@ -1,0 +1,174 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Practice projects: flowers and a soccer field"
+# (0010-introduction/0090-practice-projects.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: computing
+# coordinates from a dimensioned drawing, using symmetry, constants with
+# `const`, and the `scale` and `translate` commands.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: practice-projects-quiz
+name: "Quiz: Practice projects"
+
+title: "Check your understanding: practice projects"
+description: |
+  Five short questions about the chapter *Practice projects: flowers and a
+  soccer field*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `scale(5);` where it helps. Stay strictly within what a beginner knows
+    after the Introduction's practice projects: statements, drawing
+    commands and their parameters (including `arc`), fill and stroke
+    settings, the canvas coordinate system, comments, constants with
+    `const`, and the `scale` and `translate` commands. Do not introduce
+    variables that change their value, loops, or functions the student
+    writes themselves. If the student writes in German, you may answer in
+    German; keep code and command names in English.
+
+questions:
+  - id: computed-coordinates
+    title: "Computing a coordinate"
+    question: |
+      A designer's figure shows a petal with a diameter of 30 sitting
+      directly on top of a flower center with a diameter of 80.
+
+      How many pixels above the flower's center is the petal's center, and
+      how do you compute that?
+    evaluation: |
+      Expected: 55 pixels — half of 80 (that is 40) plus half of 30 (that
+      is 15), because each center sits half a diameter away from the point
+      where the shapes touch.
+
+      - `correct`   - 55 AND the computation (half of each diameter,
+                      added).
+      - `partial`   - the half-plus-half method with an arithmetic slip,
+                      or 55 with no computation shown.
+      - `incorrect` - anything else, e.g. adding the full diameters (110).
+
+      Feedback: the distance between two touching circles' centers is half
+      of one diameter plus half of the other.
+
+  - id: symmetry
+    title: "Using symmetry"
+    question: |
+      A flower is symmetrical from top to bottom. Its center is at
+      (300, 200), and its top petal's center is at (300, 150).
+
+      Where is the bottom petal's center, and why can you tell without
+      measuring?
+    evaluation: |
+      Expected: at (300, 250). The top petal sits 50 above the flower's
+      center, so by symmetry the bottom petal sits 50 below it; the x value
+      stays the same.
+
+      - `correct`   - (300, 250) AND the mirror reasoning (same distance on
+                      the other side).
+      - `partial`   - the mirror idea with a wrong number, or (300, 250)
+                      without any reasoning.
+      - `incorrect` - anything else, e.g. y = 150 again or a changed x.
+
+      Feedback: mirrored parts lie at the same distance from the center,
+      once on each side — that's why one computed petal gives you the
+      mirrored one almost for free.
+
+  - id: constants
+    title: "What const is for"
+    question: |
+      The soccer field starter code begins with this line:
+
+      ```typescript
+      const SCALE = 5;
+      ```
+
+      What does this line create, and why is it better than writing the
+      number 5 everywhere in the code?
+    evaluation: |
+      Expected: it creates a constant, a value with a name. Advantages: the
+      name tells a reader what the number means, and the value lives in one
+      place, so changing it once changes it everywhere it is used. One
+      advantage is enough.
+
+      - `correct`   - a constant / a named value AND at least one of the
+                      two advantages (readable meaning, or change in one
+                      place).
+      - `partial`   - one half only: knows it names a value but gives no
+                      advantage, or names an advantage without saying what
+                      the line creates.
+      - `incorrect` - anything else, e.g. the line draws something or sets
+                      the canvas size.
+
+      Feedback: you may add the convention — constant names are written in
+      capital letters.
+
+  - id: scale-command
+    title: "What scale does"
+    question: |
+      The soccer field program calls `scale(5)` and later draws the halfway
+      line with a length of 70, the real length in meters.
+
+      How long does the line appear on the canvas, and why?
+    evaluation: |
+      Expected: 350 pixels, because `scale(5)` stretches everything drawn
+      after it by the factor 5 — so the code can write all measurements in
+      meters as if a meter were a pixel.
+
+      - `correct`   - 350 AND the reason (scale multiplies/stretches what
+                      is drawn afterwards by 5).
+      - `partial`   - the stretch idea with an arithmetic slip, or 350
+                      without the why.
+      - `incorrect` - anything else, e.g. 70 or 75 pixels.
+
+      Feedback: you may add the bonus — changing the factor to 10 doubles
+      the whole field with proportions intact, without touching a single
+      coordinate.
+
+  - id: translate-command
+    title: "What translate does"
+    question: |
+      The starter code calls `translate(MARGIN, MARGIN)` before drawing the
+      field.
+
+      What does this statement change, and why does that make the field
+      code simpler?
+    evaluation: |
+      Expected: it moves the origin (0, 0) right and down by the margin.
+      After it, (0, 0) is the top left corner of the FIELD, not of the
+      canvas, so the field's own measurements work directly as coordinates
+      (and the grass margin appears by itself).
+
+      - `correct`   - moves the origin/zero point AND the benefit (field
+                      measurements used directly / simple numbers / margin
+                      for free).
+      - `partial`   - one half only: knows it moves the origin but not why
+                      that helps, or names the benefit without saying what
+                      moves.
+      - `incorrect` - anything else, e.g. it moves shapes that are already
+                      drawn, or it draws the margin as a rectangle.
+
+      Feedback: contrast with the normal canvas, where (0, 0) is the top
+      left corner of the whole canvas.

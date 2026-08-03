@@ -1,0 +1,164 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Type less, draw more"
+# (0010-introduction/0040-practice-cat.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: copy and
+# paste for repeated shapes, moving lines with Alt+Arrow, undo with Ctrl+Z,
+# and what Format Document does and does not do.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: practice-cat-quiz
+name: "Quiz: Type less, draw more"
+
+title: "Check your understanding: type less, draw more"
+description: |
+  Five short questions about the chapter *Type less, draw more*. Answer in
+  your own words. There are no answer options to pick from, and this quiz is
+  anonymous: it's here for you, so you can see what you already understand
+  and what you should read again. One or two sentences are enough for most
+  answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `circle(200, 260, 360);` where it helps. Stay strictly within what a
+    beginner knows after the first chapters: statements, drawing commands and
+    their parameters, the canvas, comments, colors with `fill` and `stroke`,
+    drawing order, and the editor tricks from this chapter (copy and paste,
+    moving lines with `Alt` + `Arrow`, undo with `Ctrl` + `Z`, Format
+    Document). Do not introduce variables, loops, or functions the student
+    writes themselves. If the student writes in German, you may answer in
+    German; keep code and command names in English.
+
+questions:
+  - id: copy-paste-repetition
+    title: "Three whiskers, typed once"
+    question: |
+      Your cat needs three whiskers: three `line` statements that look almost
+      the same, only the numbers differ.
+
+      What is the fast way to write these three statements?
+    evaluation: |
+      Expected: type the statement once, copy it (`Ctrl` + `C`), paste it
+      twice (`Ctrl` + `V`), then change only the numbers in the pasted
+      copies.
+
+      - `correct`   - copy and paste the statement AND change the numbers
+                      afterwards (naming the exact keys is not required).
+      - `partial`   - copy and paste mentioned, but no word about changing
+                      the numbers (the whiskers would lie on top of each
+                      other).
+      - `incorrect` - anything else, e.g. type each line from scratch.
+
+      Feedback: add the trick — with the cursor anywhere in the line,
+      `Ctrl` + `C` copies the whole line, no selecting needed.
+
+  - id: move-line-shortcut
+    title: "The hidden eye"
+    question: |
+      Your cat has no eye in the picture, although the `circle` statement for
+      the eye is in your code. It stands *above* the statement that draws the
+      big head circle.
+
+      Why is the eye invisible, and which editor shortcut fixes this without
+      any retyping?
+    evaluation: |
+      Expected: the head is drawn after the eye and paints over it (later
+      shapes cover earlier ones). Fix: move the eye statement below the head
+      statement with `Alt` + `Arrow Down` (or move the head up with
+      `Alt` + `Arrow Up`).
+
+      - `correct`   - the head covers the eye AND the Alt + arrow-key
+                      shortcut for moving the line.
+      - `partial`   - one half only: explains the covering but no shortcut
+                      (or says "cut and paste"), or names the shortcut
+                      without the reason.
+      - `incorrect` - anything else, e.g. the eye statement is broken.
+
+      Feedback: use the paint image — every shape is painted on top of what
+      is already there.
+
+  - id: undo-shortcut
+    title: "Bringing back a deleted line"
+    question: |
+      While cleaning up your code, you delete the wrong line, and right
+      after that you paste something into the wrong place.
+
+      What do you press to repair this, and how do you undo both mistakes?
+    evaluation: |
+      Expected: `Ctrl` + `Z` undoes the last change; pressing it several
+      times undoes several steps, so both mistakes disappear one after the
+      other.
+
+      - `correct`   - `Ctrl` + `Z` AND pressing it more than once for
+                      several steps.
+      - `partial`   - `Ctrl` + `Z` named, but nothing about repeating it.
+      - `incorrect` - anything else, e.g. retyping the line by hand.
+
+      Feedback: point out what this means — with undo, experimenting is
+      never dangerous.
+
+  - id: format-document-errors
+    title: "The squiggle that stayed"
+    question: |
+      You right-click your code and choose **Format Document**. The
+      indentation and spacing become tidy, but the red squiggly line under a
+      mistyped command name is still there.
+
+      Why didn't Format Document fix it?
+    evaluation: |
+      Expected: Format Document only changes the formatting (indentation,
+      spacing, layout). It does not fix errors — a mistyped command name
+      stays wrong until you correct it yourself.
+
+      - `correct`   - Format Document only formats / does not fix errors
+                      (any wording of "it changes how the code looks, not
+                      what it says").
+      - `partial`   - knows the squiggle still marks an error but can't say
+                      why formatting doesn't help.
+      - `incorrect` - anything else, e.g. run Format Document again, or the
+                      editor is broken.
+
+      Feedback: remind the student — it also doesn't think for you; you
+      decide what the code says.
+
+  - id: strange-formatting-hint
+    title: "When formatting looks strange"
+    question: |
+      After **Format Document**, the indentation of your file suddenly looks
+      strange: lines are indented in ways you didn't expect.
+
+      What is this often a hint of?
+    evaluation: |
+      Expected: a curly brace is probably missing (or misplaced) somewhere
+      in the code — the formatter follows the braces it finds, so a missing
+      brace makes the indentation look wrong.
+
+      - `correct`   - points to a missing or misplaced curly brace (a
+                      missing parenthesis also counts).
+      - `partial`   - "there is an error somewhere in the code" without
+                      naming braces or parentheses.
+      - `incorrect` - anything else, e.g. the formatter is broken, or the
+                      code is fine.
+
+      Feedback: tidy code makes a missing brace obvious — that is one
+      reason formatting before handing in is mandatory in this course.

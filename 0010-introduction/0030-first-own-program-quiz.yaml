@@ -1,0 +1,220 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "From copying to creating"
+# (0010-introduction/0030-first-own-program.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: breaking a
+# picture into simple shapes, planning on graph paper, drawing order and
+# layering, fill/stroke as settings, and the try-look-adjust workflow.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: first-own-program-quiz
+name: "Quiz: From copying to creating"
+
+title: "Check your understanding: from copying to creating"
+description: |
+  Seven short questions about the chapter *From copying to creating*. Answer
+  in your own words. There are no answer options to pick from, and this quiz
+  is anonymous: it's here for you, so you can see what you already understand
+  and what you should read again. One or two sentences are enough for most
+  answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `rect(100, 250, 200, 150);` where it helps. Stay strictly within what a
+    beginner knows after the first two chapters: statements, drawing commands
+    and their parameters, the canvas and its coordinate system, comments,
+    the color settings `fill`, `stroke`, and `strokeWeight`, drawing order,
+    and planning a picture on paper. Do not introduce variables, loops, or
+    functions the student writes themselves. If the student writes in
+    German, you may answer in German; keep code and command names in
+    English.
+
+questions:
+  - id: decompose-shapes
+    title: "Break it into simple shapes"
+    question: |
+      The chapter builds a house from simple shapes. Now imagine you want to
+      draw a simple car from the side: a body and two wheels.
+
+      Which of the shapes you know would you use for each part of the car?
+    evaluation: |
+      Expected: a rectangle for the body and circles for the wheels. Any
+      sensible mapping counts, for example two stacked rectangles for the
+      body, as long as each part gets a fitting simple shape.
+
+      - `correct`   - names a fitting shape for the body AND for the wheels
+                      (rectangle-like body, circle wheels).
+      - `partial`   - a fitting shape for only one part, or lists shapes
+                      without saying which part they are for.
+      - `incorrect` - anything else, e.g. shapes that don't fit (a triangle
+                      for the wheels) or "draw a car command".
+
+      Feedback: point at the chapter's idea — every big picture breaks down
+      into rectangles, circles, triangles, and lines.
+
+  - id: graph-paper-pixels
+    title: "From squares to pixels"
+    question: |
+      You sketch your house on graph paper, and one square stands for 10
+      pixels. In your sketch, the door is 4 squares wide and 7 squares tall.
+
+      Which width and height do you write in your code?
+    evaluation: |
+      Expected: width 40 and height 70 (count the squares and multiply
+      by 10).
+
+      - `correct`   - both numbers right: 40 wide, 70 tall (order may be
+                      stated in words either way, as long as 40 is the width
+                      and 70 the height).
+      - `partial`   - the multiply-by-10 rule is right but only one number
+                      is correct, or width and height are swapped.
+      - `incorrect` - anything else, e.g. 4 and 7 unchanged or added
+                      instead of multiplied.
+
+      Feedback: name the rule — count the squares, multiply by 10, and you
+      have the pixel value for your code.
+
+  - id: shape-disappears
+    title: "The disappearing door"
+    question: |
+      A student writes these statements to draw a brown door and red walls:
+
+      ```typescript
+      fill("saddlebrown");
+      rect(180, 330, 40, 70);    // the door
+      fill("red");
+      rect(100, 250, 200, 150);  // the walls
+      ```
+
+      When the program runs, the door is missing. Why, and how do you fix it?
+    evaluation: |
+      Expected: the walls are drawn after the door, and every new shape is
+      painted on top of what is already there, so the wall rectangle covers
+      the door. Fix: move the door statements below the walls (draw the
+      door after the walls).
+
+      - `correct`   - the reason (the walls are painted later, over the
+                      door) AND the fix (change the order so the door comes
+                      after the walls).
+      - `partial`   - only one half: sees that the walls cover the door but
+                      gives no fix, or says "move the door down in the code"
+                      without the reason.
+      - `incorrect` - anything else, e.g. blaming the coordinates or the
+                      color.
+
+      Feedback: use the chapter's layer image — shapes are layers of paint,
+      background first, large shapes next, details on top.
+
+  - id: fill-is-a-setting
+    title: "How long does fill last?"
+    question: |
+      Look at these statements:
+
+      ```typescript
+      fill("red");
+      rect(100, 250, 200, 150);
+      rect(180, 330, 40, 70);
+      ```
+
+      What color is the second rectangle, and why?
+    evaluation: |
+      Expected: the second rectangle is also red. `fill` is a setting, not
+      an action: it changes how every shape after it is drawn, until the
+      setting is changed again.
+
+      - `correct`   - red AND the reason (`fill` stays active for all
+                      later shapes until it is changed).
+      - `partial`   - red without a reason, or knows that `fill` is a
+                      setting but names the wrong color.
+      - `incorrect` - anything else, e.g. "no color" or "the default
+                      color" because fill was only used once.
+
+      Feedback: name the key phrase — color commands are settings, not
+      actions; they draw nothing themselves.
+
+  - id: fill-vs-stroke
+    title: "fill and stroke"
+    question: |
+      The color commands `fill` and `stroke` do two different jobs.
+
+      What is the difference between them?
+    evaluation: |
+      Expected: `fill` sets the color inside shapes; `stroke` sets the
+      color of the lines (the outline). Everyday wording like "fill is the
+      inside, stroke is the border" counts.
+
+      - `correct`   - both jobs right: fill = inside color, stroke =
+                      line/outline color.
+      - `partial`   - only one of the two right, or the two swapped with
+                      everything else fitting.
+      - `incorrect` - anything else, e.g. stroke sets the line thickness
+                      (that is `strokeWeight`).
+
+      Feedback: if the student mixed in thickness, name the third command —
+      `strokeWeight` sets how thick the line is.
+
+  - id: one-shape-at-a-time
+    title: "One shape at a time"
+    question: |
+      The chapter recommends adding one shape at a time and running the
+      program after every shape.
+
+      Why is this better than typing the whole program at once?
+    evaluation: |
+      Expected: you see the result of each shape immediately, so you can
+      adjust the numbers right away (try, look, adjust), and when something
+      looks wrong you know it was the shape you just added.
+
+      - `correct`   - names at least one concrete benefit: adjusting
+                      coordinates step by step, or knowing that a problem
+                      comes from the shape just added.
+      - `partial`   - stays vague ("it's easier", "fewer mistakes")
+                      without saying what running after every shape shows
+                      you.
+      - `incorrect` - anything else, e.g. "it makes the program faster" or
+                      "the order doesn't matter".
+
+      Feedback: name the loop from the chapter — try, look, adjust; that is
+      exactly how professional programmers work.
+
+  - id: exact-but-yours
+    title: "What is still exact?"
+    question: |
+      In the Shapes exercise you copied code exactly. In the House exercise
+      there is no single correct picture anymore.
+
+      What is now your own decision, and what still has to be exact?
+    evaluation: |
+      Expected: what you draw (the picture: shapes, colors, positions) is
+      now your own decision. The code itself still has to be exact: every
+      letter, parenthesis, comma, semicolon, and curly brace still matters.
+
+      - `correct`   - both halves: the picture/design is free AND the code
+                      spelling stays exact.
+      - `partial`   - only one half, e.g. "you can draw what you want"
+                      without saying that exactness still applies.
+      - `incorrect` - anything else, e.g. exactness no longer matters in
+                      the House exercise.
+
+      Feedback: reinforce the split — *what* you draw is creative, *how*
+      you write it stays character-exact.

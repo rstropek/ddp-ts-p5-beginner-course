@@ -1,0 +1,179 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Arcs: drawing parts of a circle"
+# (0010-introduction/0070-arcs-smiley.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: the six
+# parameters of `arc`, angles in degrees via angleMode, angle direction on
+# the canvas, flattened arcs, and experimenting one change at a time.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: arcs-smiley-quiz
+name: "Quiz: Arcs"
+
+title: "Check your understanding: arcs"
+description: |
+  Five short questions about the chapter *Arcs: drawing parts of a circle*.
+  Answer in your own words. There are no answer options to pick from, and
+  this quiz is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are enough
+  for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `arc(200, 250, 200, 150, 25, 180);` where it helps. Stay strictly
+    within what a beginner knows after the first chapters: statements,
+    drawing commands and their parameters (rectangles, circles, triangles,
+    lines, and arcs), colors with `fill` and `stroke`, the canvas and its
+    coordinate system, comments, and angles in degrees. Do not introduce
+    radians math, variables, loops, or functions the student writes
+    themselves. If the student writes in German, you may answer in German;
+    keep code and command names in English.
+
+questions:
+  - id: arc-angle-parameters
+    title: "The two new parameters"
+    question: |
+      Look at this statement, which draws the smiley's mouth:
+
+      ```typescript
+      arc(200, 250, 200, 150, 25, 180);
+      ```
+
+      The first four parameters work like you expect from other shapes: the
+      center position (200, 250) and the size (200 wide, 150 tall). What do
+      the last two parameters, 25 and 180, tell the `arc` command?
+    evaluation: |
+      Expected: 25 is the start angle and 180 is the end angle. They say
+      where on the outline the visible piece begins and where it ends.
+
+      - `correct`   - both numbers identified as angles that mark where the
+                      drawn piece starts and stops ("from 25 degrees to
+                      180 degrees" in any wording counts).
+      - `partial`   - says they are angles or degrees, but not that they
+                      mark the start and end of the visible piece.
+      - `incorrect` - anything else, e.g. reading them as a position or a
+                      size.
+
+      Feedback: use the mouth image — the full ellipse stays invisible, only
+      the slice between the two angles gets drawn.
+
+  - id: angle-mode
+    title: "Switching to degrees"
+    question: |
+      Programs with arcs in this course start with this statement at the
+      top:
+
+      ```typescript
+      angleMode(DEGREES);
+      ```
+
+      What does this statement change, and why does the program need it?
+    evaluation: |
+      Expected: out of the box, p5.js measures angles in radians. This
+      statement switches p5.js to degrees, the unit students already know
+      (a full circle is 360°), so the angle numbers in `arc` mean degrees.
+
+      - `correct`   - switches angle measurement to degrees AND names the
+                      reason (p5.js normally uses a different unit /
+                      radians, or "so 360 means a full circle").
+      - `partial`   - knows it is about degrees or angle units, but cannot
+                      say what would be different without it.
+      - `incorrect` - anything else, e.g. that it rotates the canvas or
+                      changes a shape.
+
+      Feedback: "radians" as a word is enough — students meet the unit
+      itself in math class years later.
+
+  - id: angle-direction
+    title: "Where angles point"
+    question: |
+      Angles on the canvas work a little differently from math class.
+
+      Where does 0° point on the canvas, and in which direction do angles
+      grow?
+    evaluation: |
+      Expected: 0° points to the right, and angles grow clockwise (so 90°
+      points down) — flipped compared to math class, because the y axis
+      points down.
+
+      - `correct`   - 0° to the right AND angles grow clockwise ("90 is at
+                      the bottom" counts as clockwise).
+      - `partial`   - only one of the two facts is right.
+      - `incorrect` - anything else, e.g. angles grow counterclockwise like
+                      in math class.
+
+      Feedback: anchor with the smiley's mouth — it runs from 25° near the
+      3 o'clock position clockwise through 90° at the bottom.
+
+  - id: flattened-arc
+    title: "Width and height"
+    question: |
+      In the mouth statement, the width and the height are different
+      numbers:
+
+      ```typescript
+      arc(200, 250, 200, 150, 25, 180);
+      ```
+
+      The arc is 200 wide but only 150 tall. What does that do to the shape
+      of the mouth?
+    evaluation: |
+      Expected: the arc becomes a piece of a flattened circle (an ellipse)
+      instead of a perfect circle — the smile looks wider and flatter, a
+      relaxed smile instead of a half circle.
+
+      - `correct`   - says the arc is squashed/flattened/wider than tall
+                      (any everyday wording of "not a perfect circle
+                      anymore" counts; naming the ellipse is a bonus, not
+                      required).
+      - `partial`   - says the numbers are the size, but not what unequal
+                      width and height do to the shape.
+      - `incorrect` - anything else, e.g. that the mouth moves to another
+                      position.
+
+      Feedback: invite the experiment — set the height to 200 and the smile
+      becomes part of a perfect circle; set it to 300 and the smile gets
+      deep and round.
+
+  - id: one-change-at-a-time
+    title: "Experimenting with a new command"
+    question: |
+      The chapter tells you to explore `arc` by experimenting: change a
+      parameter, run the program, and watch what happens.
+
+      Why should you change only one parameter at a time?
+    evaluation: |
+      Expected: if you change several numbers at once and the picture
+      changes, you can't tell which change did what. One change, one run,
+      one observation shows you exactly what each parameter does.
+
+      - `correct`   - names the reason: with several changes at once you
+                      don't know which change caused the effect (any
+                      wording).
+      - `partial`   - stays with "it's easier" or "less confusing" without
+                      naming the cause-and-effect reason.
+      - `incorrect` - anything else, e.g. that the program breaks when you
+                      change several numbers.
+
+      Feedback: you may add the safety net — `Ctrl` + `Z` takes you back to
+      the last working state, so experimenting is never dangerous.

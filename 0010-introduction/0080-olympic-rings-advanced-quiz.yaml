@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Fixing code you didn't write"
+# (0010-introduction/0080-olympic-rings-advanced.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: why full
+# circles can't weave, the arc trick, understanding a foreign program before
+# changing it, learning from the working rings, and careful fixing.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: olympic-rings-advanced-quiz
+name: "Quiz: Fixing code you didn't write"
+
+title: "Check your understanding: fixing code you didn't write"
+description: |
+  Five short questions about the chapter *Fixing code you didn't write*.
+  Answer in your own words. There are no answer options to pick from, and
+  this quiz is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are enough
+  for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `circle(200, 260, 360);` where it helps. Stay strictly within what a
+    beginner knows after the chapters up to fixing the Olympic rings:
+    statements, drawing commands and their parameters (including `arc` and
+    `angleMode(DEGREES)`), the canvas and its coordinate system, comments,
+    outline settings like `noFill`, `stroke`, and `strokeWeight`, drawing
+    order and layering, and editor basics like copy, paste, and undo. Do not
+    introduce variables, loops, or functions the student writes themselves.
+    If the student writes in German, you may answer in German; keep code and
+    command names in English.
+
+questions:
+  - id: full-circle-limit
+    title: "Why full circles can't weave"
+    question: |
+      In the real Olympic symbol, each ring passes **over** one neighbor
+      ring and **under** the other.
+
+      Why is this impossible to draw with five full circles, and what trick
+      does the program use instead?
+    evaluation: |
+      Expected: the computer paints shapes in order, so a later circle lies
+      completely on top of an earlier one — a full circle can be over OR
+      under a neighbor, never both. The trick: split the ring into arcs;
+      draw most of the ring early and paint the small missing piece after
+      the neighbor, right where it has to pass over.
+
+      - `correct`   - names the layering reason (a full circle is entirely
+                      above or entirely below a neighbor, never both) AND
+                      the trick (split the ring into pieces/arcs drawn at
+                      different places in the code). Everyday wording like
+                      "draw the ring in parts" counts as the trick.
+      - `partial`   - only one of the two halves: the reason without the
+                      trick, or "use arcs" without saying why full circles
+                      fail.
+      - `incorrect` - anything else, e.g. a transparency or eraser command.
+
+      Feedback: connect to the layering rule from the first chapter — later
+      statements paint over earlier ones, and that rule is exactly what
+      makes the arc trick work.
+
+  - id: understand-before-change
+    title: "Before you change anything"
+    question: |
+      You're handed a program that almost works: the rings don't weave
+      correctly everywhere.
+
+      What does the chapter tell you to do before you change a single line,
+      and name one concrete way to do it.
+    evaluation: |
+      Expected: understand the program first. Concrete ways from the
+      chapter: run it and compare the output with the target image crossing
+      by crossing, read the code from top to bottom, or study how the
+      already-woven rings do it.
+
+      - `correct`   - understanding comes before changing, plus at least one
+                      concrete step (run and compare with the target image,
+                      read the code, or study the working rings).
+      - `partial`   - "understand it first" with no concrete step, or a
+                      concrete step without the understand-first idea.
+      - `incorrect` - anything else, e.g. start rewriting the red ring
+                      immediately or let the AI fix it.
+
+      Feedback: finding the difference between "what it should do" and
+      "what it does" is always the first step of fixing a program.
+
+  - id: working-rings
+    title: "Learning from the working rings"
+    question: |
+      In the starter code, the blue and black rings are already woven
+      correctly.
+
+      How does studying their code help you fix the red ring?
+    evaluation: |
+      Expected: the working rings show the pattern the red ring needs — a
+      woven ring appears several times in the code, as arcs, with other
+      rings drawn in between. The red ring must follow the same pattern.
+
+      - `correct`   - the working rings show the pattern to copy, and says
+                      what the pattern is (the ring is drawn in several
+                      pieces/arcs, with other rings in between).
+      - `partial`   - "they show how it's done" or "you can copy them"
+                      without saying what the pattern is.
+      - `incorrect` - anything else, e.g. the blue ring's code can replace
+                      the red ring's code unchanged.
+
+      Feedback: suggest working out which piece of the ring each arc
+      paints; the angle diagram helps — 0° points right, angles grow
+      clockwise.
+
+  - id: careful-fixing
+    title: "Fix only what's broken"
+    question: |
+      While you're fixing the red ring, a classmate says: "I'll also
+      rewrite the other four rings, so the code looks nicer."
+
+      Why is that a bad idea in this exercise?
+    evaluation: |
+      Expected: the other four rings are correct; change only what's
+      broken. Every extra change risks breaking something that works, and a
+      fix that breaks something else is not a fix.
+
+      - `correct`   - the four rings already work AND touching them risks
+                      breaking them (any wording of "a fix that breaks
+                      something else is not a fix").
+      - `partial`   - "you shouldn't change them" without a reason, or only
+                      mentions wasted time.
+      - `incorrect` - anything else, e.g. it's fine as long as the program
+                      still runs.
+
+      Feedback: recommend the safety net — change a little, run, compare
+      with the target image, and use `Ctrl` + `Z` if a change makes things
+      worse.
+
+  - id: reading-speed
+    title: "Reading code takes time"
+    question: |
+      You spend fifteen minutes reading the starter code and still don't
+      understand every line.
+
+      Does this mean you're doing something wrong? Explain your answer.
+    evaluation: |
+      Expected: no. Understanding a program you didn't write is slower than
+      writing your own, even for professionals — patience here is normal.
+      Bonus if the student adds that professionals spend most of their time
+      reading and changing code they didn't write.
+
+      - `correct`   - no, AND the reason: reading foreign code is slow and
+                      that's normal for everyone, professionals included.
+      - `partial`   - "no" or "that's normal" without a reason.
+      - `incorrect` - anything else, e.g. yes, good programmers understand
+                      code on the first read, or "skip understanding and
+                      just change things".
+
+      Feedback: reassure the student — professional programmers spend most
+      of their working time exactly like this, reading and carefully
+      changing code someone else wrote.

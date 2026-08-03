@@ -1,0 +1,162 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Welcome"
+# (0010-introduction/0010-welcome.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: the two
+# tools (TypeScript and p5.js), what a library is, and why learning to
+# program matters even when AI can write code.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: welcome-quiz
+name: "Quiz: Welcome"
+
+title: "Check your understanding: welcome"
+description: |
+  Five short questions about the chapter *Welcome*. Answer in your own
+  words. There are no answer options to pick from, and this quiz is
+  anonymous: it's here for you, so you can see what you already understand
+  and what you should read again. One or two sentences are enough for most
+  answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a small everyday example where
+    it helps. Stay strictly within what a beginner knows after the welcome
+    chapter: what the course is about, the two tools TypeScript and p5.js,
+    what a library is, and why learning to program matters even when AI can
+    write code. Do not show program code or introduce drawing commands; the
+    students have not written any code yet. If the student writes in
+    German, you may answer in German; keep tool names like TypeScript and
+    p5.js in English.
+
+questions:
+  - id: two-tools
+    title: "The two tools"
+    question: |
+      In this course you work with two tools: **TypeScript** and **p5.js**.
+
+      What kind of tool is each of the two?
+    evaluation: |
+      Expected: TypeScript is the programming language (the language the
+      code is written in); p5.js is a library for graphics and animations
+      (ready-made drawing code).
+
+      - `correct`   - both roles right: TypeScript = language, p5.js =
+                      library (everyday wording like "the language we write
+                      in" or "a drawing toolbox" counts).
+      - `partial`   - only one of the two described correctly.
+      - `incorrect` - anything else, e.g. the roles swapped or both called
+                      programming languages.
+
+      Feedback: one line per tool is enough — language vs. library.
+
+  - id: library
+    title: "What is a library?"
+    question: |
+      p5.js is called a **library**.
+
+      In your own words: what is a library, and why do programmers use
+      libraries?
+    evaluation: |
+      Expected: a library is a collection of ready-made code you can use in
+      your own programs. Programmers use libraries so they don't have to
+      write everything themselves — they build on the work of other
+      programmers.
+
+      - `correct`   - ready-made code (any wording: "finished code",
+                      "code others wrote for you") AND a reason (saves
+                      writing it yourself / builds on others' work).
+      - `partial`   - one half only: says what a library is but not why, or
+                      gives only the benefit without saying what it is.
+      - `incorrect` - anything else, e.g. a place for books, or "a program
+                      that draws circles".
+
+      Feedback: use the chapter's example — one short command from the
+      library instead of hundreds of lines to draw a circle.
+
+  - id: typescript-spell-checker
+    title: "A spell checker for code"
+    question: |
+      The chapter says TypeScript is like a language with a built-in spell
+      checker for code.
+
+      What does TypeScript do that makes this comparison fit?
+    evaluation: |
+      Expected: TypeScript watches the code while you type and warns you
+      about many mistakes before you even run the program.
+
+      - `correct`   - warns about / points out mistakes in the code, before
+                      running it or while typing.
+      - `partial`   - knows TypeScript helps find mistakes but not when
+                      (nothing about "while typing" or "before running").
+      - `incorrect` - anything else, e.g. TypeScript fixes mistakes by
+                      itself, or it checks the spelling of English words.
+
+      Feedback: stress the timing — the warning comes before the program
+      runs, like the red underline while typing a text.
+
+  - id: genie-in-a-lamp
+    title: "The genie in the lamp"
+    question: |
+      The chapter compares AI to a genie in a lamp: the genie gives you
+      exactly what you *say*, not what you *mean*.
+
+      What does this mean for you when you ask an AI to write code?
+    evaluation: |
+      Expected: the code the AI produces is only as good as your request.
+      To use AI well you must know what to ask for and be able to judge
+      what you get back — and that is why you learn programming yourself.
+
+      - `correct`   - draws the consequence for the student: you need to
+                      know what to ask for, or you need to check/judge the
+                      AI's answer (either one counts).
+      - `partial`   - only repeats the comparison (the AI does what you
+                      say) without saying what that means for the student.
+      - `incorrect` - anything else, e.g. "AI code is always correct" or
+                      "you should not use AI".
+
+      Feedback: sum it up with the chapter's phrase — you learn what to
+      wish for.
+
+  - id: real-work
+    title: "More than typing"
+    question: |
+      The chapter says that when you program, the typing is the smallest
+      part.
+
+      What is the real work of programming?
+    evaluation: |
+      Expected: thinking — you take a big, fuzzy problem, break it into
+      small clear steps, and put those steps in a logical order. Making
+      creative decisions is part of it too. Naming one or two of these in
+      everyday words is enough.
+
+      - `correct`   - names breaking a problem into small steps, ordering
+                      steps logically, or making creative decisions (any
+                      one of these, own wording).
+      - `partial`   - only a vague "thinking" or "solving problems" with
+                      nothing more specific.
+      - `incorrect` - anything else, e.g. typing fast, or memorizing
+                      commands.
+
+      Feedback: an everyday example helps — like planning a recipe before
+      cooking, step by step.
