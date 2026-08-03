@@ -10,6 +10,8 @@ numbers with formulas.
 
 ## Stage 1: a robot with fixed numbers {#sec-robot-fixed}
 
+![Stage 1: the robot you draw with coordinates you choose yourself, for one fixed canvas.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/robot.png){width=360}
+
 The robot is built from shapes you know well: a rectangle for the head, two
 filled circles for the eyes, a white rectangle for the mouth, and an
 antenna made of a line with a small circle on top. Your task is to match
@@ -35,6 +37,8 @@ the browser window narrower. The columns rearrange, pictures shrink, and at
 some point the menu folds itself into a small button. The page *responds*
 to the space it gets.
 
+![Stage 2: the same robot on a tall canvas and a wide one, fitting each neatly without a single number changed by hand.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/responsive_robot_scaled.png){width=420}
+
 Now look at your robot from stage 1 with that idea in mind. Change
 `createCanvas(400, 400)` to `createCanvas(200, 400)` and run the program.
 The canvas shrinks, but every shape stays exactly where its numbers put it:
@@ -43,6 +47,8 @@ correct for the one canvas they were written for. A responsive robot needs
 something better.
 
 ## From fixed numbers to formulas {#sec-relative-sizes}
+
+![Every measurement given as a percentage of the canvas: the specification you build the robot from.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/responsive_robot.png){width=360}
 
 The trick is to stop describing the robot in pixels and start describing it
 in **relationships**: the head is half as wide as the canvas, whatever the
@@ -126,7 +132,7 @@ programmer who wrote the right formula.
 
 The exercise description contains a specification picture with every
 measurement of the robot as a percentage: head, eyes, mouth, and antenna.
-The robot is symmetrical, which saves you work. Build it like this:
+The robot is symmetrical, which saves you work.
 
 1. **Read the starter code.** The head is already there, written with
    formulas. Walk through it line by line and make sure you can explain

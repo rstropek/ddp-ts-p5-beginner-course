@@ -2,6 +2,10 @@
 title: "Type less, draw more"
 ---
 
+![A cat built from a handful of simple shapes, the kind you'll draw in this chapter.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/cat.png){width=360}
+
+The cat is your practice piece. You'll put it together from the same rectangles, circles, triangles, and lines you already know, working faster and more comfortably than you did with the house, spending less effort on the typing and more on the picture. The example above is only one idea, your cat can look however you like.
+
 You've typed a program character by character, and you've designed a house of
 your own. The next exercise is practice: you'll draw a cat, again from
 rectangles, circles, triangles, and lines. Repetition is how programming

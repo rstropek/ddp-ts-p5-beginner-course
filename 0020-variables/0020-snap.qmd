@@ -2,6 +2,10 @@
 title: "Your first formula: snapping to a grid"
 ---
 
+![A white cross-shaped marker that has clicked into place on the grid, its tidy position shown as 120/80.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/snap.png){width=360}
+
+You'll build a little marker that chases your mouse across the canvas. But it won't glide there smoothly: instead it jumps in fixed steps, clicking into place at the points of an invisible grid. As it moves, a small label in the corner shows its position, always landing on neat, round numbers.
+
 Open a presentation program and drag a shape around: it doesn't move
 smoothly, it jumps in small steps, so that shapes line up neatly without
 fiddling. This behavior is called **snapping**: the shape snaps to an

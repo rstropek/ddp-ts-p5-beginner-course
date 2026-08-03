@@ -2,6 +2,10 @@
 title: "When the picture is given: Olympic rings"
 ---
 
+![The five Olympic rings you'll recreate: the right colours, each in its proper place.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/olympic_rings.png){width=360}
+
+This time the picture is given, not invented. You'll recreate the Olympic symbol, the five interlocking rings that everyone recognizes, standing crisp and colorful in the middle of your canvas: three rings in a top row, two more nestled below, each in its proper color and its proper place. When you're done, your version should look just like the original.
+
 With the house and the cat, you invented the picture yourself. If a window
 ended up a little further left than planned, nobody minded. This exercise is
 different: you'll draw the Olympic symbol, the five interlocking rings. Now

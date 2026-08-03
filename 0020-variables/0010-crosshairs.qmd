@@ -2,6 +2,10 @@
 title: "Variables: values with a name"
 ---
 
+![The finished crosshairs, resting in the middle of the canvas and ready to take aim.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/crosshairs.png){width=360}
+
+This is your first interactive program. You'll build a set of crosshairs, two thin lines (one horizontal, one vertical) crossing at a single point, wrapped by two circles like an aiming reticle in a game. And they won't sit still: as you slide the pointer around the canvas, the whole crosshairs glides along with it, always centred right where you're pointing.
+
 Every program you've written so far draws one picture, and that picture never
 changes. The house stands still, the rings don't move, the smiley keeps
 smiling. In this part of the course your programs come alive: they react to

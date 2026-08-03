@@ -2,6 +2,10 @@
 title: "Arcs: drawing parts of a circle"
 ---
 
+![The friendly smiley face you'll draw in this chapter.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/arcs_face.png){width=360}
+
+This chapter adds a new shape to your kit: a piece of a circle. You'll use it to draw a cheerful smiley face grinning out from the middle of the canvas, its two eyes simple shapes you already know and its mouth a real curved smile, a single slice of a circle rather than a full one. That curve is the piece you couldn't draw before.
+
 Rectangles, circles, triangles, and lines got you a long way: a house, a
 cat, the Olympic rings. But some pictures need a shape you can't build from
 those: a *part* of a circle. Think of a smiling mouth. It's not a full

@@ -2,6 +2,10 @@
 title: "From copying to creating"
 ---
 
+![A house with a tree beside it, drawn entirely from simple shapes.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/house.png){width=360}
+
+This is the first time you invent the picture instead of copying it. You'll design your own house on paper and then bring it to life on the canvas, with a tree standing beside it, built entirely from the shapes you already know. It won't be anyone else's house but yours.
+
 In the Shapes exercise you typed code that was given to you. Now comes the
 step that makes programming exciting: you write your own program. Your task
 will be to draw a house with a tree beside it, using the drawing commands
