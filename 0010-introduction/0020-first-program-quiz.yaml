@@ -29,7 +29,7 @@ llm:
 # compound quizzes).
 fragment_files:
   - id: shared
-    url: "./ddp-quiz-fragments" # sibling app-hosted file
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
 instructions: |
   {{fragment "shared.quiz_context"}}
 
