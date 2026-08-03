@@ -100,3 +100,12 @@ when you imagine something, write the code for it, and watch the computer
 bring it to life exactly the way you pictured it (or in a surprising way
 that's even better). In this course that feeling comes quickly, because your
 programs draw, move, and react from the very first lessons.
+
+## Check your understanding {#sec-quiz-welcome}
+
+Before you move on to the next chapter, take the short quiz below. You
+answer five questions about this chapter in your own words, and an AI reads
+your answers and tells you what you already understand and what you should
+read again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz cu4afwoa23 title="Welcome" >}}
