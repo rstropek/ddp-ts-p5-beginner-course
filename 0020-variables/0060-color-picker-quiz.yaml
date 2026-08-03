@@ -1,0 +1,203 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Build your own color picker"
+# (0020-variables/0060-color-picker.qmd in ts-ddp-first).
+# Students check their understanding of the chapter: the mouseClicked event,
+# the canvas size matching the HSB scales, min as a guard, painting only
+# what changes, paint as memory, and drawing order.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: color-picker-quiz
+name: "Quiz: Build your own color picker"
+
+title: "Check your understanding: your own color picker"
+description: |
+  Six short questions about the chapter *Build your own color picker*.
+  Answer in your own words. There are no answer options to pick from, and
+  this quiz is anonymous: it's here for you, so you can see what you
+  already understand and what you should read again. One or two sentences
+  are enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `const colorSaturation: number = min(100, mouseY);` where it helps.
+    Stay strictly within what a beginner knows after the Color picker
+    chapter: drawing commands, the mouse events `mouseMoved` and
+    `mouseClicked`, the system variables, constants with explicit data
+    types, the HSB color model, the helper function `min`, template
+    strings, variables with `let`, and global variables. Do not introduce
+    loops, conditions, or arrays. If the student writes in German, you may
+    answer in German; keep code and command names in English.
+
+questions:
+  - id: mouse-clicked-event
+    title: "A second mouse event"
+    question: |
+      Besides `mouseMoved`, the picker uses a function called
+      `mouseClicked`.
+
+      When does p5.js call `mouseClicked`, and what do `mouseX` and
+      `mouseY` hold inside it?
+    evaluation: |
+      Expected: p5.js calls it automatically, once per click (when a mouse
+      button is pressed and released). Inside it, `mouseX` and `mouseY`
+      hold the position where the click happened.
+
+      - `correct`   - called automatically once per click AND
+                      mouseX/mouseY = the click position.
+      - `partial`   - one half only: knows when it runs but not what the
+                      variables hold, or the other way around.
+      - `incorrect` - anything else, e.g. it runs on every mouse movement,
+                      or the program has to call it itself.
+
+      Feedback: everything from mouseMoved applies here too — including
+      that a typo in the name gives a function p5.js silently never
+      calls.
+
+  - id: canvas-size-trick
+    title: "A canvas size with a purpose"
+    question: |
+      The picker's canvas is exactly 360 pixels wide, and the preview area
+      at the top is exactly 100 pixels tall.
+
+      Why did the programmer choose exactly these two numbers?
+    evaluation: |
+      Expected: they match the HSB scales — hue runs from 0 to 360 and
+      saturation from 0 to 100. So the mouse position needs no conversion:
+      `mouseX` is directly the hue, `mouseY` directly the saturation.
+
+      - `correct`   - connects the sizes to the hue and saturation ranges
+                      AND says the mouse position can be used directly as
+                      the color (no conversion needed).
+      - `partial`   - names the matching ranges without the use-directly
+                      consequence, or says "mouseX is the hue" without
+                      connecting it to the sizes.
+      - `incorrect` - anything else, e.g. the numbers are just a design
+                      taste, or 360 is needed for drawing circles.
+
+      Feedback: that is the whole trick of this program — the mouse
+      position IS the color.
+
+  - id: min-guard
+    title: "min as a guard"
+    question: |
+      The user clicks in the bottom half of the canvas, at (90, 180), and
+      this line runs:
+
+      ```typescript
+      const colorSaturation: number = min(100, mouseY);
+      ```
+
+      What value does `colorSaturation` get, and what job does `min` do
+      here?
+    evaluation: |
+      Expected: 100, because `min(100, 180)` returns the smaller of the
+      two values. `min` works as a guard: it caps the saturation at 100,
+      because the saturation scale ends at 100 but `mouseY` can reach 200
+      in the bottom half.
+
+      - `correct`   - 100 AND the capping/guard idea (keeps the value
+                      inside its allowed range; "stops it going over 100"
+                      counts).
+      - `partial`   - one half only: 100 without the why, or the guard
+                      idea with a wrong value (e.g. 180).
+      - `incorrect` - anything else, e.g. min rounds the value, or the
+                      result is 180.
+
+      Feedback: in the top half, where mouseY is at most 100, min changes
+      nothing — the guard only steps in when the value would leave its
+      range.
+
+  - id: repaint-only-top
+    title: "Only the top half"
+    question: |
+      The picker's `mouseMoved` repaints only the top half with a `rect`
+      statement. It never calls `background`.
+
+      Why does the program repaint only the top half instead of the whole
+      canvas?
+    evaluation: |
+      Expected: the bottom half holds the color chosen with the last
+      click, and it must stay until the next click. Repainting the whole
+      canvas would erase the chosen color; the rectangle repaints exactly
+      the preview area that should change.
+
+      - `correct`   - repainting everything would erase the chosen color
+                      in the bottom half (any wording).
+      - `partial`   - says the rect covers the preview area anyway,
+                      without mentioning that the bottom half must be
+                      protected.
+      - `incorrect` - anything else, e.g. background would make the
+                      program slow, or background does not work inside
+                      mouseMoved.
+
+      Feedback: repaint only what should change — the preview changes on
+      every movement, the chosen color only on a click.
+
+  - id: paint-as-memory
+    title: "Remembering without a variable"
+    question: |
+      The picker remembers your chosen color across hundreds of mouse
+      events, and yet it declares no global variable.
+
+      Where is the chosen color stored?
+    evaluation: |
+      Expected: in the paint on the canvas itself. Nothing ever repaints
+      the bottom half except the next click, so the color simply stays
+      visible on the canvas.
+
+      - `correct`   - the canvas / the paint stores it AND why that works
+                      (nothing repaints the bottom half until the next
+                      click).
+      - `partial`   - "on the canvas" without the nothing-repaints
+                      reason.
+      - `incorrect` - anything else, e.g. in mouseX and mouseY, in a
+                      hidden variable, or in the constants of mouseClicked
+                      (those are forgotten when the run ends).
+
+      Feedback: this works because the program remembers exactly one
+      thing, and that thing is literally a color — the next chapter shows
+      where paint alone stops being enough.
+
+  - id: draw-order-bug
+    title: "The invisible text"
+    question: |
+      In `mouseClicked`, a student first writes the HSB values with `text`
+      and then paints the bottom half with `rect`. The program runs, but
+      the values never appear on the canvas.
+
+      What happened to the text?
+    evaluation: |
+      Expected: the rectangle is painted after the text and covers it up.
+      Statements run top to bottom, so the text must be drawn after the
+      rectangle.
+
+      - `correct`   - the rect covers / paints over the text AND the fix
+                      or rule (draw the text after the rect / the order
+                      matters).
+      - `partial`   - blames the order without saying what covers what.
+      - `incorrect` - anything else, e.g. the text color is wrong, or
+                      text does not work inside mouseClicked.
+
+      Feedback: the same rule as in the very first chapter — later
+      statements paint over earlier ones.

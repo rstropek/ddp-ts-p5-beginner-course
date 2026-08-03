@@ -1,0 +1,233 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The color worm: a variable of your own"
+# (0020-variables/0050-color-worm.qmd in ts-ddp-first).
+# Students check their understanding of the chapter: let vs const,
+# assignments, global variables, the % (modulo) operator, and the trail
+# as a design decision.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: color-worm-quiz
+name: "Quiz: The color worm"
+
+title: "Check your understanding: the color worm"
+description: |
+  Seven short questions about the chapter *The color worm: a variable of
+  your own*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `colorHue = (colorHue + 5) % 360;` where it helps. Stay strictly
+    within what a beginner knows after the Color worm chapter: drawing
+    commands, mouse events, the system variables, constants with explicit
+    data types, the HSB color model, variables declared with `let`,
+    assignments, global variables, and the `%` (modulo) operator. Do not
+    introduce loops, conditions, or arrays. If the student writes in
+    German, you may answer in German; keep code and command names in
+    English.
+
+questions:
+  - id: let-vs-const
+    title: "let or const?"
+    question: |
+      Both of these lines declare a named value:
+
+      ```typescript
+      const markerSize: number = 10;
+      let colorHue: number = 0;
+      ```
+
+      What different promise do `const` and `let` make?
+    evaluation: |
+      Expected: `const` promises the value never changes after it is set;
+      `let` says the value may be replaced later, by an assignment, while
+      the program runs.
+
+      - `correct`   - both sides: const never changes AND let may change /
+                      be given a new value.
+      - `partial`   - describes only one of the two keywords, or says
+                      "let is for variables" without what that means.
+      - `incorrect` - anything else, e.g. let is for numbers and const
+                      for text.
+
+      Feedback: same declaration pattern, different promise — that is the
+      whole difference.
+
+  - id: assignment-two-steps
+    title: "Not an equation"
+    question: |
+      The variable `colorHue` currently holds 40, and this line runs:
+
+      ```typescript
+      colorHue = colorHue + 5;
+      ```
+
+      In math class this line would be nonsense. What does the computer
+      actually do, and what is in `colorHue` afterwards?
+    evaluation: |
+      Expected: an assignment works in two steps: first the right side is
+      calculated with the current value (40 + 5 = 45), then the result
+      replaces the value in the variable. Afterwards `colorHue` holds 45.
+
+      - `correct`   - 45 AND the two-step idea (right side first, then
+                      stored back; wording like "it adds 5 and saves the
+                      result" counts).
+      - `partial`   - 45 without any explanation, or the two-step idea
+                      with an arithmetic slip.
+      - `incorrect` - anything else, e.g. treats the line as an unsolvable
+                      equation or says the program crashes.
+
+      Feedback: an assignment is an order, not an equation — calculate
+      the right side, then put the result into the box.
+
+  - id: global-variable-needed
+    title: "The worm that stays red"
+    question: |
+      A student declares the hue variable inside the event function:
+
+      ```typescript
+      function mouseMoved() {
+        let colorHue: number = 0;
+        fill(colorHue, 100, 100);
+        circle(mouseX, mouseY, 40);
+        colorHue = (colorHue + 5) % 360;
+      }
+      ```
+
+      The worm grows, but every circle is red. Why, and where does the
+      declaration belong?
+    evaluation: |
+      Expected: the variable is created fresh, with the value 0, on every
+      run of `mouseMoved`, so the fill always uses hue 0 (red) and the +5
+      is forgotten when the run ends. The declaration belongs outside
+      every function, at the top of the program, as a global variable that
+      keeps its value between calls.
+
+      - `correct`   - re-created / reset to 0 on every call AND the fix
+                      (declare it outside every function / globally).
+      - `partial`   - one half only: sees the reset but gives no fix, or
+                      says "make it global" without the reason.
+      - `incorrect` - anything else, e.g. blaming the % operator or the
+                      fill statement.
+
+      Feedback: a global variable is created once, when the program
+      starts, and survives between function calls — exactly what the hue
+      needs.
+
+  - id: modulo-remainder
+    title: "What % computes"
+    question: |
+      What is the value of `9 % 4`, and what does the `%` operator compute
+      in general?
+    evaluation: |
+      Expected: 1. The `%` operator (modulo) gives the remainder of a
+      division: 9 divided by 4 is 2 with a remainder of 1.
+
+      - `correct`   - 1 AND the remainder idea (everyday wording like
+                      "what is left over after dividing" counts).
+      - `partial`   - one half only: 1 without the rule, or the remainder
+                      idea with a wrong result.
+      - `incorrect` - anything else, e.g. 2.25 (plain division) or 2 (the
+                      result of the division without the remainder).
+
+      Feedback: say it as a sentence — 9 divided by 4 is 2, remainder 1,
+      and % gives you that remainder.
+
+  - id: modulo-wrap
+    title: "Back to the start of the rainbow"
+    question: |
+      The variable `colorHue` holds 355 when this line runs:
+
+      ```typescript
+      colorHue = (colorHue + 5) % 360;
+      ```
+
+      What is in `colorHue` afterwards, and what does that mean for the
+      worm's colors?
+    evaluation: |
+      Expected: 0. The right side computes 355 + 5 = 360, and 360 % 360 is
+      0 — the hue wraps around to the start of the scale, so the rainbow
+      begins again (the next circles are red again).
+
+      - `correct`   - 0 AND the wrap-around meaning (starts over / back to
+                      red / the rainbow repeats).
+      - `partial`   - 0 without the meaning, or the wrap idea with a wrong
+                      number (e.g. 360).
+      - `incorrect` - anything else, e.g. 360 stays in the variable, or
+                      the program stops.
+
+      Feedback: the hue counter runs in circles — below 360 the % changes
+      nothing, at 360 it snaps back to 0.
+
+  - id: trail-on-purpose
+    title: "Smears on purpose"
+    question: |
+      The crosshairs program started `mouseMoved` with a `background`
+      statement. The color worm has no `background` call in `mouseMoved`
+      at all.
+
+      Why is leaving it out the right choice for the worm?
+    evaluation: |
+      Expected: without the repaint, every circle stays where it was
+      drawn, and the trail of old circles IS the worm. Repainting on every
+      movement would erase the trail and leave only a single circle. The
+      background is painted exactly once, in `setup`.
+
+      - `correct`   - the old circles must stay / the trail makes the worm
+                      (any wording about keeping previous drawings).
+      - `partial`   - says background would erase things without
+                      connecting that to the worm's trail, or only "the
+                      background is in setup instead".
+      - `incorrect` - anything else, e.g. background is forbidden in event
+                      functions, or leaving it out makes the program
+                      faster.
+
+      Feedback: the same mechanism as the crosshairs smears — this time
+      the smears are the art.
+
+  - id: global-caution
+    title: "Handle with care"
+    question: |
+      Global variables solved the worm's problem, and yet the chapter
+      says: prefer `const`, prefer local declarations, and use a global
+      variable only when you must.
+
+      What makes global variables risky in a larger program?
+    evaluation: |
+      Expected: a global variable can be read and changed from anywhere in
+      the program, so finding out who changed it, and when, becomes hard
+      (detective work) as the program grows.
+
+      - `correct`   - changeable from everywhere AND the consequence (hard
+                      to track changes / find mistakes; any wording).
+      - `partial`   - says globals are "bad style" or "risky" without the
+                      changeable-from-anywhere reason.
+      - `incorrect` - anything else, e.g. globals are slower or use too
+                      much memory.
+
+      Feedback: the rule of thumb — reach for a global only when a value
+      truly must survive between function calls, like the worm's hue.

@@ -1,0 +1,185 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Strings that grow: the click protocol"
+# (0020-variables/0070-string-concat.qmd in ts-ddp-first).
+# Students check their understanding of the chapter: string concatenation
+# with the variable's old value, why the protocol is a global let, the
+# five-parameter text box, and variables-remember vs canvas-shows.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: string-concat-quiz
+name: "Quiz: The click protocol"
+
+title: "Check your understanding: the click protocol"
+description: |
+  Five short questions about the chapter *Strings that grow: the click
+  protocol*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `text(clickPositions, 5, 5, width - 10, height - 10);` where it
+    helps. Stay strictly within what a beginner knows after the Click
+    protocol chapter: drawing commands, the mouse events `mouseMoved` and
+    `mouseClicked`, the system variables, constants with explicit data
+    types, variables with `let`, global variables, assignments, template
+    strings, string concatenation, and text output with a wrapping text
+    box. Do not introduce loops, conditions, or arrays. If the student
+    writes in German, you may answer in German; keep code and command
+    names in English.
+
+questions:
+  - id: concat-trace
+    title: "The protocol grows"
+    question: |
+      The global variable `clickPositions` currently holds the string
+      `0/0`, and the user clicks at (50, 90), so this line runs:
+
+      ```typescript
+      clickPositions = `${clickPositions}, ${mouseX}/${mouseY}`;
+      ```
+
+      What exactly does `clickPositions` contain afterwards?
+    evaluation: |
+      Expected: exactly `0/0, 50/90`. The right side starts with the old
+      value of the variable, then adds a comma, a space, and the new
+      position; the result replaces the old value.
+
+      - `correct`   - `0/0, 50/90` with the comma and both slashes in
+                      place (a missing space after the comma is a small
+                      slip, still correct).
+      - `partial`   - the growing idea is right but the old value is
+                      missing (`50/90` alone), or the pieces are in the
+                      wrong order.
+      - `incorrect` - anything else, e.g. the literal template text with
+                      dollar signs, or a number.
+
+      Feedback: the same pattern as the color worm's hue — the old value
+      of the variable is one of the pieces of the new value.
+
+  - id: why-global-let
+    title: "Why let, why global?"
+    question: |
+      The protocol variable is declared like this, outside every function:
+
+      ```typescript
+      let clickPositions: string = "0/0";
+      ```
+
+      Why does it need `let` (not `const`), and why must it be global?
+    evaluation: |
+      Expected: `let`, because the variable gets a new value on every
+      click, and a const cannot be given a new value. Global, because the
+      protocol must survive between event calls — declared inside
+      `mouseClicked` it would be created fresh on every click and forget
+      all earlier entries.
+
+      - `correct`   - both halves: reassignment needs let AND global keeps
+                      the value alive between calls.
+      - `partial`   - one half only.
+      - `incorrect` - anything else, e.g. strings always need let, or
+                      global makes the program faster.
+
+      Feedback: the same two decisions as the color worm's colorHue —
+      only the data type changed, from number to string.
+
+  - id: text-box-wrapping
+    title: "Two extra parameters"
+    question: |
+      For short labels, `text` was enough with three parameters. The
+      protocol uses five:
+
+      ```typescript
+      text(clickPositions, 5, 5, width - 10, height - 10);
+      ```
+
+      What do the two extra numbers add?
+    evaluation: |
+      Expected: they give the text an invisible text box with a width and
+      a height. Inside the box, p5.js wraps long text into the next line
+      instead of writing past the canvas edge.
+
+      - `correct`   - a text box / a bounded area AND the wrapping
+                      behavior ("the text goes to the next line" counts).
+      - `partial`   - one half only: names the box without wrapping, or
+                      says "the text wraps" without connecting it to the
+                      two numbers.
+      - `incorrect` - anything else, e.g. the numbers set the text size
+                      or color.
+
+      Feedback: like a word processor — when a line reaches the box's
+      right edge, the text continues in the next line.
+
+  - id: variable-remembers
+    title: "Erased, yet complete"
+    question: |
+      Every run of `mouseClicked` starts by repainting the background, so
+      the previous circle disappears. And yet the protocol at the top
+      still lists every click since the program started.
+
+      How can both be true at the same time?
+    evaluation: |
+      Expected: whatever is drawn on the canvas is just paint — repaint
+      the background and it is gone. The protocol survives because it is
+      stored in the variable `clickPositions`, not on the canvas, and it
+      is drawn onto the canvas again, completely, after every click.
+      Variables remember, the canvas only shows.
+
+      - `correct`   - the protocol lives in the variable (which survives)
+                      AND it is drawn again after each repaint (any
+                      wording).
+      - `partial`   - one half only: "the variable remembers it" without
+                      the redraw, or "it is drawn again" without saying
+                      where the protocol survives.
+      - `incorrect` - anything else, e.g. background does not cover text,
+                      or the text is protected from repainting.
+
+      Feedback: the chapter's sentence is the anchor — drawing something
+      is not the same as remembering it.
+
+  - id: order-bug
+    title: "One click behind"
+    question: |
+      A student's `mouseClicked` draws the protocol text first and extends
+      `clickPositions` afterwards. The program runs without errors, but
+      something about the protocol on screen is always wrong.
+
+      What does the user see?
+    evaluation: |
+      Expected: the newest click is always missing from the protocol on
+      screen — the display is one click behind, because the text is drawn
+      before the new position is added to the variable.
+
+      - `correct`   - the newest click is missing / the display is one
+                      click behind AND the order reason (drawn before
+                      extended).
+      - `partial`   - says the order is wrong without describing what the
+                      user sees, or describes the lag without the reason.
+      - `incorrect` - anything else, e.g. the protocol stays empty
+                      forever, or the circles disappear.
+
+      Feedback: extend the protocol first, then draw it — the fix is
+      swapping the two statements.

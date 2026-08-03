@@ -1,0 +1,216 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Mixing colors with numbers"
+# (0020-variables/0040-color-basics.qmd in ts-ddp-first).
+# Students check their understanding of the chapter: why numbers instead of
+# color names, the RGB model, mixing light vs mixing paint, the gray
+# shortcut, why 255, and the HSB model.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: color-basics-quiz
+name: "Quiz: Mixing colors with numbers"
+
+title: "Check your understanding: mixing colors"
+description: |
+  Seven short questions about the chapter *Mixing colors with numbers*.
+  Answer in your own words. There are no answer options to pick from, and
+  this quiz is anonymous: it's here for you, so you can see what you
+  already understand and what you should read again. One or two sentences
+  are enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `background(255, 0, 0);` where it helps. Stay strictly within what a
+    beginner knows after the color chapter: drawing commands, constants
+    with explicit data types, the system variables, small formulas, color
+    names as strings, `colorMode`, the RGB model with values 0 to 255, the
+    gray shortcut with a single number, and the HSB model with hue,
+    saturation, and brightness. Do not introduce `let` and assignments,
+    loops, or conditions. If the student writes in German, you may answer
+    in German; keep code and command names in English.
+
+questions:
+  - id: why-numbers
+    title: "When names run out"
+    question: |
+      Color names like `"lightblue"` are comfortable to use. Why does this
+      chapter teach you to describe colors with numbers anyway?
+    evaluation: |
+      Expected: there are only about 150 color names, but the screen can
+      show about 16.7 million colors, and there is no name for small
+      adjustments like "lightblue, just a little darker". Numbers reach
+      every color.
+
+      - `correct`   - names are few/limited AND numbers reach all (or
+                      millions of) colors; exact counts not required.
+      - `partial`   - says numbers are more precise or flexible without
+                      the limited-names idea.
+      - `incorrect` - anything else, e.g. names are slower for the
+                      computer, or numbers look more professional.
+
+      Feedback: the two numbers to remember — about 150 names against
+      16.7 million mixable colors.
+
+  - id: rgb-meaning
+    title: "Three numbers, three lights"
+    question: |
+      The program runs in RGB mode:
+
+      ```typescript
+      colorMode(RGB);
+      background(0, 255, 0);
+      ```
+
+      What color does the canvas get, and what do the three numbers stand
+      for?
+    evaluation: |
+      Expected: bright green. The three numbers are the strengths of the
+      red, green, and blue lights, each from 0 (off) to 255 (full power);
+      here only the green light is on, at full power.
+
+      - `correct`   - green AND the numbers = red, green, blue in this
+                      order ("lights" or "values" both fine).
+      - `partial`   - one half only: the right color without the meaning,
+                      or the meaning with a wrong color.
+      - `incorrect` - anything else, e.g. red, or reading the numbers as
+                      coordinates.
+
+      Feedback: every pixel is three tiny lights — red, green, blue —
+      and each number sets one light's strength.
+
+  - id: light-vs-paint
+    title: "Light is not paint"
+    question: |
+      In RGB mode, the statement `background(255, 255, 0)` switches the
+      red and the green light to full power.
+
+      What color do you see, and why would your paint box disagree?
+    evaluation: |
+      Expected: yellow. Screens mix light, and red plus green light makes
+      yellow. Paint mixes pigment and follows different rules (yellow
+      comes from the tube; mixing many pigments goes toward a muddy
+      brown).
+
+      - `correct`   - yellow AND the light-vs-paint contrast in any
+                      wording (light mixes differently than paint).
+      - `partial`   - yellow without a reason, or the light/paint contrast
+                      with a wrong resulting color.
+      - `incorrect` - anything else, e.g. brown or orange as the screen
+                      result.
+
+      Feedback: the two rule sets — screens mix light (all lights on
+      gives white), paint boxes mix pigment (everything mixed gives muddy
+      brown).
+
+  - id: gray-shortcut
+    title: "One single number"
+    question: |
+      In RGB mode, a student writes `background(128)` with just one
+      number.
+
+      What does the canvas look like, and what is the rule behind a
+      single number?
+    evaluation: |
+      Expected: medium gray. A single number is read as a gray value —
+      shorthand for three equal RGB values (128, 128, 128), and equal
+      values always give a shade of gray, from 0 (black) to 255 (white).
+
+      - `correct`   - gray (medium gray) AND the rule (a single number is
+                      a gray value / stands for three equal values).
+      - `partial`   - one half only: gray without the rule, or the
+                      equal-values rule without naming the resulting
+                      color.
+      - `incorrect` - anything else, e.g. an error message, or a dark
+                      red.
+
+      Feedback: the two ends of the gray scale — background(0) is black,
+      background(255) is white.
+
+  - id: why-255
+    title: "Why 255, of all numbers?"
+    question: |
+      Each RGB value runs from 0 to 255. Why 255, and not a round number
+      like 100?
+    evaluation: |
+      Expected: the computer stores each value in one byte of memory, and
+      a byte can hold exactly 256 different values, from 0 to 255.
+
+      - `correct`   - connects the limit to a byte ("8 bits" or "one
+                      memory cell with 256 possible values" counts).
+      - `partial`   - mentions how the computer stores numbers without the
+                      byte or the 256, e.g. "it's a computer thing with
+                      memory".
+      - `incorrect` - anything else, e.g. it is a tradition, or screens
+                      cannot show more.
+
+      Feedback: 256 steps per light, three lights: 256 × 256 × 256 is
+      where the 16.7 million colors come from.
+
+  - id: hsb-meaning
+    title: "H, S, and B"
+    question: |
+      The program runs in HSB mode:
+
+      ```typescript
+      colorMode(HSB);
+      fill(200, 100, 100);
+      ```
+
+      What do the three values stand for in this color model?
+    evaluation: |
+      Expected: hue (the kind of color, a position from 0 to 360 along the
+      rainbow), saturation (how intense or washed out, 0 to 100), and
+      brightness (how much light is in the color, 0 to 100). The German
+      words Farbton, Sättigung, and Helligkeit count.
+
+      - `correct`   - all three named in order: hue/kind of color,
+                      saturation/intensity, brightness/lightness (ranges
+                      not required).
+      - `partial`   - two of the three right, or all three named but their
+                      order mixed up.
+      - `incorrect` - anything else, e.g. reading them as red, green,
+                      blue.
+
+      Feedback: you may add the ranges — hue 0 to 360, saturation and
+      brightness 0 to 100.
+
+  - id: hsb-adjustment
+    title: "The same color, just darker"
+    question: |
+      You mixed a color you like in HSB mode. Now you want the same color,
+      just darker.
+
+      Which of the three values do you change, and in which direction?
+    evaluation: |
+      Expected: lower the brightness (the third value). Hue and saturation
+      stay the same.
+
+      - `correct`   - brightness down ("B", "the third value", or German
+                      "Helligkeit" all count).
+      - `partial`   - brightness named but the wrong direction, or "lower
+                      one value" without naming which one.
+      - `incorrect` - anything else, e.g. change the hue, or lower all
+                      three values.
+
+      Feedback: this is HSB's whole advantage — a change people describe
+      in words ("darker") maps to one single number.

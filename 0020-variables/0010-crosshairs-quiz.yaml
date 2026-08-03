@@ -1,0 +1,216 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Variables: values with a name"
+# (0020-variables/0010-crosshairs.qmd in ts-ddp-first).
+# Students check their understanding of the chapter: what a variable is,
+# the system variables mouseX and mouseY, the event function mouseMoved,
+# erasing with background, and calculations inside parameters.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: crosshairs-quiz
+name: "Quiz: Variables"
+
+title: "Check your understanding: variables"
+description: |
+  Six short questions about the chapter *Variables: values with a name*.
+  Answer in your own words. There are no answer options to pick from, and
+  this quiz is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are enough
+  for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `line(mouseX - 15, mouseY, mouseX + 15, mouseY);` where it helps. Stay
+    strictly within what a beginner knows after the Crosshairs chapter:
+    statements, drawing commands and their parameters, the canvas
+    coordinate system, comments, constants, the system variables `mouseX`
+    and `mouseY`, the event function `mouseMoved`, and small calculations
+    inside parameters. Do not introduce declarations with data types,
+    `let` and assignments, template strings, loops, or conditions. If the
+    student writes in German, you may answer in German; keep code and
+    command names in English.
+
+questions:
+  - id: variable-vs-constant
+    title: "Constant or variable?"
+    question: |
+      In the soccer field project you used `SCALE`, a constant. In this
+      chapter you met `mouseX`, a variable.
+
+      What is the difference between a constant and a variable?
+    evaluation: |
+      Expected: both are named places for a value. A constant is set once
+      and never changes while the program runs; a variable's value may be
+      replaced while the program runs.
+
+      - `correct`   - says a constant never changes AND a variable can
+                      change while the program runs (any wording: "may be
+                      replaced", "gets new values").
+      - `partial`   - describes only one of the two, or says both are named
+                      values without naming the difference.
+      - `incorrect` - anything else, e.g. a variable holds numbers and a
+                      constant holds text.
+
+      Feedback: the word "variable" comes from "vary" — the content of the
+      box can change.
+
+  - id: system-variables
+    title: "Who fills mouseX?"
+    question: |
+      Your program never gives `mouseX` a value, and yet this statement
+      always draws the circle at the right place:
+
+      ```typescript
+      circle(mouseX, mouseY, 20);
+      ```
+
+      What value is inside `mouseX`, and who puts it there?
+    evaluation: |
+      Expected: `mouseX` always holds the current mouse position on the
+      canvas (the x position, the distance from the left edge). p5.js
+      updates it automatically; it is a system variable your code only
+      reads.
+
+      - `correct`   - the current mouse position ("where the mouse is"
+                      counts) AND p5.js (or "the library", "the system",
+                      "the computer") keeps it up to date automatically.
+      - `partial`   - one half only: knows it is the mouse position but not
+                      who updates it, or the other way around.
+      - `incorrect` - anything else, e.g. the programmer sets it, or it is
+                      the circle's size.
+
+      Feedback: built-in variables like `mouseX` are called system
+      variables — you never create or change them yourself.
+
+  - id: setup-runs-once
+    title: "Why doesn't it follow the mouse?"
+    question: |
+      A student wants a circle that follows the mouse and writes this:
+
+      ```typescript
+      function setup() {
+        createCanvas(200, 200);
+        circle(mouseX, mouseY, 20);
+      }
+      ```
+
+      One circle appears, but it never moves. Why not, and where does the
+      `circle` statement have to go instead?
+    evaluation: |
+      Expected: `setup` runs exactly once, when the program starts, so the
+      circle is drawn once and never again. The drawing code belongs in the
+      event function `mouseMoved`, which p5.js runs on every mouse
+      movement.
+
+      - `correct`   - setup runs only once AND names mouseMoved (or "a
+                      function that runs when the mouse moves") as the
+                      right place.
+      - `partial`   - one half only: knows setup runs once but gives no
+                      fix, or says "put it in mouseMoved" without the
+                      reason.
+      - `incorrect` - anything else, e.g. blaming mouseX or the canvas
+                      size.
+
+      Feedback: the pattern to remember — setup runs once at the start,
+      mouseMoved runs again and again, once per mouse movement.
+
+  - id: event-name-typo
+    title: "The silent typo"
+    question: |
+      A student writes this function:
+
+      ```typescript
+      function mousemoved() {
+        background("lightblue");
+        circle(mouseX, mouseY, 20);
+      }
+      ```
+
+      There is no error message, but nothing happens when the mouse moves.
+      What is wrong?
+    evaluation: |
+      Expected: the function name must be exactly `mouseMoved` (capital M).
+      The name is an agreement with p5.js; `mousemoved` is a function p5.js
+      never calls, and a wrongly named function produces no error message.
+
+      - `correct`   - points at the name/spelling (missing capital M) AND
+                      says p5.js never calls a function with the wrong name
+                      (any wording: "the program doesn't know it should run
+                      it").
+      - `partial`   - spots the wrong name but cannot say why nothing
+                      happens.
+      - `incorrect` - anything else, e.g. blaming the background line or a
+                      missing semicolon.
+
+      Feedback: when an event program stays silent, check the spelling of
+      the event function name first.
+
+  - id: background-erases
+    title: "The first line of mouseMoved"
+    question: |
+      The crosshairs program starts `mouseMoved` with this statement:
+
+      ```typescript
+      background("lightblue");
+      ```
+
+      What happens on the canvas if you delete this line and then move the
+      mouse around?
+    evaluation: |
+      Expected: every mouse position leaves its crosshairs behind, so the
+      canvas fills up with smears (a trail of old drawings). The background
+      statement repaints the whole canvas and erases the previous drawing.
+
+      - `correct`   - old drawings stay visible / the canvas fills with a
+                      trail or smears (any wording).
+      - `partial`   - knows background erases or repaints but does not say
+                      what the user would see without it.
+      - `incorrect` - anything else, e.g. nothing changes, or the program
+                      crashes.
+
+      Feedback: background paints over everything drawn before it — that
+      is what erases the old crosshairs on every movement.
+
+  - id: offset-calculation
+    title: "A calculation inside a parameter"
+    question: |
+      The mouse is at position (100, 60) when this statement runs:
+
+      ```typescript
+      line(mouseX - 15, mouseY, mouseX + 15, mouseY);
+      ```
+
+      Between which two points does the line run?
+    evaluation: |
+      Expected: from (85, 60) to (115, 60) — a horizontal line, 30 pixels
+      wide, centered on the mouse. The computer takes the current value 100
+      for `mouseX`, then computes 100 - 15 and 100 + 15; `mouseY` stays 60.
+
+      - `correct`   - both end points right: (85, 60) and (115, 60).
+      - `partial`   - the substitution idea is right but with one
+                      arithmetic slip, or only one end point given.
+      - `incorrect` - anything else, e.g. treating 15 as a coordinate of
+                      its own or changing the y values.
+
+      Feedback: walk the substitution — mouseX is 100 right now, so the x
+      parameters become 85 and 115, and y stays 60 for both ends.

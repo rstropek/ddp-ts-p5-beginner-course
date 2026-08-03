@@ -1,0 +1,243 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Your first formula: snapping to a grid"
+# (0020-variables/0020-snap.qmd in ts-ddp-first).
+# Students check their understanding of the chapter: const declarations with
+# explicit data types, the data types number/string/boolean, ALL_CAPS vs
+# camelCase names, the snapping formula, template strings, and width/height.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: snap-quiz
+name: "Quiz: Snapping to a grid"
+
+title: "Check your understanding: snapping to a grid"
+description: |
+  Seven short questions about the chapter *Your first formula: snapping to
+  a grid*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `const x: number = round(mouseX / snap) * snap;` where it helps. Stay
+    strictly within what a beginner knows after the Snapping chapter:
+    drawing commands, the canvas, the event function `mouseMoved`, the
+    system variables `mouseX`, `mouseY`, `width`, and `height`, constants
+    declared with `const` and an explicit data type, the data types
+    `number`, `string`, and `boolean`, the naming conventions ALL_CAPS and
+    camelCase, the helper function `round`, the snapping formula, drawing
+    text with `text`, and template strings. Do not introduce `let` and
+    assignments, loops, or conditions. If the student writes in German,
+    you may answer in German; keep code and command names in English.
+
+questions:
+  - id: type-promise
+    title: "A promise broken"
+    question: |
+      A student writes this declaration, and the editor marks it with a
+      red squiggle immediately:
+
+      ```typescript
+      const snap: number = "hello";
+      ```
+
+      Why does TypeScript complain about this line?
+    evaluation: |
+      Expected: `: number` promises that `snap` holds a number, but
+      `"hello"` is a string (text in quotes). TypeScript checks the
+      promise and reports the mismatch.
+
+      - `correct`   - names the mismatch: the declared type says number,
+                      the value is text/a string ("text is not a number"
+                      counts).
+      - `partial`   - sees that the value does not fit the declaration but
+                      mixes up the type names or stays at "wrong type"
+                      with no specifics.
+      - `incorrect` - anything else, e.g. blaming the quotes as a syntax
+                      error or the name snap.
+
+      Feedback: read `: number` as a promise about the kind of value —
+      anything in quotes is a string, and text is not a number.
+
+  - id: data-types
+    title: "Two values, two types"
+    question: |
+      You have used both of these values in your programs:
+
+      ```typescript
+      40
+      "lightblue"
+      ```
+
+      Name the data type of each value.
+    evaluation: |
+      Expected: 40 is a `number`; `"lightblue"` is a `string`, because it
+      is text in quotes.
+
+      - `correct`   - both types right: number and string ("text" counts
+                      for string).
+      - `partial`   - one of the two right, the other wrong or missing.
+      - `incorrect` - anything else, e.g. both called the same type, or
+                      "lightblue" called a boolean.
+
+      Feedback: if the student called "lightblue" a color: on the screen
+      it is a color, but as a value in the code it is a string — text in
+      quotes that p5.js looks up.
+
+  - id: naming-conventions
+    title: "SCALE and markerSize"
+    question: |
+      Both of these lines declare constants, but their names look
+      different:
+
+      ```typescript
+      const SCALE = 5;
+      const markerSize: number = 10;
+      ```
+
+      What does the ALL_CAPS name signal to a reader, compared to the
+      camelCase name?
+    evaluation: |
+      Expected: ALL_CAPS marks a global configuration constant — a setting
+      for the whole program, sitting at the top outside every function,
+      meant to be found and tweaked. camelCase marks an ordinary constant
+      inside a function. The computer ignores the convention; it speaks to
+      people.
+
+      - `correct`   - ALL_CAPS = program-wide setting/configuration (at
+                      the top / outside functions) AND camelCase = an
+                      ordinary constant inside a function ("a normal value
+                      that doesn't change" counts).
+      - `partial`   - explains one of the two names but not the other, or
+                      says only "it's a naming convention" with no
+                      meaning.
+      - `incorrect` - anything else, e.g. ALL_CAPS is required by
+                      TypeScript, or the capital letters change how the
+                      code runs.
+
+      Feedback: the convention is for readers — an ALL_CAPS name says
+      "program setting, tweak me here".
+
+  - id: snap-formula-trace
+    title: "Run the formula on paper"
+    question: |
+      The grid size `snap` is 40, and the mouse is at `mouseX = 90` when
+      this line runs:
+
+      ```typescript
+      const x: number = round(mouseX / snap) * snap;
+      ```
+
+      Work out the value of `x` step by step: divide, round, multiply.
+    evaluation: |
+      Expected: 90 / 40 = 2.25, round(2.25) = 2, 2 * 40 = 80. So `x` is
+      80.
+
+      - `correct`   - result 80, with no wrong step visible.
+      - `partial`   - the right method with one arithmetic or rounding
+                      slip (e.g. rounding 2.25 up to 3 and answering 120).
+      - `incorrect` - anything else, e.g. 90 (no snapping applied) or 2
+                      (stopped after rounding).
+
+      Feedback: read the middle step out loud — "the mouse is 2.25 grid
+      squares from the edge, so the nearest corner is the second one".
+
+  - id: why-store-in-constant
+    title: "Why store the result?"
+    question: |
+      Instead of writing `round(mouseX / snap) * snap` into every
+      parameter that needs the value, the program stores the result once:
+
+      ```typescript
+      const x: number = round(mouseX / snap) * snap;
+      ```
+
+      Name one advantage of storing the result in a constant.
+    evaluation: |
+      Expected, one is enough: the value is needed several times and now
+      has one short name; the computer calculates it only once; the code
+      is easier to read than the same formula repeated four times.
+
+      - `correct`   - names at least one concrete advantage (reuse in
+                      several places, calculated only once, easier to
+                      read — everyday wording counts).
+      - `partial`   - a vague "it is better/cleaner style" without saying
+                      what gets better.
+      - `incorrect` - anything else, e.g. the program would not work
+                      without the constant.
+
+      Feedback: all three advantages are worth knowing — reuse, computed
+      once, and readability.
+
+  - id: template-string
+    title: "Reading a template string"
+    question: |
+      The constant `x` holds 80 and `y` holds 200 when this statement
+      runs:
+
+      ```typescript
+      text(`${x}/${y}`, 5, height - 5);
+      ```
+
+      What exactly does the program write on the canvas?
+    evaluation: |
+      Expected: the text `80/200`. Each `${...}` window is replaced by the
+      current value of what is between the braces; the slash between the
+      windows is copied as it is.
+
+      - `correct`   - exactly 80/200, slash included.
+      - `partial`   - the replacement idea is right but the result keeps
+                      extra characters, e.g. `${80}/${200}` or backticks
+                      described as visible.
+      - `incorrect` - anything else, e.g. the literal text `${x}/${y}` on
+                      the canvas.
+
+      Feedback: a template string between backticks has windows — `${x}`
+      is replaced by the current value, everything else is copied.
+
+  - id: width-height
+    title: "5 pixels above the bottom"
+    question: |
+      The text statement places its output at `height - 5`.
+
+      What does the system variable `height` contain, and why is
+      `height - 5` better than writing 195 for a 200 pixel tall canvas?
+    evaluation: |
+      Expected: `height` always holds the current canvas height, as set by
+      `createCanvas`. `height - 5` means "5 pixels above the bottom edge"
+      on any canvas, so the text stays in place when the canvas size
+      changes; 195 is only right for one size.
+
+      - `correct`   - height = the canvas height AND the benefit (works
+                      for any canvas size / still fits if the size
+                      changes).
+      - `partial`   - one half only: knows what height holds but not why
+                      the formula is better, or the other way around.
+      - `incorrect` - anything else, e.g. height is the mouse position or
+                      the text size.
+
+      Feedback: `width` and `height` are system variables like `mouseX`
+      and `mouseY` — p5.js keeps them filled with the current canvas
+      size.

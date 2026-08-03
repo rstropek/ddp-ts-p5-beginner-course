@@ -1,0 +1,203 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The responsive robot"
+# (0020-variables/0030-responsive-robot.qmd in ts-ddp-first).
+# Students check their understanding of the chapter: why fixed numbers fail,
+# percentages as formulas from width/height, the centering formula, the min
+# helper, and why one scale factor can't replace individual formulas.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: responsive-robot-quiz
+name: "Quiz: The responsive robot"
+
+title: "Check your understanding: the responsive robot"
+description: |
+  Six short questions about the chapter *The responsive robot*. Answer in
+  your own words. There are no answer options to pick from, and this quiz
+  is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are
+  enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `const headX: number = width / 2 - headWidth / 2;` where it helps.
+    Stay strictly within what a beginner knows after the Responsive robot
+    chapter: drawing commands, constants declared with `const` and an
+    explicit data type, the system variables `mouseX`, `mouseY`, `width`,
+    and `height`, formulas built from them, the helper functions `round`
+    and `min`, template strings, and the `scale` and `translate` commands
+    from the soccer field project. Do not introduce `let` and assignments,
+    loops, or conditions. If the student writes in German, you may answer
+    in German; keep code and command names in English.
+
+questions:
+  - id: fixed-numbers-problem
+    title: "The robot that won't adapt"
+    question: |
+      A robot is drawn with fixed coordinates chosen for a 400 by 400
+      canvas. A student changes the first line to `createCanvas(200, 400)`
+      and runs the program again.
+
+      What happens to the robot, and why?
+    evaluation: |
+      Expected: every shape stays exactly where its fixed numbers put it,
+      so the robot sticks out of the canvas or sits off-center. Fixed
+      numbers are only correct for the one canvas size they were written
+      for.
+
+      - `correct`   - the robot does not adapt / sticks out or sits wrong
+                      AND the reason (the numbers stay the same while the
+                      canvas changes).
+      - `partial`   - the right result without the reason, or "fixed
+                      numbers are the problem" without saying what the
+                      user sees.
+      - `incorrect` - anything else, e.g. the robot shrinks with the
+                      canvas, or an error message appears.
+
+      Feedback: this is the "before" picture of responsive design — the
+      cure is formulas built from `width` and `height`.
+
+  - id: percent-as-formula
+    title: "Percent as a formula"
+    question: |
+      The specification says: the mouth is 20% of the canvas width.
+
+      Write this as a TypeScript formula, using the system variable
+      `width`.
+    evaluation: |
+      Expected: `width * 0.2`. Also fine: `0.2 * width`,
+      `width / 100 * 20`, or `width / 5`.
+
+      - `correct`   - any formula that correctly takes 20% of width.
+      - `partial`   - the multiplication idea with a wrong factor, e.g.
+                      `width * 0.02` or `width * 20`.
+      - `incorrect` - anything else, e.g. a fixed number like 80, or a
+                      formula built from height.
+
+      Feedback: percentages become multiplications, exactly as in math
+      class — 20% of the width is `width * 0.2`.
+
+  - id: centering-formula
+    title: "Centering the head"
+    question: |
+      The canvas is 300 pixels wide and the robot's head is 100 pixels
+      wide. The head's rectangle is drawn from its left edge.
+
+      At which x position must the left edge sit so the head is centered,
+      and how do you compute that?
+    evaluation: |
+      Expected: at x = 100. The middle of the canvas is 300 / 2 = 150, and
+      the left edge sits half a head width to the left of it:
+      150 - 50 = 100. The general formula is `width / 2 - headWidth / 2`.
+
+      - `correct`   - 100 AND the computation or the formula (canvas
+                      middle minus half the head width).
+      - `partial`   - the right formula or method with an arithmetic slip,
+                      or 100 with no computation shown.
+      - `incorrect` - anything else, e.g. 150 (forgot the half width) or
+                      200.
+
+      Feedback: centering in one sentence — go to the middle of the
+      canvas, then back up by half of what you are centering.
+
+  - id: min-smaller-side
+    title: "Why the smaller side?"
+    question: |
+      The eye size is computed like this:
+
+      ```typescript
+      const eyeSize: number = min(headWidth, headHeight) * 0.2;
+      ```
+
+      What does `min(headWidth, headHeight)` return, and why do the eyes
+      use the smaller side of the head?
+    evaluation: |
+      Expected: `min` returns the smaller of the two values. Tying the eye
+      size to the smaller side keeps the eyes fitting inside the head even
+      when the head is stretched wide or tall; 20% of the long side could
+      be taller than the head itself.
+
+      - `correct`   - the smaller of the two values AND the fitting reason
+                      (eyes stay inside / don't get too big on a stretched
+                      head).
+      - `partial`   - one half only: knows what min returns but not why
+                      the smaller side, or gives the reason without saying
+                      what min does.
+      - `incorrect` - anything else, e.g. min rounds a number or returns
+                      the average.
+
+      Feedback: min is a calculating helper like round — it draws
+      nothing, it just picks the smaller value.
+
+  - id: scale-vs-formulas
+    title: "Why not just scale?"
+    question: |
+      In the soccer field project, one single statement, `scale(SCALE)`,
+      resized the whole drawing.
+
+      The two example robots have different proportions on a tall canvas
+      and a wide one, yet the eyes stay perfectly round in both. Why can't
+      a single `scale` factor produce that?
+    evaluation: |
+      Expected: `scale` stretches everything by the same factor, so all
+      proportions stay exactly as they are. The robot's parts follow their
+      own rules (the head follows the canvas shape, the eyes stay round),
+      and each such rule needs its own formula.
+
+      - `correct`   - scale applies one factor to everything / keeps all
+                      proportions AND the robot's parts need their own
+                      rules or formulas.
+      - `partial`   - one half only: knows scale resizes everything
+                      equally but can't connect it to the robot, or says
+                      "you need formulas" without the reason.
+      - `incorrect` - anything else, e.g. scale does not work with
+                      rectangles, or scale is forbidden in this course.
+
+      Feedback: you would still use scale when one factor fits the job,
+      like the soccer field — the robot's rules are simply richer than
+      one factor can express.
+
+  - id: fixed-number-bug
+    title: "The stubborn antenna"
+    question: |
+      A student's robot adapts nicely to every canvas size, except the
+      antenna: it stays in the same spot when the canvas changes.
+
+      What kind of mistake is hiding in the antenna code, and how do you
+      fix it?
+    evaluation: |
+      Expected: a fixed number (a pixel coordinate or size) is still
+      hiding in the antenna code. The fix: replace it with a formula built
+      from `width` and `height` (or from other computed constants).
+
+      - `correct`   - names a fixed/hard-coded number as the cause AND the
+                      fix (turn it into a formula from width/height).
+      - `partial`   - one half only: suspects a fixed number but gives no
+                      fix, or says "use formulas" without naming the
+                      cause.
+      - `incorrect` - anything else, e.g. blaming scale, the canvas, or a
+                      typo in a function name.
+
+      Feedback: the chapter's rule of thumb — if a shape refuses to move,
+      a fixed number is hiding somewhere; find it and turn it into a
+      formula.

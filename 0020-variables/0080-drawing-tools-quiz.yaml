@@ -1,0 +1,195 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Practice projects: circle tool and rect tool"
+# (0020-variables/0080-drawing-tools.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: ellipse vs
+# circle, abs, PI as a value, rect vs ellipse anchor points, snapping a
+# size, and textAlign(RIGHT).
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: drawing-tools-quiz
+name: "Quiz: Circle tool and rect tool"
+
+title: "Check your understanding: circle tool and rect tool"
+description: |
+  Six short questions about the chapter *Practice projects: circle tool
+  and rect tool*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `const w: number = abs(mouseX - width / 2) * 2;` where it helps. Stay
+    strictly within what a beginner knows after the Variables part's
+    practice projects: drawing commands including `ellipse` and `arc`,
+    mouse events, the system variables, constants with explicit data
+    types, the snapping formula, template strings, text output with
+    `textAlign`, the helper functions `round`, `min`, and `abs`, and the
+    constant `PI`. Do not introduce loops, conditions, or arrays. If the
+    student writes in German, you may answer in German; keep code and
+    command names in English.
+
+questions:
+  - id: ellipse-vs-circle
+    title: "circle's bigger sibling"
+    question: |
+      The circle tool draws with `ellipse(x, y, w, h)` instead of
+      `circle(x, y, d)`.
+
+      Why can't `circle` do this job?
+    evaluation: |
+      Expected: `circle` has a single diameter, so it can only draw
+      perfect circles. The tool needs a shape whose width and height can
+      differ, and `ellipse` takes both separately.
+
+      - `correct`   - circle = one diameter / only perfect circles AND
+                      ellipse takes a separate width and height.
+      - `partial`   - one half only: knows ellipse has two sizes but not
+                      why circle fails, or the other way around.
+      - `incorrect` - anything else, e.g. circle cannot be centered or
+                      filled.
+
+      Feedback: compare the parameter lists — circle(x, y, d) against
+      ellipse(x, y, w, h).
+
+  - id: abs-distance
+    title: "Distance, not difference"
+    question: |
+      The canvas is 400 pixels wide, so the center is at x = 200. The
+      mouse is at `mouseX = 130` when this line runs:
+
+      ```typescript
+      const w: number = abs(mouseX - width / 2) * 2;
+      ```
+
+      What value does `w` get, and what would go wrong without `abs`?
+    evaluation: |
+      Expected: 130 - 200 = -70, abs(-70) = 70, times 2 gives w = 140.
+      Without abs, the width would be -140 whenever the mouse is left of
+      the center, and a negative width makes no sense — abs turns the
+      difference into a distance.
+
+      - `correct`   - 140 AND the negative problem (left of the center
+                      the subtraction gives a minus result; abs removes
+                      the sign / gives the distance).
+      - `partial`   - the right method with one slip (e.g. 70, forgot the
+                      doubling), or 140 without the abs explanation.
+      - `incorrect` - anything else, e.g. -140, or 330.
+
+      Feedback: abs is a calculating helper like round and min —
+      abs(-70) and abs(70) are both 70.
+
+  - id: pi-is-a-value
+    title: "PI without parentheses"
+    question: |
+      For the area, the code uses `PI`, written without parentheses: `PI`,
+      not `PI()`.
+
+      Why no parentheses, unlike `round(...)` or `abs(...)`?
+    evaluation: |
+      Expected: `PI` is a value — a ready-made constant holding 3.14159
+      and so on — not a function. Parentheses are for calling functions; a
+      value is simply used by its name.
+
+      - `correct`   - PI is a value/constant, not a function ("it's a
+                      number, not a command" counts).
+      - `partial`   - knows PI is the number pi but cannot connect that to
+                      the parentheses question.
+      - `incorrect` - anything else, e.g. parentheses are optional
+                      everywhere, or PI computes the area.
+
+      Feedback: round and abs DO something when you call them; PI simply
+      IS something.
+
+  - id: rect-vs-ellipse-anchor
+    title: "Center or corner?"
+    question: |
+      `ellipse` and `rect` both take a position as their first two
+      parameters, but the position means different things.
+
+      What is the difference, and what does it mean for centering the
+      rectangle on the canvas?
+    evaluation: |
+      Expected: `ellipse` takes the position of its center; `rect` takes
+      its top left corner. To center the rectangle you need the centering
+      formula: the corner sits half the rectangle's width left of the
+      canvas middle and half its height above it, e.g.
+      `width / 2 - w / 2`.
+
+      - `correct`   - center vs top left corner AND the consequence (rect
+                      needs the half-width/half-height centering
+                      formula).
+      - `partial`   - the center/corner difference alone, without the
+                      centering consequence.
+      - `incorrect` - anything else, e.g. both take the center, or rect
+                      takes its bottom edge.
+
+      Feedback: the centering formula is the one from the responsive
+      robot's head — go to the middle, then back by half the shape's
+      size.
+
+  - id: snap-a-size
+    title: "Snapping a size"
+    question: |
+      The polished tool snaps both diameters to multiples of 20. The raw
+      width from the mouse is 130.
+
+      What width does the snapping formula `round(130 / 20) * 20`
+      produce?
+    evaluation: |
+      Expected: 140. The steps: 130 / 20 = 6.5, round(6.5) = 7 (rounds
+      up, as in math class), 7 * 20 = 140.
+
+      - `correct`   - 140.
+      - `partial`   - the right method with one slip, e.g. rounding 6.5
+                      down to 6 and answering 120, or stopping at 7.
+      - `incorrect` - anything else, e.g. 130 (no snapping) or 6.5.
+
+      Feedback: the same divide-round-multiply formula as the snapping
+      marker, applied to a size instead of a position.
+
+  - id: text-align-right
+    title: "A label that ends at a point"
+    question: |
+      Normally a text starts at the position you give it. The briefing
+      recommends `textAlign(RIGHT)` for the horizontal diameter label,
+      which should sit directly left of the ellipse's center line.
+
+      What does `textAlign(RIGHT)` change?
+    evaluation: |
+      Expected: after `textAlign(RIGHT)`, the text ends at the given
+      position instead of starting there. A label placed at the center
+      line therefore extends to the left and sits exactly left of the
+      line.
+
+      - `correct`   - the text ends at / is right-aligned to the given
+                      position ("the text grows to the left" counts).
+      - `partial`   - knows the alignment changes but stays vague, without
+                      the ends-at-the-position idea.
+      - `incorrect` - anything else, e.g. it moves the text to the right
+                      edge of the canvas, or makes the text bold.
+
+      Feedback: with textAlign(RIGHT), the position you pass is where the
+      text stops — perfect for a label that must end at a line.
