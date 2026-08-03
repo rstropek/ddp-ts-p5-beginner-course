@@ -81,17 +81,17 @@ constants inside `setup`. They're computed once when the program starts and
 never change, and they aren't global settings, so ALL_CAPS would be the
 wrong signal.
 
-## The eyes and Math.min {#sec-math-min}
+## The eyes and `min` {#sec-min}
 
 The specification says: the eye diameter is 20% of the **smaller side** of
 the head. For that you need a way to pick the smaller of two values, and
-TypeScript has one built in: `Math.min(100, 200)` returns 100, and in
-general `Math.min(a, b)` returns the smaller of the two. (The `Math.` in
-front tells you this function comes from TypeScript itself, not from
-p5.js.)
+p5.js has one ready: `min(100, 200)` returns 100, and in general
+`min(a, b)` returns the smaller of the two. It's a helper function just
+like `round` from the snapping exercise: it doesn't draw anything, it
+calculates something for you.
 
 ```typescript
-const eyeSize: number = Math.min(headWidth, headHeight) * 0.2;
+const eyeSize: number = min(headWidth, headHeight) * 0.2;
 ```
 
 Why the smaller side? Picture a wide, flat head on a landscape canvas: 20%
