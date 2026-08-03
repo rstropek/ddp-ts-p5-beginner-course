@@ -42,6 +42,11 @@ book:
         - 0020-variables/0010-crosshairs.qmd
         - 0020-variables/0020-snap.qmd
         - 0020-variables/0030-responsive-robot.qmd
+        - 0020-variables/0040-color-basics.qmd
+        - 0020-variables/0050-color-worm.qmd
+        - 0020-variables/0060-color-picker.qmd
+        - 0020-variables/0070-string-concat.qmd
+        - 0020-variables/0080-drawing-tools.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

@@ -1,0 +1,245 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Your first program"
+# (0010-introduction/0020-first-program.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: exactness,
+# statements and their order, the canvas coordinate system, command
+# parameters, red squiggles, comments, and code formatting.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: first-program-quiz
+name: "Quiz: Your first program"
+
+title: "Check your understanding: your first program"
+description: |
+  Eight short questions about the chapter *Your first program*. Answer in
+  your own words. There are no answer options to pick from, and this quiz is
+  anonymous: it's here for you, so you can see what you already understand
+  and what you should read again. Answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# This block is shared context for BOTH the grader and the discussion chat
+# (the app prepends it to both system prompts). Keep it audience-neutral and
+# chapter-agnostic, and keep the text BYTE-IDENTICAL across all chapter
+# quizzes: the compound quiz deduplicates identical preambles, so a shared
+# text appears once instead of once per chapter. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+instructions: |
+  The students are beginners in a creative-coding course (TypeScript with
+  the p5.js drawing library), age 15 to 17, working in a web playground.
+  The course book is in English; the students are Austrian and speak German
+  as their first language.
+
+  - Answers in English or German are equally fine. Respond to the content,
+    not the language; spelling and grammar mistakes never count.
+  - The students use their own words. Accept everyday wording whenever the
+    idea is right; never require technical terms the criteria don't demand.
+  - Write in simple English that a 15-year-old English learner understands:
+    short sentences, common words.
+  - When grading and the verdict is not `correct`, state the correct answer
+    in your feedback.
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `circle(200, 260, 360);` where it helps. Stay strictly within what a
+    beginner knows after the first chapter: statements, drawing commands and
+    their parameters, the canvas, comments. Do not introduce variables,
+    loops, or functions the student writes themselves. If the student writes
+    in German, you may answer in German; keep code and command names in
+    English.
+
+questions:
+  - id: exactness-case
+    title: "One letter matters"
+    question: |
+      A student types this line and gets an error:
+
+      ```typescript
+      Circle(200, 260, 360);
+      ```
+
+      The line below works without any error:
+
+      ```typescript
+      circle(200, 260, 360);
+      ```
+
+      Why does the first line fail, even though only one letter is different?
+    evaluation: |
+      Expected: uppercase and lowercase matter. The command is called
+      `circle`; `Circle` is a name the computer doesn't know.
+
+      - `correct`   - case matters AND `Circle` is unknown to the computer
+                      (any wording of "the computer takes code literally").
+      - `partial`   - blames the capital letter but can't say why it breaks.
+      - `incorrect` - anything else, e.g. blaming the numbers or semicolon.
+
+      Feedback: reinforce "the computer does exactly what you type".
+
+  - id: statement-order
+    title: "Order of statements"
+    question: |
+      A program contains these two statements in exactly this order:
+
+      ```typescript
+      circle(200, 200, 100);
+      background("pink");
+      ```
+
+      What do you see on the canvas when the program runs, and why?
+    evaluation: |
+      Expected: only an empty pink canvas, no circle. Statements run top to
+      bottom, so `background("pink")` paints the whole canvas after the
+      circle was drawn, covering it.
+
+      - `correct`   - pink canvas without a circle AND the reason (the
+                      background is painted afterwards, over the circle).
+      - `partial`   - right result without the reason, or knows the
+                      top-to-bottom rule but draws the wrong conclusion.
+      - `incorrect` - anything else, e.g. a circle on a pink background.
+
+      Feedback: use the paint image — background paints over everything
+      drawn before it.
+
+  - id: canvas-coordinates
+    title: "The canvas coordinate system"
+    question: |
+      The canvas has a coordinate system, but it works a little differently
+      from the one you know from math class.
+
+      Where on the canvas is the origin (0, 0), and in which direction do
+      y values grow?
+    evaluation: |
+      Expected: the origin (0, 0) is in the top left corner, and higher y
+      values go DOWN, not up (flipped compared to math class).
+
+      - `correct`   - origin top left AND y grows downward.
+      - `partial`   - only one of the two facts is right.
+      - `incorrect` - anything else, e.g. origin bottom left and y upward.
+
+      Feedback: anchor with the point (200, 260): 200 pixels from the left
+      edge, 260 pixels down from the top. You may add that x grows to the
+      right, as expected.
+
+  - id: circle-parameters
+    title: "What the numbers mean"
+    question: |
+      Look at this statement:
+
+      ```typescript
+      circle(200, 260, 360);
+      ```
+
+      The three numbers in parentheses are called parameters. What does each
+      of the three parameters tell the `circle` command?
+    evaluation: |
+      Expected: 200 and 260 are the position of the circle's center (x
+      across, y down); 360 is the diameter. "Size" is fine for the third
+      parameter; "radius" is a small slip, still correct if the rest fits.
+
+      - `correct`   - first two = center position, third = diameter/size.
+      - `partial`   - position and size identified, but x and y mixed up or
+                      unsure which number does what.
+      - `incorrect` - anything else, e.g. 360 as a position.
+
+      Feedback: if the student wrote "radius" or "size", name the exact
+      word: diameter, the distance across the whole circle.
+
+  - id: red-squiggles
+    title: "Red squiggly lines"
+    question: |
+      While you type, a red squiggly line appears under a part of your code.
+
+      What is the editor telling you, and what do you do next to get rid of
+      the squiggle?
+    evaluation: |
+      Expected: the editor found a problem in the code (like a spell checker
+      in a text document). Next step: hover the mouse over it to read the
+      message, and/or compare the code with the example character by
+      character and fix the difference.
+
+      - `correct`   - squiggle = a mistake the editor found AND at least one
+                      sensible next step (hover for the message, or compare
+                      with the example and fix it).
+      - `partial`   - knows it means an error but has no plan for finding
+                      or fixing it.
+      - `incorrect` - anything else, e.g. decoration or "ignore it".
+
+      Feedback: reassure the student — squiggles are completely normal,
+      every programmer sees them all day.
+
+  - id: comments
+    title: "Lines that start with //"
+    question: |
+      Some lines in the example code start with two slashes, like this:
+
+      ```typescript
+      // draw the head
+      ```
+
+      What are these lines for, and what does the computer do with them?
+    evaluation: |
+      Expected: these are comments — notes for human readers. The computer
+      ignores them completely.
+
+      - `correct`   - notes for people AND the computer ignores them.
+      - `partial`   - only one half (who they are for, or that the computer
+                      skips them).
+      - `incorrect` - anything else, e.g. the computer runs them.
+
+      Feedback: you may add that a typo inside a comment is harmless.
+
+  - id: create-canvas
+    title: "Creating the canvas"
+    question: |
+      Almost every program in this course starts with a statement like this:
+
+      ```typescript
+      createCanvas(400, 500);
+      ```
+
+      What does this statement do, and what do the two numbers mean?
+    evaluation: |
+      Expected: it creates the drawing canvas (the "sheet of paper" all
+      later drawing commands draw on), 400 pixels wide and 500 pixels tall.
+
+      - `correct`   - creates the canvas AND first number = width, second =
+                      height.
+      - `partial`   - creates the canvas and the numbers are its size, but
+                      width and height are swapped or unsure.
+      - `incorrect` - anything else, e.g. draws a shape or paints the
+                      background.
+
+      Feedback: use the chapter's picture — a sheet of paper on your desk
+      that every later drawing command draws on.
+
+  - id: formatting
+    title: "Why format your code?"
+    question: |
+      Programs work even when the code is messy, without indentation and
+      with several statements squeezed into one line.
+
+      Why do programmers format their code carefully anyway?
+    evaluation: |
+      Expected: code is also for people (yourself next week, classmates,
+      the teacher). Formatted code is easier to read, and mistakes like a
+      missing curly brace are easier to find. Naming a concrete rule
+      (indentation, one statement per line, spacing) is a bonus, not
+      required.
+
+      - `correct`   - the reason: code is for people / easier to read /
+                      mistakes easier to find.
+      - `partial`   - stays vague ("it looks better") without who benefits
+                      or why it helps.
+      - `incorrect` - formatting doesn't matter because the computer
+                      ignores it.
+
+      Feedback: you may mention the course rule — formatting code before
+      handing it in is part of the job.

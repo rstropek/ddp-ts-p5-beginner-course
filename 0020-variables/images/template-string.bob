@@ -1,0 +1,10 @@
+                   "a window: the current value of y"
+ "a window: the current value of x"             |
+                 |                              |
+                 v                              v
+             .--------.       .-----.       .--------.
+             | "${x}" |       | "/" |       | "${y}" |
+             '--------'       '-----'       '--------'
+                                 ^
+                                 |
+             "an ordinary character, copied as it is"

@@ -1,0 +1,7 @@
+ "second: the result"     "first: calculated with the"
+ "replaces the old value" "value in the box right now"
+          |                                 |
+          v                                 v
+     .----------.                   .----------------.
+     | colorHue |        "="        | "colorHue + 5" |
+     '----------'                   '----------------'

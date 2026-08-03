@@ -1,0 +1,11 @@
+         "the string to draw"                 "the size of the text box"
+                   |                                       |
+                   |                              .--------+---------.
+                   |                              |                  |
+                   v                              v                  v
+ .------.  .----------------.  .--------.  .--------------.  .---------------.
+ | text |  | clickPositions |  | "5, 5" |  | "width - 10" |  | "height - 10" |
+ '------'  '----------------'  '--------'  '--------------'  '---------------'
+    ^                              ^
+    |                              |
+"the command"    "the top left corner of the text box"

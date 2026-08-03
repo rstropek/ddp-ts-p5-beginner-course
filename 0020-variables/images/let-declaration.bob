@@ -1,0 +1,11 @@
+ "declares a variable:"     "the first value in the box"
+ "its value may be replaced"                        |
+           |                                        |
+           v                                        v
+       .-------.  .----------.  .------------.  .-------.
+       |  let  |  | colorHue |  | ": number" |  | "= 0" |
+       '-------'  '----------'  '------------'  '-------'
+                       ^              ^
+                       |              |
+             "the name you choose"    |
+                               "the data type"

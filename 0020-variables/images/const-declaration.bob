@@ -1,0 +1,11 @@
+ "declares a constant:"         "the value in the box"
+ "its value never changes"                      |
+           |                                    |
+           v                                    v
+       .-------.  .------.  .------------.  .--------.
+       | const |  | snap |  | ": number" |  | "= 40" |
+       '-------'  '------'  '------------'  '--------'
+                     ^            ^
+                     |            |
+           "the name you choose"  |
+                           "the data type"

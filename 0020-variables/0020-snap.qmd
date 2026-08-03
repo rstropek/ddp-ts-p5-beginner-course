@@ -26,12 +26,12 @@ const markerSize: number = 10; // size of marker
 
 Read the first line from left to right, piece by piece:
 
-- `const` tells TypeScript: here comes a named value, and it will never
-  change after this line.
-- `snap` is the name. From now on, you write `snap` in your code instead of
-  the number 40.
-- `: number` is the **data type**: the kind of value this constant holds.
-- `= 40` puts the value into the box, and the semicolon ends the statement.
+![A `const` declaration piece by piece.](images/const-declaration.svg){width=440}
+
+The **data type** names the kind of value the constant holds; it gets a
+section of its own in a moment. From now on, you write `snap` in your code
+instead of the number 40. And the semicolon at the end closes the
+statement, as always.
 
 You saw the advantages of constants in the soccer field project: a name like
 `snap` tells the reader what the number *means*, and the value lives in one
@@ -158,6 +158,10 @@ A template string is written between backticks `` ` ``, not normal quotes.
 Inside it, `${...}` is a window: the computer inserts the current value of
 whatever is between the braces. If `x` is 120 and `y` is 160, the result is
 the string `120/160`.
+
+![The template string piece by piece: each window is replaced by a current
+value, the character between them is copied as it
+is.](images/template-string.svg){width=440}
 
 ::: {.callout-tip}
 ## Where is the backtick on your keyboard?

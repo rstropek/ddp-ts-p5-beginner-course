@@ -1,0 +1,175 @@
+---
+title: "Mixing colors with numbers"
+---
+
+Pick any color you can imagine: the deep orange of a sunset, the pale green
+of mint ice cream, the exact blue of your favorite hoodie. By the end of
+this chapter you can put every one of them on the canvas. There's no big
+program to build this time: this chapter is a series of short color
+experiments, and what you take away from it is a skill you'll use in every
+project from now on.
+
+Colors deserve this attention. This is a *creative* coding course, and the
+colors you choose decide whether a drawing feels calm or loud, warm or
+cold, cheap or polished. So far you've picked colors from a small list of
+names. After this chapter you can mix any of the roughly 16.7 million
+colors your screen can show.
+
+## A color name is a string {#sec-color-names}
+
+You've been using colors since your very first program: every
+`background("lightblue")` and every `fill("red")` hands a **string** to
+p5.js, and the browser looks up the color behind the name. The browser
+knows about 150 such names, and some of them are wonderfully specific:
+`"papayawhip"`, `"lemonchiffon"`, or `"mediumspringgreen"`. You can browse
+the [complete list of color names](https://htmlcolorcodes.com/color-names/)
+and try them right away:
+
+```typescript
+function setup() {
+  createCanvas(200, 200);
+  background("lightblue");
+}
+```
+
+A color name works everywhere a color is expected: in `background`, in
+`fill`, and in `stroke`.
+
+Names are comfortable, but they run out quickly. About 150 names stand
+against 16.7 million colors, and there's no name for "like `"lightblue"`,
+just a little darker". To reach all the other colors, you describe a color
+with numbers instead of a name.
+
+## Mixing light: RGB {#sec-rgb-colors}
+
+If you look at your screen through a strong magnifying glass, you'll see
+that every pixel is made of three tiny lights: one red, one green, one
+blue. Every color the screen shows is a mix of these three lights, each
+shining at its own strength. That's the **RGB color model**: you describe a
+color with three numbers, one for red, one for green, and one for blue.
+
+Each of the three values runs from 0 (light off) to 255 (light at full
+power). The odd-looking maximum has a simple reason: the computer stores
+each value in one **byte** of memory, and a byte can hold exactly 256
+different values, from 0 to 255. Three values with 256 steps each give
+256 × 256 × 256 combinations: the 16.7 million colors from the beginning
+of the chapter.
+
+```typescript
+function setup() {
+  createCanvas(200, 200);
+
+  // Switch the color mode to RGB:
+  colorMode(RGB);
+
+  //         +------------ red (0..255)
+  //         |    +------- green (0..255)
+  //         |    |  +---- blue (0..255)
+  //         v    v  v
+  background(255, 0, 0);
+}
+```
+
+The statement `colorMode(RGB)` tells p5.js how to interpret the three
+numbers that follow. RGB is the standard mode, so this line isn't strictly
+required, but writing it out makes your program easier to read: anyone
+looking at `background(255, 0, 0)` knows immediately which model the
+numbers belong to.
+
+::: {.callout-tip}
+## Mixing light is not mixing paint
+In art class, mixing all colors gives a muddy brown, and yellow comes
+straight from the tube. Light behaves differently: red and green light
+together make yellow, all three lights at full power make white, and all
+three switched off make black. Try `background(255, 255, 0)` and
+`background(255, 255, 255)` to see both effects. Your screen mixes light,
+your paint box mixes pigment; keep the two rule sets apart.
+:::
+
+One RGB pattern is worth knowing by heart: when all three values are
+equal, the result is a shade of gray, from `(0, 0, 0)` (black) over
+`(128, 128, 128)` (medium gray) to `(255, 255, 255)` (white). Gray is so
+common that p5.js offers a shortcut: a single number is read as a gray
+value. `background(0)` paints the canvas black, `background(255)` paints
+it white.
+
+How do you find the three values for a color you have in mind? You use a
+**color picker**, a tool where you point at a color and read off its
+numbers. Try the [online color picker at
+colorpicker.me](https://colorpicker.me/): it shows the RGB values of every
+color you click.
+
+## Hue, saturation, brightness: HSB {#sec-hsb-colors}
+
+RGB is how the machine thinks. People describe colors differently: "a
+light, washed-out blue" names the kind of color, how strong it is, and how
+bright it is. Exactly these three questions form the **HSB color model**:
+Hue (German *Farbton*), Saturation (German *Sättigung*), and Brightness
+(German *Helligkeit*).
+
+The hue is the kind of color, given as a position between 0 and 360 on a
+scale that runs through the whole rainbow:
+
+![The hue scale from 0 to 360: every kind of color has its position, and
+red sits at both ends.](images/hue-scale.svg){width=460}
+
+Notice that the scale starts and ends with red. It's really a circle that
+has been bent open: hue 0 and hue 360 are the same color, and after 360
+the colors would simply come around again.
+
+The other two values both run from 0 to 100. Saturation is the intensity
+of the color: 100 is the full color, and the closer you get to 0, the more
+washed out and gray it becomes. Brightness is how much light is in the
+color: 100 is the brightest version, and 0 is always black, whatever the
+other two values say.
+
+```typescript
+function setup() {
+  createCanvas(200, 200);
+
+  // Switch the color mode to HSB:
+  colorMode(HSB);
+
+  //         +------------ hue (0..360)
+  //         |    +------- saturation (0..100)
+  //         |    |  +---- brightness (0..100)
+  //         v    v  v
+  background(0, 100, 100);
+}
+```
+
+Why learn a second model when RGB can already mix everything? Because HSB
+matches the way you *adjust* colors. Want the same color, just darker?
+Lower the brightness, one number. Want a set of colors that belong
+together, like a warm autumn palette? Keep saturation and brightness
+fixed and pick a few nearby hues. In RGB, each of these changes means
+juggling all three numbers at once. And HSB can do one more trick: a
+program can walk along the hue scale step by step and travel through the
+whole rainbow. In the next chapter, your program will do exactly that.
+
+## Your exercise: Color basics {#sec-color-basics-exercise}
+
+This exercise is a laboratory session: you'll run small experiments and
+train your eye to predict what numbers turn into.
+
+1. **Paper first, as always.** Make a prediction table with two columns:
+   "RGB values" and "my prediction". Fill in these six value triples and
+   write down, before touching the keyboard, what color you expect:
+   (0, 255, 0), (255, 255, 0), (0, 0, 0), (255, 255, 255),
+   (128, 128, 128), and (255, 0, 255).
+2. **Start with names.** Use `background` with color names from the
+   [list of color names](https://htmlcolorcodes.com/color-names/). Find
+   the name you'd use for a sky, for grass, and for a sunset.
+3. **Check your predictions.** Switch to RGB and run the six value
+   triples from your table, one by one. Compare each result with your
+   prediction and correct the table where the screen surprised you.
+4. **Mix a favorite.** Find a color you love with the [online color
+   picker](https://colorpicker.me/), read off its RGB values, and
+   reproduce it on your canvas.
+5. **Explore HSB.** Switch the mode with `colorMode(HSB)` and start at
+   `background(0, 100, 100)`. First walk the hue in steps of 30 and watch
+   the rainbow go by. Then pick your favorite hue, keep it fixed, and
+   play with saturation and brightness until you understand what each of
+   the two does.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/colors_basics.yaml >}}

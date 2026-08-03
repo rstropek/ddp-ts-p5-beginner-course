@@ -1,0 +1,130 @@
+---
+title: "Strings that grow: the click protocol"
+---
+
+![The click protocol after many clicks: every position the user ever clicked is listed at the top, wrapped over several lines, and a circle marks the newest click.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/string_concat.png){width=360}
+
+The color worm counted with numbers; now you'll make text grow. You'll
+build a program that keeps a written record of everything the user does:
+each click draws a circle at the click position and adds that position to
+a protocol at the top of the canvas. Click by click, the protocol gets
+longer, until it fills line after line, and the program never forgets a
+single entry.
+
+## An event for clicks {#sec-mouse-clicked}
+
+The click protocol reacts to clicks with the event function
+`mouseClicked`, the same one that froze the color in the color picker:
+p5.js calls it automatically once per click, and inside it, `mouseX` and
+`mouseY` hold the position where the click happened.
+
+```typescript
+function mouseClicked() {
+  circle(mouseX, mouseY, 20);
+}
+```
+
+As with every event function, the name is an agreement between you and
+p5.js: a typo like `mouseclicked` gives you a function that is never
+called, without any error message.
+
+## Chaining strings together {#sec-concatenation}
+
+Sticking two strings together into one longer string is called
+**concatenation**, from the Latin word *catena*, a chain. You've already
+built strings from pieces: in the snapping exercise, the template string
+`` `${x}/${y}` `` chained two numbers and a slash into a string like
+`120/80`.
+
+The new idea of the click protocol is that the *old value of a variable*
+can be one of the pieces. The protocol lives in a global variable, and
+every click builds a longer string out of it:
+
+```typescript
+let clickPositions: string = "0/0";
+
+function mouseClicked() {
+  clickPositions = `${clickPositions}, ${mouseX}/${mouseY}`;
+  // ...
+}
+```
+
+Look closely at the assignment: it's the exact same pattern as
+`colorHue = (colorHue + 5) % 360` in the color worm, just with text
+instead of a number. The computer first builds the string on the right
+side, starting with whatever `clickPositions` holds right now, and then
+stores the result back into the variable. Say the protocol is `0/0` and
+the user clicks at (120, 80): the right side becomes `0/0, 120/80`, and
+that's the new content of the box. The next click at (30, 190) turns it
+into `0/0, 120/80, 30/190`. The string grows with every click.
+
+And like the worm's hue, the protocol must survive between event calls,
+so `clickPositions` has to be a global variable, declared with `let`
+outside of every function. Its data type is `string`: variables aren't
+limited to numbers, a variable can hold a value of any type.
+
+## A text box that wraps {#sec-text-wrapping}
+
+A growing protocol soon becomes wider than the canvas, and `text` with
+three parameters would happily keep writing past the right edge. For long
+text, `text` accepts five parameters:
+
+```typescript
+text(clickPositions, 5, 5, width - 10, height - 10);
+```
+
+![The five parameters of `text`: the string to draw, the corner where the
+text box starts, and the size of the
+box.](images/text-box-params.svg){width=580}
+
+The two extra numbers turn the position into an invisible **text box**,
+and inside the box, p5.js wraps the text for you: when a line reaches the
+box's right edge, the text continues in the next line, just like in a
+word processor. In the call above, the box starts at
+(5, 5) and is 10 pixels smaller than the canvas in each direction, which
+leaves a 5 pixel margin on every side. Text is drawn in the current
+`fill` color, so pick one that reads well on your background.
+
+## The variable remembers, the canvas forgets {#sec-variable-remembers}
+
+There's one decision in the click protocol program worth a moment of
+thought. Each run of `mouseClicked` starts by repainting the background,
+exactly like the crosshairs did, so the circle of the previous click is
+erased and only the newest circle is visible. And yet the protocol at the
+top still lists *every* click since the program started.
+
+The two behaviors don't contradict each other. Whatever you draw on the
+canvas is just paint: repaint the background and it's gone. The protocol
+survives because it's not stored on the canvas at all, it's stored in the
+variable `clickPositions`, and it's drawn onto the canvas again, freshly
+and completely, after every click. Drawing something is not the same as
+remembering it: variables remember, the canvas only shows.
+
+## Your exercise: String concat {#sec-string-concat-exercise}
+
+Build the click protocol:
+
+1. **Paper first: play computer.** Sketch the 200 by 200 canvas and pick
+   three click positions, for example (60, 40), (120, 160), and (30, 80).
+   Write down the exact content of `clickPositions` after each of the
+   three clicks, every comma and every slash included. The protocol is a
+   format promise, and exactness decides whether your output matches it.
+2. **Declare the global variable** `clickPositions` with the explicit
+   type `string` and the starting value `"0/0"`.
+3. **Simulate the first click in `setup`.** The starter code already
+   creates the canvas and paints the background. Add what a click at
+   (0, 0) would leave behind: a circle with diameter 20 at (0, 0), of
+   which only a quarter is visible in the corner, and the protocol text.
+   The circle and text colors are yours to choose; in the sample the
+   circle is `"aqua"` and the text is `"black"`.
+4. **Fill `mouseClicked`.** Repaint the background, draw the circle at
+   the click position, extend `clickPositions` with a template string,
+   and draw the protocol into a wrapping text box. Mind the order:
+   extend the protocol *before* drawing it, or the newest click will
+   always be missing from the display.
+5. **Test against your paper notes.** Click your three planned positions
+   (as precisely as you can) and compare the protocol on screen with the
+   strings you wrote down. Then keep clicking until the protocol wraps
+   into a second and third line.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/string_concat.yaml >}}
