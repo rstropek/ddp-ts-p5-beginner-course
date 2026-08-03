@@ -128,3 +128,12 @@ Build the click protocol:
    into a second and third line.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/string_concat.yaml >}}
+
+## Check your understanding {#sec-quiz-protocol}
+
+When you've finished the exercise, take the short quiz below. You answer
+five questions about this chapter in your own words, and an AI reads your
+answers and tells you what you already understand and what you should read
+again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz by697nszk6 title="The click protocol" >}}

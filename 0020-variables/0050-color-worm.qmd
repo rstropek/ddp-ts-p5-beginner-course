@@ -166,3 +166,12 @@ Time to grow the worm:
    and then to 20, and watch what happens to the worm's stripes.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/color_worm.yaml >}}
+
+## Check your understanding {#sec-quiz-worm}
+
+When you've finished the exercise, take the short quiz below. You answer
+seven questions about this chapter in your own words, and an AI reads your
+answers and tells you what you already understand and what you should read
+again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz dyalv4urnz title="The color worm" >}}

@@ -202,3 +202,12 @@ the light blue background. The snapping behavior, however, must be exact:
 corners only, every 40 pixels.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/snap.yaml >}}
+
+## Check your understanding {#sec-quiz-snap}
+
+When you've finished the exercise, take the short quiz below. You answer
+seven questions about this chapter in your own words, and an AI reads your
+answers and tells you what you already understand and what you should read
+again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz ll65a7jzrc title="Snapping to a grid" >}}
