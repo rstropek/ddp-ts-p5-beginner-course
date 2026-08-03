@@ -1,0 +1,133 @@
+---
+title: "Reading the documentation: a command of your own"
+---
+
+Every command you know so far, `rect`, `circle`, `arc`, and the others, was
+handed to you: the book explained the parameters, and an exercise showed a
+working example. That's how learning starts, but it's not how it continues.
+p5.js has hundreds of commands, and no book and no teacher will ever walk
+you through all of them. Professionals learn a new command by reading its
+**documentation**: the official description that the makers of a library
+publish for every command they offer.
+
+Reading documentation is a skill of its own, and this chapter trains it.
+You'll pick one p5.js command that nobody taught you, learn it from the
+official documentation, build an example with it, and describe it in your
+own words. In short: this time, *you* write a little piece of this book.
+
+## The p5.js reference {#sec-reference}
+
+The official documentation of p5.js is called the
+[p5.js reference](https://p5js.org/reference/). It's a large catalog with
+one page per command, grouped by topic: shapes, colors, text, and much
+more. Every page follows the same pattern, and once you can read one, you
+can read them all:
+
+- **The description** says in a few sentences what the command does.
+- **Example programs** show the command in action. You can run them right
+  on the page, and you can even edit them there and run them again. That
+  turns the reference page into a small playground of its own.
+- **The syntax and the parameter list** show what goes between the
+  parentheses: the name of each parameter, its order, and what it means.
+
+One detail in the syntax is worth knowing: parameters in square brackets
+are **optional**. You can leave them out, and the command picks a sensible
+value on its own. For example, the syntax of `rect` is written as
+`rect(x, y, w, [h])`. Call it with all four values and you set the width
+and the height separately. Leave the `[h]` out, and p5.js simply uses the
+width as the height too, so you get a square.
+
+By the way, you've been reading tiny pieces of this documentation for
+weeks: the tooltip that appears when you hover over a command in the
+playground editor is a short version of exactly these reference pages.
+
+## Reference examples are not playground programs {#sec-adapting}
+
+The examples in the p5.js reference are great for understanding a command,
+but you can't paste them into the web playground unchanged. Three things
+to watch out for:
+
+- **They're written in JavaScript, not TypeScript.** The two languages are
+  close relatives, and the drawing commands look exactly the same. Still,
+  the programs around them are structured differently than what your
+  playground expects. So don't copy whole example programs. Read them,
+  understand the idea, and then write your own program in the structure
+  you know: `createCanvas` first, everything inside the `setup` function.
+- **The example canvas is tiny.** Most reference examples run on a canvas
+  of only 100 by 100 pixels, so all the coordinates in them look
+  strangely small. On your 400 by 500 canvas, you'll use bigger numbers.
+- **Angles are measured in radians.** Reference pages write angles in
+  radians, the unit p5.js uses out of the box, so you'll see values like
+  `PI` or `HALF_PI`. In your programs, `angleMode(DEGREES)` switches to
+  degrees, where a full circle is 360. When a page talks about angles,
+  translate in your head: `PI` is 180 degrees, `HALF_PI` is 90 degrees.
+
+## Choose your command {#sec-choose}
+
+For this exercise, you'll pick **one command** from one of three sections
+of the p5.js reference. All three belong to the *Shape* group:
+
+- **2D Primitives** is the section where almost all your drawing commands
+  come from. You already know `arc`, `circle`, `ellipse`, `line`, `rect`,
+  and `triangle`, so those are off the table. But the section holds more:
+  a command for a single dot, one for squares, one for four-cornered
+  shapes that don't have to be rectangles. A solid choice.
+- **Curves** is more advanced. These commands draw lines that bend, and
+  they're controlled by several points at once: some points the curve
+  passes through, others only pull it into shape. Expect to experiment
+  quite a bit before the parameters make sense.
+- **Custom Shapes** is also advanced. Here you don't get one command but a
+  small team of commands that work together to build any shape you like,
+  corner by corner. If you choose this section, you learn the whole team.
+
+Pick whatever makes you curious. The advanced sections take more effort,
+and they're also more impressive to present. The only firm rule: choose a
+command you haven't used in this course yet.
+
+## Your exercise: learn it, build it, describe it {#sec-exercise}
+
+Your task has three parts, and together they work like a small chapter of
+this book, written by you:
+
+1. **Learn the command from its reference page.** Read the description and
+   the parameter list, then run the examples on the page and experiment
+   with them the way you learned with `arc`: change one value at a time,
+   run, and watch what happens. Keep going until you can predict what a
+   change will do before you run it.
+2. **Build your own example.** Sketch a small picture on graph paper that
+   shows your command well, work out the coordinates, and write the
+   program in the web playground: TypeScript, `createCanvas` first,
+   everything inside `setup`, formatted before you hand it in. Don't reuse
+   a picture from the reference page; the point is a picture of your own.
+3. **Describe the command in writing.** Write a short text, about half a
+   page, that explains your command to a classmate who has never seen it:
+   what it draws, what each parameter means, and one thing that surprised
+   you while experimenting. Use your own example as the illustration,
+   the same way this book used the smiley's mouth to explain `arc`.
+
+Your teacher will tell you how to hand in your program and your text.
+
+## AI is allowed, understanding is required {#sec-ai}
+
+You may use an AI for any part of this exercise: to explain the reference
+page, to help with your example, or to improve your text. If you do, the
+two rules you already know still apply. Paste your own working code into
+the prompt, so the AI answers in the language, library, and structure your
+playground expects. And say that you're a beginner and that your code
+shows everything you've learned, so the answer stays inside what you can
+explain.
+
+Here's why that matters this time more than ever: **you'll present your
+work in class.** You'll show your picture, explain what your command does
+and what each parameter means, and answer questions. Expect live requests
+too, like "make it bigger" or "let it bend the other way", with the class
+watching. An AI can write text for you, but it can't stand in front of the
+class for you. If there's a single line in your program or a single
+sentence in your text that you can't explain, replace it or ask until you
+can. Code you don't understand is code you can't control, and a
+description you can't defend isn't yours yet.
+
+There's a nice reward at the end. Everyone presents a different command,
+so after the presentations the whole class has seen more new
+commands, each one explained by someone who really understands it. That's
+your class's own little reference, and you wrote one page of it.

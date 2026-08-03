@@ -1,0 +1,20 @@
+# Preface {.unnumbered}
+
+Welcome to **Creative Coding** — a course that teaches you to program a
+computer by making things you can *see*. Instead of only printing text on a
+black screen, you'll draw shapes, build small pictures, and grow them into
+interactive artworks. You don't need any programming experience to start: the
+course begins at zero and builds up step by step.
+
+This book is written once in [Quarto](https://quarto.org) and published two
+ways from the same source:
+
+- a **book website** with a chapter sidebar and prev/next navigation, and
+- a **single PDF** handout, with each chapter starting on its own page.
+
+Use the sidebar to move between chapters, or read straight through. Along the
+way you'll open hands-on exercises in a browser-based playground — no
+installation, just a link.
+
+> **Tip:** Run `quarto preview` in the project folder to get a live-reloading
+> book while you edit.

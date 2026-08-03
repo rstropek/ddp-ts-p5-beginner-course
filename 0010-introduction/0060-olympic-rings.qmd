@@ -1,5 +1,5 @@
 ---
-title: "When the picture is given: the Olympic rings"
+title: "When the picture is given: Olympic rings"
 ---
 
 With the house and the cat, you invented the picture yourself. If a window
@@ -49,7 +49,7 @@ Looking for structure before reaching for the ruler is a designer's habit
 and a programmer's habit at the same time. Regular patterns mean fewer
 numbers to invent, and fewer numbers mean fewer mistakes.
 
-## The right colors {#sec-colors}
+## The right colors {#sec-ring-colors}
 
 Part of matching a given design is matching its colors. The five Olympic
 rings are blue, black, red, yellow, and green, and p5.js understands all

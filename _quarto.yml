@@ -1,0 +1,91 @@
+# ---------------------------------------------------------------------------
+# Project-wide Quarto configuration — a *book* project.
+#
+# A book stitches the files listed under `book.chapters` into ONE ordered
+# document. From this single source Quarto produces:
+#   * html -> a book-style website (chapter sidebar + prev/next navigation)
+#   * pdf  -> ONE combined PDF, each `# Chapter` starting on its own page
+#
+# The chapters live in numbered folders (e.g. 0010-introduction/) and are
+# grouped into book *parts* below, so the structure scales as more parts and
+# chapters are added.
+# ---------------------------------------------------------------------------
+
+project:
+  type: book
+  output-dir: _output    # rendered book + PDF land here (git-ignored)
+
+book:
+  title: "Creative Coding"
+  subtitle: "Learning to program by making things you can see"
+  author: "Rainer Stropek"
+  date: 2026-08-02
+  # The reading order. index.qmd is the preface; the rest are grouped into
+  # parts. Each chapter file's front-matter `title:` becomes its heading —
+  # no `# Heading` needed in the body, and no include/stitching machinery.
+  chapters:
+    - index.qmd
+    - part: "Introduction"
+      chapters:
+        - 0010-introduction/0010-welcome.qmd
+        - 0010-introduction/0020-first-program.qmd
+        - 0010-introduction/0030-first-own-program.qmd
+        - 0010-introduction/0040-practice-cat.qmd
+        - 0010-introduction/0050-first-ai-exercise.qmd
+        - 0010-introduction/0060-olympic-rings.qmd
+        - 0010-introduction/0070-arcs-smiley.qmd
+        - 0010-introduction/0080-olympic-rings-advanced.qmd
+        - 0010-introduction/0090-practice-projects.qmd
+        - 0010-introduction/0100-reading-docs.qmd
+  page-footer:
+    left: "© 2026 — Creative Coding"
+    right: "Made with [Quarto](https://quarto.org)"
+
+# Base URL of the TypeScript playground server. The `example` shortcode turns
+# each exercise into an "Open in the playground" link built from this base
+# (and the same base powers the standalone `{{< playground <url> >}}` shortcode).
+# The server's FQDN may change — when it does, edit ONLY this line.
+playground-base-url: "https://ts-web-playground-server-bfdfbjcthubcardq.westeurope-01.azurewebsites.net"
+
+# --- Output formats --------------------------------------------------------
+format:
+  html:
+    theme: cosmo         # one of Quarto's built-in Bootstrap themes
+    css: styles.css      # our small custom stylesheet
+    code-copy: true      # "copy" button on code blocks
+    code-overflow: wrap
+    smooth-scroll: true
+    link-external-newwindow: true  # external links open in a new tab
+    link-external-icon: true       # + a small "leaves the site" icon
+
+  pdf:
+    # A book uses a *chapter*-aware class. scrreprt (KOMA report) gives each
+    # top-level chapter its own page without the heavier front-matter of a
+    # full scrbook — a good fit for course handouts.
+    documentclass: scrreprt
+    papersize: a4
+    fontsize: 11pt
+    linestretch: 1.15         # a touch more leading -> easier to read
+    geometry:
+      - margin=2.5cm
+    toc-depth: 1              # TOC shows parts + chapters only, not `##` sections
+    number-sections: true
+    colorlinks: true          # clickable, colored links (not ugly boxed ones)
+    linkcolor: tsblue         # internal links / TOC  (defined below)
+    urlcolor: tsblue          # external URLs
+    highlight-style: github   # nicer, lighter code coloring than the default
+    code-block-bg: true       # subtle grey background behind code blocks
+    # A custom hex colour must be *defined* before xcolor can use it by name.
+    include-in-header:
+      text: |
+        \definecolor{tsblue}{HTML}{3178C6}
+        % scrreprt numbers parts with Roman numerals by default (Part I);
+        % switch to arabic so it reads "Part 1: Introduction".
+        \renewcommand*{\thepart}{\arabic{part}}
+        % Number chapters *within* their part: reset the chapter counter at
+        % each new part and prefix it with the part number. So the chapters
+        % under part 1 (Introduction) read 1.1, 1.2, ...; part 2's read 2.1, ...
+        \counterwithin{chapter}{part}
+        % Don't bold chapter entries in the table of contents (KOMA bolds them
+        % by default). With many top-level parts, a lighter TOC reads better.
+        \setkomafont{chapterentry}{\normalfont}
