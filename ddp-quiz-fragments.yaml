@@ -8,9 +8,10 @@
 # upload this file, and every chapter quiz plus the compound quiz serve the
 # new wording immediately (app-hosted files are read live).
 #
-# App-hosted as: ddp-quiz-fragments  (upload: npm run cli -- files upload
-# ddp-quiz-fragments --kind fragment --file ddp-quiz-fragments.yaml)
-# Chapter quizzes reference it as a sibling hosted file: ./ddp-quiz-fragments
+# Served live from GitHub: chapter quizzes reference it as
+# ../ddp-quiz-fragments.yaml (repo root), so a `git push` updates every quiz.
+# (A legacy app-hosted copy `ddp-quiz-fragments` exists for the retired
+# app-hosted 0020 quiz; ignore it unless that copy is deleted.)
 #
 # NOTE: `discussion.instructions` cannot use fragments (only the top-level
 # `instructions` is a template host). The shared discussion guidance stays

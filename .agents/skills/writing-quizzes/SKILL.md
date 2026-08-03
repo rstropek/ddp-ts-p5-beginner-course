@@ -58,7 +58,7 @@ llm:
 # at the repo root instead; one upload updates all quizzes live).
 fragment_files:
   - id: shared
-    url: "./ddp-quiz-fragments" # sibling app-hosted file
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
 instructions: |
   {{fragment "shared.quiz_context"}}
 
@@ -176,34 +176,38 @@ One per book part, e.g. `0010-introduction/introduction-quiz.yaml`:
   leave `shuffle` on.
 - No own `questions` needed.
 
-## Publish workflow
+## Publish workflow (GitHub-hosted — the canonical flow since Aug 2026)
 
-Run the CLI from the novedu repo (`cd ~/github/chat-prototype`, prefix
-commands with `npm run cli --silent --`). Needs a signed-in teacher for
-uploads (`whoami` to check; `login` opens a browser the human must finish).
+Quizzes are served straight from the book's public GitHub repo
+(`rstropek/ddp-ts-p5-beginner-course`); the novedu server re-reads the raw
+URL on every load, so publishing an edit = `git push`. The CLI runs from the
+novedu repo (`cd ~/github/chat-prototype`, prefix commands with
+`npm run cli --silent --`); only minting codes needs a signed-in teacher
+(`whoami` to check; `login` opens a browser the human must finish).
 
 1. Author/edit the YAML in the book repo.
-2. Upload: `files upload <hosted-name> [--kind quiz] --file <path>` — the
-   server validates with the full pipeline and rejects invalid files; `--kind`
-   only on first upload. Hosted name = file basename without `.yaml` (e.g.
-   `0020-first-program-quiz`). Local `validate` does NOT work for chapter
-   quizzes (the `./ddp-quiz-fragments` ref only resolves between app-hosted
-   siblings) — upload IS the validation.
-3. Confirm end-to-end render:
-   `validate https://novedu.at/api/files/<hosted-name> --kind quiz`.
-4. First publish only: mint a code —
-   `codes create --module quiz --file https://novedu.at/api/files/<hosted-name> --note "Creative Coding book: <chapter> (<nr>)"`
-   (no `--start`/`--end` for book quizzes). Later edits need NO new code:
-   existing codes serve the newest upload immediately.
-5. First publish only: link it at the end of the chapter `.qmd`:
+2. Validate locally: `validate <path> --kind quiz` (works because the
+   fragment ref `../ddp-quiz-fragments.yaml` resolves on the filesystem too).
+3. Commit and push (quiz edits go live immediately for existing codes).
+4. First publish only: confirm the published render —
+   `validate https://raw.githubusercontent.com/rstropek/ddp-ts-p5-beginner-course/refs/heads/main/<folder>/<file>.yaml --kind quiz`
+   — then mint a code:
+   `codes create --module quiz --file <that raw URL> --note "Creative Coding book: <chapter> (<nr>) — GitHub-hosted"`
+   (no `--start`/`--end` for book quizzes). Later edits need NO new code.
+5. First publish only: add a "Check your understanding" section at the end
+   of the chapter `.qmd` (unique anchor `{#sec-quiz-<short>}`): a short
+   intro naming the question count, then
    `{{< quiz <code> title="<Chapter title>" >}}`.
 6. Ask the user to spot-check grading with one deliberately half-right answer
    (the correct/partial boundary is the fragile part).
 
 Editing the shared preamble = edit `ddp-quiz-fragments.yaml` (repo root),
-`validate <path> --kind fragment` (this one DOES validate locally), then
-`files upload ddp-quiz-fragments --file …`. Every quiz picks it up live. Keep
-the library minimal — a broken fragment fails ALL quizzes at once.
+`validate <path> --kind fragment`, then push. Every quiz picks it up live.
+Keep the library minimal — a broken fragment fails ALL quizzes at once.
+
+(Legacy alternative: `files upload <name>` app-hosts a file at
+`https://novedu.at/api/files/<name>`; only relevant if a quiz must not live
+in the public repo.)
 
 ## Student feedback loop
 
