@@ -1,0 +1,150 @@
+---
+title: "Variables: values with a name"
+---
+
+Every program you've written so far draws one picture, and that picture never
+changes. The house stands still, the rings don't move, the smiley keeps
+smiling. In this part of the course your programs come alive: they react to
+the mouse, values change while the program runs, and the picture changes with
+them. The idea that makes all of this possible is the **variable**.
+
+## A variable is a named place for a value {#sec-variable-idea}
+
+A variable is a place in the computer's memory where a value is stored, with
+a name attached to it. Think of a small box with a label: the label is the
+name, and inside the box lies the current value. Whenever your code uses the
+name, the computer opens the box and takes out whatever is inside *right
+now*. The word "variable" comes from *vary*: the content of the box can
+change while the program runs.
+
+You've already met a close relative. In the soccer field project you used
+`SCALE` and `MARGIN`: named values that are set once and never change.
+Those are **constants**. A variable works the same way, with one difference:
+its value may be replaced while the program is running. That difference
+sounds small, but it's exactly what a still picture needs to become an
+interactive program.
+
+## p5.js keeps some variables up to date for you {#sec-system-variables}
+
+The easiest way to see a variable in action is to use one that p5.js manages
+for you. These built-in variables are called **system variables**. You never
+create them and you never change them yourself: p5.js does that, and your
+code just reads them by name.
+
+The two system variables you'll use today are `mouseX` and `mouseY`. They
+always contain the current position of the mouse on the canvas: `mouseX` is
+the distance from the left edge, `mouseY` the distance from the top edge.
+Move the mouse, and p5.js immediately puts the new position into the two
+boxes. So this statement draws a circle wherever the mouse is at the moment
+the statement runs:
+
+```typescript
+circle(mouseX, mouseY, 20);
+```
+
+One more thing worth noticing: the value inside `mouseX` is always a
+*number*. Every value in a program has a **data type**, the kind of value it
+is, and for `mouseX` and `mouseY` that type is `number`. You'll learn more
+about data types in the next chapter.
+
+## Code that runs when something happens {#sec-mouse-moved}
+
+Reading `mouseX` is only half the story. All your code so far lives in the
+`setup` function, and `setup` runs **exactly once**, when the program
+starts. If you draw a circle at `mouseX` inside `setup`, you get one circle
+at the mouse's starting position, and nothing ever moves again.
+
+To follow the mouse, you need code that runs again and again. p5.js has an
+elegant solution: write a function called `mouseMoved`, and p5.js calls it
+automatically **every time the mouse moves across the canvas**:
+
+```typescript
+function setup() {
+  createCanvas(200, 200);
+}
+
+function mouseMoved() {
+  background("lightblue");
+  circle(mouseX, mouseY, 20);
+}
+```
+
+A function like `mouseMoved` is called an **event function**: the movement
+of the mouse is an *event*, and p5.js reacts to the event by running your
+function. The program now works like this: `setup` runs once and creates the
+canvas. Then the program waits. Every time you move the mouse even one pixel,
+p5.js runs `mouseMoved` once, and your drawing code runs with the fresh
+values in `mouseX` and `mouseY`.
+
+Exactness matters here in a sneaky new way. The name `mouseMoved` is an
+agreement between you and p5.js. If you type `mousemoved` or `MouseMoved`,
+you don't get an error message: you simply get a function that p5.js never
+calls, and nothing happens when you move the mouse. If your program stays
+silent, check the spelling of the function name first.
+
+Did you spot the `background("lightblue")` at the top of `mouseMoved`? It
+repaints the whole canvas on every mouse movement, and that erases the
+circle from the previous position. Without that line, every position leaves
+its circle behind and the canvas fills up with smears. Try removing the line
+later in the exercise, watch what happens, then put it back.
+
+::: {.callout-tip}
+## Only the background at the start? That's correct
+When the Crosshairs program starts, you see nothing but the light blue
+background. Nothing is broken: all the drawing code sits in `mouseMoved`,
+so the first crosshairs appears the moment the mouse first moves across
+the canvas.
+:::
+
+## Calculating inside a parameter {#sec-offset-calculations}
+
+Crosshairs are more than a dot at the mouse position: a horizontal line, a
+vertical line, and two circles, all centered on the mouse. The horizontal
+line should start 15 pixels left of the mouse and end 15 pixels right of it.
+You don't need to know the mouse position in advance for that, because a
+parameter can contain a small **calculation**:
+
+```typescript
+line(mouseX - 15, mouseY, mouseX + 15, mouseY);
+```
+
+When the statement runs, the computer takes the current value of `mouseX`,
+subtracts 15 for the starting point, adds 15 for the end point, and draws
+the line. Say the mouse is at (120, 80): the line runs from (105, 80) to
+(135, 80), exactly 30 pixels wide and perfectly centered. The vertical line
+works the same way, with the calculation on `mouseY`.
+
+![The two lines of the crosshairs. Every end point is a small calculation
+with `mouseX` and `mouseY`; the center is the mouse position
+itself.](images/crosshairs-lines.svg){width=480}
+
+The two circles are easier: their center is simply (`mouseX`, `mouseY`), no
+calculation needed. Use `noFill()` before drawing them, like you did for the
+Olympic rings, so only their outlines appear and they don't cover the lines
+underneath.
+
+## Your exercise: Crosshairs {#sec-crosshairs-exercise}
+
+Imagine you're building a balloon shooting game. The player needs crosshairs
+that follow the mouse to aim. That's your task: crosshairs made of two lines
+and two circles, always centered on the mouse.
+
+Pen and paper first, as always, but this sketch is special: it's your first
+sketch where the coordinates are **formulas instead of numbers**. Draw the
+crosshairs large on graph paper, mark the center point, and label it
+(`mouseX`, `mouseY`). Then write the formula next to each line end, like
+(`mouseX - 15`, `mouseY`). You can't write a plain number there, because the
+center moves; the formula is the coordinate.
+
+Then head to the playground:
+
+1. Put your drawing code into the `mouseMoved` function, below the
+   `background` statement that's already there.
+2. Start with the two lines, run the program, and move the mouse across the
+   canvas to test.
+3. Add the two circles with `noFill()`. In the sample, the line arms are
+   15 pixels long and the circles have diameters of 10 and 20, but you can
+   design your own crosshairs, as long as everything stays centered on the
+   mouse.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/crosshairs.yaml >}}

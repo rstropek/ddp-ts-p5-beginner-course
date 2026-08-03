@@ -1,0 +1,11 @@
+                       "(mouseX, mouseY - 15)"
+                                  *
+                                  |
+                                  |
+                                  |
+           *----------------------o-----------------------*
+"(mouseX - 15, mouseY)"           | "(mouseX + 15, mouseY)"
+                                  |
+                                  |
+                                  *
+                       "(mouseX, mouseY + 15)"

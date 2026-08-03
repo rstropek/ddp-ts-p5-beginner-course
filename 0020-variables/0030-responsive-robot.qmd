@@ -1,0 +1,149 @@
+---
+title: "The responsive robot"
+---
+
+This chapter has two stages. First you draw a robot the way you drew the
+house and the cat: with coordinates you choose yourself. Then you rebuild
+the same robot so that it adapts to *any* canvas size, and on the way you
+learn one of the big ideas of user interface programming: replace fixed
+numbers with formulas.
+
+## Stage 1: a robot with fixed numbers {#sec-robot-fixed}
+
+The robot is built from shapes you know well: a rectangle for the head, two
+filled circles for the eyes, a white rectangle for the mouth, and an
+antenna made of a line with a small circle on top. Your task is to match
+the shapes of the example picture; the colors are yours to choose.
+
+You know the routine: graph paper first. Sketch the robot, treat the sheet
+as a 400 by 400 canvas, and write the coordinates next to every shape.
+Then type your program in the playground, one shape at a time.
+
+Keep your sketch and your finished code close by. The robot comes back in
+a few minutes, and your fixed coordinates become the "before" picture of
+this chapter.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/robot.yaml >}}
+
+## What responsive design is {#sec-responsive-design}
+
+Programs run on very different screens: a phone held upright, a tablet held
+sideways, a wide monitor, a projector. A user interface that adapts itself
+to the available space is called **responsive**. You've seen responsive
+design many times without naming it: open a news website and slowly drag
+the browser window narrower. The columns rearrange, pictures shrink, and at
+some point the menu folds itself into a small button. The page *responds*
+to the space it gets.
+
+Now look at your robot from stage 1 with that idea in mind. Change
+`createCanvas(400, 400)` to `createCanvas(200, 400)` and run the program.
+The canvas shrinks, but every shape stays exactly where its numbers put it:
+the robot sticks out or sits lost in a corner. Fixed numbers are only
+correct for the one canvas they were written for. A responsive robot needs
+something better.
+
+## From fixed numbers to formulas {#sec-relative-sizes}
+
+The trick is to stop describing the robot in pixels and start describing it
+in **relationships**: the head is half as wide as the canvas, whatever the
+canvas is. Percentages become multiplications, exactly as in math class:
+50% of the width is `width * 0.5`, 20% is `width * 0.2`. And the values of
+`width` and `height` come from the two system variables you met in the
+snapping exercise: they always hold the current canvas size.
+
+```typescript
+const headWidth: number = width * 0.5;   // 50% of the canvas width
+const headHeight: number = height * 0.5; // 50% of the canvas height
+```
+
+The head should also sit in the middle of the canvas. Centering has a
+little formula of its own, worth understanding once and reusing forever:
+the middle of the canvas is `width / 2`, and the head must start half its
+own width to the left of that point.
+
+```typescript
+const headX: number = width / 2 - headWidth / 2;
+```
+
+![Centering the head: its left edge sits half a head width to the left of
+the canvas middle.](images/centered-head.svg){width=480}
+
+Check the formula with real numbers, on paper. On a 400 pixel wide canvas:
+`headWidth` is 200, and `headX` is 400 / 2 - 200 / 2 = 200 - 100 = 100. Now
+make the canvas 200 pixels wide: `headWidth` becomes 100, and `headX`
+becomes 100 - 50 = 50. Same formula, new numbers, head perfectly centered
+both times. That is the entire secret of the responsive robot: every
+coordinate and every size is a formula built from `width` and `height`, so
+every canvas computes its own robot.
+
+One naming note: `headWidth`, `headHeight`, and `headX` are camelCase
+constants inside `setup`. They're computed once when the program starts and
+never change, and they aren't global settings, so ALL_CAPS would be the
+wrong signal.
+
+## The eyes and Math.min {#sec-math-min}
+
+The specification says: the eye diameter is 20% of the **smaller side** of
+the head. For that you need a way to pick the smaller of two values, and
+TypeScript has one built in: `Math.min(100, 200)` returns 100, and in
+general `Math.min(a, b)` returns the smaller of the two. (The `Math.` in
+front tells you this function comes from TypeScript itself, not from
+p5.js.)
+
+```typescript
+const eyeSize: number = Math.min(headWidth, headHeight) * 0.2;
+```
+
+Why the smaller side? Picture a wide, flat head on a landscape canvas: 20%
+of its long side could be taller than the head itself, and the eyes would
+burst out of the face. Tying the eye size to the smaller side keeps the
+eyes fitting nicely, whichever way the head is stretched.
+
+## Didn't `scale` already solve this? {#sec-scale-vs-formulas}
+
+Fair question. In the soccer field project, one single statement,
+`scale(SCALE)`, resized the whole drawing, and p5.js did all the
+multiplying. Why are you now doing multiplications by hand?
+
+In practice, you *would* use `scale` whenever it fits the job. When a
+library offers a ready-made tool, professionals use it instead of rebuilding
+it; that's the whole point of libraries, and the soccer field is the
+perfect example: the field must keep its exact proportions, so one scaling
+factor for everything is exactly right.
+
+In this exercise, however, we pretend for a moment that `scale` doesn't
+exist, for one simple reason: writing size formulas yourself is the skill
+you're here to practice. Responsive layouts are full of little rules like
+"center this", "20% of the smaller side", "half of the canvas", and those
+rules are formulas, whether a `scale` command exists or not. Look closely
+at the two example robots in the exercise, and you'll spot rules at work
+that a single scaling factor couldn't express: the tall robot and the wide
+robot have different proportions, yet the eyes stay perfectly round in
+both. Decisions like that don't come from a magic command, they come from a
+programmer who wrote the right formula.
+
+## Your exercise: Responsive robot {#sec-responsive-robot-exercise}
+
+The exercise description contains a specification picture with every
+measurement of the robot as a percentage: head, eyes, mouth, and antenna.
+The robot is symmetrical, which saves you work. Build it like this:
+
+1. **Read the starter code.** The head is already there, written with
+   formulas. Walk through it line by line and make sure you can explain
+   every formula; the head is the model for everything you'll add.
+2. **Paper before keyboard.** Make a table with one row per measurement
+   (`headWidth`, `eyeSize`, `mouthY`, and so on) and two columns: one for a
+   400 by 400 canvas, one for 200 by 400. Compute every value by hand from
+   the percentages in the specification. This table is your test plan.
+3. **Type the formulas.** One shape at a time, run after every step. Every
+   constant gets an explicit data type, as always in this course.
+4. **The final test.** Change `createCanvas(400, 400)` to
+   `createCanvas(200, 400)`, then `createCanvas(400, 200)`, and run again.
+   The robot must adapt every time, without you touching anything else. If
+   a shape sticks out or refuses to move, a fixed number is hiding in your
+   code somewhere: find it and turn it into a formula.
+
+Compare what the program draws with the numbers in your table. When they
+match for both canvas sizes, your robot is truly responsive.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/responsive_robot.yaml >}}

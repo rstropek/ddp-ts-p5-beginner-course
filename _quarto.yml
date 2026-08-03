@@ -37,6 +37,11 @@ book:
         - 0010-introduction/0080-olympic-rings-advanced.qmd
         - 0010-introduction/0090-practice-projects.qmd
         - 0010-introduction/0100-reading-docs.qmd
+    - part: "Variables"
+      chapters:
+        - 0020-variables/0010-crosshairs.qmd
+        - 0020-variables/0020-snap.qmd
+        - 0020-variables/0030-responsive-robot.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

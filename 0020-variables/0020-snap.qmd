@@ -1,0 +1,196 @@
+---
+title: "Your first formula: snapping to a grid"
+---
+
+Open a presentation program and drag a shape around: it doesn't move
+smoothly, it jumps in small steps, so that shapes line up neatly without
+fiddling. This behavior is called **snapping**: the shape snaps to an
+invisible grid. In this chapter you build exactly that. A marker follows the
+mouse, but instead of following it pixel by pixel, it jumps from grid corner
+to grid corner, every 40 pixels. To get there, you'll declare your own
+constants, meet data types properly, and write your first real formula.
+
+## Constants you declare yourself {#sec-declare-const}
+
+The starter code of the Snapping exercise begins with two lines you haven't
+written yourself before:
+
+```typescript
+const snap: number = 40;       // marker must snap every 40 pixels
+const markerSize: number = 10; // size of marker
+```
+
+Read the first line from left to right, piece by piece:
+
+- `const` tells TypeScript: here comes a named value, and it will never
+  change after this line.
+- `snap` is the name. From now on, you write `snap` in your code instead of
+  the number 40.
+- `: number` is the **data type**: the kind of value this constant holds.
+- `= 40` puts the value into the box, and the semicolon ends the statement.
+
+You saw the advantages of constants in the soccer field project: a name like
+`snap` tells the reader what the number *means*, and the value lives in one
+single place. Change the 40 to 50 and the whole program uses the new grid
+size. TypeScript also protects a constant: if a later line tries to give
+`snap` a new value, you get a red squiggle immediately.
+
+## Every value has a data type {#sec-data-types}
+
+Every value in a program has a data type: the kind of value it is. Three
+types matter most in this course:
+
+- **`number`** is any numeric value: 40, 3.25, -10, 0. Every coordinate,
+  size, and angle you've used so far is a number.
+- **`string`** is text. A string is written in quotes, and you've been using
+  strings since your very first program: every color name like
+  `"lightblue"` is a string.
+- **`boolean`** is the smallest type of all: its only values are `true` and
+  `false`. Booleans answer yes/no questions, and they'll take the stage in a
+  few chapters.
+
+The data type in a declaration is a promise: `const snap: number = 40;`
+promises that `snap` holds a number. TypeScript holds you to it. Try
+`const snap: number = "hello";` and the spell checker for code marks the
+line immediately, because text is not a number.
+
+::: {.callout-important}
+## Course rule: every declaration gets a data type
+In this course, **every constant and every variable you declare must have an
+explicit data type**, like `: number` or `: string`. Honestly, this is not
+technically necessary: TypeScript can usually figure out the type on its own
+(it sees the 40 and knows it's a number). But you are here to learn, and
+writing the type out forces you to think, every single time, about what kind
+of value you're working with. That habit will pay off for years. Like
+showing your work in math class: the shortcut exists, but not while you're
+learning.
+:::
+
+## Two kinds of constants, two kinds of names {#sec-const-naming}
+
+Look at the names `SCALE` and `snap`. Both are constants, so why is one
+written in capital letters and the other one not? Because programmers use
+constants for two different jobs, and the name shows the job:
+
+- **Global configuration constants** like `SCALE` and `MARGIN` in the soccer
+  field project sit at the top of the program, outside every function. They
+  are settings for the whole program, meant to be found and tweaked easily.
+  Their names are written in ALL_CAPS, with underscores between words, for
+  example `MAX_SPEED`.
+- **Ordinary constants** like `snap`, `markerSize`, or the `x` and `y`
+  you'll compute in a moment live inside a function. They simply hold a
+  value that doesn't change after it's set. Their names are written in
+  camelCase: first word lowercase, every further word capitalized.
+
+The computer doesn't care about these conventions, but people reading your
+code do: an ALL_CAPS name signals "program setting, tweak me here", a
+camelCase `const` just signals "this value won't change". Make `const` your
+default choice. For the rare value that must change while the program runs,
+TypeScript has the keyword `let`, and you'll meet it soon.
+
+## The snapping formula {#sec-snap-formula}
+
+Now for the heart of the exercise. The marker may only sit on grid corners:
+0, 40, 80, 120, 160, or 200. The mouse, however, is somewhere in between,
+say at `mouseX = 130`. Which corner is the nearest one?
+
+You can find it in three steps, and each step is simple:
+
+1. **Divide** the position by the grid size: 130 / 40 = 3.25. Read that as
+   "the mouse is 3.25 grid squares from the left edge".
+2. **Round** to the nearest whole number: 3.25 becomes 3. Now you know the
+   nearest corner is the third one.
+3. **Multiply** back by the grid size: 3 × 40 = 120. That's the corner's
+   position in pixels.
+
+Rounding is done by the p5.js function `round`: `round(3.25)` returns 3,
+`round(3.6)` returns 4, and `round(3.5)` rounds up to 4, just like in math
+class. Put the three steps together and you get your first formula, written
+in one line and stored in a constant:
+
+```typescript
+const x: number = round(mouseX / snap) * snap;
+const y: number = round(mouseY / snap) * snap;
+```
+
+![Two examples of the snapping formula on the x axis: 130 is 3.25 grid
+squares from the edge and snaps back to 120; 145 is 3.625 squares and snaps
+forward to 160.](images/snap-number-line.svg){width=460}
+
+Why store the result in a constant instead of writing the formula directly
+into every parameter? Three reasons: you need the value several times (for
+both marker lines and for a text output), the computer calculates it only
+once, and `x` with a formula next to it is much easier to read than the same
+formula repeated four times. Note the names: `x` and `y` are camelCase
+constants inside a function, computed fresh on every mouse movement, and
+never changed after that.
+
+## Writing text on the canvas {#sec-drawing-text}
+
+The exercise has a second task: show the marker's current position, like
+`120/160`, in the lower left corner of the canvas. Two new tools make that
+possible.
+
+The first is the command `text`. It draws characters on the canvas, at a
+position you choose:
+
+```typescript
+text("hello", 5, 195);
+```
+
+The first parameter is a string, the two numbers are the position of the
+text on the canvas. Text is drawn in the current `fill` color, so set
+`fill` before drawing it, and use `noStroke()` so the letters don't get an
+outline.
+
+The second tool solves this puzzle: `x` and `y` are numbers, but `text`
+wants a string. A **template string** builds one from the other:
+
+```typescript
+text(`${x}/${y}`, 5, height - 5);
+```
+
+A template string is written between backticks `` ` ``, not normal quotes.
+Inside it, `${...}` is a window: the computer inserts the current value of
+whatever is between the braces. If `x` is 120 and `y` is 160, the result is
+the string `120/160`.
+
+::: {.callout-tip}
+## Where is the backtick on your keyboard?
+On an Austrian or German keyboard, the backtick `` ` `` hides on the key
+right of the ß: press Shift together with that key, then press the space
+bar once. The extra space is needed because it's an accent key
+(*Akzenttaste*): the keyboard waits to see if you want to put the accent on
+a letter, and the space bar says "no letter, just the character itself".
+:::
+
+One detail in that statement deserves a close look: `height - 5`. Where
+`mouseX` and `mouseY` were your first system variables, `width` and
+`height` are your next two: they always hold the size of the canvas, as set
+by `createCanvas`. So `height - 5` means "5 pixels above the bottom edge",
+no matter how big the canvas is. Remember these two variables: they play
+the main role in the next chapter.
+
+## Your exercise: Snapping {#sec-snapping-exercise}
+
+Time to build the snapping marker. Work in this order:
+
+1. **Paper first.** Draw the 200 by 200 canvas on graph paper and mark the
+   grid corners every 40 pixels. That gives 6 positions per axis, 36 corners
+   in total: the only places your marker may ever sit.
+2. **Calculate by hand.** Pick three mouse positions, for example (130, 45),
+   (199, 60), and (20, 180). Run the formula on paper for each one: divide,
+   round, multiply. Write down where the marker must land. Predicting the
+   result before the computer shows it is the whole point of the paper step.
+3. **Type the formulas** for `x` and `y` into `mouseMoved`, then draw the
+   marker: a horizontal and a vertical line through (`x`, `y`), each using
+   `markerSize`, just like the crosshairs in the previous exercise.
+4. **Add the text output** in the lower left corner with a template string.
+5. **Test against your paper notes.** Move the mouse to your three test
+   positions and check that the marker lands exactly where you predicted.
+
+The look of the marker is yours to choose; the sample uses white lines on
+the light blue background. The snapping behavior, however, must be exact:
+corners only, every 40 pixels.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/snap.yaml >}}
