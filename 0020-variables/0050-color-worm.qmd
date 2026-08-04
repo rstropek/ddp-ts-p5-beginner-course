@@ -45,6 +45,13 @@ whose value can change while the program runs is a **variable**, and
 unlike `mouseX` and `mouseY`, which p5.js manages for you, this one is
 entirely yours.
 
+::: {.callout-note}
+## You may also meet var
+Old JavaScript code declares variables with a third keyword, `var`. It
+comes from the language's early days, and in this course it is not
+used: declare every value with `const` or `let`, never with `var`.
+:::
+
 Replacing the value is called an **assignment**, and it's just the name,
 an equals sign, and the new value:
 

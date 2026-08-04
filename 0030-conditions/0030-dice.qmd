@@ -69,23 +69,15 @@ if (dice === 1) {
 }
 ```
 
-Yes, that's really three equals signs in a row, and the count matters.
-A single `=` is an *assignment*, an order: "put this value into the
-box". The triple `===` is a *comparison*, a question: "are these
-equal?". Writing `if (dice = 1)` instead of `if (dice === 1)` is one of
-the most classic mistakes in programming. TypeScript catches many of
-these slips with a red squiggle, but not all of them, so train your
-eyes now: inside a condition, an `=` alone is almost always wrong.
-
-::: {.callout-note}
-## You may also meet ==
-JavaScript also has a two-character comparison operator, `==`. It's a
-leftover from the language's early days with surprising behavior: for
-example, `5 == "5"` is `true`, even though a number and a string are
-clearly different things. `===` has no such surprises. The course rule
-is simple: always compare with `===` and `!==`, never with `==` or
-`!=`.
-:::
+The count of equals signs matters. A single `=` is an *assignment*, an
+order: "put this value into the box". The triple `===` is a
+*comparison*, a question: "are these equal?". Writing `if (dice = 1)`
+instead of `if (dice === 1)` is one of the most classic mistakes in
+programming. TypeScript catches many of these slips with a red
+squiggle, but not all of them, so train your eyes now: inside a
+condition, an `=` alone is almost always wrong. You may also spot a
+two-character `==` in code on the web; in this course, we always
+compare with `===` and `!==`.
 
 With `===` in hand, the whole program becomes one chain that picks
 exactly one face out of six:
