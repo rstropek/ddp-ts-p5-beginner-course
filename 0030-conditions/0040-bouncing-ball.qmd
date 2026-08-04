@@ -88,7 +88,26 @@ The last line moves the ball, using an operator you can almost guess.
 `circleCenterX = circleCenterX + direction`: take the value in the
 box, add `direction`, put the result back. In the color worm you wrote
 the long form; the short form is what programmers actually type.
-Subtraction and multiplication have the same shortcut: `-=` and `*=`.
+
+Every calculation operator you know has such a short form, and together
+they are called the **compound assignment operators**:
+
+| Operator | Short form | Means the same as |
+|:--------:|:-----------|:------------------|
+| `+=` | `score += 10` | `score = score + 10` |
+| `-=` | `lives -= 1` | `lives = lives - 1` |
+| `*=` | `direction *= -1` | `direction = direction * -1` |
+| `/=` | `speed /= 2` | `speed = speed / 2` |
+| `%=` | `colorHue %= 360` | `colorHue = colorHue % 360` |
+
+: The five compound assignment operators.
+
+The pattern never changes: take the value the variable currently holds,
+calculate with it, and store the result in the same variable. Only
+variables declared with `let` can be used this way, because a `const`
+never changes its value. The last row uses the `%` operator from the
+color worm (@sec-modulo), the one that gives the remainder of a
+division.
 
 Now the animation adds up. With `direction` holding 2, every frame
 shifts the ball 2 pixels to the right. At 60 frames per second, that's
