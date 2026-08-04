@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Quarto rasterizes the chapters' .svg diagrams to PDF for the LaTeX
       # pass; that conversion is done by rsvg-convert, which is not preinstalled.
@@ -74,7 +74,7 @@ jobs:
         run: quarto render
 
       - name: Upload PDF
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: creative-coding-pdf
           path: _output/Creative-Coding.pdf
@@ -86,7 +86,7 @@ jobs:
           zip -r ../creative-coding-website.zip . -x '*.DS_Store'
 
       - name: Upload website zip
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: creative-coding-website
           path: creative-coding-website.zip
