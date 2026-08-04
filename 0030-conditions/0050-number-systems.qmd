@@ -1,0 +1,284 @@
+---
+title: "Number systems: how computers count"
+---
+
+![The binary guesser, solved: the player toggled the four binary digits to 1100, the program checked the guess and everything turns green.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/binary-guesser.png){width=360}
+
+This chapter ends with a game you can challenge your friends with: the
+program shows a number, and the player has to click it together in
+binary, the number system computers use internally. When the guess is
+right, the whole display flashes green. The path to that game leads
+through three warm-up exercises: first you'll take ordinary numbers
+apart digit by digit, then you'll do the same in binary, then in
+hexadecimal. By the end you'll not only have a game, you'll read the
+computer's own number language.
+
+## Taking a number apart {#sec-extract-digits}
+
+The first challenge sounds almost silly: the program picks a random
+number, say 4711, and must draw each digit in its own box: a 4, a 7, a
+1, a 1. But `num` holds the *value* 4711, not four separate digits.
+How do you get single digits out of a number? With two operations you
+already know, working as a team.
+
+The `%` operator from the color worm gives the remainder of a
+division, and that makes it a digit extractor: `num % 10` is the
+remainder when dividing by 10, which is exactly the last digit.
+`4711 % 10` is 1.
+
+`Math.floor` from the dice chapter rounds down, and that makes it a
+digit remover: `Math.floor(num / 10)` chops off the last digit.
+`4711 / 10` is 471.1, and flooring it leaves 471.
+
+Chain the two and you can reach every digit: divide first to shift the
+digit you want to the last place, then `% 10` to grab it:
+
+```typescript
+const digit1: number = num % 10;                     // ones
+const digit2: number = Math.floor(num / 10) % 10;    // tens
+const digit3: number = Math.floor(num / 100) % 10;   // hundreds
+```
+
+Why 10, 100, and their bigger siblings? Because that's how our number
+system is built: the digits of 352 are worth their face value times a
+**place value**, and the place values are the powers of ten:
+
+![The number 352 taken apart: each digit is worth its face value times
+its place value, and the place values are the powers of
+ten.](images/place-value.svg){width=380}
+
+Check the recipe against the picture: dividing 352 by 100 and flooring
+gives 3, the hundreds digit. Dividing by 10 and flooring gives 35, and
+`35 % 10` is 5, the tens digit. The recipe works for any place: divide
+by the place value, floor, take `% 10`.
+
+## Your exercise: Digits {#sec-digits-exercise}
+
+Now build it: a random number up to six digits, each digit drawn in its
+own yellow box.
+
+1. **Play computer first.** Pick a number, for example 4711, and run
+   the recipe on paper for all six digits: divide, floor, `% 10`.
+   Two of the six results are worth predicting carefully: what do
+   `digit5` and `digit6` hold when the number only has four digits?
+2. **Read the starter code.** The random number is already there:
+   `Math.floor(random(0, 1_000_000))`, the fair-whole-number recipe
+   from the dice. New in it: TypeScript lets you write `1_000_000`
+   instead of `1000000`, with underscores as grouping marks that mean
+   nothing to the computer and everything to human eyes.
+3. **Extract the six digits** into constants `digit1` to `digit6`,
+   with explicit data types.
+4. **Draw the six boxes** with `rect`. Place them with a formula, not
+   with six hand-computed numbers: the box for digit number `i` starts
+   at `50 + i * 75`. You'll thank yourself in the next two exercises.
+5. **Draw the digits** into the boxes with `text`, largest place value
+   on the left: `digit6` in the leftmost box, `digit1` in the
+   rightmost. The starter already prints the whole number small at the
+   bottom, so you can check your digits against it at a glance.
+6. **Test with the paper number.** Force `num` to 4711 for a moment,
+   like you forced the dice, and compare every box with your paper
+   table. Numbers with fewer than six digits show leading zeros,
+   `004711`, and that's correct: the empty places hold zeros.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/digits.yaml >}}
+
+## Counting with only two digits: binary {#sec-binary}
+
+Here's a thought experiment: our number system has ten digits, 0 to 9,
+probably because we have ten fingers. A computer has no fingers. Deep
+inside, it's electronics, and a wire knows only two states: current on
+or current off, 1 or 0. So computers count with exactly two digits,
+and a number system with two digits is called **binary**.
+
+Binary works precisely like decimal, only the place values change.
+Decimal places are powers of ten: 1, 10, 100, 1000. Binary places are
+powers of two: 1, 2, 4, 8, 16, 32, each place double the one before.
+A single binary digit is called a **bit**. The binary number 1101
+means one 8, one 4, no 2, and one 1:
+
+![The binary number 1101 taken apart: the place values are the powers
+of two, and they add up to 13.](images/binary-weights.svg){width=380}
+
+With six binary digits, the largest number you can write is 111111,
+which is 32 + 16 + 8 + 4 + 2 + 1 = 63. Practice reading a few: 101 is
+5, 1000 is 8, 1010 is 10. Then practice writing: to turn 11 into
+binary, hunt for the powers of two from big to small: an 8 fits (3
+left), a 4 doesn't fit into 3, a 2 fits (1 left), a 1 fits. So 11 is
+1011.
+
+And the digit-extraction recipe? It carries over beautifully. In
+decimal you divided by the place values, the powers of ten, and took
+`% 10`. In binary you divide by the powers of two and take `% 2`:
+
+```typescript
+const digit1: number = num % 2;
+const digit2: number = Math.floor(num / 2) % 2;
+const digit3: number = Math.floor(num / 4) % 2;
+```
+
+## Your exercise: Binary digits {#sec-binary-exercise}
+
+Same picture, new number system: six boxes, but now they show the
+random number in binary.
+
+1. **Paper first.** Convert three numbers to binary by hand, for
+   example 13, 42, and 63. Check each by adding the place values back
+   together.
+2. **Copy your digits solution** into the empty starter and change the
+   number range: the boxes can show at most 63, so the roll becomes
+   `Math.floor(random(0, 64))`.
+3. **Change the extraction** from base ten to base two: the divisors
+   1, 10, 100, ... become 1, 2, 4, 8, 16, 32, and every `% 10`
+   becomes `% 2`.
+4. **Test against your paper conversions**, again by forcing `num` to
+   your three practice values. The small decimal number at the bottom
+   is your reference.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/binary-digits.yaml >}}
+
+## Sixteen digits: hexadecimal {#sec-hex}
+
+Binary is honest but long-winded: 1101 0111 for a number as small as
+215. Programmers therefore love a third system, **hexadecimal** (or
+just *hex*), with sixteen digits. Sixteen is a power of two, and that
+makes hex a perfect abbreviation for binary: one hex digit stands for
+exactly four bits. The place values are the powers of sixteen: 1, 16,
+256.
+
+Sixteen digits need sixteen symbols, and after 0 to 9 we run out. Hex
+borrows letters for the rest: A stands for 10, B for 11, up to F for
+15. The hex number 2F means 2 times 16 plus 15, which is 47. You've
+already brushed against hex without knowing it: an RGB channel value
+from 0 to 255 fits exactly two hex digits, from 00 to FF, and that's
+why colors on the web are often written as codes like `#FF0000`, red
+at full power and the other channels at zero.
+
+Extracting hex digits is the same recipe a third time, with divisor
+16. For the powers, the starter uses a helper you haven't met:
+`Math.pow(16, 2)` computes 16 to the power of 2, so
+`Math.pow(base, exponent)` saves you from typing `16 * 16`:
+
+```typescript
+const digit2: number = Math.floor(num / Math.pow(16, 1)) % 16;
+```
+
+One thing is genuinely new: such a digit is a *number* from 0 to 15,
+but on the screen, 10 to 15 must appear as the letters A to F. A
+number-to-symbol translation with exact cases: that's an
+`if`/`else if` chain, like the dice faces:
+
+```typescript
+if (digit1 < 10) {
+  text(digit1, x, y);
+} else if (digit1 === 10) {
+  text("A", x, y);
+} else if (digit1 === 11) {
+  text("B", x, y);
+} // ... and so on up to F
+```
+
+## Your exercise: Hex digits {#sec-hex-exercise}
+
+Three boxes this time, showing the random number in hex.
+
+1. **Paper first.** Convert 47, 255, and 3000 to hex by hand: divide
+   by 256, then 16, then 1, and translate 10 to 15 into A to F.
+2. **Adapt your solution:** three digits instead of six, divisors 1,
+   16, and 256, extraction with `% 16`. The biggest three-digit hex
+   number is FFF, which is 4095, so the roll is
+   `Math.floor(random(0, Math.pow(16, 3)))`.
+3. **Write the translation chain** for each box: digits below 10 are
+   printed as they are, 10 to 15 as A to F.
+4. **Test with forced values**, at least 255 (should read 0FF) and
+   4095 (FFF).
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/hex-digits.yaml >}}
+
+## The project: Binary guesser {#sec-binary-guesser}
+
+Time to put everything from this part into one program: a game. The
+computer shows a number from 1 to 15 and four boxes holding 0000. The
+player clicks boxes to flip their bits between 0 and 1 until the four
+bits show the number in binary. After every click the program checks
+the guess, and when it's right, the display turns lime green and
+announces "Correct!". Random numbers, drawing, conditions, binary:
+everything you've built in this part, working together.
+
+One tool is still missing, and it's the sibling of `||` from the
+bouncing ball. To decide whether a click landed inside a box, two
+things must *both* be true: the horizontal position must be in the
+box's x range *and* the vertical position in its y range. The **AND
+operator** `&&` combines two boolean questions and is `true` only
+when both parts are true:
+
+```typescript
+if (mouseY >= 100 && mouseY <= 175) {
+  // the click is at the height of the boxes
+}
+```
+
+Compare the two siblings: `||` is satisfied by *at least one* true
+part, `&&` insists on *both*. For the boxes, that means two `&&`
+checks per click: first whether `mouseY` is in the boxes' row, then,
+for each box, whether `mouseX` lies between the box's left and right
+edge. Your box-position formula from the digits exercise tells you
+those edges: box `i` spans from `50 + i * 75` to `50 + i * 75 + 50`.
+
+Two smaller building blocks complete the plan. Flipping a bit is a
+two-case decision on a global variable:
+
+```typescript
+if (guessedDigit1 === 1) {
+  guessedDigit1 = 0;
+} else {
+  guessedDigit1 = 1;
+}
+```
+
+And checking the guess means converting the four bits back into a
+number, place value times digit, exactly like the diagrams in this
+chapter:
+
+```typescript
+let guessedNumber: number = guessedDigit4 * 8;
+guessedNumber += guessedDigit3 * 4;
+guessedNumber += guessedDigit2 * 2;
+guessedNumber += guessedDigit1 * 1;
+```
+
+Then one `===` comparison against the target number decides between
+yellow and lime.
+
+Build the game in the playground's five steps, testing after each:
+
+1. **The start screen.** In `setup`, roll a number from 1 to 15, store
+   it in a global variable, and draw the question, the four boxes, and
+   the four zeros. Sketch the layout on graph paper first and write
+   the box edges down; you'll need them for the click test.
+2. **The boxes.** If they aren't yet, place the boxes with the
+   `50 + i * 75` formula.
+3. **Click detection.** In `mouseClicked`, write the `&&` conditions,
+   and before any game logic, just print which box was hit. Verify all
+   four boxes and, importantly, that clicks *outside* the boxes do
+   nothing. Only then continue: debugging click ranges is much easier
+   while the program does nothing else.
+4. **Flip the bits.** Add the four global bit variables, flip the
+   right one on each click, and redraw the boxes and digits so the
+   player sees the change.
+5. **Check the guess.** After each click, convert the bits to a
+   number and compare with the target. On a match, redraw everything
+   in lime and print "Correct!". Play a few rounds, and then hand the
+   game to someone else: watching another person use your program is
+   the oldest and best test in software.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/binary-guesser.yaml >}}
+
+## Check your understanding {#sec-quiz-numbers}
+
+When your binary guesser has survived its first player, take the short
+quiz below. You answer seven questions about this chapter in your own
+words, and an AI reads your answers and tells you what you already
+understand and what you should read again. The quiz is anonymous, and
+answering in German is fine too.
+
+{{< quiz hb34gpvahn title="Number systems" >}}

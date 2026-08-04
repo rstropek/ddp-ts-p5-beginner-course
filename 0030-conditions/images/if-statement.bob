@@ -1,0 +1,11 @@
+ "the keyword"    "the condition, in parentheses:"
+       |          "a question whose answer is a boolean"
+       |                        |
+       v                        v
+    .------.  .------------------------.  .----------------------.
+    |  if  |  | "(mouseX < width / 3)" |  | "{ message = ...; }" |
+    '------'  '------------------------'  '----------------------'
+                                                     ^
+                                                     |
+                    "the block, in braces: runs only"|
+                      "when the answer is true"

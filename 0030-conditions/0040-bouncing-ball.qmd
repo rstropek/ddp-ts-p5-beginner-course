@@ -1,0 +1,203 @@
+---
+title: "The bouncing ball: your first animation"
+---
+
+![The finished first stage: two balls on their endless journey, one traveling left and right, the other up and down.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/bouncing-ball.png){width=360}
+
+So far, movement in your programs always came from you: no mouse, no
+motion. This chapter breaks that rule. A ball flies across the canvas
+all by itself, and when it reaches a wall, a condition notices and sends
+it back the other way, forever. You'll first study and extend a
+one-ball starter program, adding a second ball that bounces vertically.
+Then, in the advanced stage, you'll set a single ball loose diagonally,
+bouncing off all four walls, endlessly crisscrossing the canvas.
+
+## An animation is many pictures {#sec-draw-loop}
+
+Every movie ever made is a trick: a rapid series of still pictures,
+each slightly different from the one before. Show about 60 of them per
+second and human eyes perceive motion. Computer animation works exactly
+the same way, and each still picture is called a **frame**.
+
+p5.js has a function slot ready for this, and it's the last of the big
+ones: `draw`. You know the pattern from `mouseMoved` and
+`mouseClicked`: you write a function with the agreed name, and p5.js
+calls it at the right moments. For `draw`, the right moment is *every
+frame*: p5.js calls it around 60 times per second, from program start
+until you close the page, no events needed. Whatever `draw` paints is
+one frame of your movie.
+
+Compare your three kinds of functions: `setup` runs exactly once, at
+the start. Event functions like `mouseClicked` run when the user does
+something. And `draw` runs constantly, on its own. Between a frame and
+the next, your global variables keep their values, and that's the whole
+secret of animation: change a variable a little every frame, and the
+picture it controls comes alive.
+
+## A ball that moves itself {#sec-moving-ball}
+
+The starter code animates one ball with exactly that recipe. The moving
+part is a global variable for the ball's horizontal position and a
+second one for its current travel direction:
+
+```typescript
+let circleCenterX: number = 0;
+let direction: number = 2;
+```
+
+Each frame, `draw` does three things: repaint, draw, move.
+
+```typescript
+function draw() {
+  background("gold");
+
+  stroke("white");
+  strokeWeight(3);
+  fill("lime");
+  circle(circleCenterX, height / 2, circleDiameter);
+
+  circleCenterX += direction;
+}
+```
+
+The `background` call first: it repaints the whole canvas and erases
+the previous frame. You know this decision from the crosshairs and the
+color worm: without it, every frame leaves its ball behind and the path
+smears across the screen. Then the ball is drawn at its current
+position, halfway up the canvas.
+
+The last line moves the ball, using an operator you can almost guess.
+`circleCenterX += direction` is the short form of
+`circleCenterX = circleCenterX + direction`: take the value in the
+box, add `direction`, put the result back. In the color worm you wrote
+the long form; the short form is what programmers actually type.
+Subtraction and multiplication have the same shortcut: `-=` and `*=`.
+
+Now the animation adds up. With `direction` holding 2, every frame
+shifts the ball 2 pixels to the right. At 60 frames per second, that's
+about 120 pixels per second of smooth flight. The value of `direction`
+is nothing less than the ball's speed, in pixels per frame.
+
+## Turning around at the wall {#sec-bounce}
+
+Left alone, `circleCenterX` grows past the right edge and the ball
+flies off the canvas, never to return. Time for a condition: when the
+ball reaches a wall, its direction must turn around.
+
+Turning around is beautifully cheap. A ball moving right has direction
+2; moving left means direction -2. One multiplication flips between
+the two: `direction *= -1` turns 2 into -2 and, at the other wall,
+-2 back into 2. The same line bounces off both walls.
+
+And when should it run? When the ball has reached the right wall *or*
+the left wall. That little word "or" is a new operator: `||` (the
+**OR operator**) combines two boolean questions into one, and the
+combined result is `true` when at least one of the two parts is true:
+
+```typescript
+if (circleCenterX >= width || circleCenterX <= 0) {
+  direction *= -1;
+}
+```
+
+![One condition guards both walls: past the left edge or past the
+right edge, either answer flips the
+direction.](images/bounce-direction.svg){width=480}
+
+One detail deserves a professional's eye: the comparisons are `>=` and
+`<=`, not `===`. Play computer to see why. With a speed of 2 starting
+at 0, the positions are 0, 2, 4, ..., and on a 300 pixel canvas the
+ball lands exactly on 300, so `=== width` would happen to work. Now
+change the speed to 7: the positions jump 294, 301, and the ball is
+never *exactly* at 300. An `===` condition would never fire, and the
+ball would sail off the canvas forever. Conditions that guard a border
+should ask "at or beyond", not "exactly at": then even a fast ball
+that overshoots gets caught.
+
+::: {.callout-tip}
+## The two vertical bars
+On an Austrian or German keyboard, the `|` character is typed with
+AltGr and the key left of Z (the one with `<` on it). For `||`, type
+it twice. The character is called a *pipe*, and yes, the OR operator
+really is two of them; a single `|` exists too but does something
+entirely different.
+:::
+
+## Your exercise, part 1: a second ball {#sec-bouncing-exercise}
+
+Start with the single-ball program and give it a partner:
+
+1. **Read the starter code** until every line has a job you can name.
+   One small chore while you read: the playground's starter declares
+   its globals without data types; add them so the code matches the
+   listings in this chapter (every declaration gets one, as always).
+2. **Play computer around the bounce.** On paper, make a table with
+   the columns "frame", "`circleCenterX` when `draw` starts", and
+   "`direction` when `draw` ends". Start a few frames before the right
+   wall, at `circleCenterX = 296`, and fill in five rows. The row where
+   the condition fires is the whole point of the table.
+3. **Add a second ball** that travels vertically: it starts at the top,
+   moves down, and bounces between top and bottom walls. It needs its
+   own position variable and its own direction variable, and it should
+   wear a different fill color. Both balls are drawn in the same
+   `draw` function, after the one `background` call. The second ball's
+   condition guards `height` and 0 instead of `width` and 0.
+4. **Test both directions.** Watch at least one full bounce at every
+   wall: right, left, bottom, top.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/bouncing-ball.yaml >}}
+
+::: {.callout-tip}
+## A ball with more manners
+Look closely at a bounce: the ball's center reaches the wall, so half
+the ball sinks into it before turning around. If that bothers your
+designer's eye, refine the conditions so the ball's *edge* touches the
+wall instead: the center then must stay `circleDiameter / 2` away from
+each border. Optional, but satisfying.
+:::
+
+## Your exercise, part 2: the diagonal ball {#sec-advanced-exercise}
+
+Now the advanced stage, and this time the playground gives you an
+almost empty file: one ball, starting at a random position, flying
+diagonally, bouncing off all four walls.
+
+Diagonal flight sounds new, but it's only the two motions you just
+built, happening to one ball at the same time: the x position changes
+by a horizontal direction, the y position by a vertical one, every
+frame. So the ball needs four global variables: two for its position,
+two for the two directions.
+
+Two insights from planning this on paper before you code:
+
+- **The starting position is random**, so the position variables can't
+  get their values in the declaration: `random(0, width)` needs the
+  canvas, and the canvas exists only after `createCanvas` has run.
+  You know the pattern from the color areas' `message`: declare the
+  globals without a value, `let circleCenterX: number;`, and assign
+  them in `setup`.
+- **Keep the two bounce conditions separate.** It's tempting to chain
+  all four wall checks into one big `||` condition, but think about
+  what must happen: hitting the left or right wall flips only the
+  horizontal direction; hitting the top or bottom flips only the
+  vertical one. One if statement per axis, each flipping its own
+  direction variable. If you merged them, a touch of the side wall
+  would also reverse the vertical motion, and the ball would stutter
+  along the walls instead of bouncing cleanly.
+
+Build it in this order: canvas and random start in `setup`; in `draw`
+repaint, draw the ball, move both coordinates, then the two bounce
+conditions. Test by simply watching a while: the ball should visit all
+four walls and leave each one at the mirrored angle. If you kept the
+edge refinement from part 1, carry it over here too.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/bouncing-ball-advanced.yaml >}}
+
+## Check your understanding {#sec-quiz-bouncing}
+
+When you've finished both stages, take the short quiz below. You answer
+seven questions about this chapter in your own words, and an AI reads your
+answers and tells you what you already understand and what you should read
+again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz plle66s4sn title="The bouncing ball" >}}

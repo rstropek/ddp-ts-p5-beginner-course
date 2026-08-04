@@ -47,6 +47,13 @@ book:
         - 0020-variables/0060-color-picker.qmd
         - 0020-variables/0070-string-concat.qmd
         - 0020-variables/0080-drawing-tools.qmd
+    - part: "Conditions"
+      chapters:
+        - 0030-conditions/0010-color-areas.qmd
+        - 0030-conditions/0020-color-quadrants.qmd
+        - 0030-conditions/0030-dice.qmd
+        - 0030-conditions/0040-bouncing-ball.qmd
+        - 0030-conditions/0050-number-systems.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

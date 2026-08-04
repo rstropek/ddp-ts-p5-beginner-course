@@ -1,0 +1,9 @@
+    0            "width / 3"       "2 * width / 3"    "width"
+    |                 |                 |                 |
+  --+-----------------+-----------------+-----------------+--
+    |                 |                 |                 |
+    |    "Orange"     |     "Green"     |      "Red"      |
+    |                 |                 |                 |
+    | "if mouseX"     | "else if mouseX"| "else: catches" |
+    | "< width / 3"   | "< 2*width / 3" | "the rest"      |
+    |                 |                 |                 |

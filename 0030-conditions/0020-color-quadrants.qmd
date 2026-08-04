@@ -1,0 +1,129 @@
+---
+title: "Color quadrants: a decision inside a decision"
+---
+
+![The color quadrants program: four colored quarters, and a message box in the center that names the clicked color.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/color-quadrants.png){width=360}
+
+The second decision program looks like a close relative of the first
+one, and it is: the canvas is now split into four colored quadrants, and
+a click anywhere makes a black box in the center announce the color's
+name. But there is a twist hiding in the geometry. Three stripes could
+be sorted with questions about `mouseX` alone. Four quadrants can't:
+this time, no single question about one coordinate can tell all four
+areas apart.
+
+## Two questions, four answers {#sec-two-questions}
+
+Think about how you would decide as a human. Someone points at a spot on
+the canvas, and you want to name the quadrant. You'd naturally ask two
+questions, one after the other: is the spot in the left half or the
+right half? And is it in the upper half or the lower half? Two
+questions, each with two possible answers, gives two times two, four
+combinations, and that's exactly one combination per quadrant.
+
+The first question is a comparison you could write immediately:
+`mouseX < width / 2`. The second one is its twin on the other axis:
+`mouseY < height / 2`. What's new is how the two questions work
+together: the second question is only asked *after* the first one is
+answered, inside the branch that the first answer picked.
+
+## An if statement inside an if statement {#sec-nested-if}
+
+Here's the key insight that makes this possible: the block of an if
+statement can contain *any* statements, and that includes other if
+statements. Putting one if statement inside another is called
+**nesting**. The whole decision looks like this:
+
+```typescript
+if (mouseX < width / 2) {
+  // Left half
+  if (mouseY < height / 2) {
+    message = "Orange";
+  } else {
+    message = "Blue";
+  }
+} else {
+  // Right half
+  if (mouseY < height / 2) {
+    message = "Green";
+  } else {
+    message = "Red";
+  }
+}
+```
+
+The outer if statement splits the canvas into left and right. Each of
+its two branches contains a complete inner if statement that splits its
+half into top and bottom. Four leaves at the end, one for each quadrant:
+
+![The nested decision as a tree: the first question picks a half, the
+second question picks the quadrant within that
+half.](images/quadrant-tree.svg){width=460}
+
+Play computer with one click before you code. Say the canvas is 400 by
+200 and the click lands at (300, 60). The outer condition asks: is 300
+smaller than 200? No, so the whole first block is skipped and the
+program enters the `else` branch. There, the inner condition asks: is
+60 smaller than 100? Yes, so `message` becomes `"Green"`. Two questions
+answered, one quadrant found.
+
+Watch the indentation as the nesting grows: the inner if statement is
+indented one step, its blocks two steps. Every opening brace pushes the
+code one step to the right, every closing brace comes back one step.
+Without that discipline, nested code becomes a riddle; with it, you can
+see the structure of the decision at a glance.
+
+::: {.callout-note}
+## Couldn't I ask both questions at once?
+You might feel that "left half *and* upper half" should be a single
+condition, and you're right: TypeScript can combine two comparisons
+into one question. Those combining operators are worth their own
+chapters, and they're coming: the first one appears with the bouncing
+ball, the second one in the binary guesser project.
+:::
+
+## The message box in the center {#sec-center-box}
+
+One more difference to the color areas: the message box now sits in the
+middle of the canvas, on top of the quadrant boundaries. Its position
+is a centering job, and you know the formula from the responsive robot:
+the box's corner sits half the box's width left of the canvas center,
+and half its height above it. Give the box its size as two constants,
+for example `textAreaWidth` and `textAreaHeight`, and use them both for
+drawing the box in `setup` and for clearing it in `mouseClicked`, so
+the previous message disappears before the new one is written.
+
+## Your exercise: Color quadrants {#sec-quadrants-exercise}
+
+The color areas chapter walked you through the code. This time the
+logic is yours to build; the previous chapter is your reference if you
+get stuck.
+
+1. **Paper first.** Draw the 400 by 200 canvas on graph paper, split it
+   into quadrants, and label the boundary lines with their formulas
+   (`width / 2`, `height / 2`) and values. Assign each quadrant one of
+   your four colors.
+2. **Play computer on paper.** Pick one test click per quadrant, for
+   example (50, 50), (350, 50), (350, 150), and (50, 150). For each,
+   walk through your two questions and write down the expected message.
+3. **Set the stage in `setup`.** Draw the four quadrants as rectangles
+   and the black message box centered on the canvas.
+4. **Write `mouseClicked`.** Clear the message box, set up the text
+   formatting, then write the nested if statements that fill `message`
+   with the name of the clicked color. One `text` statement at the end
+   draws it.
+5. **Test against your notes.** Click your four test spots and compare
+   with the predictions. Then click close to the quadrant boundaries,
+   including right near the center where all four quadrants meet.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/color-quadrants.yaml >}}
+
+## Check your understanding {#sec-quiz-quadrants}
+
+When your quadrants answer every click correctly, take the short quiz
+below. You answer six questions about this chapter in your own words, and
+an AI reads your answers and tells you what you already understand and
+what you should read again. The quiz is anonymous, and answering in German
+is fine too.
+
+{{< quiz b8csdlsb7t title="Color quadrants" >}}

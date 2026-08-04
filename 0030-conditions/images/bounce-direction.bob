@@ -1,0 +1,11 @@
+    0                                              "width"
+    |                                                   |
+    |      "direction = 2: 2 pixels right per frame"    |
+    |     *------------------------------------------>  |
+    |                                                   |
+    |                          "circleCenterX >= width:"|
+    |                                "direction *= -1"  |
+    |                                                   |
+    |   <-------------------------------------------*   |
+    |      "direction = -2: 2 pixels left per frame"    |
+    |                                                   |

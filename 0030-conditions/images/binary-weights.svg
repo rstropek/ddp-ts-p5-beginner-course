@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="376" height="176" class="svgbob">
+  <style>.svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon {
+  stroke: black;
+  stroke-width: 2;
+  stroke-opacity: 1;
+  fill-opacity: 1;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+}
+
+.svgbob text {
+  white-space: pre;
+  fill: black;
+  font-family: Iosevka Fixed, monospace;
+  font-size: 14px;
+}
+
+.svgbob rect.backdrop {
+  stroke: none;
+  fill: white;
+}
+
+.svgbob .broken {
+  stroke-dasharray: 8;
+}
+
+.svgbob .filled {
+  fill: black;
+}
+
+.svgbob .bg_filled {
+  fill: white;
+  stroke-width: 1;
+}
+
+.svgbob .nofill {
+  fill: white;
+}
+
+.svgbob .end_marked_arrow {
+  marker-end: url(#arrow);
+}
+
+.svgbob .start_marked_arrow {
+  marker-start: url(#arrow);
+}
+
+.svgbob .end_marked_diamond {
+  marker-end: url(#diamond);
+}
+
+.svgbob .start_marked_diamond {
+  marker-start: url(#diamond);
+}
+
+.svgbob .end_marked_circle {
+  marker-end: url(#circle);
+}
+
+.svgbob .start_marked_circle {
+  marker-start: url(#circle);
+}
+
+.svgbob .end_marked_open_circle {
+  marker-end: url(#open_circle);
+}
+
+.svgbob .start_marked_open_circle {
+  marker-start: url(#open_circle);
+}
+
+.svgbob .end_marked_big_open_circle {
+  marker-end: url(#big_open_circle);
+}
+
+.svgbob .start_marked_big_open_circle {
+  marker-start: url(#big_open_circle);
+}
+
+</style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="376" height="176"></rect>
+  <rect x="28" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="42" y="92" >1</text>
+  <rect x="108" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="122" y="92" >1</text>
+  <rect x="188" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="202" y="92" >0</text>
+  <rect x="268" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="282" y="92" >1</text>
+  <line x1="44" y1="32" x2="44" y2="52" class="solid"></line>
+  <polygon points="40,52 48,52 44,64" class="filled"></polygon>
+  <line x1="44" y1="112" x2="44" y2="132" class="solid"></line>
+  <polygon points="40,132 48,132 44,144" class="filled"></polygon>
+  <line x1="124" y1="32" x2="124" y2="52" class="solid"></line>
+  <polygon points="120,52 128,52 124,64" class="filled"></polygon>
+  <line x1="124" y1="112" x2="124" y2="132" class="solid"></line>
+  <polygon points="120,132 128,132 124,144" class="filled"></polygon>
+  <line x1="204" y1="32" x2="204" y2="52" class="solid"></line>
+  <polygon points="200,52 208,52 204,64" class="filled"></polygon>
+  <line x1="204" y1="112" x2="204" y2="132" class="solid"></line>
+  <polygon points="200,132 208,132 204,144" class="filled"></polygon>
+  <line x1="284" y1="32" x2="284" y2="52" class="solid"></line>
+  <polygon points="280,52 288,52 284,64" class="filled"></polygon>
+  <line x1="284" y1="112" x2="284" y2="132" class="solid"></line>
+  <polygon points="280,132 288,132 284,144" class="filled"></polygon>
+  <text x="354" y="156" >13</text>
+  <text x="2" y="12" >eights</text>
+  <text x="90" y="12" >fours</text>
+  <text x="170" y="12" >twos</text>
+  <text x="250" y="12" >ones</text>
+  <text x="34" y="28" >8</text>
+  <text x="114" y="28" >4</text>
+  <text x="194" y="28" >2</text>
+  <text x="274" y="28" >1</text>
+  <text x="18" y="156" >1 * 8  +  1 * 4  +  0 * 2  +  1 * 1  =</text>
+</svg>
