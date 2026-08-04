@@ -224,6 +224,21 @@ for each box, whether `mouseX` lies between the box's left and right
 edge. Your box-position formula from the digits exercise tells you
 those edges: box `i` spans from `50 + i * 75` to `50 + i * 75 + 50`.
 
+::: {.callout-note}
+## Both operators take a shortcut
+`&&` and `||` stop asking as soon as the answer is certain. Take
+`mouseY >= 100 && mouseY <= 175` and a click at y = 40: the first
+comparison is `false`, and `&&` needs both parts, so the condition
+can no longer become true and the second comparison is never even
+looked at. `||` does the mirror image. In the bouncing ball's
+`circleCenterX >= width || circleCenterX <= 0`, a ball past the right
+wall makes the first part `true`, one true part is already enough, and
+the second comparison is skipped. Programmers call this
+**short-circuit evaluation**. It never changes the result, it only
+saves work, so it costs you nothing to put the question that decides
+most often on the left.
+:::
+
 Two smaller building blocks complete the plan. Flipping a bit is a
 two-case decision on a global variable:
 
