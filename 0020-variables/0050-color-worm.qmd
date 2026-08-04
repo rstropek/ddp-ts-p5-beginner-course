@@ -141,11 +141,27 @@ exactly once, in `setup`.
 
 ## Your exercise: Color worm {#sec-color-worm-exercise}
 
+::: {.callout-tip}
+## Playing computer
+So far, the main job of pen and paper in this course was sketching your
+picture on graph paper before you code. The color worm gives them a
+second job, and it's just as important: **playing computer**. You step through the
+code by hand, write down the value of a variable after every step, and
+predict what the program will do before you run it. If the screen later
+matches your notes, you know you understood the code. If it doesn't,
+you've found a bug or a misunderstanding, and both are worth finding.
+
+The hue counter is a perfect first case. On screen, the wrap from 355
+back to 0 flashes by in a single mouse movement, far too fast to see. On
+paper, you can slow it down: put 355 into the formula and watch the
+modulo do its work.
+:::
+
 Time to grow the worm:
 
-1. **Paper first: play computer.** Make a table with two columns,
-   "`colorHue` when `mouseMoved` starts" and "`colorHue` after the
-   assignment". Fill in the first four runs, starting at 0. Then jump
+1. **Play computer first.** Take pen and paper and make a table with two
+   columns, "`colorHue` when `mouseMoved` starts" and "`colorHue` after
+   the assignment". Fill in the first four runs, starting at 0. Then jump
    ahead: start a row at 355 and work out `(355 + 5) % 360` by hand.
    Finally, predict how many mouse movements one full rainbow takes when
    the hue grows in steps of 5.

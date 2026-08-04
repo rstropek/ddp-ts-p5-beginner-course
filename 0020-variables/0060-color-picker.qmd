@@ -112,28 +112,23 @@ growing list of values, and there paint alone won't be enough.
 
 Build the picker in this order:
 
-1. **Paper first: play computer.** Sketch the 360 by 200 canvas and draw
-   the line that splits it at a height of 100. Then make a table with the
-   columns "mouse position", "H", "S", "B", and "predicted color", and
-   fill it in for (0, 0), (180, 50), (300, 100), and a click at
-   (90, 180). For the last row, write down what `min(100, 180)` returns
-   before you decide on the saturation.
-2. **Set the stage in `setup`.** Create the 360 by 200 canvas, switch to
+1. **Set the stage in `setup`.** Create the 360 by 200 canvas, switch to
    HSB with `colorMode(HSB)`, and add `noStroke()` so the rectangles have
    no outlines. Paint the whole canvas with a starting color; the sample
    uses `background(0, 100, 100)`, a fully saturated red.
-3. **Fill `mouseMoved`.** Set the fill color from the mouse position and
+2. **Fill `mouseMoved`.** Set the fill color from the mouse position and
    cover the top half with a rectangle.
-4. **Fill `mouseClicked`.** Declare the two constants with explicit data
+3. **Fill `mouseClicked`.** Declare the two constants with explicit data
    types, including the `min` guard, paint the bottom half in the chosen
    color, and write the HSB values in black in the lower left corner. The
    text is a format promise: `H: 208, S: 92, B: 100`, with exactly these
    letters, colons, and commas.
-5. **Test against your paper notes.** Move the mouse to the positions
-   from your table and compare the preview with your predictions. Then
-   click in the top half and check the bottom half and the text. Finally,
-   click deep in the bottom half: the saturation in the text must never
-   climb above 100.
+4. **Test the tool.** Move the mouse along the top edge and watch the
+   preview walk through the rainbow, then move it downward and watch the
+   colors fade toward white. Click in the top half and check the bottom
+   half and the text. Finally, click deep in the bottom half: the
+   saturation in the text must never climb above 100, because the `min`
+   guard caps it.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/color_picker.yaml >}}
 

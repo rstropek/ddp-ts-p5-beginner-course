@@ -152,7 +152,7 @@ whole rainbow. In the next chapter, your program will do exactly that.
 This exercise is a laboratory session: you'll run small experiments and
 train your eye to predict what numbers turn into.
 
-1. **Paper first, as always.** Make a prediction table with two columns:
+1. **Predict first.** Make a prediction table with two columns:
    "RGB values" and "my prediction". Fill in these six value triples and
    write down, before touching the keyboard, what color you expect:
    (0, 255, 0), (255, 255, 0), (0, 0, 0), (255, 255, 255),

@@ -104,27 +104,24 @@ remembering it: variables remember, the canvas only shows.
 
 Build the click protocol:
 
-1. **Paper first: play computer.** Sketch the 200 by 200 canvas and pick
-   three click positions, for example (60, 40), (120, 160), and (30, 80).
-   Write down the exact content of `clickPositions` after each of the
-   three clicks, every comma and every slash included. The protocol is a
-   format promise, and exactness decides whether your output matches it.
-2. **Declare the global variable** `clickPositions` with the explicit
+1. **Declare the global variable** `clickPositions` with the explicit
    type `string` and the starting value `"0/0"`.
-3. **Simulate the first click in `setup`.** The starter code already
+2. **Simulate the first click in `setup`.** The starter code already
    creates the canvas and paints the background. Add what a click at
    (0, 0) would leave behind: a circle with diameter 20 at (0, 0), of
    which only a quarter is visible in the corner, and the protocol text.
    The circle and text colors are yours to choose; in the sample the
    circle is `"aqua"` and the text is `"black"`.
-4. **Fill `mouseClicked`.** Repaint the background, draw the circle at
+3. **Fill `mouseClicked`.** Repaint the background, draw the circle at
    the click position, extend `clickPositions` with a template string,
    and draw the protocol into a wrapping text box. Mind the order:
    extend the protocol *before* drawing it, or the newest click will
    always be missing from the display.
-5. **Test against your paper notes.** Click your three planned positions
-   (as precisely as you can) and compare the protocol on screen with the
-   strings you wrote down. Then keep clicking until the protocol wraps
+4. **Test the protocol.** Click a few positions and read the text on
+   screen character by character: every position separated by a comma and
+   a space, x and y separated by a slash, and the newest click at the
+   end. The protocol is a format promise, and exactness decides whether
+   your output matches it. Then keep clicking until the protocol wraps
    into a second and third line.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/string_concat.yaml >}}
