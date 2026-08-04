@@ -41,12 +41,12 @@ discussion:
   instructions: |
     You may reveal and explain the correct answer. Keep explanations tiny
     and concrete: one idea at a time, with a short code line like
-    `const digit2: number = Math.floor(num / 10) % 10;` where it helps.
+    `const digit2: number = floor(num / 10) % 10;` where it helps.
     Stay strictly within what a beginner knows after the number systems
     chapter: drawing commands, mouse events, variables and constants with
     explicit data types, comparisons, the if/else if/else chain with
     braces around every block, nested if statements, `random`,
-    `Math.floor`, `Math.pow`, the `%` remainder operator, the `draw`
+    `floor`, `pow`, the `%` remainder operator, the `draw`
     animation loop, and the boolean operators `||` and `&&`. The student
     knows the decimal, binary, and hexadecimal systems from this chapter.
     Do not introduce arrays, for/while loops, or writing your own
@@ -76,7 +76,7 @@ questions:
   - id: floor-shift
     title: "The digit remover"
     question: |
-      What value does `Math.floor(4711 / 10)` produce?
+      What value does `floor(4711 / 10)` produce?
     evaluation: |
       Expected: 471. The division gives 471.1, and flooring cuts the
       decimal part, so the last digit of 4711 is chopped off.

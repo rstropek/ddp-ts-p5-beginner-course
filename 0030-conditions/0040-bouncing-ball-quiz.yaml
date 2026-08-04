@@ -45,7 +45,7 @@ discussion:
     what a beginner knows after the bouncing ball chapter: drawing
     commands, mouse events, variables and constants with explicit data
     types, comparisons, the if/else if/else chain with braces around
-    every block, nested if statements, `random` and `Math.floor`, the
+    every block, nested if statements, `random` and `floor`, the
     `draw` animation loop, the shorthand operators `+=`, `-=`, and `*=`,
     and the OR operator `||`. Do not introduce the `&&` operator, arrays,
     or for/while loops. If the student writes in German, you may answer

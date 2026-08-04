@@ -41,12 +41,12 @@ discussion:
   instructions: |
     You may reveal and explain the correct answer. Keep explanations tiny
     and concrete: one idea at a time, with a short code line like
-    `const dice: number = Math.floor(random(1, 7));` where it helps. Stay
+    `const dice: number = floor(random(1, 7));` where it helps. Stay
     strictly within what a beginner knows after the dice chapter: drawing
     commands, mouse events, variables and constants with explicit data
     types, comparisons including `===` and `!==`, the if/else if/else
     chain with braces around every block, nested if statements,
-    `random`, and `Math.floor`. Do not introduce the `&&` or `||`
+    `random`, and `floor`. Do not introduce the `&&` or `||`
     operators, the `draw` animation loop, or loops. If the student writes
     in German, you may answer in German; keep code and command names in
     English.
@@ -76,12 +76,12 @@ questions:
       The dice roll is written as:
 
       ```typescript
-      const dice: number = Math.floor(random(1, 7));
+      const dice: number = floor(random(1, 7));
       ```
 
       Why is the upper bound 7 and not 6?
     evaluation: |
-      Expected: `Math.floor` rounds down, so a 6 can only come from
+      Expected: `floor` rounds down, so a 6 can only come from
       values between 6 and 6.999... With an upper bound of 6, those
       values would never appear and the die could never roll a six. The
       bound 7 gives the 6 a full range like every other number.
