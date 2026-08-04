@@ -1,0 +1,22 @@
+  program starts
+        |
+        v
+  .-----------.
+  |   setup   |     runs exactly once at the start
+  '-----------'
+        |
+        v
+  .-----------.
+  |   draw    |<--.
+  '-----------'   |    runs again and again
+        |         |    about 60 times per second
+        '---------'
+
+             "the user moves or clicks the mouse"
+                             |
+                .------------+-------------.
+                |                          |
+                v                          v
+        .--------------.          .----------------.
+        |  mouseMoved  |          |  mouseClicked  |
+        '--------------'          '----------------'

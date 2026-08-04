@@ -19,6 +19,18 @@ each slightly different from the one before. Show about 60 of them per
 second and human eyes perceive motion. Computer animation works exactly
 the same way, and each still picture is called a **frame**.
 
+::: {.callout-note}
+## Frames in your hands: the flip book
+You've probably held a frame-by-frame movie before without calling it
+that: a **flip book**, a small pad of paper where every page shows a
+drawing slightly different from the page before. Flip through it with
+your thumb and the drawing moves. A frame is exactly one page of such
+a flip book, and an animated program is a flip book whose pages the
+computer draws for you, about 60 pages per second. To see the idea in
+action, watch the video
+[How to make a flipbook](https://youtu.be/Un-BdBSOGKY?si=XGKr0pEQ0H7zjLTk).
+:::
+
 p5.js has a function slot ready for this, and it's the last of the big
 ones: `draw`. You know the pattern from `mouseMoved` and
 `mouseClicked`: you write a function with the agreed name, and p5.js
@@ -33,6 +45,11 @@ something. And `draw` runs constantly, on its own. Between a frame and
 the next, your global variables keep their values, and that's the whole
 secret of animation: change a variable a little every frame, and the
 picture it controls comes alive.
+
+![The life of a p5.js program: `setup` runs exactly once, then `draw`
+runs in an endless loop, and event functions like `mouseMoved` and
+`mouseClicked` run in between whenever the user
+acts.](images/program-lifecycle.svg){width=440}
 
 ## A ball that moves itself {#sec-moving-ball}
 
