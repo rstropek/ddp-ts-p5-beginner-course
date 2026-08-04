@@ -1,0 +1,212 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The if statement: programs that decide"
+# (0030-conditions/0010-color-areas.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: comparisons
+# that produce booleans, the if statement, the else if/else chain, the
+# braces course rule, declare-then-assign, and collecting the answer in a
+# variable.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: color-areas-quiz
+name: "Quiz: The if statement"
+
+title: "Check your understanding: the if statement"
+description: |
+  Six short questions about the chapter *The if statement: programs that
+  decide*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `if (mouseX < width / 3) { message = "Orange"; }` where it helps. Stay
+    strictly within what a beginner knows after the color areas chapter:
+    drawing commands, mouse events, variables and constants with explicit
+    data types, comparisons that produce booleans, the if/else if/else
+    chain with braces around every block, declaring a variable first and
+    assigning it inside a branch, and text formatting with `textSize`,
+    `textStyle`, and `textAlign`. Do not introduce nested if statements,
+    the `&&` or `||` operators, random numbers, or loops. If the student
+    writes in German, you may answer in German; keep code and command names
+    in English.
+
+questions:
+  - id: comparison-result
+    title: "What a comparison produces"
+    question: |
+      The canvas is 400 pixels wide, and the mouse sits at `mouseX = 250`
+      when this comparison runs:
+
+      ```typescript
+      mouseX < width / 3
+      ```
+
+      What result does the comparison produce, and what data type does
+      that result have?
+    evaluation: |
+      Expected: `false`, because 250 is not smaller than 400 / 3 (about
+      133.33). The result of a comparison is a boolean.
+
+      - `correct`   - false AND names the type boolean ("true/false value"
+                      counts as boolean).
+      - `partial`   - one half only: the right value without the type, or
+                      boolean but predicts true.
+      - `incorrect` - anything else, e.g. answers with a number like
+                      133.33.
+
+      Feedback: work out `width / 3` first, then compare it with 250.
+
+  - id: false-condition
+    title: "When the answer is no"
+    question: |
+      ```typescript
+      if (mouseX < width / 3) {
+        message = "Orange";
+      }
+      ```
+
+      What does the program do with the block in braces when the
+      condition is `false`?
+    evaluation: |
+      Expected: the block is skipped completely, as if it weren't there,
+      and the program continues after the closing brace. `message` stays
+      unchanged.
+
+      - `correct`   - says the block is skipped / does not run ("the
+                      computer jumps over it" counts).
+      - `partial`   - says "nothing happens" without saying the program
+                      continues after the block.
+      - `incorrect` - anything else, e.g. the block runs anyway or the
+                      program shows an error.
+
+      Feedback: a false condition never causes an error, it only skips.
+
+  - id: first-true-wins
+    title: "Why one comparison is enough"
+    question: |
+      ```typescript
+      if (mouseX < width / 3) {
+        message = "Orange";
+      } else if (mouseX < 2 * width / 3) {
+        message = "Green";
+      } else {
+        message = "Red";
+      }
+      ```
+
+      The second condition only checks `mouseX < 2 * width / 3`. Why
+      doesn't it also have to check that `mouseX` is at least
+      `width / 3`?
+    evaluation: |
+      Expected: the chain runs top to bottom, and the `else if` is only
+      reached when the first condition was false. At that point `mouseX`
+      is guaranteed to be at least `width / 3`.
+
+      - `correct`   - says the branch is only reached when the first
+                      condition was false ("the first if already took the
+                      smaller values" counts).
+      - `partial`   - knows the chain picks exactly one branch but cannot
+                      say why the extra check is unnecessary.
+      - `incorrect` - anything else, e.g. claims TypeScript adds the check
+                      automatically.
+
+      Feedback: the rule to name is "the first true condition wins", all
+      later branches are skipped.
+
+  - id: declare-then-assign
+    title: "A variable that starts empty"
+    question: |
+      ```typescript
+      let message: string;
+      ```
+
+      This declaration has no `=` and no value. What rule must your code
+      follow before it may *read* `message`, and how does TypeScript help
+      when you break the rule?
+    evaluation: |
+      Expected: every path through the program must assign `message` a
+      value before it is read. If a path misses the assignment (for
+      example, a deleted `else` branch), TypeScript marks the reading line
+      with a red squiggle.
+
+      - `correct`   - assign before reading AND names TypeScript's warning
+                      (red squiggle / error counts).
+      - `partial`   - one half only: the rule without TypeScript's check,
+                      or "TypeScript complains" without the rule.
+      - `incorrect` - anything else, e.g. claims the variable
+                      automatically holds an empty text or 0.
+
+      Feedback: an empty declaration is fine, reading an empty variable is
+      not.
+
+  - id: braces-always
+    title: "Braces, always"
+    question: |
+      TypeScript would accept this line without braces:
+
+      ```typescript
+      if (mouseX < 200) message = "Left";
+      ```
+
+      The course rule says to write braces around every block anyway.
+      Name one good reason for the rule.
+    evaluation: |
+      Expected: braces keep the structure visible, and they prevent the
+      classic trap of adding a second statement later that silently does
+      not belong to the condition.
+
+      - `correct`   - names either reason: visible structure /
+                      readability, or the second-statement trap.
+      - `partial`   - only appeals to the rule itself ("because the course
+                      says so") without a reason.
+      - `incorrect` - anything else, e.g. claims the code without braces
+                      does not run.
+
+      Feedback: imagine adding a second line under `message = "Left";`
+      later — without braces, it would run on every click.
+
+  - id: message-variable
+    title: "One text call for three answers"
+    question: |
+      The chain stores the answer in the variable `message`, and one
+      single `text(message, ...)` after the chain draws it. Why is that
+      better than calling `text` inside each of the three branches?
+    evaluation: |
+      Expected: the three branches differ only in the text; position and
+      formatting are the same. One `text` call avoids repeating the same
+      code three times, and moving the message bar later means changing
+      one line instead of three.
+
+      - `correct`   - names avoided repetition ("you'd write the same
+                      thing three times" counts) or the one-place-to-change
+                      advantage.
+      - `partial`   - says it is shorter or nicer without saying what
+                      would be repeated.
+      - `incorrect` - anything else, e.g. claims `text` cannot be called
+                      inside a branch.
+
+      Feedback: the chain decides the "what", one drawing line does the
+      "how".

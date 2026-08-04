@@ -1,0 +1,194 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Number systems: how computers count"
+# (0030-conditions/0050-number-systems.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: % and
+# floor as digit extractors, reading binary, why computers use two digits,
+# hex letters, the && operator, and converting bits back to a number.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: number-systems-quiz
+name: "Quiz: Number systems"
+
+title: "Check your understanding: number systems"
+description: |
+  Seven short questions about the chapter *Number systems: how computers
+  count*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `const digit2: number = Math.floor(num / 10) % 10;` where it helps.
+    Stay strictly within what a beginner knows after the number systems
+    chapter: drawing commands, mouse events, variables and constants with
+    explicit data types, comparisons, the if/else if/else chain with
+    braces around every block, nested if statements, `random`,
+    `Math.floor`, `Math.pow`, the `%` remainder operator, the `draw`
+    animation loop, and the boolean operators `||` and `&&`. The student
+    knows the decimal, binary, and hexadecimal systems from this chapter.
+    Do not introduce arrays, for/while loops, or writing your own
+    functions with parameters. If the student writes in German, you may
+    answer in German; keep code and command names in English.
+
+questions:
+  - id: modulo-last-digit
+    title: "The digit grabber"
+    question: |
+      What value does `4711 % 10` produce, and why is that exactly the
+      last digit of the number?
+    evaluation: |
+      Expected: 1. `%` gives the remainder of a division, and the
+      remainder when dividing by 10 is whatever doesn't fit into full
+      tens: the ones digit.
+
+      - `correct`   - 1 AND the remainder-of-dividing-by-10 reason ("what
+                      is left over" counts).
+      - `partial`   - 1 without a reason, or the right reasoning with a
+                      wrong value.
+      - `incorrect` - anything else, e.g. 471 or 4710.
+
+      Feedback: 4711 is 471 full tens plus a remainder — the remainder is
+      the answer.
+
+  - id: floor-shift
+    title: "The digit remover"
+    question: |
+      What value does `Math.floor(4711 / 10)` produce?
+    evaluation: |
+      Expected: 471. The division gives 471.1, and flooring cuts the
+      decimal part, so the last digit of 4711 is chopped off.
+
+      - `correct`   - 471.
+      - `partial`   - 471.1 (did the division but forgot the floor).
+      - `incorrect` - anything else, e.g. 472 or 1.
+
+      Feedback: floor always rounds down — it makes 471 out of 471.1.
+
+  - id: binary-read
+    title: "Reading binary"
+    question: |
+      Convert the binary number 1011 to a decimal number. Show which
+      place values you add.
+    evaluation: |
+      Expected: 11, from the place values 8 + 0 + 2 + 1 (one 8, no 4,
+      one 2, one 1).
+
+      - `correct`   - 11 (the sum 8 + 2 + 1 counts as showing the
+                      places).
+      - `partial`   - the right method with one slip, e.g. 13 from
+                      reading 1101, or 11 with no places shown.
+      - `incorrect` - anything else, e.g. 1011 or 3.
+
+      Feedback: the binary places are 8, 4, 2, 1 from left to right —
+      add the ones under a 1.
+
+  - id: why-two-digits
+    title: "Why computers count with two digits"
+    question: |
+      Our number system has ten digits. Why do computers use a system
+      with only two?
+    evaluation: |
+      Expected: a computer is electronics, and a wire knows only two
+      states, current on or off. Two states map exactly onto the two
+      digits 1 and 0.
+
+      - `correct`   - the two electrical states / on-off reason ("a wire
+                      has current or no current" counts).
+      - `partial`   - says binary is simpler for machines without the
+                      two-states reason.
+      - `incorrect` - anything else, e.g. binary numbers are shorter, or
+                      computers cannot multiply by ten.
+
+      Feedback: think about what a single wire inside the machine can
+      physically express.
+
+  - id: hex-letters
+    title: "Digits beyond 9"
+    question: |
+      What number does the hexadecimal digit F stand for, and why does
+      hexadecimal need letters at all?
+    evaluation: |
+      Expected: F is 15. Hexadecimal has sixteen digits, but our symbols
+      0 to 9 only cover ten of them, so the values 10 to 15 borrow the
+      letters A to F.
+
+      - `correct`   - 15 AND the ran-out-of-digit-symbols reason.
+      - `partial`   - one half only: knows F = 15, or knows why letters
+                      exist, but not both.
+      - `incorrect` - anything else, e.g. F = 16.
+
+      Feedback: A starts at 10, so count up: A, B, C, D, E, F.
+
+  - id: and-operator
+    title: "What AND insists on"
+    question: |
+      The boxes of the binary guesser sit between y = 100 and y = 175. A
+      click lands at `mouseY = 80` when this condition runs:
+
+      ```typescript
+      if (mouseY >= 100 && mouseY <= 175) {
+      ```
+
+      What is the result, and what does `&&` require to be `true`?
+    evaluation: |
+      Expected: `false`. `&&` requires both parts to be true, and the
+      first one already fails (80 is not at least 100), so the click
+      does not count as a box click.
+
+      - `correct`   - false AND both-parts-must-be-true ("one false side
+                      is enough to fail" counts).
+      - `partial`   - one half only: the right result without the rule,
+                      or the rule with a wrong result.
+      - `incorrect` - anything else, e.g. true because 80 is below 175.
+
+      Feedback: compare with ||: OR is happy with one true side, AND
+      insists on both.
+
+  - id: bits-to-number
+    title: "From bits back to a number"
+    question: |
+      The player's four bits are `guessedDigit4 = 1`,
+      `guessedDigit3 = 1`, `guessedDigit2 = 0`, `guessedDigit1 = 0`,
+      and the program computes:
+
+      ```typescript
+      let guessedNumber: number = guessedDigit4 * 8;
+      guessedNumber += guessedDigit3 * 4;
+      guessedNumber += guessedDigit2 * 2;
+      guessedNumber += guessedDigit1 * 1;
+      ```
+
+      What value does `guessedNumber` hold at the end?
+    evaluation: |
+      Expected: 12, from 1 * 8 + 1 * 4 + 0 * 2 + 0 * 1.
+
+      - `correct`   - 12.
+      - `partial`   - the right method with one slip, e.g. 3 from reading
+                      the bits in the wrong order (0011).
+      - `incorrect` - anything else, e.g. 1100 or 8.
+
+      Feedback: each bit is multiplied by its place value 8, 4, 2, 1 —
+      only the ones contribute.

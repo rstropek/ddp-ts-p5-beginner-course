@@ -1,0 +1,184 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Rolling dice: random numbers and exact
+# comparisons" (0030-conditions/0030-dice.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: random's
+# bounds, the floor recipe for fair whole numbers, why round is unfair,
+# = vs ===, the final else, and forced-value testing.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: dice-quiz
+name: "Quiz: Rolling dice"
+
+title: "Check your understanding: rolling dice"
+description: |
+  Six short questions about the chapter *Rolling dice: random numbers and
+  exact comparisons*. Answer in your own words. There are no answer
+  options to pick from, and this quiz is anonymous: it's here for you, so
+  you can see what you already understand and what you should read again.
+  One or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `const dice: number = Math.floor(random(1, 7));` where it helps. Stay
+    strictly within what a beginner knows after the dice chapter: drawing
+    commands, mouse events, variables and constants with explicit data
+    types, comparisons including `===` and `!==`, the if/else if/else
+    chain with braces around every block, nested if statements,
+    `random`, and `Math.floor`. Do not introduce the `&&` or `||`
+    operators, the `draw` animation loop, or loops. If the student writes
+    in German, you may answer in German; keep code and command names in
+    English.
+
+questions:
+  - id: random-bounds
+    title: "The bounds of random"
+    question: |
+      Look at the call `random(1, 7)`. Can it return 1? Can it return 7?
+      Explain briefly.
+    evaluation: |
+      Expected: 1 yes, 7 no. The lower bound is included, the upper bound
+      is excluded; the call returns decimal numbers from 1 up to
+      6.999...
+
+      - `correct`   - 1 possible AND 7 not possible.
+      - `partial`   - exactly one of the two bounds right.
+      - `incorrect` - anything else, e.g. both bounds possible, or
+                      neither.
+
+      Feedback: the rule to remember is "lower bound included, upper
+      bound excluded".
+
+  - id: why-seven
+    title: "Why 7 and not 6"
+    question: |
+      The dice roll is written as:
+
+      ```typescript
+      const dice: number = Math.floor(random(1, 7));
+      ```
+
+      Why is the upper bound 7 and not 6?
+    evaluation: |
+      Expected: `Math.floor` rounds down, so a 6 can only come from
+      values between 6 and 6.999... With an upper bound of 6, those
+      values would never appear and the die could never roll a six. The
+      bound 7 gives the 6 a full range like every other number.
+
+      - `correct`   - connects floor rounding down with the range 6 to
+                      6.999 being needed ("with 6 you'd never roll a six"
+                      counts).
+      - `partial`   - says the upper bound is excluded without connecting
+                      it to the missing six.
+      - `incorrect` - anything else, e.g. claims the die could roll a 7.
+
+      Feedback: follow one value: what must random return so that floor
+      makes a 6 out of it?
+
+  - id: loaded-round
+    title: "The loaded die"
+    question: |
+      A classmate suggests `round(random(1, 6))` for the roll. Why would
+      that make an unfair die?
+    evaluation: |
+      Expected: `round` gives the edge values half-width ranges. Only 1
+      to 1.499... rounds to 1 (width 0.5), while for example 1.5 to
+      2.499... rounds to 2 (width 1). The same happens for the 6, so 1
+      and 6 would appear only half as often as the other numbers.
+
+      - `correct`   - the 1 and the 6 get smaller ranges / appear half as
+                      often.
+      - `partial`   - says round makes it unfair without the half-range
+                      reason.
+      - `incorrect` - anything else, e.g. claims round could produce 0 or
+                      7.
+
+      Feedback: compare the range that rounds to 1 with the range that
+      rounds to 2 — one is half as wide.
+
+  - id: assignment-vs-comparison
+    title: "One equals sign too few"
+    question: |
+      A classmate's program always draws the one, no matter what was
+      rolled. The condition reads:
+
+      ```typescript
+      if (dice = 1) {
+      ```
+
+      What is wrong, and how do you fix it?
+    evaluation: |
+      Expected: a single `=` is an assignment, it puts 1 into `dice`
+      instead of asking a question. The comparison needs the equality
+      operator: `if (dice === 1)`.
+
+      - `correct`   - identifies `=` as assignment ("it sets dice to 1"
+                      counts) AND names `===` as the fix.
+      - `partial`   - knows the equals signs are wrong but cannot explain
+                      assignment versus comparison.
+      - `incorrect` - anything else, e.g. says the code is fine or blames
+                      the parentheses.
+
+      Feedback: one `=` gives an order, three `===` ask a question.
+
+  - id: final-else
+    title: "The branch without a question"
+    question: |
+      The dice chain ends with a plain `else` instead of
+      `else if (dice === 6)`. Why is that safe here?
+    evaluation: |
+      Expected: `dice` can only hold 1 to 6. When the five earlier
+      conditions were all false, the only value left is 6, so the else
+      branch is exactly the six.
+
+      - `correct`   - after five nos, only 6 remains / dice is limited to
+                      1 to 6.
+      - `partial`   - says else means "everything else" without saying
+                      that everything else is exactly the 6.
+      - `incorrect` - anything else, e.g. claims an else always needs a
+                      condition, or that else catches errors.
+
+      Feedback: count the possible values of dice, then cross out the
+      five that earlier branches already took.
+
+  - id: forced-roll
+    title: "Testing a random program"
+    question: |
+      You want to check that your program draws the face for 5
+      correctly, but every run rolls a random number. How do you test
+      the 5 like a professional?
+    evaluation: |
+      Expected: temporarily replace the random roll with a fixed value,
+      for example `const dice: number = 5;`, check the face, then put
+      the `random` line back.
+
+      - `correct`   - force/fix the value temporarily (any phrasing of
+                      replacing the random roll with 5 counts).
+      - `partial`   - only suggests running the program again and again
+                      until a 5 appears.
+      - `incorrect` - anything else, e.g. claims random can be told what
+                      to roll.
+
+      Feedback: make the random part predictable for a moment, test every
+      case, then switch the randomness back on.

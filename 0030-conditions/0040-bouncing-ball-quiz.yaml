@@ -1,0 +1,200 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The bouncing ball: your first animation"
+# (0030-conditions/0040-bouncing-ball.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the draw
+# loop, the += shorthand, repainting every frame, flipping the direction,
+# the || operator, >= instead of ===, and one condition per axis.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: bouncing-ball-quiz
+name: "Quiz: The bouncing ball"
+
+title: "Check your understanding: the bouncing ball"
+description: |
+  Seven short questions about the chapter *The bouncing ball: your first
+  animation*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One or
+  two sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `circleCenterX += direction;` where it helps. Stay strictly within
+    what a beginner knows after the bouncing ball chapter: drawing
+    commands, mouse events, variables and constants with explicit data
+    types, comparisons, the if/else if/else chain with braces around
+    every block, nested if statements, `random` and `Math.floor`, the
+    `draw` animation loop, the shorthand operators `+=`, `-=`, and `*=`,
+    and the OR operator `||`. Do not introduce the `&&` operator, arrays,
+    or for/while loops. If the student writes in German, you may answer
+    in German; keep code and command names in English.
+
+questions:
+  - id: draw-vs-setup
+    title: "How often draw runs"
+    question: |
+      Your programs now contain both `setup` and `draw`. How often does
+      each of them run?
+    evaluation: |
+      Expected: `setup` runs exactly once, at program start. `draw` runs
+      constantly, about 60 times per second, one call per frame, until
+      the page is closed.
+
+      - `correct`   - setup once AND draw repeatedly/constantly ("60
+                      times per second", "every frame", or "all the time"
+                      counts).
+      - `partial`   - one half only, or says draw runs "on an event" but
+                      knows it repeats.
+      - `incorrect` - anything else, e.g. draw runs once, or only when
+                      the mouse moves.
+
+      Feedback: draw needs no event — p5.js calls it on its own, frame
+      after frame.
+
+  - id: plus-equals
+    title: "The shorthand"
+    question: |
+      Write the line `circleCenterX += direction;` in its long form,
+      without the shorthand operator.
+    evaluation: |
+      Expected: `circleCenterX = circleCenterX + direction;`
+
+      - `correct`   - exactly this assignment (spacing doesn't matter).
+      - `partial`   - the right idea described in words ("take the value,
+                      add direction, store it back") without the code
+                      line.
+      - `incorrect` - anything else, e.g. `circleCenterX = direction;`.
+
+      Feedback: the shorthand always means "old value, operator, right
+      side, stored back into the same variable".
+
+  - id: background-every-frame
+    title: "Repainting every frame"
+    question: |
+      `draw` calls `background("gold")` as its first line, every single
+      frame. What would you see without that call?
+    evaluation: |
+      Expected: every frame's ball would stay on the canvas, so the ball
+      leaves a trail / smears a stripe across the screen instead of
+      moving cleanly.
+
+      - `correct`   - old balls remain / a trail or smear appears ("you
+                      see many balls" counts).
+      - `partial`   - says the canvas isn't cleaned without describing
+                      the visible result.
+      - `incorrect` - anything else, e.g. nothing changes or the ball
+                      disappears.
+
+      Feedback: an animation is many pictures — each frame must erase
+      the previous one first.
+
+  - id: flip-direction
+    title: "One line for both walls"
+    question: |
+      `direction` holds 2. Then `direction *= -1;` runs once at the
+      right wall, and later once more at the left wall. Which value does
+      `direction` hold after each of the two bounces?
+    evaluation: |
+      Expected: -2 after the first bounce, 2 again after the second.
+      Multiplying by -1 flips the sign, so the same line turns the ball
+      around at both walls.
+
+      - `correct`   - -2 then 2.
+      - `partial`   - one of the two values right, or "the sign flips"
+                      without the values.
+      - `incorrect` - anything else, e.g. -1 or 0.
+
+      Feedback: times -1 never changes the speed, only the travel
+      direction.
+
+  - id: or-operator
+    title: "What OR asks"
+    question: |
+      ```typescript
+      if (circleCenterX >= width || circleCenterX <= 0) {
+        direction *= -1;
+      }
+      ```
+
+      When is the whole condition between the parentheses `true`?
+    evaluation: |
+      Expected: when at least one of the two comparisons is true, that
+      is, when the ball is at or past the right wall or at or past the
+      left wall. `||` needs only one true side.
+
+      - `correct`   - at least one side true / at either wall ("one of
+                      the two is enough" counts).
+      - `partial`   - explains the two comparisons but claims both must
+                      be true.
+      - `incorrect` - anything else, e.g. claims the condition is true on
+                      every frame.
+
+      Feedback: || is satisfied by one true side; the sibling that needs
+      both comes later in the course.
+
+  - id: gte-not-equal
+    title: "At or beyond, not exactly at"
+    question: |
+      The bounce condition uses `>=` and `<=`, not `===`. The canvas is
+      300 wide, and a fast ball moves 7 pixels per frame: its positions
+      near the wall are 294, then 301. Why would `=== width` fail here?
+    evaluation: |
+      Expected: the ball jumps from 294 to 301 and is never exactly at
+      300, so an `===` condition would never fire and the ball would fly
+      off the canvas. "At or beyond" (`>=`) also catches the overshoot.
+
+      - `correct`   - the ball skips the exact value / is never exactly
+                      300, so === never fires and >= still catches it.
+      - `partial`   - says >= is safer without using the skipped value
+                      294 to 301.
+      - `incorrect` - anything else, e.g. claims === doesn't work with
+                      variables.
+
+      Feedback: conditions that guard a border should ask "at or
+      beyond", not "exactly at".
+
+  - id: separate-axes
+    title: "Two conditions for four walls"
+    question: |
+      The diagonal ball bounces off all four walls. Why does the chapter
+      insist on two separate if statements, one for the side walls and
+      one for top and bottom, instead of one big condition with all four
+      wall checks?
+    evaluation: |
+      Expected: each axis has its own direction variable. A side wall
+      must flip only the horizontal direction, top/bottom only the
+      vertical one. One merged condition would flip both directions on
+      every wall touch, and the ball would stutter along the wall
+      instead of bouncing cleanly.
+
+      - `correct`   - each wall pair flips only its own direction / a
+                      merged condition would flip both.
+      - `partial`   - says the walls are different without connecting
+                      them to the two direction variables.
+      - `incorrect` - anything else, e.g. claims || only takes two
+                      comparisons.
+
+      Feedback: ask per wall: which of the two directions must turn
+      around here?

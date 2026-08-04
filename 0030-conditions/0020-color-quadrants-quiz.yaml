@@ -1,0 +1,190 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Color quadrants: a decision inside a decision"
+# (0030-conditions/0020-color-quadrants.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: why four
+# quadrants need two questions, nested if statements, tracing a click,
+# indentation, the centering formula, and clearing before redrawing.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: color-quadrants-quiz
+name: "Quiz: Color quadrants"
+
+title: "Check your understanding: color quadrants"
+description: |
+  Six short questions about the chapter *Color quadrants: a decision
+  inside a decision*. Answer in your own words. There are no answer
+  options to pick from, and this quiz is anonymous: it's here for you, so
+  you can see what you already understand and what you should read again.
+  One or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library, so every chapter quiz renders a byte-identical
+# preamble and the compound quiz deduplicates it to one copy. Edit the text
+# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
+# belong in discussion.instructions below (that field does not travel into
+# compound quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here.
+  instructions: |
+    You may reveal and explain the correct answer. Keep explanations tiny
+    and concrete: one idea at a time, with a short code line like
+    `if (mouseY < height / 2) { message = "Green"; }` where it helps. Stay
+    strictly within what a beginner knows after the color quadrants
+    chapter: drawing commands, mouse events, variables and constants with
+    explicit data types, comparisons that produce booleans, the
+    if/else if/else chain with braces around every block, nested if
+    statements, and text formatting with `textSize`, `textStyle`, and
+    `textAlign`. Do not introduce the `&&` or `||` operators, random
+    numbers, the `draw` animation loop, or loops. If the student writes in
+    German, you may answer in German; keep code and command names in
+    English.
+
+questions:
+  - id: why-two-questions
+    title: "Two questions for four areas"
+    question: |
+      The canvas is split into four colored quadrants. Why can't a single
+      question about `mouseX` alone sort a click into the right quadrant?
+    evaluation: |
+      Expected: `mouseX` only tells left or right, it says nothing about
+      top or bottom. A second question about `mouseY` is needed; two
+      questions with two answers each give the four combinations.
+
+      - `correct`   - says mouseX cannot tell top from bottom / a second
+                      question about mouseY is needed.
+      - `partial`   - says "you need two questions" without saying what
+                      mouseX cannot tell.
+      - `incorrect` - anything else, e.g. claims four questions are
+                      needed, one per quadrant.
+
+      Feedback: two questions, each with two answers, make two times two
+      combinations.
+
+  - id: trace-a-click
+    title: "Play computer with one click"
+    question: |
+      The canvas is 400 wide and 200 high. A click lands at (300, 60).
+
+      ```typescript
+      if (mouseX < width / 2) {
+        if (mouseY < height / 2) {
+          message = "Orange";
+        } else {
+          message = "Blue";
+        }
+      } else {
+        if (mouseY < height / 2) {
+          message = "Green";
+        } else {
+          message = "Red";
+        }
+      }
+      ```
+
+      Trace the click: which message does the program store?
+    evaluation: |
+      Expected: "Green". Outer: 300 < 200 is false, so the else branch
+      (right half) runs. Inner: 60 < 100 is true, so `message` becomes
+      "Green".
+
+      - `correct`   - Green.
+      - `partial`   - lands in the right half but picks its other color,
+                      Red (the inner comparison flipped).
+      - `incorrect` - anything else, e.g. Orange or Blue.
+
+      Feedback: answer the outer question first (300 against 200), then
+      the inner one (60 against 100).
+
+  - id: indentation-meaning
+    title: "Code without indentation"
+    question: |
+      A classmate deletes all indentation from the nested code, so every
+      line starts at the left margin. Does the program still work, and
+      what is lost?
+    evaluation: |
+      Expected: the program runs exactly the same, indentation means
+      nothing to the computer. What's lost is for humans: you can no
+      longer see at a glance which statements belong to which block.
+
+      - `correct`   - both halves: runs unchanged AND the visible block
+                      structure is lost for the reader.
+      - `partial`   - one half only: knows it still runs, or knows
+                      indentation shows structure, but not both.
+      - `incorrect` - anything else, e.g. claims TypeScript refuses to run
+                      unindented code.
+
+      Feedback: the braces decide the structure, the indentation only
+      shows it.
+
+  - id: exactly-one-branch
+    title: "How many messages per click"
+    question: |
+      The nested code from this chapter contains four `message = ...`
+      lines, one per quadrant. After a single click, how many of them
+      run, and why?
+    evaluation: |
+      Expected: exactly one. The outer if picks one half, and inside that
+      half the inner if picks one quadrant; all other branches are
+      skipped.
+
+      - `correct`   - one / exactly one, with the reason that each if
+                      statement runs only one of its branches.
+      - `partial`   - answers one without any reason.
+      - `incorrect` - anything else, e.g. two (one per if statement) or
+                      all four.
+
+      Feedback: every if/else picks exactly one of its branches, and the
+      inner one only exists inside the picked branch.
+
+  - id: center-the-box
+    title: "Centering the message box"
+    question: |
+      The message box is 150 pixels wide and the canvas is 400 pixels
+      wide. Which x coordinate do you pass to `rect` so the box sits
+      horizontally centered? Give the number and the formula.
+    evaluation: |
+      Expected: 125, from `width / 2 - boxWidth / 2`, that is
+      400 / 2 - 150 / 2 = 200 - 75.
+
+      - `correct`   - 125 (the formula in any equivalent form counts as
+                      the second half; 200 - 75 unfinished still needs
+                      the 125).
+      - `partial`   - the right formula with an arithmetic slip, or only
+                      half the canvas (200) / half the box (75).
+      - `incorrect` - anything else, e.g. 200.
+
+      Feedback: go to the canvas middle, then back by half the box's
+      width — `rect` wants the top left corner.
+
+  - id: clear-before-write
+    title: "Repaint before writing"
+    question: |
+      In `mouseClicked`, the black message box is repainted before the
+      new message is drawn. What would you see after a few clicks without
+      that repaint?
+    evaluation: |
+      Expected: the old messages would remain, so the texts pile up on
+      top of each other and become unreadable.
+
+      - `correct`   - previous message(s) stay visible / letters overlap
+                      ("the old text is still there" counts).
+      - `partial`   - says the box would look wrong or messy without
+                      naming the old text remaining.
+      - `incorrect` - anything else, e.g. nothing changes or the program
+                      crashes.
+
+      Feedback: the canvas never forgets on its own — drawing on top is
+      the only eraser.
