@@ -1,0 +1,93 @@
+# ---------------------------------------------------------------------------
+# Builds the Quarto book on every push / pull request and publishes two build
+# artifacts:
+#   * creative-coding-pdf     -> the single combined PDF (Creative-Coding.pdf)
+#   * creative-coding-website -> the HTML book, zipped
+#
+# Both formats come out of ONE `quarto render` into `_output/`, so the HTML
+# book's "Download PDF" link points at a PDF that really exists in the zip.
+# ---------------------------------------------------------------------------
+name: Build book
+
+on:
+  push:
+    branches: [main]
+    # Changes to these never alter the rendered book, so they must not burn a
+    # CI run. Keep this list in sync when new non-book assets are added.
+    paths-ignore:
+      - '.agents/**'          # Claude Code skills / agent config
+      - '.claude'             # symlink to .agents
+      - 'skills-lock.json'
+      - '**/*-quiz.yaml'      # novedu quiz sources (hosted separately)
+      - 'ddp-quiz-fragments.yaml'
+      - '**/*-quiz/**'        # images used only by the quizzes
+      - '**/*.bob'            # svgbob sources; the committed .svg is what renders
+      - '**/*.md'             # notes/READMEs — book chapters are .qmd
+      - '.gitignore'
+  pull_request:
+    branches: [main]
+    paths-ignore:
+      - '.agents/**'
+      - '.claude'
+      - 'skills-lock.json'
+      - '**/*-quiz.yaml'
+      - 'ddp-quiz-fragments.yaml'
+      - '**/*-quiz/**'
+      - '**/*.bob'
+      - '**/*.md'
+      - '.gitignore'
+  workflow_dispatch:
+
+# A newer push to the same branch makes an in-flight build obsolete.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      # Quarto rasterizes the chapters' .svg diagrams to PDF for the LaTeX
+      # pass; that conversion is done by rsvg-convert, which is not preinstalled.
+      - name: Install rsvg-convert (SVG -> PDF for the LaTeX pass)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends librsvg2-bin
+
+      # Pin the Quarto version so CI output matches what we render locally.
+      # Bump this deliberately, not implicitly.
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 1.6.40
+          tinytex: true
+
+      # One render produces both formats. Quarto pulls any missing LaTeX
+      # packages (qrcode, koma-script, ...) into TinyTeX on demand.
+      - name: Render book (HTML + PDF)
+        run: quarto render
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: creative-coding-pdf
+          path: _output/Creative-Coding.pdf
+          if-no-files-found: error
+
+      - name: Zip website
+        run: |
+          cd _output
+          zip -r ../creative-coding-website.zip . -x '*.DS_Store'
+
+      - name: Upload website zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: creative-coding-website
+          path: creative-coding-website.zip
+          if-no-files-found: error
