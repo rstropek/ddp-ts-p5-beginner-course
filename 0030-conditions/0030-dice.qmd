@@ -29,18 +29,17 @@ points.
 ## Rounding down with floor {#sec-floor}
 
 To turn 3.874 into a proper dice value, you need to cut off the decimal
-part, and that's a kind of rounding you haven't used yet.
-`Math.floor` always rounds **down** to the next whole number:
-`Math.floor(3.874)` is 3, and `Math.floor(6.999)` is 6. `Math` is
-JavaScript's built-in collection of math functions, and it's where
-`floor` lives. Combined with `random`, the roll becomes one line:
+part, and that's a kind of rounding you haven't used yet. You know
+`round` from the snapping exercise; its sibling `floor` always rounds
+**down** to the next whole number: `floor(3.874)` is 3, and
+`floor(6.999)` is 6. Combined with `random`, the roll becomes one line:
 
 ```typescript
-const dice: number = Math.floor(random(1, 7));
+const dice: number = floor(random(1, 7));
 ```
 
 Follow a value through: `random(1, 7)` produces something between 1 and
-6.999..., and `Math.floor` maps everything from 1 up to 1.999... onto
+6.999..., and `floor` maps everything from 1 up to 1.999... onto
 1, everything from 2 up to 2.999... onto 2, and so on up to 6. Six
 equally wide ranges, six equally likely results: a fair die.
 
@@ -51,7 +50,7 @@ from 1 to 1.499... to 1, a range of width 0.5, while 2 gets everything
 from 1.5 to 2.499..., a range of width 1. The same squeeze happens at
 the top for the 6. With `round`, the 1 and the 6 would appear only half
 as often as the other numbers: a loaded die. The pattern
-`Math.floor(random(min, max + 1))` is the standard recipe for fair
+`floor(random(min, max + 1))` is the standard recipe for fair
 whole-number randomness, worth memorizing.
 :::
 

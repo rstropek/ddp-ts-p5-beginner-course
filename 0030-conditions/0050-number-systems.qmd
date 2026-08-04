@@ -26,8 +26,8 @@ division, and that makes it a digit extractor: `num % 10` is the
 remainder when dividing by 10, which is exactly the last digit.
 `4711 % 10` is 1.
 
-`Math.floor` from the dice chapter rounds down, and that makes it a
-digit remover: `Math.floor(num / 10)` chops off the last digit.
+`floor` from the dice chapter rounds down, and that makes it a
+digit remover: `floor(num / 10)` chops off the last digit.
 `4711 / 10` is 471.1, and flooring it leaves 471.
 
 Chain the two and you can reach every digit: divide first to shift the
@@ -35,8 +35,8 @@ digit you want to the last place, then `% 10` to grab it:
 
 ```typescript
 const digit1: number = num % 10;                     // ones
-const digit2: number = Math.floor(num / 10) % 10;    // tens
-const digit3: number = Math.floor(num / 100) % 10;   // hundreds
+const digit2: number = floor(num / 10) % 10;    // tens
+const digit3: number = floor(num / 100) % 10;   // hundreds
 ```
 
 Why 10, 100, and their bigger siblings? Because that's how our number
@@ -62,7 +62,7 @@ own yellow box.
    Two of the six results are worth predicting carefully: what do
    `digit5` and `digit6` hold when the number only has four digits?
 2. **Read the starter code.** The random number is already there:
-   `Math.floor(random(0, 1_000_000))`, the fair-whole-number recipe
+   `floor(random(0, 1_000_000))`, the fair-whole-number recipe
    from the dice. New in it: TypeScript lets you write `1_000_000`
    instead of `1000000`, with underscores as grouping marks that mean
    nothing to the computer and everything to human eyes.
@@ -112,8 +112,8 @@ decimal you divided by the place values, the powers of ten, and took
 
 ```typescript
 const digit1: number = num % 2;
-const digit2: number = Math.floor(num / 2) % 2;
-const digit3: number = Math.floor(num / 4) % 2;
+const digit2: number = floor(num / 2) % 2;
+const digit3: number = floor(num / 4) % 2;
 ```
 
 ## Your exercise: Binary digits {#sec-binary-exercise}
@@ -126,7 +126,7 @@ random number in binary.
    together.
 2. **Copy your digits solution** into the empty starter and change the
    number range: the boxes can show at most 63, so the roll becomes
-   `Math.floor(random(0, 64))`.
+   `floor(random(0, 64))`.
 3. **Change the extraction** from base ten to base two: the divisors
    1, 10, 100, ... become 1, 2, 4, 8, 16, 32, and every `% 10`
    becomes `% 2`.
@@ -154,12 +154,12 @@ why colors on the web are often written as codes like `#FF0000`, red
 at full power and the other channels at zero.
 
 Extracting hex digits is the same recipe a third time, with divisor
-16. For the powers, the starter uses a helper you haven't met:
-`Math.pow(16, 2)` computes 16 to the power of 2, so
-`Math.pow(base, exponent)` saves you from typing `16 * 16`:
+16. For the powers, the starter uses a p5.js helper you haven't met:
+`pow(16, 2)` computes 16 to the power of 2, so
+`pow(base, exponent)` saves you from typing `16 * 16`:
 
 ```typescript
-const digit2: number = Math.floor(num / Math.pow(16, 1)) % 16;
+const digit2: number = floor(num / pow(16, 1)) % 16;
 ```
 
 One thing is genuinely new: such a digit is a *number* from 0 to 15,
@@ -186,7 +186,7 @@ Three boxes this time, showing the random number in hex.
 2. **Adapt your solution:** three digits instead of six, divisors 1,
    16, and 256, extraction with `% 16`. The biggest three-digit hex
    number is FFF, which is 4095, so the roll is
-   `Math.floor(random(0, Math.pow(16, 3)))`.
+   `floor(random(0, pow(16, 3)))`.
 3. **Write the translation chain** for each box: digits below 10 are
    printed as they are, 10 to 15 as A to F.
 4. **Test with forced values**, at least 255 (should read 0FF) and
