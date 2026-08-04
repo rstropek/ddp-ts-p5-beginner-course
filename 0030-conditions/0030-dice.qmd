@@ -150,6 +150,41 @@ Your job is the cases 3 to 6.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/dice.yaml >}}
 
+## Advanced: the same dot, drawn five times {#sec-dice-advanced}
+
+Get your paper sketches of the six faces out again and look at them as
+a group instead of one by one. The dot in the upper left corner
+appears on the 2, the 3, the 4, the 5, and the 6: five faces share it,
+and your finished chain draws it with five separate `circle`
+statements. The center dot appears on the 1, the 3, and the 5. Count
+all the calls in your chain and you land at 21 `circle` statements for
+only nine distinct anchor points. Repetition like that is a warning
+sign in any program, and the conditions you already know are enough to
+remove it: the chain can be rewritten with far fewer `circle`
+statements.
+
+You won't do the rewrite alone: this is a job for an AI, used the way
+you learned in the elephant exercise. The two rules from there apply
+word for word. Paste your complete, working dice program into the
+prompt, because running code is the most precise description of your
+environment. And say that you are a beginner and that the code shows
+everything you have learned so far, so the answer stays inside what
+you can understand. Then ask the AI to rewrite the program so that it
+needs as few `circle` statements as possible.
+
+The AI will solve this, no surprise there. The real exercise is what
+happens next: don't just accept the answer. Read the new code line by
+line, and every time something is unclear, ask a follow-up question.
+Why is this comparison suddenly `>=` instead of `===`? Which faces
+does this `circle` call serve? What happened to the final `else`? Keep
+asking until you could have written the improvement yourself.
+
+There's a reason to be that strict: **be prepared to describe your
+optimization in class**, without the AI and without your notes. You
+should be able to explain which dots the faces share and how the
+rewritten conditions use that overlap. When you can do that, the code
+is yours, no matter who typed it first.
+
 ## Check your understanding {#sec-quiz-dice}
 
 When all six faces roll correctly, take the short quiz below. You answer
