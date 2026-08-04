@@ -8,3 +8,7 @@ quarto-required: ">=1.4.0"
 contributes:
   shortcodes:
     - example.lua      # provides both `example` and `playground` shortcodes
+
+# PDF output needs the LaTeX packages `qrcode` (the printed QR code) and
+# `inconsolata` (the font the printed address is set in). TinyTeX installs both
+# on the first render; a full TeX Live already has them.
