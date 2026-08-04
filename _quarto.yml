@@ -104,3 +104,11 @@ format:
         % Don't bold chapter entries in the table of contents (KOMA bolds them
         % by default). With many top-level parts, a lighter TOC reads better.
         \setkomafont{chapterentry}{\normalfont}
+        % Chapter entries in the TOC:
+        %   numwidth   - KOMA reserves only 1.5em for the number, too narrow
+        %                once a part has ten or more chapters ("1.10" then
+        %                runs into the title). Widen it for two-digit numbers.
+        %   beforeskip - KOMA adds ~1em above every chapter entry, which makes
+        %                a chapter list read as loose, disconnected rows. Drop
+        %                it so a part's chapters form one compact block.
+        \DeclareTOCStyleEntry[numwidth=3em,beforeskip=0pt]{tocline}{chapter}
