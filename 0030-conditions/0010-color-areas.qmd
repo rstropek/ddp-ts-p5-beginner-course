@@ -49,7 +49,7 @@ equal" with an exclamation mark and two of them, `!==`. That's simply
 how TypeScript spells these two questions. A single `=` wouldn't do,
 because that character is already taken: it performs an assignment, as
 in `colorHue = 90`. The two equality operators get their first real job
-in the dice chapter.
+in the dice chapter (@sec-equality).
 :::
 
 A comparison is a calculation like any other, it just produces a boolean

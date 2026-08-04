@@ -164,7 +164,8 @@ remove it: the chain can be rewritten with far fewer `circle`
 statements.
 
 You won't do the rewrite alone: this is a job for an AI, used the way
-you learned in the elephant exercise. The two rules from there apply
+you learned in the elephant exercise (@sec-animal). The two rules from
+there apply
 word for word. Paste your complete, working dice program into the
 prompt, because running code is the most precise description of your
 environment. And say that you are a beginner and that the code shows

@@ -11,7 +11,7 @@ a protocol at the top of the canvas. Click by click, the protocol gets
 longer, until it fills line after line, and the program never forgets a
 single entry.
 
-## An event for clicks {#sec-mouse-clicked}
+## An event for clicks {#sec-click-event}
 
 The click protocol reacts to clicks with the event function
 `mouseClicked`, the same one that froze the color in the color picker:
