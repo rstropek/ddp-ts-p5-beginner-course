@@ -8,6 +8,12 @@ the same robot so that it adapts to *any* canvas size, and on the way you
 learn one of the big ideas of user interface programming: replace fixed
 numbers with formulas.
 
+## AI tutor {#sec-tutor-responsive-robot}
+
+Replacing fixed numbers with formulas is the big idea of this chapter, and it
+takes a while to click. Describe your robot and the one coordinate you're unsure
+about to the AI tutor of this part.
+
 {{< tutor tutor-variables >}}
 
 ## Stage 1: a robot with fixed numbers {#sec-robot-fixed}

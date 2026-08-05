@@ -17,6 +17,13 @@ task you'll get in an assessment, and the flower project even states the
 areas you'd be graded on. Plan on paper, work in small steps, and hand in
 formatted code, just as you've learned.
 
+## AI tutor {#sec-tutor-practice-projects}
+
+Both projects in this chapter are practice for the kind of task you get in an
+assessment, so get as far as you can on your own first. When you're truly stuck,
+the AI tutor of this part gives you the next hint, never the finished
+project.
+
 {{< tutor tutor-introduction >}}
 
 ## Coordinates come in many forms {#sec-coordinate-forms}

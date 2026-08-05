@@ -12,6 +12,12 @@ one-ball starter program, adding a second ball that bounces vertically.
 Then, in the advanced stage, you'll set a single ball loose diagonally,
 bouncing off all four walls, endlessly crisscrossing the canvas.
 
+## AI tutor {#sec-tutor-bouncing-ball}
+
+An animation that misbehaves is hard to read, because it moves too fast to see
+what went wrong. Tell the AI tutor of this part what your ball does and what you
+expected instead.
+
 {{< tutor tutor-conditions >}}
 
 ## An animation is many pictures {#sec-draw-loop}

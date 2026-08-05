@@ -11,6 +11,14 @@ face: one centered point for a one, two corner points for a two, and so
 on up to six. To pull that off, you need two new tools: a way to produce
 random numbers, and a comparison that asks "is it exactly this value?".
 
+## AI tutor {#sec-tutor-dice}
+
+Two AIs appear in this chapter, with different jobs. The tutor of this part
+answers your questions about random numbers, rounding, and comparisons, with
+hints. The advanced section at the end has an AI of its own that writes code
+from your prompt, so you can have your finished program improved and then take
+the improvement apart.
+
 {{< tutor tutor-conditions >}}
 
 ## A number nobody knows in advance {#sec-random}

@@ -16,6 +16,13 @@ like anyone else's, and that's the point. The rules of exactness still
 apply, every letter, parenthesis, and curly brace still matters, but *what*
 you draw is now your decision.
 
+## AI tutor {#sec-tutor-first-own-program}
+
+Designing a picture of your own means many small decisions, and there is no
+sample solution to compare yours with. That makes the AI tutor of this part a
+good partner here: describe where you're stuck, and it asks the questions that
+get you moving again.
+
 {{< tutor tutor-introduction >}}
 
 ## Big pictures are made of simple shapes {#sec-decompose}

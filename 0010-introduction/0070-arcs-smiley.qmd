@@ -18,6 +18,12 @@ its mouth is an arc. Typing first and experimenting afterwards is on
 purpose: `arc` is the trickiest command you've met so far, and the best way
 to understand it is to see it work and then start turning its knobs.
 
+## AI tutor {#sec-tutor-arcs-smiley}
+
+`arc` is the trickiest command in this part, and its start and end angles
+confuse almost everybody at first. The AI tutor of this part is a good place to
+ask why a certain pair of angles draws the piece it draws.
+
 {{< tutor tutor-introduction >}}
 
 ## The arc command {#sec-arc}

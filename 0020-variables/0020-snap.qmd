@@ -14,6 +14,12 @@ mouse, but instead of following it pixel by pixel, it jumps from grid corner
 to grid corner, every 40 pixels. To get there, you'll declare your own
 constants, meet data types properly, and write your first real formula.
 
+## AI tutor {#sec-tutor-snap}
+
+A formula that produces the wrong number is hard to spot, because it looks
+perfectly fine on the screen. The AI tutor of this part goes through a formula
+with you step by step, with your own values.
+
 {{< tutor tutor-variables >}}
 
 ## Constants you declare yourself {#sec-declare-const}

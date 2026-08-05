@@ -13,6 +13,13 @@ AI to turn it into a different animal. An elephant, a dog, a penguin,
 whatever you like. You won't type the new code yourself. Your job is to
 write the instructions, judge the result, and make it work.
 
+## AI tutor {#sec-tutor-first-ai-exercise}
+
+Two different AIs appear in this chapter, and it's worth keeping them apart. The
+tutor of this part helps you understand the chapter, with hints and questions.
+The exercise further down has an AI of its own that writes complete code from
+your prompt, because writing that prompt *is* the exercise.
+
 {{< tutor tutor-introduction >}}
 
 ## Writing a good prompt {#sec-prompt}

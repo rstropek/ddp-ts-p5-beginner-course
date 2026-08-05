@@ -16,6 +16,13 @@ their time exactly like this: reading code they didn't write, understanding
 it, and carefully changing it. Whoever wrote the original, a colleague, an
 AI, or you-three-weeks-ago, the skill is the same.
 
+## AI tutor {#sec-tutor-olympic-rings-advanced}
+
+Reading a program somebody else wrote is a skill of its own, and asking
+questions about it is part of that skill. The AI tutor of this part explains
+what a piece of the given code does, without handing you the repaired
+program.
+
 {{< tutor tutor-introduction >}}
 
 ## The puzzle: weaving the rings {#sec-weaving}

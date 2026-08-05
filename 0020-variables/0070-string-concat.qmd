@@ -11,6 +11,12 @@ a protocol at the top of the canvas. Click by click, the protocol gets
 longer, until it fills line after line, and the program never forgets a
 single entry.
 
+## AI tutor {#sec-tutor-string-concat}
+
+A growing string goes wrong in small ways: a missing space, a protocol that
+resets, a line that never gets longer. The AI tutor of this part helps you work
+out which of them you're looking at.
+
 {{< tutor tutor-variables >}}
 
 ## An event for clicks {#sec-click-event}

@@ -2,6 +2,13 @@
 title: "Welcome"
 ---
 
+## AI tutor {#sec-tutor-welcome}
+
+You're not alone with this book. Every chapter of this part links to the same
+AI tutor, a chat that knows what the course has taught you so far. Ask it
+whenever an explanation doesn't click, and it helps you with the commands you
+already have instead of jumping ahead.
+
 {{< tutor tutor-introduction >}}
 
 ## Welcome to Creative Coding {#sec-welcome}

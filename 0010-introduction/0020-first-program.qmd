@@ -4,6 +4,12 @@ title: "Your first program"
 
 By the end of this chapter you'll have written your very first real program and watched a small arrangement of shapes appear on the canvas in front of you. You'll get there by typing the code exactly as it's given, one character at a time, and seeing for yourself how a program comes to life. It's a small result, but it's entirely yours, and it's the moment programming stops being an idea and starts being something you do.
 
+## AI tutor {#sec-tutor-first-program}
+
+Your first program has to be typed exactly right, so small mistakes are part of
+the deal. When the playground shows an error message you can't make sense of,
+the AI tutor of this part helps you read it.
+
 {{< tutor tutor-introduction >}}
 
 ## Where you'll write code {#sec-playground}

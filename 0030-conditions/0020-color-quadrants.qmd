@@ -12,6 +12,12 @@ be sorted with questions about `mouseX` alone. Four quadrants can't:
 this time, no single question about one coordinate can tell all four
 areas apart.
 
+## AI tutor {#sec-tutor-color-quadrants}
+
+An if statement inside another one is where many beginners lose track of which
+branch runs when. The AI tutor of this part walks through your decision with
+you, condition by condition.
+
 {{< tutor tutor-conditions >}}
 
 ## Two questions, four answers {#sec-two-questions}

@@ -12,6 +12,12 @@ smiling. In this part of the course your programs come alive: they react to
 the mouse, values change while the program runs, and the picture changes with
 them. The idea that makes all of this possible is the **variable**.
 
+## AI tutor {#sec-tutor-crosshairs}
+
+This part of the book has its own AI tutor, and every chapter of the part links
+to it. It knows the material of the Introduction part plus everything this part
+teaches, so from now on you can ask it about variables too.
+
 {{< tutor tutor-variables >}}
 
 ## A variable is a named place for a value {#sec-variable-idea}

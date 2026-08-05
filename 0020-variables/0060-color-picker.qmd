@@ -12,6 +12,12 @@ mouse events, the HSB color model, the system variables `width` and
 string. And it hides a small surprise: the program remembers your chosen
 color without a single variable of your own.
 
+## AI tutor {#sec-tutor-color-picker}
+
+The color picker brings together almost everything from this part, which also
+means many places where it can go quiet or show the wrong color. The AI tutor of
+this part helps you narrow down which half of the program is at fault.
+
 {{< tutor tutor-variables >}}
 
 ## Two halves, two jobs {#sec-picker-halves}

@@ -15,6 +15,14 @@ You'll pick one p5.js command that nobody taught you, learn it from the
 official documentation, build an example with it, and describe it in your
 own words. In short: this time, *you* write a little piece of this book.
 
+## AI tutor {#sec-tutor-reading-docs}
+
+Two AIs appear in this chapter, with different jobs. The AI tutor of this part
+is here for your questions about the course material, exactly as in every other
+chapter. The exercise itself sends you somewhere else on purpose, to a general
+AI on the internet, because meeting material nobody prepared for you is what
+this chapter trains.
+
 {{< tutor tutor-introduction >}}
 
 ## The p5.js reference {#sec-reference}

@@ -1,15 +1,17 @@
 --[[
   tutor.lua — Quarto *shortcode* for linking to a part's AI tutor on novedu.
 
-  Usage in a chapter (right after the front matter, before the goal image):
+  Usage in a chapter (inside its opening "AI tutor" section):
 
       {{< tutor <key> [title="..."] >}}
 
   Renders a compact callout (like a Quarto `callout-tip`) that invites the
   reader to open the AI tutor for the current book part in the novedu chat
-  app. The callout's body text is fixed here, in one place, because the same
-  invitation appears at the top of every chapter — editing this file updates
-  them all. The tutor's behavior itself lives in a YAML activity file (e.g.
+  app. Every chapter opens with an `## AI tutor` section: prose that says what
+  the situation in that chapter is, then this box. The box's body text is fixed
+  here, in one place, because the standing rules of a tutor are the same in
+  every chapter — editing this file updates them all. The tutor's behavior
+  itself lives in a YAML activity file (e.g.
   0010-introduction/introduction-tutor.yaml); the book only links to it.
 
   <key> is the tutor's key in the activity registry, `ddp-activities.yaml`
@@ -224,14 +226,14 @@ local function activity_code(meta, key)
   return pandoc.utils.stringify(entry)
 end
 
--- The invitation every chapter shows. One fixed text, defined once: the same
--- offer repeats at the top of every chapter, so wording tweaks belong here,
--- not in 20+ .qmd files. An exercise-AI box overrides it with `text=` (and
--- usually `cta=`), because those boxes link a code generator, not a tutor.
-local BODY_TEXT = "Questions while you read? This chapter has an AI tutor. "
-  .. "It knows what you have already learned, it won't jump ahead, and it "
-  .. "helps with hints and questions instead of finished solutions. "
-  .. "You can write in English or German."
+-- The one line every tutor box carries. Each chapter opens with an "AI tutor"
+-- section whose prose says what the situation in that chapter is, so this text
+-- only states the standing rules of a tutor, the ones that hold in every
+-- chapter. It is defined once here rather than in 20+ .qmd files. An
+-- exercise-AI box overrides it with `text=` (and usually `cta=`), because those
+-- boxes link a code generator, not a tutor.
+local BODY_TEXT = "Hints and questions instead of finished programs, "
+  .. "in English or German."
 local CTA_TEXT = "Ask your AI tutor on novedu.at"
 
 local function tutor(args, kwargs, meta)

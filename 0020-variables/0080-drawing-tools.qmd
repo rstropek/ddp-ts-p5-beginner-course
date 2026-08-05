@@ -16,6 +16,12 @@ Take these projects seriously. They are practice for exactly the kind of
 task you'll get in an assessment. Plan on paper, work in small steps, and
 hand in formatted code, just as you've learned.
 
+## AI tutor {#sec-tutor-drawing-tools}
+
+Both drawing tools are practice for an assessment, so work on them on your own
+first and turn to the AI tutor of this part when you're really stuck. It gives
+you the next hint, never the finished tool.
+
 {{< tutor tutor-variables >}}
 
 ## The briefing: a circle tool {#sec-circle-tool}

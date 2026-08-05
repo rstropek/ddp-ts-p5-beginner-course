@@ -13,6 +13,12 @@ apart digit by digit, then you'll do the same in binary, then in
 hexadecimal. By the end you'll not only have a game, you'll read the
 computer's own number language.
 
+## AI tutor {#sec-tutor-number-systems}
+
+Binary and hexadecimal are number languages you have to practice, and this
+chapter can only show a handful of examples. Ask the AI tutor of this part for
+more numbers to convert whenever you want extra practice.
+
 {{< tutor tutor-conditions >}}
 
 ## Taking a number apart {#sec-extract-digits}

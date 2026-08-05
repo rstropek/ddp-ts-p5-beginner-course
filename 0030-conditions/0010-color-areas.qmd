@@ -20,6 +20,12 @@ But they could not yet react differently to *what* happened. That
 changes now: in this part of the course, your programs learn to make
 decisions.
 
+## AI tutor {#sec-tutor-color-areas}
+
+This part of the book has its own AI tutor, and every chapter of the part links
+to it. It knows the whole course up to here, so you can ask it about conditions
+as well as about anything from the earlier parts.
+
 {{< tutor tutor-conditions >}}
 
 ## Questions with a yes/no answer {#sec-comparisons}

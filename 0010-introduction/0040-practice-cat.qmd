@@ -17,6 +17,12 @@ chapter you'll learn a few editor tricks that professionals use all day:
 copying and pasting code, moving lines around, and letting the editor format
 your code for you.
 
+## AI tutor {#sec-tutor-practice-cat}
+
+This chapter is about practice and editor tricks. When a keyboard shortcut does
+nothing on your machine, or a shape refuses to sit where you want it, ask the AI
+tutor of this part.
+
 {{< tutor tutor-introduction >}}
 
 ## Let the clipboard work for you {#sec-clipboard}

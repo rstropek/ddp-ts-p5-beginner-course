@@ -15,6 +15,12 @@ cold, cheap or polished. So far you've picked colors from a small list of
 names. After this chapter you can mix any of the roughly 16.7 million
 colors your screen can show.
 
+## AI tutor {#sec-tutor-color-basics}
+
+Colors come with a vocabulary of their own: channels, hue, saturation,
+brightness. Whenever one of those words stays fuzzy, ask the AI tutor of this
+part for another explanation and another example.
+
 {{< tutor tutor-variables >}}
 
 ## A color name is a string {#sec-color-names}

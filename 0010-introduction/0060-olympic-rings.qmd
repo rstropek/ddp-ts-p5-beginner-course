@@ -17,6 +17,12 @@ a designer delivers a layout, a game needs an existing character, and the
 programmer's task is to match the original exactly. Working precisely from
 a given design is a skill of its own, and this exercise trains it.
 
+## AI tutor {#sec-tutor-olympic-rings}
+
+Reproducing a given picture exactly means measuring, computing, and checking. If
+your rings won't line up, describe the problem to the AI tutor of this part
+instead of moving numbers around at random.
+
 {{< tutor tutor-introduction >}}
 
 ## A ring is a circle without a fill {#sec-ring}

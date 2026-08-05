@@ -87,13 +87,24 @@ GitHub URLs, so publishing a quiz edit is a `git push`: no re-upload, and no new
 
 #### AI tutors
 
-Every chapter also opens with a link to the AI tutor for its book part, a chat activity on
-novedu that answers questions about the material. The `tutor` shortcode works exactly like
-`quiz`, on a registry key:
+Every chapter opens with an **`## AI tutor` section**: two or three sentences saying what
+the AI situation in that chapter is, followed by a box linking the AI tutor for the book
+part, a chat activity on novedu that answers questions about the material. The prose is
+chapter-specific (a chapter with an exercise AI says so, the reading-documentation chapter
+sends students elsewhere); the standing rules of a tutor, hints instead of solutions and
+answers in English or German, are the box's fixed body text in `_extensions/tutor/tutor.lua`,
+so they are written once. The `tutor` shortcode works exactly like `quiz`, on a registry key:
 
 ```markdown
+## AI tutor {#sec-tutor-dice}
+
+Two AIs appear in this chapter, with different jobs. ...
+
 {{< tutor tutor-conditions >}}
 ```
+
+Each of those headings carries a unique id (`#sec-tutor-<chapter>`), because the PDF is one
+LaTeX document and a repeated label would collide.
 
 There are two kinds of tutor, and keeping them apart is the point:
 

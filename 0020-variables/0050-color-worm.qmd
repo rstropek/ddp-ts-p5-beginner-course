@@ -10,6 +10,12 @@ the one before. The colors wander through the entire rainbow and then start
 over, as long as you keep moving. To build the worm, you'll create your
 first variable of your own, one whose value changes while the program runs.
 
+## AI tutor {#sec-tutor-color-worm}
+
+Your first variable of your own carries a big idea: a value that survives from
+one call of a function to the next. If that idea stays slippery, the AI tutor of
+this part is the place to ask about it.
+
 {{< tutor tutor-variables >}}
 
 ## A value that must survive {#sec-value-survives}
