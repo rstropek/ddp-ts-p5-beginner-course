@@ -53,11 +53,14 @@ acts.](images/program-lifecycle.svg){width=440}
 
 ## A ball that moves itself {#sec-moving-ball}
 
-The starter code animates one ball with exactly that recipe. The moving
-part is a global variable for the ball's horizontal position and a
-second one for its current travel direction:
+Here is the recipe in its smallest form: a single ball on a 300 by 200
+canvas, flying from left to right at half the canvas height. Three
+global variables carry it. The ball's horizontal position and its
+current travel direction change from frame to frame, so both are
+declared with `let`; the ball's size never changes, so it is a `const`:
 
 ```typescript
+const circleDiameter: number = 50;
 let circleCenterX: number = 0;
 let direction: number = 2;
 ```
@@ -142,8 +145,8 @@ direction.](images/bounce-direction.svg){width=480}
 
 One detail deserves a professional's eye: the comparisons are `>=` and
 `<=`, not `===`. Play computer to see why. With a speed of 2 starting
-at 0, the positions are 0, 2, 4, ..., and on a 300 pixel canvas the
-ball lands exactly on 300, so `=== width` would happen to work. Now
+at 0, the positions are 0, 2, 4, ..., and on the 300 pixel wide canvas
+the ball lands exactly on 300, so `=== width` would happen to work. Now
 change the speed to 7: the positions jump 294, 301, and the ball is
 never *exactly* at 300. An `===` condition would never fire, and the
 ball would sail off the canvas forever. Conditions that guard a border
@@ -161,7 +164,10 @@ entirely different.
 
 ## Your exercise, part 1: a second ball {#sec-bouncing-exercise}
 
-Start with the single-ball program and give it a partner:
+The playground hands you the single-ball program from this chapter as
+your starting point: the three globals, the `draw` function, and the
+bounce condition, all of them lines you have just read. Your job is to
+give that ball a partner.
 
 1. **Read the starter code** until every line has a job you can name.
    One small chore while you read: the playground's starter declares

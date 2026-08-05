@@ -15,11 +15,12 @@ computer's own number language.
 
 ## Taking a number apart {#sec-extract-digits}
 
-The first challenge sounds almost silly: the program picks a random
-number, say 4711, and must draw each digit in its own box: a 4, a 7, a
-1, a 1. But `num` holds the *value* 4711, not four separate digits.
-How do you get single digits out of a number? With two operations you
-already know, working as a team.
+The first challenge sounds almost silly: the program rolls a random
+number, stores it in a variable named `num`, and must draw each digit
+in its own box. For 4711 that means a 4, a 7, a 1, and a 1. But `num`
+holds the single *value* 4711, not four separate digits. How do you get
+single digits out of a number? With two operations you already know,
+working as a team.
 
 The `%` operator from the color worm gives the remainder of a
 division, and that makes it a digit extractor: `num % 10` is the
@@ -52,6 +53,42 @@ gives 3, the hundreds digit. Dividing by 10 and flooring gives 35, and
 `35 % 10` is 5, the tens digit. The recipe works for any place: divide
 by the place value, floor, take `% 10`.
 
+The number to take apart comes from a roll, using the fair-whole-number
+recipe from the dice chapter: `floor(random(0, 1_000_000))` gives a
+whole number from 0 to 999999. Those underscores are not a typo.
+TypeScript lets you group the digits of a long number the same way you
+would group them with spaces on paper. They mean nothing to the
+computer and everything to human eyes.
+
+## A row of boxes, placed by formula {#sec-digit-boxes}
+
+All three digit exercises in this chapter show the same picture: a row
+of boxes on a black canvas 300 pixels high, each box 50 pixels wide and
+75 pixels high, the row starting 100 pixels below the top edge, one
+digit per box. Decimal and binary need six boxes and a canvas 550
+pixels wide; hexadecimal needs only three boxes on a 300 pixel wide
+canvas.
+
+The interesting part is the x coordinate of each box. You could work
+the six numbers out by hand, 50, 125, 200, and so on, and type them in.
+Better not. Write each position as a formula with the box number in it:
+
+```typescript
+rect(50 + 0 * 75, 100, 50, 75);
+rect(50 + 1 * 75, 100, 50, 75);
+rect(50 + 2 * 75, 100, 50, 75);
+```
+
+The 50 is the left margin, the 75 is the step from one box to the next
+(50 pixels of box plus a 25 pixel gap), and the 0, 1, 2 count the boxes
+from the left. TypeScript works out the numbers for you, and the code
+shows the *rule* behind the layout instead of six finished results.
+Want wider boxes later? Change one number per line instead of
+recomputing everything. The binary guesser at the end of this chapter
+reuses this layout, and there the formula earns its keep a second time:
+it tells you exactly where each box starts and ends when you have to
+find out which box the player clicked.
+
 ## Your exercise: Digits {#sec-digits-exercise}
 
 Now build it: a random number up to six digits, each digit drawn in its
@@ -61,20 +98,16 @@ own yellow box.
    the recipe on paper for all six digits: divide, floor, `% 10`.
    Two of the six results are worth predicting carefully: what do
    `digit5` and `digit6` hold when the number only has four digits?
-2. **Read the starter code.** The random number is already there:
-   `floor(random(0, 1_000_000))`, the fair-whole-number recipe
-   from the dice. New in it: TypeScript lets you write `1_000_000`
-   instead of `1000000`, with underscores as grouping marks that mean
-   nothing to the computer and everything to human eyes.
+2. **Read the starter code.** The roll is already there, and so is a
+   small `text` call that prints the whole number at the bottom of the
+   canvas, so you can check your digits against it at a glance.
 3. **Extract the six digits** into constants `digit1` to `digit6`,
    with explicit data types.
-4. **Draw the six boxes** with `rect`. Place them with a formula, not
-   with six hand-computed numbers: the box for digit number `i` starts
-   at `50 + i * 75`. You'll thank yourself in the next two exercises.
+4. **Draw the six boxes** with `rect`, using the `50 + i * 75`
+   formula. You'll thank yourself in the next two exercises.
 5. **Draw the digits** into the boxes with `text`, largest place value
    on the left: `digit6` in the leftmost box, `digit1` in the
-   rightmost. The starter already prints the whole number small at the
-   bottom, so you can check your digits against it at a glance.
+   rightmost.
 6. **Test with the paper number.** Force `num` to 4711 for a moment,
    like you forced the dice, and compare every box with your paper
    table. Numbers with fewer than six digits show leading zeros,
@@ -153,27 +186,34 @@ from 0 to 255 fits exactly two hex digits, from 00 to FF, and that's
 why colors on the web are often written as codes like `#FF0000`, red
 at full power and the other channels at zero.
 
-Extracting hex digits is the same recipe a third time, with divisor
-16. For the powers, the starter uses a p5.js helper you haven't met:
-`pow(16, 2)` computes 16 to the power of 2, so
-`pow(base, exponent)` saves you from typing `16 * 16`:
+Extracting hex digits is the same recipe a third time, with the
+divisors 1, 16, and 256, and `% 16` at the end. Typing those place
+values by hand gets tiring, so here is one more p5.js function: `pow`.
+A call to `pow(base, exponent)` computes a power, so `pow(16, 0)` is
+1, `pow(16, 1)` is 16, and `pow(16, 2)` is 256. Written that way, the
+place number stays visible in the code instead of hiding inside a
+finished result:
 
 ```typescript
+const digit1: number = floor(num / pow(16, 0)) % 16;
 const digit2: number = floor(num / pow(16, 1)) % 16;
+const digit3: number = floor(num / pow(16, 2)) % 16;
 ```
 
 One thing is genuinely new: such a digit is a *number* from 0 to 15,
 but on the screen, 10 to 15 must appear as the letters A to F. A
 number-to-symbol translation with exact cases: that's an
-`if`/`else if` chain, like the dice faces:
+`if`/`else if` chain, like the dice faces. The two position arguments
+of `text` are the center of the box the digit belongs in, from your
+layout formula:
 
 ```typescript
 if (digit1 < 10) {
-  text(digit1, x, y);
+  text(digit1, boxCenterX, boxCenterY);
 } else if (digit1 === 10) {
-  text("A", x, y);
+  text("A", boxCenterX, boxCenterY);
 } else if (digit1 === 11) {
-  text("B", x, y);
+  text("B", boxCenterX, boxCenterY);
 } // ... and so on up to F
 ```
 
@@ -183,10 +223,11 @@ Three boxes this time, showing the random number in hex.
 
 1. **Paper first.** Convert 47, 255, and 3000 to hex by hand: divide
    by 256, then 16, then 1, and translate 10 to 15 into A to F.
-2. **Adapt your solution:** three digits instead of six, divisors 1,
-   16, and 256, extraction with `% 16`. The biggest three-digit hex
-   number is FFF, which is 4095, so the roll is
-   `floor(random(0, pow(16, 3)))`.
+2. **Adapt your solution:** three digits instead of six on a 300 pixel
+   wide canvas, divisors 1, 16, and 256, extraction with `% 16`. The
+   three boxes keep their size and their `50 + i * 75` positions. The
+   biggest three-digit hex number is FFF, which is 4095, so the roll
+   is `floor(random(0, pow(16, 3)))`.
 3. **Write the translation chain** for each box: digits below 10 are
    printed as they are, 10 to 15 as A to F.
 4. **Test with forced values**, at least 255 (should read 0FF) and
@@ -209,7 +250,10 @@ bouncing ball. To decide whether a click landed inside a box, two
 things must *both* be true: the horizontal position must be in the
 box's x range *and* the vertical position in its y range. The **AND
 operator** `&&` combines two boolean questions and is `true` only
-when both parts are true:
+when both parts are true. Keep the box layout from the digits exercise
+(@sec-digit-boxes) and the vertical test writes itself: the row of
+boxes starts 100 pixels below the top edge and the boxes are 75 pixels
+high, so their lower edge sits at 175.
 
 ```typescript
 if (mouseY >= 100 && mouseY <= 175) {
@@ -221,8 +265,9 @@ Compare the two siblings: `||` is satisfied by *at least one* true
 part, `&&` insists on *both*. For the boxes, that means two `&&`
 checks per click: first whether `mouseY` is in the boxes' row, then,
 for each box, whether `mouseX` lies between the box's left and right
-edge. Your box-position formula from the digits exercise tells you
-those edges: box `i` spans from `50 + i * 75` to `50 + i * 75 + 50`.
+edge. The box-position formula gives you those edges too: box `i`
+starts at `50 + i * 75` and, being 50 pixels wide, ends at
+`50 + i * 75 + 50`.
 
 ::: {.callout-note}
 ## Both operators take a shortcut
@@ -264,14 +309,19 @@ guessedNumber += guessedDigit1 * 1;
 Then one `===` comparison against the target number decides between
 yellow and lime.
 
-Build the game in the playground's five steps, testing after each:
+The playground gives you an almost empty file for this project: the
+roll and the canvas, nothing else. Build the game in five steps,
+testing after each:
 
-1. **The start screen.** In `setup`, roll a number from 1 to 15, store
-   it in a global variable, and draw the question, the four boxes, and
-   the four zeros. Sketch the layout on graph paper first and write
-   the box edges down; you'll need them for the click test.
-2. **The boxes.** If they aren't yet, place the boxes with the
-   `50 + i * 75` formula.
+1. **The start screen.** The starter already rolls the target number
+   into a global variable, because that number has to survive from
+   `setup` into `mouseClicked`. Check its range: a rolled 0 means the
+   four zeros on screen are already the right answer, so make the roll
+   run from 1 to 15. Then draw the question, the four boxes, and the
+   four zeros. Sketch the layout on graph paper first and write the box
+   edges down; you'll need them for the click test.
+2. **The boxes.** Place the four boxes with the `50 + i * 75`
+   formula, so their edges match the numbers in your click test.
 3. **Click detection.** In `mouseClicked`, write the `&&` conditions,
    and before any game logic, just print which box was hit. Verify all
    four boxes and, importantly, that clicks *outside* the boxes do

@@ -61,7 +61,12 @@ about order. The dice program needs a different question: did I roll
 exactly a 1? The comparison table in the color areas chapter has the
 operator for it: the **equality operator** `===` asks "are the two
 values exactly equal?", and its counterpart `!==` asks "are they
-different?". Both produce a boolean, like every comparison:
+different?". Both produce a boolean, like every comparison.
+
+Here is the question that decides whether the die shows a one. All
+points of a dice face have the same size, so their diameter sits in a
+constant named `dicePointDiameter`, and a one is a single point in the
+middle of the canvas:
 
 ```typescript
 if (dice === 1) {
