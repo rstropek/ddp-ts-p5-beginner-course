@@ -6,8 +6,9 @@ audience is students aged 15 to 17 in Austrian schools (English book, German-spe
 students, no prior programming experience).
 
 This repository holds **only the book**: prose chapters written in Quarto Markdown, plus
-the quiz definitions that go with them. It contains no exercise code and no runnable
-playground. One `quarto render` produces two outputs from the same sources:
+the novedu activity definitions that go with them, the chapter quizzes and the AI tutors.
+It contains no exercise code and no runnable playground. One `quarto render` produces two
+outputs from the same sources:
 
 * an HTML book (chapter sidebar, prev/next navigation) in `_output/`
 * one combined PDF handout, `_output/Creative-Coding.pdf`, laid out for print
@@ -17,25 +18,26 @@ playground. One `quarto render` produces two outputs from the same sources:
 The course is not one product but three, and this book is the narrative layer that ties
 the other two together. **A chapter never reproduces content owned by a sibling
 repository — it links to it.** Duplicated exercise text or quiz questions would go stale
-the moment the sibling changes, so the book stores a URL or a code instead.
+the moment the sibling changes, so the book stores a URL or an activity key instead.
 
 | Repository | Owns | This book's relation |
 | --- | --- | --- |
-| **this repo** | Chapter prose, illustrations, quiz YAML sources | Explains concepts, then sends the student out to an exercise and a quiz |
+| **this repo** | Chapter prose, illustrations, quiz and tutor YAML sources | Explains concepts, then sends the student out to an exercise, a quiz, and an AI tutor |
 | [`rstropek/ts-web-playground`](https://github.com/rstropek/ts-web-playground) | The browser IDE and every **exercise**: task description, starter code, sample solution, result images | Chapters link to exercises by raw YAML URL; goal images are hot-linked from the same repo |
-| [`Teaching-HTL-Leonding/novedu-chat-mvp`](https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp) | The **novedu** app (novedu.at) that runs AI learning activities, plus the CLI that validates and publishes them | Chapters link to a **quiz** by its activity code; the quiz YAML lives here but is served to novedu from this repo's raw URLs |
+| [`Teaching-HTL-Leonding/novedu-chat-mvp`](https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp) | The **novedu** app (novedu.at) that runs AI learning activities, plus the CLI that validates and publishes them | Chapters link to a **quiz** and to an **AI tutor** by registry key; the activity YAML lives here but is served to novedu from this repo's raw URLs |
 
 ```text
-                     ┌──────────────────────────────┐
-                     │  this repo (the book)        │
-                     │  chapters .qmd + quiz .yaml  │
-                     └───────┬──────────────┬───────┘
-       {{< example url >}}   │              │   {{< quiz code >}}
-                             ▼              ▼
-              ts-web-playground        novedu (novedu-chat-mvp)
-              exercise YAML +          renders <base>/<code>, reads the
-              browser IDE + p5.js      quiz YAML back from this repo's
-                                       raw GitHub URL
+                  ┌────────────────────────────────────┐
+                  │  this repo (the book)              │
+                  │  chapters .qmd + activity .yaml    │
+                  └───────┬────────────────────┬───────┘
+    {{< example url >}}   │                    │   {{< quiz key >}}
+                          │                    │   {{< tutor key >}}
+                          ▼                    ▼
+           ts-web-playground            novedu (novedu-chat-mvp)
+           exercise YAML +              renders <base>/<code>, reads the
+           browser IDE + p5.js          activity YAML back from this repo's
+                                        raw GitHub URL
 ```
 
 ### Relation to `ts-web-playground` (the exercises)
@@ -62,7 +64,7 @@ breaks the book's PDF. Add new result images to the playground repo, not here.
 Practical consequence: **writing a chapter usually means editing two repositories.** The
 exercise belongs in `ts-web-playground`; the teaching that leads up to it belongs here.
 
-### Relation to `novedu-chat-mvp` (the quizzes)
+### Relation to `novedu-chat-mvp` (the quizzes and the tutors)
 
 Every chapter ends with a "Check your understanding" quiz: open-ended questions, graded by
 a small LLM against a hidden rubric, with an optional per-question discussion chat.
@@ -83,21 +85,50 @@ The quiz *sources* do live here, as `<chapter>-quiz.yaml` next to each `.qmd`, b
 novedu reads activity YAML from a public URL on every load. It reads this repository's raw
 GitHub URLs, so publishing a quiz edit is a `git push`: no re-upload, and no new code.
 
-**Codes come from the activity registry, not from hand-minting.** Two files in the repo
-root hold the whole mapping:
+#### AI tutors
+
+Every chapter also opens with a link to the AI tutor for its book part, a chat activity on
+novedu that answers questions about the material. The `tutor` shortcode works exactly like
+`quiz`, on a registry key:
+
+```markdown
+{{< tutor tutor-conditions >}}
+```
+
+There are two kinds of tutor, and keeping them apart is the point:
+
+| Kind | Files | Behavior |
+| --- | --- | --- |
+| **Part tutor**, one per book part | `<part>/<part-name>-tutor.yaml` | Hints only. It never writes a finished program, it knows the cumulative scope of its part, and it refuses anything beyond it |
+| **Exercise AI**, only where an exercise calls for one | `0010-introduction/elephant-tutor.yaml`, `0030-conditions/dice-rewrite-tutor.yaml` | Generates complete code from the student's prompt, because writing that prompt *is* the exercise. Linked from inside the exercise section, not at the top of the chapter |
+
+All tutor behavior lives in `ddp-tutor-fragments.yaml` in the repo root, a shared
+prompt-fragment library the activities compose from. Each book part's knowledge scope is
+one static fragment in it, shared by that part's tutor **and** that part's exercise AI, so
+a concept moving between chapters is a one-line edit in one place. The header comment of
+that file is the contract: which fragments each kind of activity gets, and why.
+
+One exercise deliberately does *not* use a tutor from this book: the reading-documentation
+chapter sends students to a general AI on the internet, so they meet material nobody
+pre-filtered for them.
+
+#### The activity registry
+
+**Codes come from the registry, not from hand-minting**, and quizzes and tutors go through
+the same one. Two files in the repo root hold the whole mapping:
 
 | File | What |
 | --- | --- |
-| `ddp-activities.yaml` | Hand-written. Every activity under a key (`first-program`), with its file path and any minting options. This is the file you edit. |
+| `ddp-activities.yaml` | Hand-written. Every activity under a key (`first-program`, `tutor-conditions`), grouped into `tutors:` and `quizzes:`, with its file path and any minting options. This is the file you edit. |
 | `ddp-activities.lock.yaml` | Generated by the novedu CLI. Maps each key to the code novedu minted for it. Commit it, never edit it. |
 
 `_quarto.yml` pulls the lock file in via `metadata-files`, so its `activity-codes` map is
-document metadata and `_extensions/quiz/quiz.lua` resolves the key at render time. Nothing
-is fetched during a render, and a key missing from the lock file **fails the build**
-instead of publishing a dead link.
+document metadata and the `quiz` and `tutor` shortcodes resolve the key at render time.
+Nothing is fetched during a render, and a key missing from the lock file **fails the
+build** instead of publishing a dead link.
 
-Publishing a new quiz is therefore: write the YAML, validate it, push, add one entry to
-`ddp-activities.yaml`, then
+Publishing a new quiz or tutor is therefore: write the YAML, validate it, push, add one
+entry to `ddp-activities.yaml`, then
 
 ```bash
 npx @novedu/cli codes sync ddp-activities.yaml
@@ -110,9 +141,12 @@ format reference is
 [`docs/registry.md`](https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp/blob/main/docs/registry.md)
 in the novedu repo.
 
-`ddp-quiz-fragments.yaml` in the repo root is a shared prompt-fragment library: every
-chapter quiz pulls the same student-context and grading preamble from it. Editing that one
-file changes every quiz at once.
+The repo root holds two shared prompt-fragment libraries, one per activity kind:
+`ddp-quiz-fragments.yaml`, from which every chapter quiz pulls the same student-context and
+grading preamble, and `ddp-tutor-fragments.yaml`, which holds every tutor's role, scope,
+and safety rules. Editing one file changes every activity of that kind at once, which cuts
+both ways: a broken fragment breaks them all, so validate the library and the activities
+that use it after every edit.
 
 ## Repository layout
 
@@ -120,11 +154,12 @@ file changes every quiz at once.
 | --- | --- |
 | `_quarto.yml` | Book definition: chapter order, output formats, and the playground and novedu base URLs |
 | `index.qmd` | The preface |
-| `0010-introduction/`, `0020-variables/` | Book parts. Numbered folders and files: a chapter `.qmd` next to its `<chapter>-quiz.yaml` and its images |
-| `_extensions/` | The Quarto extensions providing the `example`, `playground`, and `quiz` shortcodes |
-| `ddp-activities.yaml` | The activity registry: every quiz under a stable key. Hand-written |
-| `ddp-activities.lock.yaml` | Generated key → activity code map, read by the `quiz` shortcode. Do not edit |
+| `0010-introduction/`, `0020-variables/` | Book parts. Numbered folders and files: a chapter `.qmd` next to its `<chapter>-quiz.yaml` and its images, plus the part's `*-tutor.yaml` |
+| `_extensions/` | The Quarto extensions providing the `example`, `playground`, `quiz`, and `tutor` shortcodes |
+| `ddp-activities.yaml` | The activity registry: every quiz and tutor under a stable key. Hand-written |
+| `ddp-activities.lock.yaml` | Generated key → activity code map, read by the `quiz` and `tutor` shortcodes. Do not edit |
 | `ddp-quiz-fragments.yaml` | Shared novedu prompt fragments used by every chapter quiz |
+| `ddp-tutor-fragments.yaml` | Shared novedu prompt fragments used by every tutor and exercise AI, including the per-part knowledge scopes |
 | `.agents/skills/` | Authoring skills for AI agents; see below |
 | `.github/workflows/` | CI: renders the book and uploads the PDF and the zipped website as artifacts |
 | `_output/`, `.quarto/` | Build output. Git-ignored |
@@ -132,8 +167,10 @@ file changes every quiz at once.
 Chapters are ordered by the `book.chapters` list in `_quarto.yml`, not by file name. Adding
 a chapter means adding the file **and** listing it there.
 
-Both shortcodes render for paper as well as screen: in the PDF, where a button is dead ink,
-the callout also carries a QR code and the printed address.
+The `example`, `quiz`, and `tutor` shortcodes all render for paper as well as screen: in the
+PDF, where a button is dead ink, the callout also carries a QR code and the printed address.
+That printed-link block is duplicated in the three Lua files, so a change to one belongs in
+all three.
 
 ## Building the book
 
@@ -161,7 +198,12 @@ Read the relevant one before writing; each is a contract, not a suggestion.
   the same edit as the `.bob`; otherwise the book renders a stale diagram and no build step
   catches it.
 
+Tutor prompts have no skill of their own. Their contract is the header comment of
+`ddp-tutor-fragments.yaml`, and the scope fragments there must stay in step with what the
+chapters actually teach, so a chapter that introduces a new command means editing that part's
+scope fragment too.
+
 Which repository does a change belong to? An **exercise** (task, starter code, solution,
 result image) is `ts-web-playground`. A **platform** change to how quizzes are graded or
-displayed is `novedu-chat-mvp`. A quiz's **questions**, and everything a student reads
-around them, is here.
+how activities are displayed is `novedu-chat-mvp`. A quiz's **questions**, a tutor's
+**prompt**, and everything a student reads around them, is here.

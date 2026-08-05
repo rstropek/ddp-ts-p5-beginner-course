@@ -11,12 +11,12 @@
 #     npx @novedu/cli codes sync ddp-activities.yaml
 #
 # An entry whose file, window, and model override are unchanged keeps its code,
-# so re-running is routine. Adding a quiz = one new entry here + one sync run;
+# so re-running is routine. Adding an activity = one new entry here + one sync run;
 # commit BOTH this file and ddp-activities.lock.yaml. Full format reference:
 # https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp/blob/main/docs/registry.md
 
-# novedu re-reads the quiz YAML from this repository's raw URLs on every load,
-# so publishing a quiz edit stays a plain `git push`.
+# novedu re-reads the activity YAML from this repository's raw URLs on every
+# load, so publishing a quiz or tutor edit stays a plain `git push`.
 base-url: "https://raw.githubusercontent.com/rstropek/ddp-ts-p5-beginner-course/refs/heads/main/"
 
 activities:
