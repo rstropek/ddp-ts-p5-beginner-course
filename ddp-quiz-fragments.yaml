@@ -1,22 +1,20 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/fragments/fragment-yaml.schema.json
 # Shared fragment library for the Creative Coding book's novedu quizzes.
 #
-# Every chapter quiz pulls `quiz_context` into its top-level `instructions:`
-# via {{fragment "shared.quiz_context"}}. That guarantees all chapter quizzes
-# render a BYTE-IDENTICAL preamble, which the compound (section) quiz
-# deduplicates to a single copy in its discussion prompt. Edit the text here,
-# upload this file, and every chapter quiz plus the compound quiz serve the
-# new wording immediately (app-hosted files are read live).
+# A quiz has TWO template hosts, and this library feeds both:
+#   instructions:            -> {{fragment "shared.quiz_context"}}
+#   discussion.instructions: -> {{fragment "shared.discussion_frame" ...}}
+# Edit the text here, push, and every quiz serves the new wording immediately
+# (the novedu server re-reads the raw URL on every load).
 #
 # Served live from GitHub: chapter quizzes reference it as
 # ../ddp-quiz-fragments.yaml (repo root), so a `git push` updates every quiz.
 # (A legacy app-hosted copy `ddp-quiz-fragments` exists for the retired
 # app-hosted 0020 quiz; ignore it unless that copy is deleted.)
 #
-# NOTE: `discussion.instructions` cannot use fragments (only the top-level
-# `instructions` is a template host). The shared discussion guidance stays
-# copy-paste; its canonical version lives in
-# 0010-introduction/0020-first-program-quiz.yaml.
+# Keep this library minimal — a broken fragment fails ALL quizzes at once, and
+# a bad marker fails its quiz closed (students see no quiz). Validate the
+# library AND a couple of quizzes after every edit here.
 
 id: ddp-quiz-fragments
 fragments:
@@ -44,3 +42,57 @@ fragments:
         than a long one at the same correctness. Never reward length.
       - When unsure between two verdicts, choose the lower one (partial
         rather than correct).
+
+  # The discussion chat's guidance, appended AFTER the app's built-in
+  # discussion prompt (which already sets the role, the available context, and
+  # "concise, encouraging, stay on this question"). The policy sentences —
+  # reveal-the-answer, keep-it-tiny, answer-in-German — live HERE so a change
+  # is one edit instead of 21. Each quiz supplies only what is chapter-specific:
+  # the code example, the scope phrase, and the two concept lists.
+  #
+  # `scope` is a phrase that completes "…what a beginner knows ___", e.g.
+  # "after the dice chapter". `knows` / `not_yet` are lists of short noun
+  # phrases, rendered as bullets. Omit `example` for a chapter with no code
+  # yet; override `german_tail` only when there are no code names to keep in
+  # English.
+  - id: discussion_frame
+    version: 1
+    input_schema:
+      type: object
+      required:
+        - scope
+        - knows
+        - not_yet
+      properties:
+        example:
+          type: string
+          default: ""
+        scope:
+          type: string
+        knows:
+          type: array
+          items:
+            type: string
+        not_yet:
+          type: array
+          items:
+            type: string
+        german_tail:
+          type: string
+          default: "code and command names"
+    content: |
+      You may reveal and explain the correct answer. Keep explanations tiny and concrete: one idea at a time, with {{#if example}}a short code line like `{{example}}`{{else}}a small everyday example{{/if}} where it helps.
+
+      Stay strictly within what a beginner knows {{scope}}:
+
+      {{#each knows}}
+      - {{this}}
+      {{/each}}
+
+      Do not introduce:
+
+      {{#each not_yet}}
+      - {{this}}
+      {{/each}}
+
+      If the student writes in German, you may answer in German; keep {{german_tail}} in English.

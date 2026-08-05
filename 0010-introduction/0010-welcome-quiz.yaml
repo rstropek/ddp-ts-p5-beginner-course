@@ -22,11 +22,10 @@ llm:
 
 # The shared context for BOTH the grader and the discussion chat (the app
 # prepends the rendered `instructions:` to both system prompts) comes from
-# the shared fragment library, so every chapter quiz renders a byte-identical
-# preamble and the compound quiz deduplicates it to one copy. Edit the text
-# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
-# belong in discussion.instructions below (that field does not travel into
-# compound quizzes).
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
 fragment_files:
   - id: shared
     url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
@@ -36,18 +35,21 @@ instructions: |
 discussion:
   # Appended AFTER the app's built-in discussion prompt (which already sets
   # the role, the available context, and "concise, encouraging, stay on this
-  # question") — so only what the default doesn't cover goes here.
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
   instructions: |
-    You may reveal and explain the correct answer. Keep explanations tiny
-    and concrete: one idea at a time, with a small everyday example where
-    it helps. Stay strictly within what a beginner knows after the welcome
-    chapter: what the course is about, the two tools TypeScript and p5.js,
-    what a library is, and why learning to program matters even when AI can
-    write code. Do not show program code or introduce drawing commands; the
-    students have not written any code yet. If the student writes in
-    German, you may answer in German; keep tool names like TypeScript and
-    p5.js in English.
-
+    {{fragment "shared.discussion_frame"
+      scope="after the welcome chapter"
+      knows=(array
+        "what the course is about"
+        "the two tools TypeScript and p5.js"
+        "what a library is"
+        "why learning to program matters even when AI can write code")
+      not_yet=(array
+        "program code — do not show any (the students have not written code yet)"
+        "drawing commands")
+      german_tail="tool names like TypeScript and p5.js"}}
 questions:
   - id: two-tools
     title: "The two tools"

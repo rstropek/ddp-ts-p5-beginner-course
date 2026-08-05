@@ -23,11 +23,10 @@ llm:
 
 # The shared context for BOTH the grader and the discussion chat (the app
 # prepends the rendered `instructions:` to both system prompts) comes from
-# the shared fragment library, so every chapter quiz renders a byte-identical
-# preamble and the compound quiz deduplicates it to one copy. Edit the text
-# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
-# belong in discussion.instructions below (that field does not travel into
-# compound quizzes).
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
 fragment_files:
   - id: shared
     url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
@@ -37,21 +36,26 @@ instructions: |
 discussion:
   # Appended AFTER the app's built-in discussion prompt (which already sets
   # the role, the available context, and "concise, encouraging, stay on this
-  # question") — so only what the default doesn't cover goes here.
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
   instructions: |
-    You may reveal and explain the correct answer. Keep explanations tiny
-    and concrete: one idea at a time, with a short code line like
-    `if (mouseY < height / 2) { message = "Green"; }` where it helps. Stay
-    strictly within what a beginner knows after the color quadrants
-    chapter: drawing commands, mouse events, variables and constants with
-    explicit data types, comparisons that produce booleans, the
-    if/else if/else chain with braces around every block, nested if
-    statements, and text formatting with `textSize`, `textStyle`, and
-    `textAlign`. Do not introduce the `&&` or `||` operators, random
-    numbers, the `draw` animation loop, or loops. If the student writes in
-    German, you may answer in German; keep code and command names in
-    English.
-
+    {{fragment "shared.discussion_frame"
+      example='if (mouseY < height / 2) { message = "Green"; }'
+      scope="after the color quadrants chapter"
+      knows=(array
+        "drawing commands"
+        "mouse events"
+        "variables and constants with explicit data types"
+        "comparisons that produce booleans"
+        "the if/else if/else chain with braces around every block"
+        "nested if statements"
+        "text formatting with `textSize`, `textStyle`, and `textAlign`")
+      not_yet=(array
+        "the `&&` or `||` operators"
+        "random numbers"
+        "the `draw` animation loop"
+        "loops")}}
 questions:
   - id: why-two-questions
     title: "Two questions for four areas"

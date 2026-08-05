@@ -22,11 +22,10 @@ llm:
 
 # The shared context for BOTH the grader and the discussion chat (the app
 # prepends the rendered `instructions:` to both system prompts) comes from
-# the shared fragment library, so every chapter quiz renders a byte-identical
-# preamble and the compound quiz deduplicates it to one copy. Edit the text
-# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
-# belong in discussion.instructions below (that field does not travel into
-# compound quizzes).
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
 fragment_files:
   - id: shared
     url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
@@ -36,20 +35,25 @@ instructions: |
 discussion:
   # Appended AFTER the app's built-in discussion prompt (which already sets
   # the role, the available context, and "concise, encouraging, stay on this
-  # question") — so only what the default doesn't cover goes here.
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
   instructions: |
-    You may reveal and explain the correct answer. Keep explanations tiny
-    and concrete: one idea at a time, with a short code line like
-    `const headX: number = width / 2 - headWidth / 2;` where it helps.
-    Stay strictly within what a beginner knows after the Responsive robot
-    chapter: drawing commands, constants declared with `const` and an
-    explicit data type, the system variables `mouseX`, `mouseY`, `width`,
-    and `height`, formulas built from them, the helper functions `round`
-    and `min`, template strings, and the `scale` and `translate` commands
-    from the soccer field project. Do not introduce `let` and assignments,
-    loops, or conditions. If the student writes in German, you may answer
-    in German; keep code and command names in English.
-
+    {{fragment "shared.discussion_frame"
+      example="const headX: number = width / 2 - headWidth / 2;"
+      scope="after the Responsive robot chapter"
+      knows=(array
+        "drawing commands"
+        "constants declared with `const` and an explicit data type"
+        "the system variables `mouseX`, `mouseY`, `width`, and `height`"
+        "formulas built from them"
+        "the helper functions `round` and `min`"
+        "template strings"
+        "the `scale` and `translate` commands from the soccer field project")
+      not_yet=(array
+        "`let` and assignments"
+        "loops"
+        "conditions")}}
 questions:
   - id: fixed-numbers-problem
     title: "The robot that won't adapt"

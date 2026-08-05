@@ -23,11 +23,10 @@ llm:
 
 # The shared context for BOTH the grader and the discussion chat (the app
 # prepends the rendered `instructions:` to both system prompts) comes from
-# the shared fragment library, so every chapter quiz renders a byte-identical
-# preamble and the compound quiz deduplicates it to one copy. Edit the text
-# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
-# belong in discussion.instructions below (that field does not travel into
-# compound quizzes).
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
 fragment_files:
   - id: shared
     url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
@@ -37,20 +36,28 @@ instructions: |
 discussion:
   # Appended AFTER the app's built-in discussion prompt (which already sets
   # the role, the available context, and "concise, encouraging, stay on this
-  # question") — so only what the default doesn't cover goes here.
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
   instructions: |
-    You may reveal and explain the correct answer. Keep explanations tiny
-    and concrete: one idea at a time, with a short code line like
-    `circleCenterX += direction;` where it helps. Stay strictly within
-    what a beginner knows after the bouncing ball chapter: drawing
-    commands, mouse events, variables and constants with explicit data
-    types, comparisons, the if/else if/else chain with braces around
-    every block, nested if statements, `random` and `floor`, the
-    `draw` animation loop, the shorthand operators `+=`, `-=`, and `*=`,
-    and the OR operator `||`. Do not introduce the `&&` operator, arrays,
-    or for/while loops. If the student writes in German, you may answer
-    in German; keep code and command names in English.
-
+    {{fragment "shared.discussion_frame"
+      example="circleCenterX += direction;"
+      scope="after the bouncing ball chapter"
+      knows=(array
+        "drawing commands"
+        "mouse events"
+        "variables and constants with explicit data types"
+        "comparisons"
+        "the if/else if/else chain with braces around every block"
+        "nested if statements"
+        "`random` and `floor`"
+        "the `draw` animation loop"
+        "the shorthand operators `+=`, `-=`, and `*=`"
+        "the OR operator `||`")
+      not_yet=(array
+        "the `&&` operator"
+        "arrays"
+        "for/while loops")}}
 questions:
   - id: draw-vs-setup
     title: "How often draw runs"

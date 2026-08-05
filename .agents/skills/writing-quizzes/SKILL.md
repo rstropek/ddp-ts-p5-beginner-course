@@ -51,11 +51,9 @@ description: |
 llm:
   model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
 
-# The shared preamble (student context + grading rules) comes from the shared
-# fragment library so every chapter quiz renders a BYTE-IDENTICAL preamble.
-# The compound quiz deduplicates identical preambles to one copy — never
-# inline this text, never edit it per chapter (edit ddp-quiz-fragments.yaml
-# at the repo root instead; one upload updates all quizzes live).
+# BOTH host texts below pull from the shared fragment library — never inline
+# their wording, never edit it per chapter (edit ddp-quiz-fragments.yaml at
+# the repo root instead; one push updates all quizzes live).
 fragment_files:
   - id: shared
     url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
@@ -65,17 +63,20 @@ instructions: |
 discussion:
   # Appended AFTER the app's built-in discussion prompt (role, context, and
   # "concise, encouraging, stay on this question" are already set there).
-  # This field cannot use fragments and does NOT travel into compound
-  # quizzes. Keep the first and last sentences verbatim; adapt only the
-  # chapter-scope sentence ("Stay strictly within…") to the current chapter.
+  # Does NOT travel into compound quizzes. The policy sentences live in the
+  # fragment; supply only the four chapter-specific arguments. `scope`
+  # completes "…what a beginner knows ___". Drop `example` if the chapter has
+  # no code yet; override `german_tail` only if there are no code names.
   instructions: |
-    You may reveal and explain the correct answer. Keep explanations tiny
-    and concrete: one idea at a time, with a short code line like
-    `circle(200, 260, 360);` where it helps. Stay strictly within what a
-    beginner knows after <this chapter>: <list the concepts>. Do not
-    introduce <the next concepts students have not seen yet>. If the student
-    writes in German, you may answer in German; keep code and command names
-    in English.
+    {{fragment "shared.discussion_frame"
+      example="circle(200, 260, 360);"
+      scope="after <this chapter>"
+      knows=(array
+        "<concept the chapter taught>"
+        "<…>")
+      not_yet=(array
+        "<the next concept students have not seen yet>"
+        "<…>")}}
 
 questions:
   - id: <kebab-case-stable-id> # unique, no "/", never renamed (stats key)
@@ -150,10 +151,9 @@ image:
     grader never sees the image alt, but screen readers and fallback do.>
 ```
 
-Store source PNGs in `<chapter>-quiz/` next to the quiz YAML. Hosting: check
-`npm run cli -- images --help` in the novedu repo first (an images command is
-planned); if the CLI doesn't have it yet, a teacher uploads at
-`https://novedu.at/images/new` (name = the `src` above). Unknown hosted names
+Store source PNGs in `<chapter>-quiz/` next to the quiz YAML, then host them
+with `images upload <name> --file <path>` (`images list` to check what is
+already there; name = the `src` above). Unknown hosted names
 resolve leniently (image simply omitted), so the quiz can be published before
 the image exists. Use `imageInput: true` on a question only when a
 photographed handwritten answer is the natural medium (pen-and-paper traces).
@@ -167,16 +167,32 @@ One per book part, e.g. `0010-introduction/introduction-quiz.yaml`:
   live — chapter edits appear immediately; a broken chapter blocks the
   compound (fail-closed, never a silently shorter quiz).
 - **No top-level `instructions`** — imported questions already carry the
-  chapter preamble; adding it again would duplicate the text in every prompt
-  (the app does not dedup compound-vs-source).
-- **Own `discussion.instructions` required** (chapter ones don't travel):
-  same canonical text, with a section-level scope sentence ("Stay strictly
-  within what a beginner knows after the <Part> chapters: …").
+  chapter preamble; adding it again would duplicate the text in every grading
+  prompt (the app does not dedup compound-vs-source).
+- **Own `discussion.instructions` required, and it must pull BOTH fragments.**
+  The discussion prompt is built only from the compound file's own fields;
+  chapter `instructions` travel with imported questions for *grading* only.
+  So `quiz_context` goes HERE — without it the discussion chat has no student
+  context at all (no age, no "German is fine", no "short answers score
+  equally") — and not in a top-level `instructions`, which would double it
+  into every grading prompt:
+
+  ```yaml
+  discussion:
+    instructions: |
+      {{fragment "shared.quiz_context"}}
+
+      {{fragment "shared.discussion_frame"
+        example="const dice: number = floor(random(1, 7));"
+        scope="after the <Part> chapters"
+        knows=(array "…" "…")
+        not_yet=(array "…" "…")}}
+  ```
 - Set `question_count` to a sensible attempt length (~2× a chapter quiz);
   leave `shuffle` on.
 - No own `questions` needed.
 
-## Publish workflow (GitHub-hosted — the canonical flow since Aug 2026)
+## Publish workflow
 
 Quizzes are served straight from the book's public GitHub repo
 (`rstropek/ddp-ts-p5-beginner-course`); the novedu server re-reads the raw
@@ -201,11 +217,16 @@ novedu repo (`cd ~/github/chat-prototype`, prefix commands with
 6. Ask the user to spot-check grading with one deliberately half-right answer
    (the correct/partial boundary is the fragile part).
 
-Editing the shared preamble = edit `ddp-quiz-fragments.yaml` (repo root),
+Editing shared wording = edit `ddp-quiz-fragments.yaml` (repo root),
 `validate <path> --kind fragment`, then push. Every quiz picks it up live.
 Keep the library minimal — a broken fragment fails ALL quizzes at once.
+`quiz_context` feeds the grader + discussion preamble; `discussion_frame`
+feeds the discussion chat. A policy sentence (reveal the answer, keep it tiny,
+answer in German) is edited once there and every quiz follows. After editing
+the library, re-validate a couple of quizzes too: a changed `input_schema`
+breaks their markers, not the library.
 
-(Legacy alternative: `files upload <name>` app-hosts a file at
+(Alternative: `files upload <name>` app-hosts a file at
 `https://novedu.at/api/files/<name>`; only relevant if a quiz must not live
 in the public repo.)
 

@@ -23,11 +23,10 @@ llm:
 
 # The shared context for BOTH the grader and the discussion chat (the app
 # prepends the rendered `instructions:` to both system prompts) comes from
-# the shared fragment library, so every chapter quiz renders a byte-identical
-# preamble and the compound quiz deduplicates it to one copy. Edit the text
-# in ddp-quiz-fragments.yaml, never inline here. Chapter-specific limits
-# belong in discussion.instructions below (that field does not travel into
-# compound quizzes).
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
 fragment_files:
   - id: shared
     url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
@@ -37,19 +36,25 @@ instructions: |
 discussion:
   # Appended AFTER the app's built-in discussion prompt (which already sets
   # the role, the available context, and "concise, encouraging, stay on this
-  # question") — so only what the default doesn't cover goes here.
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
   instructions: |
-    You may reveal and explain the correct answer. Keep explanations tiny
-    and concrete: one idea at a time, with a short code line like
-    `stroke("blue");` where it helps. Stay strictly within what a beginner
-    knows after the Olympic rings chapter: statements, the drawing commands
-    `rect`, `circle`, `triangle`, and `line` with their parameters, the
-    canvas, comments, the color and outline settings `fill`, `noFill`,
-    `stroke`, and `strokeWeight`, drawing order, and code formatting. Do not
-    introduce variables, loops, or functions the student writes themselves.
-    If the student writes in German, you may answer in German; keep code and
-    command names in English.
-
+    {{fragment "shared.discussion_frame"
+      example='stroke("blue");'
+      scope="after the Olympic rings chapter"
+      knows=(array
+        "statements"
+        "the drawing commands `rect`, `circle`, `triangle`, and `line` with their parameters"
+        "the canvas"
+        "comments"
+        "the color and outline settings `fill`, `noFill`, `stroke`, and `strokeWeight`"
+        "drawing order"
+        "code formatting")
+      not_yet=(array
+        "variables"
+        "loops"
+        "functions the student writes themselves")}}
 questions:
   - id: no-fill-ring
     title: "A circle without a fill"
