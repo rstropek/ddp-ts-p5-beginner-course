@@ -58,10 +58,11 @@ end
 -- also carries a QR code (for a phone) and the full address in print (for a
 -- keyboard).
 --
--- The block below is shared with the other link extension — the same code sits
--- in _extensions/example/example.lua and _extensions/quiz/quiz.lua. Change one,
--- change the other. The LaTeX half guards itself with \ifdefined, so it is
--- harmless when both extensions add it to the same document.
+-- The block below is shared with the other link extensions — the same code sits
+-- in _extensions/example/example.lua, _extensions/quiz/quiz.lua, and
+-- _extensions/tutor/tutor.lua. Change one, change the others. The LaTeX half
+-- guards itself with \ifdefined, so it is harmless when several extensions add
+-- it to the same document.
 
 local PRINT_LINK_HEADER = [[
 \ifdefined\ddplinkrow\else

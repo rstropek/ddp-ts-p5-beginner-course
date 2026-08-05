@@ -15,6 +15,8 @@ You'll pick one p5.js command that nobody taught you, learn it from the
 official documentation, build an example with it, and describe it in your
 own words. In short: this time, *you* write a little piece of this book.
 
+{{< tutor tutor-introduction >}}
+
 ## The p5.js reference {#sec-reference}
 
 The official documentation of p5.js is called the
@@ -110,12 +112,18 @@ Your teacher will tell you how to hand in your program and your text.
 ## AI is allowed, understanding is required {#sec-ai}
 
 You may use an AI for any part of this exercise: to explain the reference
-page, to help with your example, or to improve your text. If you do, the
-two rules you already know still apply. Paste your own working code into
-the prompt, so the AI answers in the language, library, and structure your
-playground expects. And say that you're a beginner and that your code
-shows everything you've learned, so the answer stays inside what you can
-explain.
+page, to help with your example, or to improve your text. This time,
+don't use the tutor from this book. Pick a general AI on the internet
+instead, for example ChatGPT or Google Gemini. An AI like that doesn't
+know what you've learned, and its answers will sometimes contain things
+you've never seen. That's on purpose: you're doing research now, and
+meeting the unknown is part of research. When something new shows up, ask
+follow-up questions until you understand it, or leave it out of your
+program. Because of that, the two rules you already know matter more than
+ever. Paste your own working code into the prompt, so the AI answers in
+the language, library, and structure your playground expects. And say
+that you're a beginner and that your code shows everything you've
+learned, so the answer stays inside what you can explain.
 
 Here's why that matters this time more than ever: **you'll present your
 work in class.** You'll show your picture, explain what your command does

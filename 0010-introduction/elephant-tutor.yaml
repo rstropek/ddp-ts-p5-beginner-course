@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# Exercise AI for the cat-to-elephant exercise (part 1, Introduction).
+#
+# NOT a tutor: this activity plays the code-generating AI the exercise tells
+# the student to use. It writes complete programs on purpose — the exercise
+# is about prompting an AI and judging its output. It shares the part's
+# knowledge scope (scope_introduction) with the Introduction part tutor.
+# Linked from the exercise's section via {{< tutor tutor-elephant ... >}}.
+#
+# Deliberately NO exampleQuestions: writing the prompt is the exercise.
+#
+# Validate after every edit:  npx @novedu/cli validate 0010-introduction/elephant-tutor.yaml
+
+id: ddp-ai-elephant
+name: "Creative Coding AI: the elephant exercise (part 1)"
+title: "Paste your cat program and tell me what to draw instead."
+description: |
+  I'm the AI for this exercise. Write me a prompt: say what you want, and
+  paste your working cat program below it. I write the new code; you run
+  it, judge it, and ask me about every line you don't understand. English
+  or German, both are fine.
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.ai_workbench" exercise="the elephant exercise from the chapter about coding with AI. The student takes their finished, working cat program and has you turn it into a different animal (elephant, dog, penguin, ...), keeping everything inside setup, keeping the canvas size, and using only the kinds of commands that already appear in their code."}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_introduction"}}
+
+    {{fragment "shared.teenager_safety"}}

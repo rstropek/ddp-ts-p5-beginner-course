@@ -1,17 +1,19 @@
 --[[
-  quiz.lua — Quarto *shortcode* for linking to a chapter quiz on novedu.
+  tutor.lua — Quarto *shortcode* for linking to a part's AI tutor on novedu.
 
-  Usage in a chapter:
+  Usage in a chapter (right after the front matter, before the goal image):
 
-      {{< quiz <key> [title="..."] >}}
+      {{< tutor <key> [title="..."] >}}
 
-  Renders a compact callout (like a Quarto `callout-note`) that invites the
-  reader to take the chapter's quiz in the novedu chat app. The book does NOT
-  reproduce the quiz's questions — they live in a YAML activity file hosted on
-  the novedu server; duplicating them here would only go stale.
+  Renders a compact callout (like a Quarto `callout-tip`) that invites the
+  reader to open the AI tutor for the current book part in the novedu chat
+  app. The callout's body text is fixed here, in one place, because the same
+  invitation appears at the top of every chapter — editing this file updates
+  them all. The tutor's behavior itself lives in a YAML activity file (e.g.
+  0010-introduction/introduction-tutor.yaml); the book only links to it.
 
-  <key> is the quiz's key in the activity registry, `ddp-activities.yaml`
-  (e.g. `number-systems`), NOT an activity code. The generated lock file
+  <key> is the tutor's key in the activity registry, `ddp-activities.yaml`
+  (e.g. `tutor-introduction`), NOT an activity code. The generated lock file
   ddp-activities.lock.yaml maps every key to the code novedu minted for it and
   is merged into the document metadata as `activity-codes` (metadata-files in
   _quarto.yml), so the shortcode resolves
@@ -22,14 +24,14 @@
   _quarto.yml). The shortcode fetches nothing at render time, so the book
   renders offline and never breaks on a server change.
 
-  Adding a quiz therefore means: add one entry to ddp-activities.yaml, run
+  Adding a tutor therefore means: add one entry to ddp-activities.yaml, run
   `novedu-cli codes sync ddp-activities.yaml`, commit registry + lock file, and
   reference the key here. A key with no entry in the lock file is a hard render
   error, never a dead link.
 
-  This mirrors the `example` extension (see _extensions/example/example.lua),
-  which explains the shortcode mechanics in detail. Like there, we emit a
-  quarto.Callout so the card renders in BOTH the HTML site and the PDF.
+  This mirrors the `quiz` extension (see _extensions/quiz/quiz.lua), which in
+  turn mirrors the `example` extension. Like there, we emit a quarto.Callout so
+  the card renders in BOTH the HTML site and the PDF.
 --]]
 
 local script_dir = PANDOC_SCRIPT_FILE:gsub("[^/\\]+$", "")
@@ -39,9 +41,9 @@ local css_added = false
 local function ensure_css()
   if not css_added and quarto.doc.is_format("html") then
     quarto.doc.add_html_dependency({
-      name = "quarto-quiz",
+      name = "quarto-tutor",
       version = "1.0.0",
-      stylesheets = { script_dir .. "quiz.css" },
+      stylesheets = { script_dir .. "tutor.css" },
     })
     css_added = true
   end
@@ -204,7 +206,7 @@ local function activity_code(meta, key)
   local map = meta and meta["activity-codes"]
   if not map then
     error(
-      "quiz shortcode: no `activity-codes` metadata. Check that _quarto.yml lists "
+      "tutor shortcode: no `activity-codes` metadata. Check that _quarto.yml lists "
         .. "ddp-activities.lock.yaml under metadata-files, and that the file exists "
         .. "(regenerate it with: novedu-cli codes sync ddp-activities.yaml).",
       0
@@ -213,7 +215,7 @@ local function activity_code(meta, key)
   local entry = map[key]
   if not entry then
     error(
-      "quiz shortcode: unknown activity key '" .. key .. "'. Add it to "
+      "tutor shortcode: unknown activity key '" .. key .. "'. Add it to "
         .. "ddp-activities.yaml, run `novedu-cli codes sync ddp-activities.yaml`, "
         .. "and commit the regenerated ddp-activities.lock.yaml.",
       0
@@ -222,48 +224,63 @@ local function activity_code(meta, key)
   return pandoc.utils.stringify(entry)
 end
 
-local function quiz(args, kwargs, meta)
+-- The invitation every chapter shows. One fixed text, defined once: the same
+-- offer repeats at the top of every chapter, so wording tweaks belong here,
+-- not in 20+ .qmd files. An exercise-AI box overrides it with `text=` (and
+-- usually `cta=`), because those boxes link a code generator, not a tutor.
+local BODY_TEXT = "Questions while you read? This chapter has an AI tutor. "
+  .. "It knows what you have already learned, it won't jump ahead, and it "
+  .. "helps with hints and questions instead of finished solutions. "
+  .. "You can write in English or German."
+local CTA_TEXT = "Ask your AI tutor on novedu.at"
+
+local function tutor(args, kwargs, meta)
   if not args[1] then
-    return pandoc.Para(pandoc.Strong("[quiz: no activity key given]"))
+    return pandoc.Para(pandoc.Strong("[tutor: no activity key given]"))
   end
   local key = pandoc.utils.stringify(args[1])
 
   local base = novedu_base(meta)
   if not base then
-    return pandoc.Para(pandoc.Strong("[quiz: novedu-base-url not set]"))
+    return pandoc.Para(pandoc.Strong("[tutor: novedu-base-url not set]"))
   end
 
   local code = activity_code(meta, key)
 
   ensure_css()
 
-  -- The registry key names the chapter, not the quiz's heading, and an activity
-  -- code (e.g. "zphawn6k0r") carries no readable name at all, so there is nothing
-  -- to derive a title from; authors pass `title=` for a chapter-specific heading.
   local title = kwargs["title"] and pandoc.utils.stringify(kwargs["title"]) or ""
-  if title == "" then title = "Check your understanding" end
+  if title == "" then title = "Your AI tutor" end
+
+  -- `text=` swaps the body text (an exercise-AI box describes a code
+  -- generator, not a tutor); `text=""` is treated as "use the default", so
+  -- there is always a body. `cta=` swaps the button label the same way.
+  local body = kwargs["text"] and pandoc.utils.stringify(kwargs["text"]) or ""
+  if body == "" then body = BODY_TEXT end
+  local cta_text = kwargs["cta"] and pandoc.utils.stringify(kwargs["cta"]) or ""
+  if cta_text == "" then cta_text = CTA_TEXT end
 
   local url = base .. "/" .. code
 
   local cta = pandoc.Div(
     pandoc.Para(pandoc.Link(
-      cta_label("Take the quiz on novedu.at"),
+      cta_label(cta_text),
       url
     )),
-    pandoc.Attr("", { "quiz-cta" })
+    pandoc.Attr("", { "tutor-cta" })
   )
 
   -- In print the button is dead, so the PDF also gets a QR code and the address
-  -- in readable type. A quiz address is short (base plus a ten-character code),
+  -- in readable type. A tutor address is short (base plus a ten-character code),
   -- so level "M" costs no room and survives a smudged printout.
-  local content = { cta }
+  local content = { pandoc.Para(pandoc.Str(body)), cta }
   content[#content + 1] = print_link_block(url, "M")
 
   return quarto.Callout({
-    type = "note",
-    title = "Quiz: " .. title,
+    type = "tip",
+    title = title,
     content = content,
   })
 end
 
-return { ["quiz"] = quiz }
+return { ["tutor"] = tutor }

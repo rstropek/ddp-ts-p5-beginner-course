@@ -12,6 +12,8 @@ be sorted with questions about `mouseX` alone. Four quadrants can't:
 this time, no single question about one coordinate can tell all four
 areas apart.
 
+{{< tutor tutor-conditions >}}
+
 ## Two questions, four answers {#sec-two-questions}
 
 Think about how you would decide as a human. Someone points at a spot on
@@ -126,4 +128,4 @@ an AI reads your answers and tells you what you already understand and
 what you should read again. The quiz is anonymous, and answering in German
 is fine too.
 
-{{< quiz b8csdlsb7t title="Color quadrants" >}}
+{{< quiz color-quadrants title="Color quadrants" >}}

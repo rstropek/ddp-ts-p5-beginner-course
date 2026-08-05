@@ -8,6 +8,8 @@ the same robot so that it adapts to *any* canvas size, and on the way you
 learn one of the big ideas of user interface programming: replace fixed
 numbers with formulas.
 
+{{< tutor tutor-variables >}}
+
 ## Stage 1: a robot with fixed numbers {#sec-robot-fixed}
 
 ![Stage 1: the robot you draw with coordinates you choose yourself, for one fixed canvas.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/robot.png){width=360}
@@ -161,4 +163,4 @@ six questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz hc19co9aeh title="The responsive robot" >}}
+{{< quiz responsive-robot title="The responsive robot" >}}

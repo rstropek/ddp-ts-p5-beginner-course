@@ -12,6 +12,8 @@ mouse events, the HSB color model, the system variables `width` and
 string. And it hides a small surprise: the program remembers your chosen
 color without a single variable of your own.
 
+{{< tutor tutor-variables >}}
+
 ## Two halves, two jobs {#sec-picker-halves}
 
 The picker splits its canvas into two halves with different jobs. The
@@ -139,4 +141,4 @@ six questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz lins9ye9y5 title="Color picker" >}}
+{{< quiz color-picker title="Color picker" >}}

@@ -4,6 +4,8 @@ title: "Your first program"
 
 By the end of this chapter you'll have written your very first real program and watched a small arrangement of shapes appear on the canvas in front of you. You'll get there by typing the code exactly as it's given, one character at a time, and seeing for yourself how a program comes to life. It's a small result, but it's entirely yours, and it's the moment programming stops being an idea and starts being something you do.
 
+{{< tutor tutor-introduction >}}
+
 ## Where you'll write code {#sec-playground}
 
 Professional developers write code in powerful programs like Visual Studio
@@ -156,4 +158,4 @@ eight questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz t8bw13i9of title="Your first program" >}}
+{{< quiz first-program title="Your first program" >}}

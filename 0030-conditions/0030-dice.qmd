@@ -11,6 +11,8 @@ face: one centered point for a one, two corner points for a two, and so
 on up to six. To pull that off, you need two new tools: a way to produce
 random numbers, and a comparison that asks "is it exactly this value?".
 
+{{< tutor tutor-conditions >}}
+
 ## A number nobody knows in advance {#sec-random}
 
 Everything your programs computed so far was predictable: the same
@@ -169,14 +171,16 @@ remove it: the chain can be rewritten with far fewer `circle`
 statements.
 
 You won't do the rewrite alone: this is a job for an AI, used the way
-you learned in the elephant exercise (@sec-animal). The two rules from
-there apply
-word for word. Paste your complete, working dice program into the
-prompt, because running code is the most precise description of your
-environment. And say that you are a beginner and that the code shows
-everything you have learned so far, so the answer stays inside what
-you can understand. Then ask the AI to rewrite the program so that it
-needs as few `circle` statements as possible.
+you learned in the elephant exercise (@sec-animal). This exercise has
+its own AI, and you'll find it in the box below. The two rules from the
+elephant exercise apply word for word. Paste your complete, working
+dice program into the prompt, because running code is the most precise
+description of your environment. And say that you are a beginner and
+that the code shows everything you have learned so far, so the answer
+stays inside what you can understand. Then ask the AI to rewrite the
+program so that it needs as few `circle` statements as possible.
+
+{{< tutor tutor-dice-rewrite title="Your AI for this exercise" text="This AI writes code from your prompt. Like the genie in the lamp, it grants what you say, not what you mean." cta="Open the exercise AI on novedu.at" >}}
 
 The AI will solve this, no surprise there. The real exercise is what
 happens next: don't just accept the answer. Read the new code line by
@@ -198,4 +202,4 @@ six questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz t2qras3t25 title="Rolling dice" >}}
+{{< quiz dice title="Rolling dice" >}}

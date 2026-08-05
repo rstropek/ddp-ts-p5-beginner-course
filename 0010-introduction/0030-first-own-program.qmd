@@ -16,6 +16,8 @@ like anyone else's, and that's the point. The rules of exactness still
 apply, every letter, parenthesis, and curly brace still matters, but *what*
 you draw is now your decision.
 
+{{< tutor tutor-introduction >}}
+
 ## Big pictures are made of simple shapes {#sec-decompose}
 
 A house looks complicated until you look closely. Then you see it's just
@@ -143,4 +145,4 @@ seven questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz 42n5iebrhx title="From copying to creating" >}}
+{{< quiz first-own-program title="From copying to creating" >}}

@@ -17,6 +17,8 @@ task you'll get in an assessment, and the flower project even states the
 areas you'd be graded on. Plan on paper, work in small steps, and hand in
 formatted code, just as you've learned.
 
+{{< tutor tutor-introduction >}}
+
 ## Coordinates come in many forms {#sec-coordinate-forms}
 
 With the house and the cat, you invented the coordinates yourself. With the
@@ -120,4 +122,4 @@ five questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz 5bs23p7nqi title="Practice projects" >}}
+{{< quiz practice-projects title="Practice projects" >}}

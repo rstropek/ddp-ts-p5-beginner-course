@@ -11,6 +11,8 @@ a protocol at the top of the canvas. Click by click, the protocol gets
 longer, until it fills line after line, and the program never forgets a
 single entry.
 
+{{< tutor tutor-variables >}}
+
 ## An event for clicks {#sec-click-event}
 
 The click protocol reacts to clicks with the event function
@@ -133,4 +135,4 @@ five questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz by697nszk6 title="The click protocol" >}}
+{{< quiz string-concat title="The click protocol" >}}

@@ -13,6 +13,8 @@ AI to turn it into a different animal. An elephant, a dog, a penguin,
 whatever you like. You won't type the new code yourself. Your job is to
 write the instructions, judge the result, and make it work.
 
+{{< tutor tutor-introduction >}}
+
 ## Writing a good prompt {#sec-prompt}
 
 The message you send to an AI is called a **prompt**, and writing good
@@ -73,8 +75,15 @@ the AI.**
 
 ## Your exercise: a new animal {#sec-animal}
 
-Your teacher will tell you which AI tool you'll use in class. Then work
-like this:
+This exercise has its own AI, and you'll find it in the box below.
+Unlike the tutor at the start of this chapter, it doesn't give hints: it
+writes code from your prompt, exactly the kind of AI this exercise is
+about. If your teacher picks a different AI tool for the class, use that
+one instead; the steps stay the same.
+
+{{< tutor tutor-elephant title="Your AI for this exercise" text="This AI writes code from your prompt. Like the genie in the lamp, it grants what you say, not what you mean." cta="Open the exercise AI on novedu.at" >}}
+
+Work like this:
 
 1. Open your finished cat program in the web playground and check that it
    still runs. Copy the whole code with `Ctrl` + `C`.

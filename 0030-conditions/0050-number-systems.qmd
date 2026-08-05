@@ -13,6 +13,8 @@ apart digit by digit, then you'll do the same in binary, then in
 hexadecimal. By the end you'll not only have a game, you'll read the
 computer's own number language.
 
+{{< tutor tutor-conditions >}}
+
 ## Taking a number apart {#sec-extract-digits}
 
 The first challenge sounds almost silly: the program rolls a random
@@ -346,4 +348,4 @@ words, and an AI reads your answers and tells you what you already
 understand and what you should read again. The quiz is anonymous, and
 answering in German is fine too.
 
-{{< quiz hb34gpvahn title="Number systems" >}}
+{{< quiz number-systems title="Number systems" >}}

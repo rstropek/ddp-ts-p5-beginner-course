@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# AI tutor for part 3 of the Creative Coding book: Conditions.
+#
+# One tutor serves ALL chapters of this part; every chapter links to it via
+# {{< tutor tutor-conditions >}}. Everything it does comes from fragments in
+# ../ddp-tutor-fragments.yaml — including this part's cumulative knowledge
+# scope (scope_conditions), which it shares with the dice-rewrite exercise
+# AI. This file supplies only the greeting and the example questions.
+#
+# Strictly hint mode: the dice rewrite has its own AI
+# (dice-rewrite-tutor.yaml), so this tutor never generates complete
+# programs.
+#
+# Validate after every edit:  npx @novedu/cli validate 0030-conditions/conditions-tutor.yaml
+
+id: ddp-tutor-conditions
+name: "Creative Coding tutor: Conditions (part 3)"
+title: "Hi! I'm your tutor for the Conditions part."
+description: |
+  I help you with the chapters about decisions: if and else, random numbers,
+  your first animation, and how computers count. Ask me questions, show me
+  code that doesn't work, or let me quiz you. I give hints instead of
+  finished solutions. English or German, both are fine.
+
+exampleQuestions:
+  - title: "if, else if, else"
+    question: "Can you explain how an if / else if / else chain decides which block runs?"
+  - title: "Why ===?"
+    question: "Why do we compare with three equals signs? What happens if I write only one = in a condition?"
+  - title: "My ball won't bounce"
+    question: "My bouncing ball flies off the canvas instead of bouncing back. Can you help me find the problem?"
+  - title: "|| and &&"
+    question: "What is the difference between || and &&, and when do I use which one?"
+  - title: "Binary numbers"
+    question: "I don't really get binary numbers. Can you explain how 1101 becomes 13?"
+  - title: "Quiz me"
+    question: "Ask me three short questions about conditions so I can check whether I understood this part."
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Conditions"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_conditions"}}
+
+    {{fragment "shared.socratic_exercises"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

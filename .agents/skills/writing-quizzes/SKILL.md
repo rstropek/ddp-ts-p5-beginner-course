@@ -198,8 +198,9 @@ Quizzes are served straight from the book's public GitHub repo
 (`rstropek/ddp-ts-p5-beginner-course`); the novedu server re-reads the raw
 URL on every load, so publishing an edit = `git push`. The CLI runs from the
 novedu repo (`cd ~/github/chat-prototype`, prefix commands with
-`npm run cli --silent --`); only minting codes needs a signed-in teacher
-(`whoami` to check; `login` opens a browser the human must finish).
+`npm run cli --silent --`, and pass ABSOLUTE paths for files in the book
+repo); only `codes sync` needs a signed-in teacher (`whoami` to check;
+`login` opens a browser the human must finish).
 
 1. Author/edit the YAML in the book repo.
 2. Validate locally: `validate <path> --kind quiz` (works because the
@@ -207,15 +208,37 @@ novedu repo (`cd ~/github/chat-prototype`, prefix commands with
 3. Commit and push (quiz edits go live immediately for existing codes).
 4. First publish only: confirm the published render —
    `validate https://raw.githubusercontent.com/rstropek/ddp-ts-p5-beginner-course/refs/heads/main/<folder>/<file>.yaml --kind quiz`
-   — then mint a code:
-   `codes create --module quiz --file <that raw URL> --note "Creative Coding book: <chapter> (<nr>) — GitHub-hosted"`
-   (no `--start`/`--end` for book quizzes). Later edits need NO new code.
+   — then add ONE entry to the **activity registry** `ddp-activities.yaml`
+   (book-repo root) under `activities.quizzes`, keyed by chapter slug
+   (`number-systems`, no numeric prefix; unique across the whole file):
+
+   ```yaml
+       <chapter-slug>:
+         file: <folder>/<file>-quiz.yaml   # relative to the registry's base-url
+         note: "Creative Coding book: <chapter title> (<nr>) — GitHub-hosted"
+   ```
+
+   and run `codes sync <abs path>/ddp-activities.yaml`. That mints the new
+   code, reuses every existing one, and rewrites `ddp-activities.lock.yaml`;
+   commit registry AND lock file. Book quizzes carry no `start`/`end` and no
+   `llm` override. Later edits need no new code and no sync (the code points
+   at the raw URL).
 5. First publish only: add a "Check your understanding" section at the end
    of the chapter `.qmd` (unique anchor `{#sec-quiz-<short>}`): a short
    intro naming the question count, then
-   `{{< quiz <code> title="<Chapter title>" >}}`.
+   `{{< quiz <chapter-slug> title="<Chapter title>" >}}` — the registry KEY,
+   never a code. An unknown key fails the render.
 6. Ask the user to spot-check grading with one deliberately half-right answer
    (the correct/partial boundary is the fragile part).
+
+**Never `codes create` a book quiz and never paste a code into a chapter**:
+the registry plus its lock file are the only place codes live. `codes sync`
+is safe to re-run (unchanged entries keep their code); pass `--dry-run` when
+unsure. An entry reported as `failed` means the server rejected that quiz —
+read the message, fix the YAML, push, re-run. An unexpected `minted` for a
+quiz that already has a code means the entry does not match it (file path,
+window, or model override); stop and fix the entry, or the chapter silently
+moves to a fresh code with no history.
 
 Editing shared wording = edit `ddp-quiz-fragments.yaml` (repo root),
 `validate <path> --kind fragment`, then push. Every quiz picks it up live.

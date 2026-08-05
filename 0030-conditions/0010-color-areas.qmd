@@ -20,6 +20,8 @@ But they could not yet react differently to *what* happened. That
 changes now: in this part of the course, your programs learn to make
 decisions.
 
+{{< tutor tutor-conditions >}}
+
 ## Questions with a yes/no answer {#sec-comparisons}
 
 In the snapping chapter you met the three data types of this course, and
@@ -216,4 +218,4 @@ six questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz yssdu8rvub title="The if statement" >}}
+{{< quiz color-areas title="The if statement" >}}

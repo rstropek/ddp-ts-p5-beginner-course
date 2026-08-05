@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# AI tutor for part 1 of the Creative Coding book: Introduction.
+#
+# One tutor serves ALL chapters of this part; every chapter links to it via
+# {{< tutor tutor-introduction >}}. Everything it does comes from fragments
+# in ../ddp-tutor-fragments.yaml — including this part's knowledge scope
+# (scope_introduction), which it shares with the elephant exercise AI. This
+# file supplies only the greeting and the example questions.
+#
+# Strictly hint mode: the elephant exercise has its own AI
+# (elephant-tutor.yaml), and the reading-docs exercise deliberately uses an
+# external AI, so this tutor never generates complete programs.
+#
+# Validate after every edit:  npx @novedu/cli validate 0010-introduction/introduction-tutor.yaml
+
+id: ddp-tutor-introduction
+name: "Creative Coding tutor: Introduction (part 1)"
+title: "Hi! I'm your tutor for the Introduction part."
+description: |
+  I help you with your first programs: shapes, coordinates, colors, and
+  arcs. Ask me questions, show me code that doesn't work, or let me quiz
+  you. I give hints instead of finished solutions. English or German, both
+  are fine.
+
+exampleQuestions:
+  - title: "Red squiggly lines"
+    question: "My code has red squiggly lines and the program doesn't run. How do I find out what's wrong?"
+  - title: "Coordinates confuse me"
+    question: "I don't get the coordinate system. Why does y grow downward, and how do I find the right numbers for my shapes?"
+  - title: "Shape order"
+    question: "One of my shapes is hidden behind another one. What decides which shape is in front?"
+  - title: "How does arc work?"
+    question: "The six parameters of arc confuse me. Can you explain them one at a time?"
+  - title: "Is my prompt good?"
+    question: "I'm doing the elephant exercise and wrote a prompt for it. Before I send it: can you tell me what a good prompt for this exercise must contain?"
+  - title: "Quiz me"
+    question: "Ask me three short questions about this part so I can check whether I understood it."
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Introduction"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_introduction"}}
+
+    {{fragment "shared.socratic_exercises"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

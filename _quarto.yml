@@ -64,10 +64,18 @@ book:
 # The server's FQDN may change — when it does, edit ONLY this line.
 playground-base-url: "https://ts-web-playground-server-bfdfbjcthubcardq.westeurope-01.azurewebsites.net"
 
-# Base URL of the novedu chat app. The `quiz` shortcode turns a minted
-# activity code into a "Take the quiz" link built from this base
-# (<base>/<code>). If the app ever moves, edit ONLY this line.
+# Base URL of the novedu chat app. The `quiz` shortcode turns an activity code
+# into a "Take the quiz" link built from this base (<base>/<code>). If the app
+# ever moves, edit ONLY this line.
 novedu-base-url: "https://novedu.at"
+
+# The generated key -> code map for every novedu activity this book links to.
+# A chapter names a quiz by its registry KEY ({{< quiz number-systems >}}) and
+# the shortcode looks that key up in the `activity-codes` map contributed here.
+# ddp-activities.yaml is hand-written, ddp-activities.lock.yaml is regenerated
+# by `novedu-cli codes sync ddp-activities.yaml`; both are committed (README).
+metadata-files:
+  - ddp-activities.lock.yaml
 
 # --- Output formats --------------------------------------------------------
 format:

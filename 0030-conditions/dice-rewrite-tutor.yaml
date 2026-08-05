@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# Exercise AI for the advanced dice rewrite (part 3, Conditions).
+#
+# NOT a tutor: this activity plays the code-generating AI the exercise tells
+# the student to use. It rewrites the student's dice program on purpose —
+# the exercise is about interrogating AI output until the student could have
+# written it themselves. It shares the part's knowledge scope
+# (scope_conditions) with the Conditions part tutor. Linked from the
+# exercise's section via {{< tutor tutor-dice-rewrite ... >}}.
+#
+# Deliberately NO exampleQuestions: the student writes the prompt, and the
+# follow-up questions are the exercise.
+#
+# Validate after every edit:  npx @novedu/cli validate 0030-conditions/dice-rewrite-tutor.yaml
+
+id: ddp-ai-dice-rewrite
+name: "Creative Coding AI: the dice rewrite exercise (part 3)"
+title: "Paste your dice program and tell me what to improve."
+description: |
+  I'm the AI for the advanced dice exercise. Paste your complete, working
+  dice program and ask me to rewrite it with as few circle statements as
+  possible. Then read my answer line by line and question me until you
+  could have written it yourself. English or German, both are fine.
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.ai_workbench" exercise="the advanced dice rewrite from the dice chapter. The student takes their complete, working dice program (an if/else if chain drawing dice faces with about 21 circle statements) and has you rewrite it so it needs as few circle statements as possible — with conditions on shared dots (for example dice >= 2 for the corner dots), still with no loops and no arrays. Expect the student to interrogate your rewrite line by line; they must present the optimization in class without notes."}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_conditions"}}
+
+    {{fragment "shared.teenager_safety"}}

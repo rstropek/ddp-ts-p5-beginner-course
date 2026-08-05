@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# AI tutor for part 2 of the Creative Coding book: Variables.
+#
+# One tutor serves ALL chapters of this part; every chapter links to it via
+# {{< tutor tutor-variables >}}. Everything it does comes from fragments in
+# ../ddp-tutor-fragments.yaml — including this part's cumulative knowledge
+# scope (scope_variables). This file supplies only the greeting and the
+# example questions.
+#
+# Validate after every edit:  npx @novedu/cli validate 0020-variables/variables-tutor.yaml
+
+id: ddp-tutor-variables
+name: "Creative Coding tutor: Variables (part 2)"
+title: "Hi! I'm your tutor for the Variables part."
+description: |
+  I help you with the chapters about variables: mouse position, your first
+  formulas, responsive drawings, colors, and strings that grow. Ask me
+  questions, show me code that doesn't work, or let me quiz you. I give
+  hints instead of finished solutions. English or German, both are fine.
+
+exampleQuestions:
+  - title: "What is a variable?"
+    question: "Can you explain in simple words what a variable is and why I need one?"
+  - title: "const or let?"
+    question: "When do I declare something with const and when with let?"
+  - title: "My drawing smears"
+    question: "When I move the mouse, my drawing leaves smears all over the canvas. Why does that happen and how do I fix it?"
+  - title: "What does % do?"
+    question: "I don't understand the % operator. What does something like (colorHue + 5) % 360 actually compute?"
+  - title: "Nothing happens on click"
+    question: "I wrote a mouseClicked function but nothing happens when I click. Can you help me find the problem?"
+  - title: "Quiz me"
+    question: "Ask me three short questions about variables so I can check whether I understood this part."
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Variables"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_variables"}}
+
+    {{fragment "shared.socratic_exercises"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

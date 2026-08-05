@@ -1,0 +1,110 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/registry/registry-yaml.schema.json
+# Activity registry for the Creative Coding book.
+#
+# Every novedu activity a chapter links to is listed here under a stable KEY;
+# the chapters reference that key, never a code:
+#
+#     {{< quiz number-systems title="Number systems" >}}
+#
+# Reconcile it with novedu and regenerate the lock file with:
+#
+#     npx @novedu/cli codes sync ddp-activities.yaml
+#
+# An entry whose file, window, and model override are unchanged keeps its code,
+# so re-running is routine. Adding a quiz = one new entry here + one sync run;
+# commit BOTH this file and ddp-activities.lock.yaml. Full format reference:
+# https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp/blob/main/docs/registry.md
+
+# novedu re-reads the quiz YAML from this repository's raw URLs on every load,
+# so publishing a quiz edit stays a plain `git push`.
+base-url: "https://raw.githubusercontent.com/rstropek/ddp-ts-p5-beginner-course/refs/heads/main/"
+
+activities:
+  # One AI tutor per book part. Every chapter of a part links to its part's
+  # tutor via the {{< tutor <key> >}} shortcode at the top of the chapter.
+  tutors:
+    tutor-introduction:
+      file: 0010-introduction/introduction-tutor.yaml
+      note: "Creative Coding book: AI tutor for part 1, Introduction — GitHub-hosted"
+    tutor-variables:
+      file: 0020-variables/variables-tutor.yaml
+      note: "Creative Coding book: AI tutor for part 2, Variables — GitHub-hosted"
+    tutor-conditions:
+      file: 0030-conditions/conditions-tutor.yaml
+      note: "Creative Coding book: AI tutor for part 3, Conditions — GitHub-hosted"
+
+    # Exercise AIs: the code-generating counterparts for the book's
+    # designated AI exercises (the part tutors stay strictly hint-only).
+    tutor-elephant:
+      file: 0010-introduction/elephant-tutor.yaml
+      note: "Creative Coding book: exercise AI, cat-to-elephant (0010/0050) — GitHub-hosted"
+    tutor-dice-rewrite:
+      file: 0030-conditions/dice-rewrite-tutor.yaml
+      note: "Creative Coding book: exercise AI, dice rewrite (0030-conditions/0030) — GitHub-hosted"
+
+  quizzes:
+    welcome:
+      file: 0010-introduction/0010-welcome-quiz.yaml
+      note: "Creative Coding book: Welcome (0010) — GitHub-hosted"
+    first-program:
+      file: 0010-introduction/0020-first-program-quiz.yaml
+      note: "Creative Coding book: Your first program (0020) — GitHub-hosted"
+    first-own-program:
+      file: 0010-introduction/0030-first-own-program-quiz.yaml
+      note: "Creative Coding book: From copying to creating (0030) — GitHub-hosted"
+    practice-cat:
+      file: 0010-introduction/0040-practice-cat-quiz.yaml
+      note: "Creative Coding book: Type less, draw more (0040) — GitHub-hosted"
+    olympic-rings:
+      file: 0010-introduction/0060-olympic-rings-quiz.yaml
+      note: "Creative Coding book: Olympic rings (0060) — GitHub-hosted"
+    arcs-smiley:
+      file: 0010-introduction/0070-arcs-smiley-quiz.yaml
+      note: "Creative Coding book: Arcs (0070) — GitHub-hosted"
+    olympic-rings-advanced:
+      file: 0010-introduction/0080-olympic-rings-advanced-quiz.yaml
+      note: "Creative Coding book: Fixing code you didn't write (0080) — GitHub-hosted"
+    practice-projects:
+      file: 0010-introduction/0090-practice-projects-quiz.yaml
+      note: "Creative Coding book: Practice projects (0090) — GitHub-hosted"
+
+    crosshairs:
+      file: 0020-variables/0010-crosshairs-quiz.yaml
+      note: "Creative Coding book: Variables (0020/0010) — GitHub-hosted"
+    snap:
+      file: 0020-variables/0020-snap-quiz.yaml
+      note: "Creative Coding book: Snapping to a grid (0020/0020) — GitHub-hosted"
+    responsive-robot:
+      file: 0020-variables/0030-responsive-robot-quiz.yaml
+      note: "Creative Coding book: The responsive robot (0020/0030) — GitHub-hosted"
+    color-basics:
+      file: 0020-variables/0040-color-basics-quiz.yaml
+      note: "Creative Coding book: Mixing colors (0020/0040) — GitHub-hosted"
+    color-worm:
+      file: 0020-variables/0050-color-worm-quiz.yaml
+      note: "Creative Coding book: The color worm (0020/0050) — GitHub-hosted"
+    color-picker:
+      file: 0020-variables/0060-color-picker-quiz.yaml
+      note: "Creative Coding book: Color picker (0020/0060) — GitHub-hosted"
+    string-concat:
+      file: 0020-variables/0070-string-concat-quiz.yaml
+      note: "Creative Coding book: The click protocol (0020/0070) — GitHub-hosted"
+    drawing-tools:
+      file: 0020-variables/0080-drawing-tools-quiz.yaml
+      note: "Creative Coding book: Circle tool and rect tool (0020/0080) — GitHub-hosted"
+
+    color-areas:
+      file: 0030-conditions/0010-color-areas-quiz.yaml
+      note: "Creative Coding book: The if statement (0030-conditions/0010) — GitHub-hosted"
+    color-quadrants:
+      file: 0030-conditions/0020-color-quadrants-quiz.yaml
+      note: "Creative Coding book: Color quadrants (0030-conditions/0020) — GitHub-hosted"
+    dice:
+      file: 0030-conditions/0030-dice-quiz.yaml
+      note: "Creative Coding book: Rolling dice (0030-conditions/0030) — GitHub-hosted"
+    bouncing-ball:
+      file: 0030-conditions/0040-bouncing-ball-quiz.yaml
+      note: "Creative Coding book: The bouncing ball (0030-conditions/0040) — GitHub-hosted"
+    number-systems:
+      file: 0030-conditions/0050-number-systems-quiz.yaml
+      note: "Creative Coding book: Number systems (0030-conditions/0050) — GitHub-hosted"

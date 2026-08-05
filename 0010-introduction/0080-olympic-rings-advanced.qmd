@@ -16,6 +16,8 @@ their time exactly like this: reading code they didn't write, understanding
 it, and carefully changing it. Whoever wrote the original, a colleague, an
 AI, or you-three-weeks-ago, the skill is the same.
 
+{{< tutor tutor-introduction >}}
+
 ## The puzzle: weaving the rings {#sec-weaving}
 
 In the Olympic Rings exercise you drew five overlapping rings and ignored
@@ -89,4 +91,4 @@ five questions about this chapter in your own words, and an AI reads your
 answers and tells you what you already understand and what you should read
 again. The quiz is anonymous, and answering in German is fine too.
 
-{{< quiz xnv1c6rukr title="Fixing code you didn't write" >}}
+{{< quiz olympic-rings-advanced title="Fixing code you didn't write" >}}
