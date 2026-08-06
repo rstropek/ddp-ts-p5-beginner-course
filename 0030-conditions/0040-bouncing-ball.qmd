@@ -181,11 +181,23 @@ give that ball a partner.
    One small chore while you read: the playground's starter declares
    its globals without data types; add them so the code matches the
    listings in this chapter (every declaration gets one, as always).
-2. **Play computer around the bounce.** On paper, make a table with
-   the columns "frame", "`circleCenterX` when `draw` starts", and
-   "`direction` when `draw` ends". Start a few frames before the right
-   wall, at `circleCenterX = 296`, and fill in five rows. The row where
-   the condition fires is the whole point of the table.
+2. **Play computer around the bounce.** Copy the table below and follow
+   the ball through five frames on the 300 pixel wide canvas, starting
+   two frames before the right wall. Keep the order of `draw` in mind:
+   first the ball is drawn, then it moves, then the condition is checked.
+   The first row is filled in as a model.
+
+    | Frame | `circleCenterX` at the start | After the move | Wall reached? | `direction` at the end |
+    |:-----:|--------------------|----------------|------------------|--------------------|
+    | 1     | 296                | 298            | 298 >= 300 -> no | 2                  |
+    | 2     |                    |                |                  |                    |
+    | 3     |                    |                |                  |                    |
+    | 4     |                    |                |                  |                    |
+    | 5     |                    |                |                  |                    |
+
+    One row in your table is the bounce. Now change the starting value to
+    297 and redo the five rows. The ball never lands exactly on 300 this
+    time, and that is the reason the condition uses `>=` instead of `===`.
 3. **Add a second ball** that travels vertically: it starts at the top,
    moves down, and bounces between top and bottom walls. It needs its
    own position variable and its own direction variable, and it should

@@ -160,17 +160,26 @@ whole rainbow. In the next chapter, your program will do exactly that.
 This exercise is a laboratory session: you'll run small experiments and
 train your eye to predict what numbers turn into.
 
-1. **Predict first.** Make a prediction table with two columns:
-   "RGB values" and "my prediction". Fill in these six value triples and
-   write down, before touching the keyboard, what color you expect:
-   (0, 255, 0), (255, 255, 0), (0, 0, 0), (255, 255, 255),
-   (128, 128, 128), and (255, 0, 255).
+1. **Predict first.** Copy the table below on paper and fill in the middle
+   column *before* you touch the keyboard. Name the color you expect in
+   plain words, for example "bright green" or "dark gray". The first row
+   shows how much detail is enough.
+
+    | RGB values        | My prediction | What the screen shows |
+    |-------------------|---------------|-----------------------|
+    | (0, 255, 0)       | bright green  |                       |
+    | (255, 255, 0)     |               |                       |
+    | (0, 0, 0)         |               |                       |
+    | (255, 255, 255)   |               |                       |
+    | (128, 128, 128)   |               |                       |
+    | (255, 0, 255)     |               |                       |
 2. **Start with names.** Use `background` with color names from the
    [list of color names](https://htmlcolorcodes.com/color-names/). Find
    the name you'd use for a sky, for grass, and for a sunset.
 3. **Check your predictions.** Switch to RGB and run the six value
-   triples from your table, one by one. Compare each result with your
-   prediction and correct the table where the screen surprised you.
+   triples from your table, one by one, filling in the last column as you
+   go. The rows where the screen surprised you are the ones worth a second
+   look.
 4. **Mix a favorite.** Find a color you love with the [online color
    picker](https://colorpicker.me/), read off its RGB values, and
    reproduce it on your canvas.

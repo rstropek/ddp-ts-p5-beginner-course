@@ -96,16 +96,29 @@ separate step; finish and test one before starting the next.
 
 Work the way you've practiced all through this part:
 
-1. **Paper first.** Sketch the 400 by 200 canvas and mark the center at
-   (200, 100). Pick two mouse positions, for example (130, 45) and
-   (330, 180), and compute both diameters for each by hand: subtract,
-   `abs`, double, and, for the polished tool, snap to 20. Write down the
-   area you expect.
+1. **Paper first.** The canvas is 400 by 200, so its center is (200, 100).
+   Complete the table below by hand before you write a single line of code.
+   Each column header carries the formula, so you only fill in numbers. The
+   last column belongs to the polished tool; the others to the basic one.
+
+    | Mouse (x, y) | Width: `2 * abs(x - 200)` | Height: `2 * abs(y - 100)` | Area, rounded | Both diameters snapped to 20 |
+    |------------|:------:|:------:|:------:|:-----------:|
+    | (130, 45)  | 140    | 110    | 12095  | 140 and 120 |
+    | (330, 180) |        |        |        |             |
+    | (200, 100) |        |        |        |             |
+    | (400, 0)   |        |        |        |             |
+
+    The third row is a deliberate trap: the mouse sits exactly on the center.
+    Work out what the tool draws there, and check later that your program
+    does the same.
 2. **Build in requirement order.** Centered ellipse first, then the size
    formulas, then the area text. Run after every step. Remember the
    crosshairs lesson: `mouseMoved` has to start by repainting the black
    background, or the old ellipses smear across the canvas.
-3. **Peek with a rule.** The playground shows a sample solution for this
+3. **Test against your table.** Add debug output for the mouse position
+   (@sec-position-readout), steer to each position from your table, and
+   compare the area in the corner with your prediction.
+4. **Peek with a rule.** The playground shows a sample solution for this
    exercise. Use it when you've been stuck for more than a few minutes,
    but use it like this: read only until you understand the idea you were
    missing, close it, and write the code from memory. Copying with the

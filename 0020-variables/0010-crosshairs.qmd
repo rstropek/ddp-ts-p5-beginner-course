@@ -141,12 +141,25 @@ Imagine you're building a balloon shooting game. The player needs crosshairs
 that follow the mouse to aim. That's your task: crosshairs made of two lines
 and two circles, always centered on the mouse.
 
-Pen and paper first, as always, but this sketch is special: it's your first
-sketch where the coordinates are **formulas instead of numbers**. Draw the
-crosshairs large on graph paper, mark the center point, and label it
-(`mouseX`, `mouseY`). Then write the formula next to each line end, like
-(`mouseX - 15`, `mouseY`). You can't write a plain number there, because the
-center moves; the formula is the coordinate.
+Pen and paper first, because this is your first sketch where the coordinates
+are **formulas instead of numbers**. Draw the crosshairs large on graph
+paper, mark the center point, and label it (`mouseX`, `mouseY`). Then copy
+the table below onto your paper and complete it. The first row is done for
+you as a model:
+
+| Point | Coordinates as formulas | Mouse at (120, 80) | Mouse at (40, 150) |
+|-------------------------|--------------------------|-----------|-----------|
+| Horizontal line, left end | (`mouseX - 15`, `mouseY`) | (105, 80) | (25, 150) |
+| Horizontal line, right end |            |           |           |
+| Vertical line, upper end   |            |           |           |
+| Vertical line, lower end   |            |           |           |
+| Center of both circles     |            |           |           |
+
+The second column is the important one: you can't write a plain number there,
+because the center moves. The formula *is* the coordinate. The last two
+columns are practice at reading a formula: you play the part of the computer,
+put a value into `mouseX` and `mouseY`, and work out what the parameter
+becomes.
 
 Then head to the playground:
 
@@ -158,6 +171,13 @@ Then head to the playground:
    15 pixels long and the circles have diameters of 10 and 20, but you can
    design your own crosshairs, as long as everything stays centered on the
    mouse.
+4. Test what you can actually see. Nobody can place a mouse on the pixel
+   (120, 80) by hand, so test the *behavior* instead: move the pointer
+   slowly all over the canvas and check that the crossing point stays right
+   under the tip of the pointer, that the arms keep the same length in all
+   four directions, and that the circles stay centered on the crossing
+   point. If the crosshairs drifts away from the pointer, a plus and a
+   minus have swapped places in your formulas.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/crosshairs.yaml >}}
 

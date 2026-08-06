@@ -194,26 +194,43 @@ stay active until changed:
 
 Now build the program. Work in this order:
 
-1. **Paper first.** Draw the 400 by 200 canvas on graph paper. Split it
-   into three equal stripes and write the x coordinate of each boundary
-   as a formula (`width / 3`, `2 * width / 3`) *and* as a number. Mark
-   the black message bar along the bottom, 50 pixels high.
+1. **Paper first.** On the 400 by 200 canvas, `width / 3` is 133.33 and
+   `2 * width / 3` is 266.67. Copy the table below and walk the if chain
+   through five clicks by hand. Four of the five x values sit right next
+   to a boundary, and that's on purpose: boundary clicks are where wrong
+   comparisons hide. The first row is filled in as a model.
+
+    | Click at x | `mouseX < width / 3` | `mouseX < 2 * width / 3` | Message |
+    |------------|----------------------|--------------------------|---------|
+    | 95         | 95 < 133.33 -> true  | not asked                | Orange  |
+    | 133        |                      |                          |         |
+    | 134        |                      |                          |         |
+    | 266        |                      |                          |         |
+    | 267        |                      |                          |         |
+
+    The "not asked" in the first row is the point of the whole table: once
+    a branch has been taken, the program never looks at the questions below
+    it.
 2. **Pick your three colors.** They should be easy to tell apart. If
    you'd like a color combination that really works, Adobe's
    [color wheel](https://color.adobe.com/create/color-wheel) suggests
    matching sets: try the *Split Complementary* option under Color
    Harmony.
 3. **Set the stage in `setup`.** Draw the three stripes as rectangles
-   using the `width / 3` formulas, then the black bar at the bottom.
+   using the `width / 3` formulas, then the black message bar along the
+   bottom, 50 pixels high.
 4. **Write `mouseClicked`.** Repaint the black bar first, so the
    previous message disappears. Then set up the text formatting, declare
    `let message: string;`, and write the if chain that fills it. Your
    messages must name the colors *you* chose in step 2. Finish with one
    `text` statement that draws the message centered in the bar.
-5. **Test like a professional.** Click in all three stripes. Then take
-   your paper sketch and click as close as you can to the two
-   boundaries, on both sides: boundary clicks are where wrong
-   comparisons hide.
+5. **Test like a professional.** Click in all three stripes first. Then hunt
+   for the boundaries, and for that you need to know where you clicked: add
+   debug output (@sec-position-readout) by writing `mouseX` into the message
+   bar next to the message. Now click your way slowly across the first
+   boundary, a few pixels at a time, and watch where the message flips. The
+   last x with the left color and the first x with the middle color must be
+   the 133 and 134 from your table. Do the same at the second boundary.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/color-areas.yaml >}}
 

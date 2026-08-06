@@ -102,10 +102,20 @@ find out which box the player clicked.
 Now build it: a random number up to six digits, each digit drawn in its
 own yellow box.
 
-1. **Play computer first.** Pick a number, for example 4711, and run
-   the recipe on paper for all six digits: divide, floor, `% 10`.
-   Two of the six results are worth predicting carefully: what do
-   `digit5` and `digit6` hold when the number only has four digits?
+1. **Play computer first.** Complete this table on paper for
+   `num` = 4711. The first two rows are filled in as a model.
+
+    | Constant | Formula | Result for 4711 |
+    |-----------|------------------------|-----|
+    | `digit1`  | `num % 10`             | 1   |
+    | `digit2`  | `floor(num / 10) % 10` | 1   |
+    | `digit3`  |                        |     |
+    | `digit4`  |                        |     |
+    | `digit5`  |                        |     |
+    | `digit6`  |                        |     |
+
+    The last two rows are worth predicting carefully: what do `digit5` and
+    `digit6` hold when the number has only four digits?
 2. **Read the starter code.** The roll is already there, and so is a
    small `text` call that prints the whole number at the bottom of the
    canvas, so you can check your digits against it at a glance.
@@ -162,9 +172,19 @@ const digit3: number = floor(num / 4) % 2;
 Same picture, new number system: six boxes, but now they show the
 random number in binary.
 
-1. **Paper first.** Convert three numbers to binary by hand, for
-   example 13, 42, and 63. Check each by adding the place values back
-   together.
+1. **Paper first.** Convert three numbers to binary by hand with the
+   table below. Go from left to right: does a 32 fit into the number? Put
+   a 1 under it and subtract, otherwise put a 0. Then ask the same about
+   the 16, and so on down to the 1. The first row is filled in as a model.
+
+    | Number | 32 | 16 | 8 | 4 | 2 | 1 | Binary |
+    |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+    | 13  | 0 | 0 | 1 | 1 | 0 | 1 | 001101 |
+    | 42  |   |   |   |   |   |   |        |
+    | 63  |   |   |   |   |   |   |        |
+
+    Check each row by adding the place values under your ones back
+    together: 8 + 4 + 1 is 13, so the first row is right.
 2. **Copy your digits solution** into the empty starter and change the
    number range: the boxes can show at most 63, so the roll becomes
    `floor(random(0, 64))`.
@@ -229,8 +249,16 @@ if (digit1 < 10) {
 
 Three boxes this time, showing the random number in hex.
 
-1. **Paper first.** Convert 47, 255, and 3000 to hex by hand: divide
-   by 256, then 16, then 1, and translate 10 to 15 into A to F.
+1. **Paper first.** Convert three numbers to hex by hand with the table
+   below: divide by 256, then by 16, then by 1, each time taking `% 16` of
+   the result, and translate 10 to 15 into A to F. The first row is filled
+   in as a model.
+
+    | Number | 256s | 16s | 1s | Hex |
+    |:---:|:---:|:---:|:---:|:---:|
+    | 47   | 0 | 2 | 15 -> F | 02F |
+    | 255  |   |   |         |     |
+    | 3000 |   |   |         |     |
 2. **Adapt your solution:** three digits instead of six on a 300 pixel
    wide canvas, divisors 1, 16, and 256, extraction with `% 16`. The
    three boxes keep their size and their `50 + i * 75` positions. The
@@ -326,8 +354,21 @@ testing after each:
    `setup` into `mouseClicked`. Check its range: a rolled 0 means the
    four zeros on screen are already the right answer, so make the roll
    run from 1 to 15. Then draw the question, the four boxes, and the
-   four zeros. Sketch the layout on graph paper first and write the box
-   edges down; you'll need them for the click test.
+   four zeros.
+
+    Before you write the click test, work out the four boxes' edges on
+    paper. Each box is 50 pixels wide and starts at `50 + i * 75`:
+
+    | Box `i` | Left edge `50 + i * 75` | Right edge, 50 further |
+    |:---:|:---:|:---:|
+    | 0 | 50 | 100 |
+    | 1 |    |     |
+    | 2 |    |     |
+    | 3 |    |     |
+
+    These eight numbers are exactly what your `&&` conditions compare
+    `mouseX` against, so a mistake here shows up as a box that ignores
+    every click.
 2. **The boxes.** Place the four boxes with the `50 + i * 75`
    formula, so their edges match the numbers in your click test.
 3. **Click detection.** In `mouseClicked`, write the `&&` conditions,

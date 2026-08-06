@@ -174,12 +174,24 @@ modulo do its work.
 
 Time to grow the worm:
 
-1. **Play computer first.** Take pen and paper and make a table with two
-   columns, "`colorHue` when `mouseMoved` starts" and "`colorHue` after
-   the assignment". Fill in the first four runs, starting at 0. Then jump
-   ahead: start a row at 355 and work out `(355 + 5) % 360` by hand.
-   Finally, predict how many mouse movements one full rainbow takes when
-   the hue grows in steps of 5.
+1. **Play computer first.** Copy the table below on paper and complete it.
+   The first four rows are the first four runs of `mouseMoved`, the last
+   two rows jump ahead to the interesting spot, where the counter reaches
+   the end of the hue scale. The first row is filled in as a model.
+
+    | Run of `mouseMoved` | `colorHue` at the start | `colorHue + 5` | `(colorHue + 5) % 360` |
+    |:----:|--------------|--------------|--------------|
+    | 1    | 0            | 5            | 5            |
+    | 2    |              |              |              |
+    | 3    |              |              |              |
+    | 4    |              |              |              |
+    | 71   | 350          |              |              |
+    | 72   | 355          |              |              |
+
+    The last row is the one you can't see on screen, because the wrap flashes
+    by in a single mouse movement. Your table also answers a question the
+    program never tells you: how many mouse movements does one full rainbow
+    take when the hue grows in steps of 5?
 2. **Set the stage in `setup`.** Create a 500 by 500 canvas, switch to
    HSB with `colorMode(HSB)`, and paint the background black with
    `background(0)` (a single number is a gray value, and 0 is black). Add

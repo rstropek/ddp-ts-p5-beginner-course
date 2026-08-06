@@ -187,23 +187,70 @@ by `createCanvas`. So `height - 5` means "5 pixels above the bottom edge",
 no matter how big the canvas is. Remember these two variables: they play
 the main role in the next chapter.
 
+## Seeing the exact mouse position {#sec-position-readout}
+
+Here is a practical problem that shows up the moment you test a program with
+your paper notes in hand: you cannot put the mouse on the pixel (130, 45) by
+hand. The canvas has no ruler, one pixel is far smaller than the tip of the
+pointer, and nothing on the screen tells you where you actually are.
+
+The fix is **debug output**: one temporary line that writes the numbers your
+program is working with onto the canvas, purely so that you can read them.
+
+```typescript
+text(`${mouseX}/${mouseY}`, 5, 15);
+```
+
+With that line in `mouseMoved`, the live mouse position appears in the upper
+left corner and updates as you move. Hitting an exact position is easy now:
+move roughly to where you want to be, watch the numbers, and nudge the mouse
+until they read what your paper says. Then check the rest of the picture.
+
+One thing to watch: text is paint like everything else, so debug output that
+is never erased turns into a smeared blob after a few movements. In a
+function that repaints the canvas anyway, like `mouseMoved` in this program,
+the old numbers disappear with everything else. In a function that doesn't
+repaint, clear just the spot you write in: draw a small filled rectangle
+first and put the text on top of it.
+
+```typescript
+fill("black");
+rect(0, 0, 60, 20);
+fill("white");
+text(`${mouseX}/${mouseY}`, 5, 15);
+```
+
+Debug output costs a few lines and answers the question every programmer asks
+when a program misbehaves: which numbers does it actually have? Add it
+whenever you want to know, and delete it when you're done. The term is worth
+remembering, because you'll hear it for the rest of your programming life.
+
 ## Your exercise: Snapping {#sec-snapping-exercise}
 
 Time to build the snapping marker. Work in this order:
 
-1. **Paper first.** Draw the 200 by 200 canvas on graph paper and mark the
-   grid corners every 40 pixels. That gives 6 positions per axis, 36 corners
-   in total: the only places your marker may ever sit.
-2. **Calculate by hand.** Pick three mouse positions, for example (130, 45),
-   (199, 60), and (20, 180). Run the formula on paper for each one: divide,
-   round, multiply. Write down where the marker must land. Predicting the
-   result before the computer shows it is the whole point of the paper step.
-3. **Type the formulas** for `x` and `y` into `mouseMoved`, then draw the
-   marker: a horizontal and a vertical line through (`x`, `y`), each using
-   `markerSize`, just like the crosshairs in the previous exercise.
-4. **Add the text output** in the lower left corner with a template string.
-5. **Test against your paper notes.** Move the mouse to your three test
-   positions and check that the marker lands exactly where you predicted.
+* **Calculate by hand.** Five mouse positions on the 200 by 200 canvas are
+  waiting in the table below. Run the formula on paper for each one: divide,
+  round, multiply. The first row is filled in as a model. Watch the last row
+  closely: 2.5 rounds up, just like in math class.
+
+    | Mouse position | Snap | x / Snap          | y / Snap          | Snapped position              |
+    |--------------------|------|----------------|----------------|-----------------------------|
+    | (130, 45)      | 40   | (130 / 40) = 3.25 | (45 / 40) = 1.125 | (3 * 40, 1 * 40) -> (120, 40) |
+    | (199, 60)      | 40   |                   |                   |                               |
+    | (20, 180)      | 40   |                   |                   |                               |
+    | (5, 199)       | 40   |                   |                   |                               |
+    | (100, 100)     | 40   |                   |                   |                               |
+
+* **Type the formulas** for `x` and `y` into `mouseMoved`, then draw the
+  marker: a horizontal and a vertical line through (`x`, `y`), each using
+  `markerSize`, just like the crosshairs in the previous exercise.
+* **Add the text output** in the lower left corner with a template string.
+* **Test against your paper notes.** Add debug output for the mouse position
+  (@sec-position-readout), so the raw position sits in the upper left corner
+  while your snapped position sits in the lower left. Steer to each of the
+  five positions from your table and compare the snapped position with your
+  prediction. Delete the debug line when everything matches.
 
 The look of the marker is yours to choose; the sample uses white lines on
 the light blue background. The snapping behavior, however, must be exact:

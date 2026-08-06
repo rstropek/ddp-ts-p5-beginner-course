@@ -107,22 +107,37 @@ The color areas chapter walked you through the code. This time the
 logic is yours to build; the previous chapter is your reference if you
 get stuck.
 
-1. **Paper first.** Draw the 400 by 200 canvas on graph paper, split it
-   into quadrants, and label the boundary lines with their formulas
-   (`width / 2`, `height / 2`) and values. Assign each quadrant one of
-   your four colors.
-2. **Play computer on paper.** Pick one test click per quadrant, for
-   example (50, 50), (350, 50), (350, 150), and (50, 150). For each,
-   walk through your two questions and write down the expected message.
+1. **Pick your four colors** and decide which quadrant gets which. On the
+   400 by 200 canvas, `width / 2` is 200 and `height / 2` is 100, so the
+   two boundary lines run right through the middle.
+2. **Play computer on paper.** Copy the table below and walk both
+   questions through five clicks, one per quadrant plus one that lands
+   exactly on the center. The first row is filled in as a model.
+
+    | Click at | `mouseX < width / 2` | `mouseY < height / 2` | Quadrant | Message |
+    |------------|--------------------|--------------------|------------|---------|
+    | (50, 50)   | 50 < 200 -> true   | 50 < 100 -> true   | upper left | Orange  |
+    | (350, 50)  |                    |                    |            |         |
+    | (350, 150) |                    |                    |            |         |
+    | (50, 150)  |                    |                    |            |         |
+    | (200, 100) |                    |                    |            |         |
+
+    The last row is the tricky one. A click exactly on the center belongs
+    to one single quadrant, and your two conditions decide which. Work out
+    on paper which one it is, then remember the answer for the test.
 3. **Set the stage in `setup`.** Draw the four quadrants as rectangles
    and the black message box centered on the canvas.
 4. **Write `mouseClicked`.** Clear the message box, set up the text
    formatting, then write the nested if statements that fill `message`
    with the name of the clicked color. One `text` statement at the end
    draws it.
-5. **Test against your notes.** Click your four test spots and compare
-   with the predictions. Then click close to the quadrant boundaries,
-   including right near the center where all four quadrants meet.
+5. **Test against your notes.** Click once in each quadrant and compare the
+   message with your prediction. The fifth row is the interesting one, and
+   you can't hit the center pixel by feel: add debug output
+   (@sec-position-readout) by writing `mouseX` and `mouseY` into the message
+   box next to the message. Then click near the center, read the numbers,
+   nudge, and click again until the debug output says exactly 200/100. The
+   message next to it decides whether your two conditions are exact.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/color-quadrants.yaml >}}
 

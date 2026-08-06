@@ -25,9 +25,10 @@ filled circles for the eyes, a white rectangle for the mouth, and an
 antenna made of a line with a small circle on top. Your task is to match
 the shapes of the example picture; the colors are yours to choose.
 
-You know the routine: graph paper first. Sketch the robot, treat the sheet
-as a 400 by 400 canvas, and write the coordinates next to every shape.
-Then type your program in the playground, one shape at a time.
+Graph paper first for this one: sketch the robot, treat the sheet as a
+400 by 400 canvas, and write the coordinates next to every shape. A drawing
+with this many parts is much faster to plan on paper than to guess at the
+keyboard. Then type your program in the playground, one shape at a time.
 
 Keep your sketch and your finished code close by. The robot comes back in
 a few minutes, and your fixed coordinates become the "before" picture of
@@ -145,10 +146,26 @@ The robot is symmetrical, which saves you work.
 1. **Read the starter code.** The head is already there, written with
    formulas. Walk through it line by line and make sure you can explain
    every formula; the head is the model for everything you'll add.
-2. **Paper before keyboard.** Make a table with one row per measurement
-   (`headWidth`, `eyeSize`, `mouthY`, and so on) and two columns: one for a
-   400 by 400 canvas, one for 200 by 400. Compute every value by hand from
-   the percentages in the specification. This table is your test plan.
+2. **Paper before keyboard.** Copy the table below and complete it. Take
+   every formula from the percentages in the specification picture, then
+   work out the numbers for both canvas sizes by hand. The four head rows
+   are filled in for you, because the starter code already contains them.
+   This table is your test plan.
+
+    | Measurement | Formula | 400 by 400 | 200 by 400 |
+    |----------------------|---------------------------------|-----|-----|
+    | Head width           | `width * 0.5`                   | 200 | 100 |
+    | Head height          | `height * 0.5`                  | 200 | 200 |
+    | Head x               | `width / 2 - headWidth / 2`     | 100 | 50  |
+    | Head y               | `height / 2 - headHeight / 2`   | 100 | 100 |
+    | Eye diameter         | `min(headWidth, headHeight) * 0.2` | 40 |    |
+    | Left eye center x    |                                 |     |     |
+    | Eye center y         |                                 |     |     |
+    | Mouth width          |                                 |     |     |
+    | Mouth height         |                                 |     |     |
+    | Mouth y              |                                 |     |     |
+    | Antenna top y        |                                 |     |     |
+
 3. **Type the formulas.** One shape at a time, run after every step. Every
    constant gets an explicit data type, as always in this course.
 4. **The final test.** Change `createCanvas(400, 400)` to

@@ -142,11 +142,27 @@ save you a lot of typing and a lot of mistakes.
 The starter code rolls the die and already draws the faces for 1 and 2.
 Your job is the cases 3 to 6.
 
-1. **Paper first.** Draw the 200 by 200 canvas on graph paper and mark
-   the nine anchor points. Label the columns and rows with their
-   formulas and their values (50, 100, 150). Then sketch all six faces
-   and write down, for each, which anchors it uses. Note where you can
-   reuse an earlier face's list.
+1. **Paper first.** Give every anchor point a short name: the column
+   first (`L`, `C`, `R` for left, center, right), then the row (`T`, `M`,
+   `B` for top, middle, bottom). So `LT` is the upper left anchor at
+   (50, 50), `CM` is the center at (100, 100), and `RB` is the lower right
+   anchor at (150, 150). Now sketch the six faces on paper and complete
+   this table. The faces for 1 and 2 are filled in because the starter code
+   already draws them, and the 3 is filled in to show you what the last
+   column is for.
+
+    | Face | Anchors it uses | Built from an earlier face |
+    |:----:|--------------------------------|--------------------|
+    | 1    | `CM`                           | ---                |
+    | 2    | `LT`, `RB`                     | ---                |
+    | 3    | `LT`, `RB`, `CM`               | the 2 plus the 1   |
+    | 4    |                                |                    |
+    | 5    |                                |                    |
+    | 6    |                                |                    |
+
+    The last column is where the work gets saved: every face you still have
+    to build is an earlier face plus one or two extra anchors. Find those
+    before you type anything.
 2. **Read the starter code.** Find the roll, the chain, and the two
    finished cases. Check the code for the 2 against your paper sketch:
    it uses `width / 4` and `3 * width / 4`, exactly your corner
