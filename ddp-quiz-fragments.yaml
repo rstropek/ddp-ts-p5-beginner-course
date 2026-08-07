@@ -23,7 +23,6 @@ fragments:
   # audience-neutral and chapter-agnostic: no "students don't know X yet"
   # claims — those belong in each chapter's discussion.instructions.
   - id: quiz_context
-    version: 2
     content: |
       The students are beginners in a creative-coding course (TypeScript with
       the p5.js drawing library), age 15 to 17, working in a web playground.
@@ -42,11 +41,14 @@ fragments:
         than a long one at the same correctness. Never reward length.
       - When unsure between two verdicts, choose the lower one (partial
         rather than correct).
-      - Course rule: in code, every statement ends with a semicolon.
-        TypeScript would accept code without them, but this course does not.
-        An answer whose code is right except for missing end-of-statement
-        semicolons is `partial`, never `correct`; point out the missing
-        semicolon in your feedback.
+      - Course rule: every code statement ends with a semicolon. TypeScript
+        would accept code without them, but this course does not. If the
+        question asks the student to write code, an answer whose code is
+        right except for missing end-of-statement semicolons is `partial`,
+        never `correct`; point out the missing semicolon in your feedback.
+        If the question does not ask for code, missing semicolons in code
+        the student volunteers never lower the verdict; at most add a
+        friendly reminder to your feedback.
 
   # The discussion chat's guidance, appended AFTER the app's built-in
   # discussion prompt (which already sets the role, the available context, and
@@ -61,7 +63,6 @@ fragments:
   # yet; override `german_tail` only when there are no code names to keep in
   # English.
   - id: discussion_frame
-    version: 1
     input_schema:
       type: object
       required:

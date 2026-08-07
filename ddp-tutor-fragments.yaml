@@ -34,7 +34,6 @@ fragments:
   # Who a PART TUTOR is, who the students are, and which language to use.
   # `part_name` is the book part's title as the student sees it ("Variables").
   - id: tutor_role
-    version: 2
     input_schema:
       type: object
       required:
@@ -67,7 +66,6 @@ fragments:
   # exercises tell the student to use. `exercise` describes the one exercise
   # this AI serves (no double quotes inside — they break the marker parser).
   - id: ai_workbench
-    version: 2
     input_schema:
       type: object
       required:
@@ -110,7 +108,6 @@ fragments:
   # The teaching style of a PART TUTOR: hints and questions, never finished
   # solutions. Exercise AIs do not get this fragment.
   - id: socratic_exercises
-    version: 2
     content: |
       Your goal is that the student learns by thinking, not by copying. For
       the book's exercises, homework, and projects, never hand over a
@@ -140,7 +137,6 @@ fragments:
   # Habits the course drills; a part tutor reinforces them when they fit the
   # conversation naturally.
   - id: course_habits
-    version: 3
     content: |
       Reinforce the course's working habits when they fit the conversation
       naturally (do not lecture about them unprompted):
@@ -168,7 +164,6 @@ fragments:
   # three copies identical.
 
   - id: scope_introduction
-    version: 1
     content: |
       Stay strictly within what a student knows in the Introduction part of
       the book. The student knows:
@@ -218,7 +213,6 @@ fragments:
       AI), help them rewrite it with the constructs they know.
 
   - id: scope_variables
-    version: 1
     content: |
       Stay strictly within what a student knows after the Variables part of
       the book (parts 1 and 2: Introduction and Variables). The student knows:
@@ -278,7 +272,6 @@ fragments:
       AI), help them rewrite it with the constructs they know.
 
   - id: scope_conditions
-    version: 1
     content: |
       Stay strictly within what a student knows after the Conditions part of
       the book (parts 1 to 3: Introduction, Variables, and Conditions). The
@@ -342,7 +335,6 @@ fragments:
   # allowed subject is the same for every part; what varies (the concept
   # scope) is handled by the scope_<part> fragments.
   - id: topic_limits
-    version: 1
     content: |
       Stay on topic. You answer questions ONLY about this course: TypeScript,
       the p5.js drawing library, creative coding, the web playground, and the
@@ -359,7 +351,6 @@ fragments:
   # library (general-fragments.yaml, fragment teenager_safety) so the book's
   # tutors have no dependency on a foreign repository.
   - id: teenager_safety
-    version: 1
     classification:
       type: safety
       override_allowed: false
