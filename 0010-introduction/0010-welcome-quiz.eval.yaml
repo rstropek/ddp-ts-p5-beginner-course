@@ -1,0 +1,121 @@
+id: ddp-welcome-quiz-eval
+target: ./0010-welcome-quiz.yaml
+
+questions:
+  - question: two-tools
+    answers:
+      - expect: correct
+        answer: "typescript = the language you write the code in, p5.js = a library, ready made drawing stuff"
+      # correct in sloppy everyday words, avoids "language" and "library"
+      - expect: correct
+        answer: "typescript is what you type the code in, p5js is like a toolbox with drawing stuff in it"
+      # German answer, correct, both roles named
+      - expect: correct
+        answer: "typescript ist die sprache zum coden, p5.js ist eine bibliothek für grafik und animationen"
+      # mirrors the rubric's own `partial` wording: only one of the two roles
+      - expect: partial
+        answer: "p5.js is a library, finished code for drawing. typescript idk, an editor?"
+      # INTENTIONALLY verbose and confident-sounding technical prose (trap):
+      # fluent, but the two roles are swapped
+      - expect: incorrect
+        answer: |
+          TypeScript is the graphics library that renders the shapes on the
+          canvas, and p5.js is the programming language whose syntax we use
+          to write the source code. Together they compile into the finished
+          program.
+      - expect: incorrect
+        answer: "both are programming languages, you just pick one"
+
+  - question: library
+    answers:
+      - expect: correct
+        answer: "code someone else already wrote that you can use, so you dont have to write it all yourself"
+      # INTENTIONALLY verbose correct answer (trap): padded with
+      # true-but-irrelevant chapter facts, must not score higher for length
+      - expect: correct
+        answer: |
+          So a library is a collection of ready made code that you can just
+          pull into your own program. p5.js was made for students and
+          artists, and it is used for generative art and data visualization
+          too, which I think is pretty cool. It also works in the web
+          playground we use. But the main point is that programmers use
+          libraries because otherwise you would have to write every single
+          thing yourself, and this way you build on what other people already
+          did.
+      # mirrors the rubric's `partial`: says what it is, gives no reason
+      - expect: partial
+        answer: "ready made code you can use in your own programs"
+      # other half only: benefit without saying what a library is
+      - expect: partial
+        answer: "weil man dann nicht alles selber schreiben muss, spart zeit"
+      # INTENTIONALLY verbose and confident technical prose (trap): describes
+      # the wrong thing (a compiler) in fluent wording
+      - expect: incorrect
+        answer: |
+          A library is the program that translates your code into machine
+          language before it runs. Programmers use libraries because without
+          one the computer could not execute the code at all.
+      - expect: incorrect
+        answer: "the place where your saved files and projects are so you find them later"
+
+  - question: typescript-spell-checker
+    answers:
+      - expect: correct
+        answer: "it warns you about mistakes while you type, before you even run it"
+      # correct in everyday words, no technical terms, very short
+      - expect: correct
+        answer: "underlines the wrong stuff right away, so you see it before starting the program"
+      # mirrors the rubric's `partial`: help with mistakes, but no timing
+      - expect: partial
+        answer: "it helps you find mistakes in the code"
+      # INTENTIONALLY verbose and confident technical prose (trap): sounds
+      # authoritative but claims TypeScript auto-fixes the errors
+      - expect: incorrect
+        answer: |
+          TypeScript automatically detects the errors in the source code and
+          corrects them for you, so the program always runs without bugs.
+      - expect: incorrect
+        answer: "checks if the english words are spelled right, like in word"
+
+  - question: genie-in-a-lamp
+    answers:
+      - expect: correct
+        answer: "i have to say exactly what i want, otherwise i get code i didnt want. and i have to check if its good"
+      # correct via the "judge the answer" half only, sloppy wording
+      - expect: correct
+        answer: "cant just trust what comes out, you need to understand code yourself to see if its right"
+      # mirrors the rubric's `partial`: repeats the comparison, no consequence
+      - expect: partial
+        answer: "ai does what you say, not what you mean. like the genie"
+      - expect: incorrect
+        answer: "never use ai for coding, it always gives you the wrong thing"
+      # INTENTIONALLY verbose and confident fluent prose (trap): draws the
+      # opposite conclusion
+      - expect: incorrect
+        answer: |
+          The comparison shows that the AI grants the wish perfectly every
+          time, so the code you get back is always correct and you do not
+          need to check it yourself.
+
+  - question: real-work
+    answers:
+      - expect: correct
+        answer: "thinking. big problem into small steps and then the right order"
+      # correct via the "creative decisions" branch, everyday wording
+      - expect: correct
+        answer: "you decide yourself how to solve it, theres never only one way, thats what takes longest"
+      # INTENTIONALLY verbose correct answer (trap): padded with
+      # true-but-irrelevant statements, must not score higher for length
+      - expect: correct
+        answer: |
+          Programming is fun and you see results really fast in this course,
+          which is nice. But the actual work is not the typing. You get a
+          problem that is kind of fuzzy at the start and you have to split it
+          up into small clear steps and figure out which step comes first and
+          which comes after. That also helps you in school and later in a job
+          apparently.
+      # mirrors the rubric's `partial`: vague thinking, nothing specific
+      - expect: partial
+        answer: "thinking and solving problems"
+      - expect: incorrect
+        answer: "learn all the commands by heart and type them fast enough"

@@ -52,6 +52,19 @@ gets confused about where your code begins and ends.
 This exactness can feel strict at first. But it's also good news: there is no
 hidden magic. If your code is exact, it works, every time, for everyone.
 
+::: {.callout-important}
+## Semicolons are mandatory
+
+TypeScript itself doesn't force you to end every statement with a semicolon:
+code without them still runs. In this course, semicolons are mandatory
+anyway: **every statement ends with a `;`**.
+
+There's a good reason for this rule. In later courses you'll meet
+programming languages like C, Java, and C#, and they all require the
+semicolon after every statement. If your fingers learn the habit now, those
+languages will feel familiar from day one.
+:::
+
 ## A program is a sequence of statements {#sec-sequence}
 
 A program is built from **statements**. A statement is one instruction to the

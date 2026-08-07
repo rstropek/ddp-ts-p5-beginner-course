@@ -1,0 +1,155 @@
+id: ddp-olympic-rings-quiz-eval
+target: ./0060-olympic-rings-quiz.yaml
+
+questions:
+  - question: no-fill-ring
+    answers:
+      - expect: correct
+        answer: |
+          a red ring in the middle, only the outline. inside is white because
+          noFill turns the filling off, so you see the white background thru it
+      # correct in sloppy everyday words, avoids noFill/transparent/background
+      - expect: correct
+        answer: |
+          just a fat red circle line, like a donut. no color painted inside so
+          you still see the white page behind it
+      # INTENTIONALLY VERBOSE: correct but padded with true-but-irrelevant
+      # chapter facts - tests that length is not rewarded
+      - expect: correct
+        answer: |
+          The canvas is 400 by 400 and the background command paints it white
+          first, which is important because drawing order matters. Then you
+          get a red ring in the middle. The reason the middle is white is
+          that noFill switched off the filling, so the circle only has its
+          outline and the inside stays see through, which means you look
+          right at the white background. Also stroke and strokeWeight are
+          settings so they would stay active for more shapes.
+      # mirrors the rubric's `partial`: sees the ring, no explanation of the inside
+      - expect: partial
+        answer: |
+          thick red ring, in the middle. dunno why the middle stays white
+      # the other `partial` branch: noFill explained, but describes a filled circle
+      - expect: partial
+        answer: |
+          noFill = no fill color set. so a red circle thats filled white inside
+      - expect: incorrect
+        answer: |
+          a full red circle, filled red. white inside because white was the
+          last background color
+      # INTENTIONALLY CONFIDENT: technical-sounding prose, but the reason is
+      # invented
+      - expect: incorrect
+        answer: |
+          The circle is rendered as a solid disc. Its interior appears white
+          because noFill resets the fill color to the default value, which in
+          p5.js is white, so the shape is filled with white paint.
+
+  - question: settings-stay-active
+    answers:
+      - expect: correct
+        answer: |
+          theyre settings, stay active for every shape after them. only stroke
+          has to be repeated cause every ring is a different color
+      # German, correct, everyday wording
+      - expect: correct
+        answer: |
+          sind einstellungen, gelten für alles danach bis man sie ändert. nur
+          stroke muss man vor jedem ring neu schreiben
+      # correct in very sloppy words, never says "setting"
+      - expect: correct
+        answer: |
+          fill off stays off for everything you draw after, thickness too. only
+          thing you change each time is the color, rings arent all same color
+      # mirrors the rubric's `partial`: stays-active idea, `stroke` never named
+      - expect: partial
+        answer: |
+          they keep working for all the shapes after them, until you change
+          them. so once at the top is enough
+      # the other `partial` branch: names stroke, gives no reason
+      - expect: partial
+        answer: |
+          stroke you still have to write again for every ring
+      - expect: incorrect
+        answer: |
+          you have to write all three again before every circle, otherwise the
+          next ring is wrong
+      # INTENTIONALLY CONFIDENT: technical-sounding prose, but the repeated
+      # command is wrong
+      - expect: incorrect
+        answer: |
+          p5.js resets the drawing state after each shape is rendered, and
+          then reloads the settings from the top of the program
+          automatically. The command you still have to repeat from ring to
+          ring is circle, because that is the one that actually draws.
+
+  - question: upper-ring-centers
+    answers:
+      - expect: correct
+        answer: |
+          (220, 100) and (340, 100). just +120 on x each time, y stays 100
+      # correct, sloppy and very short
+      - expect: correct
+        answer: |
+          220/100 und 340/100, y bleibt gleich weil sie auf einer linie sind
+      # INTENTIONALLY FLUENT AND CONFIDENT: numbers-only error hidden in smooth
+      # prose - the reasoning sounds right, the values are wrong
+      - expect: incorrect
+        answer: |
+          Since the three rings sit on one line, the y value stays 100 for all
+          of them and only x grows by the distance between the centers. So the
+          second ring's center is at (200, 100) and the third one at
+          (320, 100).
+      # mirrors the rubric's `partial`: one center right, second step forgotten
+      - expect: partial
+        answer: |
+          (220, 100) and (240, 100)
+      # the other `partial` branch: x values right, y changed
+      - expect: partial
+        answer: |
+          (220, 120) and (340, 140), each one 120 right and a bit down
+      - expect: incorrect
+        answer: |
+          (100, 220) and (100, 340). the 120 gets added on so theyre under
+          each other
+
+  - question: pattern-before-ruler
+    answers:
+      - expect: correct
+        answer: |
+          cause then you only need the first ring and the diameter, the rest of
+          the coordinates come out of that. less numbers to invent = less
+          mistakes
+      # correct in everyday words, never says "pattern" or "coordinates"
+      - expect: correct
+        answer: |
+          you only really need the first one, after that its always the same
+          step to the right, so you can just calculate the rest instead of
+          measuring five times and messing one up
+      # INTENTIONALLY VERBOSE: correct but padded with true-but-irrelevant
+      # statements - tests that length is not rewarded
+      - expect: correct
+        answer: |
+          The Olympic symbol is really regular, all five rings have the same
+          diameter and the colors are blue, black, red, yellow and green
+          which you also have to get in the right order. The point about the
+          pattern is that after you decide where the first ring goes and how
+          big it is, the other four positions just follow from that, same y
+          for the top row and always the same step in x. So you have to come
+          up with much fewer numbers yourself and that means fewer chances to
+          get one wrong.
+      # mirrors the rubric's `partial`: only "faster/easier", says nothing about what the pattern gives you
+      - expect: partial
+        answer: |
+          geht einfach schneller und leichter als alles mit dem lineal
+          abmessen
+      - expect: incorrect
+        answer: |
+          measuring with a ruler isnt allowed in programming, you gotta do it
+          all in your head
+      # INTENTIONALLY CONFIDENT: technical-sounding prose, but the claim about
+      # measuring is wrong
+      - expect: incorrect
+        answer: |
+          A ruler measurement on graph paper can never be converted into pixel
+          coordinates, so measured values are always wrong on a canvas. The
+          pattern is the only method that produces usable numbers at all.

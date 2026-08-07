@@ -3,7 +3,8 @@
 # (0010-introduction/0020-first-program.qmd in ts-ddp-first).
 # Students check their understanding of the chapter on their own: exactness,
 # statements and their order, the canvas coordinate system, command
-# parameters, red squiggles, comments, and code formatting.
+# parameters, red squiggles, comments, code formatting, and writing a
+# statement themselves (incl. the mandatory semicolon).
 # Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
 
 id: first-program-quiz
@@ -11,7 +12,7 @@ name: "Quiz: Your first program"
 
 title: "Check your understanding: your first program"
 description: |
-  Eight short questions about the chapter *Your first program*. Answer in
+  Nine short questions about the chapter *Your first program*. Answer in
   your own words. There are no answer options to pick from, and this quiz is
   anonymous: it's here for you, so you can see what you already understand
   and what you should read again. One or two sentences are enough for most
@@ -230,6 +231,27 @@ questions:
 
       Feedback: use the chapter's picture — a sheet of paper on your desk
       that every later drawing command draws on.
+
+  - id: write-create-canvas
+    title: "Write a statement yourself"
+    question: |
+      Now it's your turn to write code. Write the complete statement that
+      creates a canvas that is 300 pixels wide and 200 pixels tall.
+    evaluation: |
+      Expected: `createCanvas(300, 200);` — exactly this statement, ending
+      with the semicolon (course rule: every statement ends with one).
+
+      - `correct`   - `createCanvas(300, 200);` with the exact command name,
+                      width before height, and the final semicolon. Spacing
+                      differences don't matter.
+      - `partial`   - the statement is right but the end-of-statement
+                      semicolon is missing, or the two numbers are swapped.
+      - `incorrect` - anything else, e.g. a different command name, made-up
+                      syntax, or missing parentheses.
+
+      Feedback: if only the semicolon is missing, say that TypeScript would
+      run the line, but in this course every statement ends with a
+      semicolon — later languages like C, Java, and C# require it.
 
   - id: formatting
     title: "Why format your code?"

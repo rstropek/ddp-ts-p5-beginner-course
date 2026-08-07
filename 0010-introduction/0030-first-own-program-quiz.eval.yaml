@@ -1,0 +1,206 @@
+id: ddp-first-own-program-quiz-eval
+target: ./0030-first-own-program-quiz.yaml
+
+questions:
+  - question: decompose-shapes
+    answers:
+      - expect: correct
+        answer: |
+          rectangle for the body, 2 circles for the wheels
+      # correct idea in sloppy everyday words, avoids "rectangle"/"circle"
+      - expect: correct
+        answer: |
+          body = long flat box, under it 2 round things as wheels
+      # mirrors the rubric's partial wording: lists shapes but never maps
+      # them to the parts (grader weak spot, tends to be graded correct)
+      - expect: partial
+        answer: |
+          rectangles and circles
+      - expect: partial
+        answer: |
+          two circles for the wheels
+      # INTENTIONALLY VERBOSE + CONFIDENT: technical-sounding prose that
+      # invents a command instead of breaking the picture into simple shapes.
+      # Tests that fluent, long wording does not buy a better verdict.
+      - expect: incorrect
+        answer: |
+          The cleanest way is to call the built in car() command and pass it
+          the position and the size as parameters, then p5 draws the whole
+          car including the wheels for you.
+      - expect: incorrect
+        answer: |
+          2 triangles for the wheels, line for the body
+
+  - question: graph-paper-pixels
+    answers:
+      - expect: correct
+        answer: |
+          40 wide, 70 tall
+      # correct, shows the rule in everyday student words
+      - expect: correct
+        answer: |
+          4x10 = 40 and 7x10 = 70, so rect(x, y, 40, 70)
+      # INTENTIONALLY VERBOSE + CONFIDENT: the rule is stated fluently in
+      # full sentences, only the numbers are wrong (multiplied by 100).
+      - expect: incorrect
+        answer: |
+          One square on the graph paper stands for 10 pixels, so you count the
+          squares and multiply them. The door is 4 squares wide and 7 squares
+          tall, which gives a width of 400 and a height of 700 in the code.
+      # width and height swapped, rule understood
+      - expect: partial
+        answer: |
+          70 wide, 40 tall
+      # rule applied to only one of the two numbers
+      - expect: partial
+        answer: |
+          width 40, height 7
+      - expect: incorrect
+        answer: |
+          4 and 7, thats what i counted on the paper
+
+  - question: shape-disappears
+    answers:
+      - expect: correct
+        answer: |
+          walls are drawn after the door and paint over it. door lines have to
+          go under the wall lines
+      # correct, everyday wording, no technical terms at all
+      - expect: correct
+        answer: |
+          red wall comes later and just paints over the door. put the door
+          stuff at the bottom, then its on top
+      # mirrors the rubric's partial wording: reason only, no fix
+      - expect: partial
+        answer: |
+          walls cover it, they come later
+      # fix only, no reason
+      - expect: partial
+        answer: |
+          move the door further down in the code
+      # INTENTIONALLY VERBOSE + CONFIDENT: correct-sounding coordinate maths
+      # in full sentences, but blames the coordinates (rubric: incorrect).
+      - expect: incorrect
+        answer: |
+          The door rectangle starts at y = 330 and is 70 tall, so its bottom
+          edge sits at y = 400, which is below the wall rectangle. It is drawn
+          outside the wall area and gets cut off. Fix the y coordinate and the
+          door appears.
+      - expect: incorrect
+        answer: |
+          saddlebrown is too dark, on red you just cant see it. take a
+          brighter color
+
+  - question: fill-is-a-setting
+    answers:
+      # correct, answered in German
+      - expect: correct
+        answer: |
+          auch rot. fill ist ne einstellung, kein befehl der was zeichnet, und
+          gilt bis mans ändert
+      # INTENTIONALLY VERBOSE: correct answer padded with true but irrelevant
+      # extra facts. Tests the no-length-reward rule (must stay correct, not
+      # get extra credit for the padding).
+      - expect: correct
+        answer: |
+          The second rectangle is red as well. fill is a setting and not an
+          action, it draws nothing by itself, it only changes how all the
+          shapes after it are drawn until a new fill is set. By the way the
+          canvas has its origin (0, 0) in the top left corner and y grows
+          downwards, rect takes x, y, width and height, and every statement
+          needs a semicolon at the end, otherwise the program does not run.
+      # mirrors the rubric's partial wording: right color, no reason
+      - expect: partial
+        answer: |
+          red too
+      # knows fill is a setting but names the wrong color
+      - expect: partial
+        answer: |
+          colors are settings, they stay on for the shapes after them, so the
+          2nd rect is black
+      - expect: incorrect
+        answer: |
+          no color, stays grey. fill only counts for the rect right after it
+
+  - question: fill-vs-stroke
+    answers:
+      - expect: correct
+        answer: |
+          fill = color inside, stroke = color of the outline
+      # correct in sloppy everyday words
+      - expect: correct
+        answer: |
+          fill is the inside, stroke the border around it
+      # only one of the two jobs named
+      - expect: partial
+        answer: |
+          stroke is for the lines, so the edge gets that color
+      # the two swapped, everything else fitting
+      - expect: partial
+        answer: |
+          fill = outline color, stroke fills the inside
+      # INTENTIONALLY VERBOSE + CONFIDENT: fluent, fill right but stroke
+      # confused with thickness (strokeWeight) — per the rubric this is
+      # "only one of the two right" → partial
+      - expect: partial
+        answer: |
+          fill sets the color inside the shape and stroke sets how thick the
+          line around it is, so with a bigger stroke you get a fatter border.
+      # boundary case a teacher could grade either way: the inside/line
+      # mapping is right but fill/stroke are misread as drawing commands
+      - expect: [partial, incorrect]
+        answer: |
+          fill draws a filled rect, stroke draws a line
+
+  - question: one-shape-at-a-time
+    answers:
+      - expect: correct
+        answer: |
+          you see after every shape if it fits and can change the numbers
+          right away. and if its wrong its the shape you just added
+      # correct, answered in German, everyday wording
+      - expect: correct
+        answer: |
+          weil man nach jeder form gleich sieht ob die zahlen passen. wenn was
+          komisch ausschaut wars die form die man grad dazugschrieben hat
+      # mirrors the rubric's partial wording almost word for word
+      - expect: partial
+        answer: |
+          its easier that way, less mistakes
+      - expect: partial
+        answer: |
+          so you dont get confused with your own code
+      # INTENTIONALLY VERBOSE + CONFIDENT: technical-sounding full sentences
+      # with a completely wrong reason (speed instead of try-look-adjust).
+      - expect: incorrect
+        answer: |
+          Because the program runs faster when you add the shapes one by one,
+          the computer has less to calculate at once and the canvas does not
+          get overloaded.
+
+  - question: exact-but-yours
+    answers:
+      - expect: correct
+        answer: |
+          how it looks is my decision now, shapes, colors, where i put them.
+          but the code still has to be exactly right, every bracket and
+          semicolon
+      # correct in sloppy everyday words, avoids the rubric's terms
+      - expect: correct
+        answer: |
+          i can draw whatever house i want, nobody says how it looks. but the
+          typing still has to be 100% right or nothing works
+      # mirrors the rubric's partial wording: free design half only
+      - expect: partial
+        answer: |
+          you can draw what you want, doesnt have to look like the example
+      - expect: partial
+        answer: |
+          every letter and semicolon still has to be exact
+      # INTENTIONALLY VERBOSE + CONFIDENT: reasons its way, in calm full
+      # sentences, to the wrong conclusion that exactness no longer applies.
+      - expect: incorrect
+        answer: |
+          Since there is no correct solution anymore, the code does not have
+          to be perfect either. Small typos are fine now as long as the
+          picture on the canvas looks the way you wanted it.

@@ -1,0 +1,154 @@
+id: ddp-practice-cat-quiz-eval
+target: ./0040-practice-cat-quiz.yaml
+
+questions:
+  - question: copy-paste-repetition
+    answers:
+      - expect: correct
+        answer: |
+          write it once, ctrl c, ctrl v two times, then change the numbers in
+          the copies
+      # correct answer in sloppy everyday words, avoids "copy", "paste",
+      # "statement", "clipboard"
+      - expect: correct
+        answer: |
+          one wisker and then duplicate it 2x with the keyboard, other numbers
+          in, otherwise all three are on the same spot
+      # partial mirroring the rubric's own partial wording (grader weak spot:
+      # copy and paste is there, changing the numbers is missing)
+      - expect: partial
+        answer: |
+          copy the line, paste it two times, done
+      # INTENTIONALLY VERBOSE: correct, but padded with true-but-irrelevant
+      # chapter facts. Tests that the grader does not reward length.
+      - expect: correct
+        answer: |
+          In this chapter we learned that code is read more often than it is
+          written and that formatting before handing in is mandatory, and
+          Format Document does the indentation for you. For the whiskers I
+          would type the first line statement, copy it with Ctrl + C (you
+          don't even have to mark the line, the cursor in the line is enough),
+          paste it twice with Ctrl + V and then change the coordinates in the
+          copies. Also a comment behind each line helps later.
+      - expect: incorrect
+        answer: |
+          just type all three lines new, then there is no copy mistake
+
+  - question: move-line-shortcut
+    answers:
+      - expect: correct
+        answer: |
+          head is drawn after the eye and paints over it. cursor in the eye
+          line, alt + arrow down
+      # correct, in German, everyday wording
+      - expect: correct
+        answer: |
+          kopf kommt spaeter und uebermalt das auge. einfach in die zeile
+          stellen und alt + pfeil runter
+      # partial mirroring the rubric's partial: reason right, but "cut and
+      # paste" instead of the shortcut
+      - expect: partial
+        answer: |
+          later stuff is painted on top, so the head covers the eye. i cut the
+          eye line out and paste it under the head
+      # INTENTIONALLY CONFIDENT technical-sounding prose: the reason is right
+      # but the key combination is invented (grader must not be impressed by
+      # the tone)
+      - expect: partial
+        answer: |
+          The eye is hidden because the head is drawn over it later. To fix it
+          without retyping you press Ctrl + Shift + Arrow Down, that moves the
+          whole line one position down in the file.
+      - expect: partial
+        answer: |
+          alt + arrow down, that moves the line down
+      # INTENTIONALLY CONFIDENT technical-sounding prose, but completely wrong
+      - expect: incorrect
+        answer: |
+          The circle statement for the eye is broken: the third parameter is
+          read as a radius, not a diameter, so the shape has zero size and p5
+          skips it. You fix it with noFill() before the statement.
+
+  - question: undo-shortcut
+    answers:
+      - expect: correct
+        answer: |
+          ctrl z, two times. one for the paste and one for the deleted line
+      # correct in sloppy everyday words, no technical terms like "undo step"
+      - expect: correct
+        answer: |
+          just spam ctrl z, it goes back one thing at a time so after 2x my
+          line is back and the pasted stuff is away again
+      # partial mirroring the rubric's partial: shortcut named, nothing about
+      # repeating it
+      - expect: partial
+        answer: |
+          ctrl z, that brings the deleted line back
+      # INTENTIONALLY VERBOSE: correct, padded with true-but-irrelevant
+      # statements. Tests that the grader does not reward length.
+      - expect: correct
+        answer: |
+          The editor has a lot of shortcuts, Ctrl + C copies the whole line
+          without marking it and Alt + Arrow moves lines. For repairing I use
+          Ctrl + Z. The good thing is you can press it more than one time, so
+          it goes step by step backwards: first the wrong paste is undone,
+          then the deleted line comes back. That is why experimenting is not
+          dangerous.
+      # INTENTIONALLY CONFIDENT technical-sounding prose, but the wrong key
+      # combination
+      - expect: incorrect
+        answer: |
+          You press Ctrl + Y. That is the undo shortcut in VS Code and it
+          walks backwards through your last changes.
+
+  - question: format-document-errors
+    answers:
+      - expect: correct
+        answer: |
+          it only changes the formatting, not what the code says. the wrong
+          command name stays wrong till i fix it
+      # correct in sloppy everyday words, avoids "formatting"/"error"
+      - expect: correct
+        answer: |
+          it only makes the code look nice, it doesnt care what the code says.
+          a typo stays a typo, i have to fix that myself
+      # partial mirroring the rubric's partial: sees the error, no reason why
+      # formatting cannot help
+      - expect: partial
+        answer: |
+          because the red squiggly line means there is still a mistake there
+      # INTENTIONALLY CONFIDENT technical-sounding prose, but wrong
+      - expect: incorrect
+        answer: |
+          Format Document runs before the type checker is finished, so the
+          squiggle you see is just the old one. Save the file and it will
+          disappear by itself.
+      - expect: incorrect
+        answer: |
+          just run format document a second time, then it goes away
+
+  - question: strange-formatting-hint
+    answers:
+      - expect: correct
+        answer: |
+          mostly a curly brace is missing. the formatter indents by the braces
+          so it looks wrong
+      # correct in sloppy everyday words, no technical terms
+      - expect: correct
+        answer: |
+          probably forgot a } somewhere, then it looks weird
+      # correct, in German
+      - expect: correct
+        answer: |
+          wahrscheinlich fehlt eine geschweifte klammer oder sie steht falsch
+      # partial mirroring the rubric's partial: "some error" without naming
+      # braces or parentheses
+      - expect: partial
+        answer: |
+          means there is a mistake somewhere in my code, look through it again
+      # INTENTIONALLY CONFIDENT technical-sounding prose, but wrong
+      - expect: incorrect
+        answer: |
+          That happens when the editor is set to tabs and my file uses spaces.
+          Setting tabSize to 2 in the settings makes the indentation normal
+          again.

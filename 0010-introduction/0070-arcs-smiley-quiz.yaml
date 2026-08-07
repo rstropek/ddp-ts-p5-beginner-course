@@ -75,7 +75,8 @@ questions:
                       drawn piece starts and stops ("from 25 degrees to
                       180 degrees" in any wording counts).
       - `partial`   - says they are angles or degrees, but not that they
-                      mark the start and end of the visible piece.
+                      mark the start and end of the visible piece, or has
+                      start and end swapped (180 as start, 25 as end).
       - `incorrect` - anything else, e.g. reading them as a position or a
                       size.
 

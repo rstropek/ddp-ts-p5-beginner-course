@@ -1,0 +1,161 @@
+id: ddp-olympic-rings-advanced-quiz-eval
+target: ./0080-olympic-rings-advanced-quiz.yaml
+
+questions:
+  - question: full-circle-limit
+    answers:
+      - expect: correct
+        answer: |
+          computer draws one after the other, so a whole circle is either over
+          or under the neighbour, never both. thats why the ring is split into
+          arcs and the last bit comes after the neighbour
+      # correct in sloppy everyday words, avoids "layering", "arc", "order"
+      - expect: correct
+        answer: |
+          later stuff paints over the old stuff, so a full ring is only on top
+          or below. so they draw the ring in parts and the missing bit later
+      # mirrors the rubric's `partial`: the reason, but no trick at all
+      - expect: partial
+        answer: |
+          a full circle is always completly above or below the ring next to it,
+          later commands paint over the earlier ones
+      # mirrors the rubric's `partial`: the trick named, but never says why circles fail
+      - expect: partial
+        answer: |
+          they use arc, not circle. rings are made of several arcs
+      # intentionally verbose: confident, technical-sounding, but invents a
+      # transparency mechanism (tests that fluent prose gets no credit)
+      - expect: incorrect
+        answer: |
+          Full circles are opaque, so the program lowers the transparency of
+          the upper ring with an alpha value. That way the ring below shines
+          through at one crossing and the weaving effect appears without
+          changing the drawing order.
+      - expect: incorrect
+        answer: |
+          draw all 5 circles and then erase the parts that should be hidden
+
+  - question: understand-before-change
+    answers:
+      - expect: correct
+        answer: |
+          understand it first. run it and compare with the target picture,
+          crossing by crossing
+      # correct in everyday words, very short, no technical terms
+      - expect: correct
+        answer: |
+          first check what the code does. read it top to bottom, the comments
+          say which ring is which
+      # mirrors the rubric's `partial`: understand first, but no concrete step
+      - expect: partial
+        answer: |
+          zuerst verstehen, bevor man was ändert
+      # other half only: a concrete step without the understand-first idea
+      - expect: partial
+        answer: |
+          just run it once and look at the output
+      - expect: incorrect
+        answer: |
+          go straight to the red ring and rewrite it. or just paste the whole
+          thing into the AI
+      # intentionally verbose: confident and technical, but the opposite advice
+      - expect: incorrect
+        answer: |
+          The efficient approach is to modify first and analyse afterwards:
+          you change a statement, observe the visual result, and derive the
+          program's structure from those experiments. Reading the code before
+          changing it only wastes time.
+
+  - question: working-rings
+    answers:
+      - expect: correct
+        answer: |
+          blue and black already show the pattern. one ring isnt one command,
+          it shows up a few times as arcs and the other rings are drawn in
+          between. red has to be built the same
+      # intentionally verbose: correct, but padded with true-but-irrelevant
+      # chapter facts (tests the no-length-reward rule)
+      - expect: correct
+        answer: |
+          Reading code you didnt write is slow and that is normal, even pros
+          do it all day. Anyway, the blue and black rings are the example to
+          copy. If you look at them you see that one ring is not one command,
+          it appears in the code more than once as arcs, and between those
+          arcs the other rings get drawn. That order is what makes the weaving
+          work, and the red ring needs exactly the same treatment. Also 0
+          degrees points to the right which helps with the angles.
+      # mirrors the rubric's `partial`: "shows how it's done" without naming the pattern
+      - expect: partial
+        answer: |
+          you can look how they did it and copy the same idea for red
+      # intentionally verbose: fluent and confident, only the numbers/structure
+      # are wrong (no arcs in between) — must stay fluent to test the trap
+      - expect: incorrect
+        answer: |
+          If you study them you see the system: every woven ring is built from
+          exactly five arcs of 72 degrees each, and all 25 arcs of the five
+          rings stand together in one block at the end of the code, one after
+          the other. You just add the red ring's five 72 degree arcs to that
+          block and the weaving is correct.
+      - expect: incorrect
+        answer: |
+          copy the blue ring code and paste it where the red circle was
+
+  - question: careful-fixing
+    answers:
+      - expect: correct
+        answer: |
+          the other 4 work already. if you rewrite them you break something
+          that was fine before, and thats not a fix
+      # correct in German, everyday wording
+      - expect: correct
+        answer: |
+          die anderen vier passen eh schon. wenn man da rumändert macht man
+          wahrscheinlich was kaputt was vorher gegangen ist
+      # mirrors the rubric's `partial`: the rule without the reason
+      - expect: partial
+        answer: |
+          because you should only change the red ring, rest stays
+      # mirrors the rubric's `partial`: only the time argument
+      - expect: partial
+        answer: |
+          waste of time, we only have one lesson and 4 rings takes way too long
+      - expect: incorrect
+        answer: |
+          its ok if he wants, as long as it still runs after
+      # intentionally verbose: confident, technical-sounding, but the wrong
+      # conclusion
+      - expect: incorrect
+        answer: |
+          Rewriting all five rings is actually the cleaner solution, because a
+          consistent structure is easier to maintain. Since the drawing order
+          of the statements stays the same, the rendered output cannot change,
+          so there is no risk at all.
+
+  - question: reading-speed
+    answers:
+      - expect: correct
+        answer: |
+          no. reading a program someone else wrote is way slower than writing
+          your own, pros too. 15 min is normal
+      # correct in sloppy everyday words, short
+      - expect: correct
+        answer: |
+          nope thats normal, reading someone elses code is way harder than
+          writing your own, even people who do it for a job need time
+      # mirrors the rubric's `partial`: the "no" without any reason
+      - expect: partial
+        answer: |
+          no thats totally normal, dont worry
+      - expect: incorrect
+        answer: |
+          yes, if youre good at programming you get code after reading it once.
+          i probably didnt pay attention in the earlier chapters
+      # intentionally verbose: confident and technical, but the opposite claim
+      - expect: incorrect
+        answer: |
+          Yes, that indicates a gap in your fundamentals. Experienced
+          developers parse unfamiliar source code in about two minutes,
+          because they recognise the structure immediately. The right reaction
+          is to stop reading and start changing statements until it looks
+          right.

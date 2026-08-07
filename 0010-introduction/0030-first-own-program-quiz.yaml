@@ -170,10 +170,11 @@ questions:
 
       - `correct`   - both jobs right: fill = inside color, stroke =
                       line/outline color.
-      - `partial`   - only one of the two right, or the two swapped with
-                      everything else fitting.
-      - `incorrect` - anything else, e.g. stroke sets the line thickness
-                      (that is `strokeWeight`).
+      - `partial`   - only one of the two right (for example fill right but
+                      stroke confused with the line thickness — that is
+                      `strokeWeight`), or the two swapped with everything
+                      else fitting.
+      - `incorrect` - anything else.
 
       Feedback: if the student mixed in thickness, name the third command —
       `strokeWeight` sets how thick the line is.

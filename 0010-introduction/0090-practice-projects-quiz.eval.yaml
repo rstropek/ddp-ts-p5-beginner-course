@@ -1,0 +1,172 @@
+id: ddp-practice-projects-quiz-eval
+target: ./0090-practice-projects-quiz.yaml
+
+questions:
+  - question: computed-coordinates
+    answers:
+      - expect: correct
+        answer: |
+          55. half of 80 = 40, half of 30 = 15, 40+15
+      # correct in sloppy everyday words, avoids "diameter"/"radius"
+      - expect: correct
+        answer: |
+          half of the big one plus half of the small one, so 40 and 15 -> 55 up
+      # INTENTIONALLY VERBOSE: correct but padded with true-but-irrelevant
+      # chapter facts, tests that length alone earns no credit
+      - expect: correct
+        answer: |
+          I drew it on graph paper first like we are supposed to. The flower
+          center is a circle with 80 across and the petal sits right on top of
+          it, they touch. From the middle of the big circle to the touching
+          point it is 40, because that is half of 80, and from the touching
+          point to the middle of the petal it is another 15, half of 30. So
+          together the petal center is 55 pixels above. The stem is an arc but
+          that does not matter here.
+      # mirrors the rubric's `partial`: right number, no computation shown
+      - expect: partial
+        answer: |
+          55 pixels
+      # INTENTIONALLY CONFIDENT: right method in technical prose, arithmetic
+      # slip in the result — must stay `partial`, not `correct`
+      - expect: partial
+        answer: |
+          The petal's center lies 45 pixels above the flower's center. You take
+          half of the center circle, which is 40, and add half of the petal,
+          which is 15, because each shape's middle is half a diameter away from
+          the point where the two circles touch.
+      # INTENTIONALLY CONFIDENT and technical, but adds the full diameters
+      - expect: incorrect
+        answer: |
+          The distance between the two centers is the sum of the two diameters,
+          so 80 + 30 = 110 pixels above the flower's center. That is how you
+          compute the offset for two shapes that sit on each other.
+
+  - question: symmetry
+    answers:
+      - expect: correct
+        answer: |
+          (300, 250). top petal is 50 above, so bottom one 50 below. x stays 300
+      # correct, German
+      - expect: correct
+        answer: |
+          (300, 250). oben ist 50 drüber, also unten 50 drunter. x bleibt gleich
+      # correct in sloppy everyday words, "flipped" instead of mirrored/symmetry
+      - expect: correct
+        answer: |
+          300 and 250. its just the same petal flipped, 50 up becomes 50 down,
+          x doesnt move
+      # mirrors the rubric's `partial`: right point, no reasoning at all
+      - expect: partial
+        answer: |
+          (300, 250)
+      # INTENTIONALLY CONFIDENT: mirror reasoning stated in technical prose,
+      # but the distance is wrong — must stay `partial`
+      - expect: partial
+        answer: |
+          The bottom petal's center is at (300, 300). Because the flower is
+          symmetrical from top to bottom, the bottom petal must sit the same
+          distance below the center as the top petal sits above it, which is
+          100, and the x value never changes when you mirror up and down.
+      # INTENTIONALLY CONFIDENT and technical, but mirroring is done wrong
+      # (x and y swapped)
+      - expect: incorrect
+        answer: |
+          When you mirror a point in a symmetrical figure you swap the two
+          coordinates, so the bottom petal's center is at (150, 300). That
+          works without measuring because symmetry always exchanges x and y.
+
+  - question: constants
+    answers:
+      - expect: correct
+        answer: |
+          a constant SCALE with the value 5. better because you only change one
+          line if you want a bigger field
+      # correct in sloppy everyday words, never says "constant"
+      - expect: correct
+        answer: |
+          gives the 5 a name so you know later what it means, and you only
+          change it in one spot
+      # mirrors the rubric's `partial`: says what it creates, no advantage
+      - expect: partial
+        answer: |
+          a constant, so a value with a name. in capital letters
+      # other half only: the advantage, but never says what the line creates
+      - expect: partial
+        answer: |
+          damit man nur an einer stelle was ändern muss wenn das feld größer
+          werden soll
+      # INTENTIONALLY CONFIDENT and technical, but confuses const with the
+      # scale command
+      - expect: incorrect
+        answer: |
+          This line sets the drawing scale of the canvas to the factor 5, so
+          every shape that is drawn afterwards comes out five times larger. It
+          is better than writing 5 everywhere because p5.js then applies the
+          factor automatically.
+      - expect: incorrect
+        answer: |
+          makes the canvas 5 pixels big so the field fits
+
+  - question: scale-command
+    answers:
+      - expect: correct
+        answer: |
+          350. scale(5) makes everything after it 5 times bigger, 70*5
+      # correct in sloppy everyday words, no technical terms
+      - expect: correct
+        answer: |
+          350 long. everything after that gets blown up 5 times so you can just
+          write the meters
+      # mirrors the rubric's `partial`: right number, no reason given
+      - expect: partial
+        answer: |
+          350 pixels
+      # INTENTIONALLY CONFIDENT: the stretch idea is stated correctly in
+      # technical prose, but 70*5 slipped — must stay `partial`
+      - expect: partial
+        answer: |
+          The line appears 300 pixels long. The command scale(5) multiplies
+          every length drawn after it by the factor 5, which is exactly why the
+          program can write all the measurements in meters instead of pixels.
+      # INTENTIONALLY CONFIDENT and technical, but claims scale does not
+      # affect lengths
+      - expect: incorrect
+        answer: |
+          It stays 70 pixels long. scale(5) only changes the units of the
+          coordinate system, not the drawn shapes themselves, so a line with
+          the length 70 is still rendered with 70 pixels.
+      - expect: incorrect
+        answer: |
+          75, scale adds the 5
+
+  - question: translate-command
+    answers:
+      - expect: correct
+        answer: |
+          moves the origin (0,0) right and down by MARGIN. then you can use the
+          field measurements directly and dont have to add the margin every time
+      # correct in sloppy everyday words, never says "origin"
+      - expect: correct
+        answer: |
+          shifts the zero point right and down, so the corner of the field is
+          now 0 0. then you just write the field numbers
+      # mirrors the rubric's `partial`: knows what moves, no benefit
+      - expect: partial
+        answer: |
+          moves the origin MARGIN to the right and MARGIN down
+      # other half only: the benefit, but never says what actually moves
+      - expect: partial
+        answer: |
+          man kann die maße vom feld direkt als koordinaten nehmen, ohne überall
+          den rand dazuzurechnen
+      # INTENTIONALLY CONFIDENT and technical, but moves the shapes instead of
+      # the origin
+      - expect: incorrect
+        answer: |
+          translate(MARGIN, MARGIN) takes everything that has already been
+          drawn and shifts it to the right and down by the margin. That makes
+          the code simpler because you can first draw the field in the corner
+          and move the finished picture into place afterwards.
+      - expect: incorrect
+        answer: |
+          draws the green grass border around the field

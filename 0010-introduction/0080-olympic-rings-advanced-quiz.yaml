@@ -127,7 +127,9 @@ questions:
       - `partial`   - "they show how it's done" or "you can copy them"
                       without saying what the pattern is.
       - `incorrect` - anything else, e.g. the blue ring's code can replace
-                      the red ring's code unchanged.
+                      the red ring's code unchanged, or all the arcs stand
+                      together in one block at the end of the code (they
+                      don't — other rings come in between).
 
       Feedback: suggest working out which piece of the ring each arc
       paints; the angle diagram helps — 0° points right, angles grow

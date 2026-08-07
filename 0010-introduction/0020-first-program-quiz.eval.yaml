@@ -1,0 +1,256 @@
+id: ddp-first-program-quiz-eval
+target: ./0020-first-program-quiz.yaml
+
+# Answers are written the way real 15-to-17-year-olds type them: short
+# fragments, lowercase starts, few words, the odd typo. Two kinds of case
+# stay long on purpose and are marked with a comment: the padded correct
+# answers (they test the "never reward length" rule) and the confident wrong
+# answers in technical prose (they test that fluent jargon is not correctness).
+
+questions:
+  - question: exactness-case
+    answers:
+      - expect: correct
+        answer: |
+          case matters. the command is circle with small c, Circle with big C
+          is a word the computer doesnt know
+      # correct idea in everyday words, avoids "case sensitive" / "identifier"
+      - expect: correct
+        answer: |
+          the computer doesnt guess, it reads exactly what you typed. "Circle"
+          is just some word it never heard of
+      # mirrors the rubric's own partial wording: blames the capital letter
+      # but never says why that breaks anything (weak spot: often over-graded)
+      - expect: partial
+        answer: |
+          the big C at the start. thats the only difference
+      # wrong-term/paraphrase case: "syntax error" sounds technical but the
+      # answer still only blames the capital letter without saying why the
+      # computer can't handle it -> the rubric's partial ("blames the capital
+      # letter but can't say why it breaks")
+      - expect: partial
+        answer: |
+          syntax error wegen dem großen C
+      # EXCEPTION - stays long on purpose: wrong, but wrapped in confident
+      # technical-sounding prose
+      - expect: incorrect
+        answer: |
+          The parameters are evaluated before the command name, so the three
+          values 200, 260 and 360 arrive in the wrong order. Capitalisation is
+          only a naming convention in TypeScript and never causes an error;
+          the real problem is the missing semicolon handling.
+
+  - question: statement-order
+    answers:
+      - expect: correct
+        answer: |
+          only pink, no circle. runs top to bottom, so background paints over
+          the circle at the end
+      # everyday wording, no technical terms like "statement" or "executed"
+      - expect: correct
+        answer: |
+          just pink. the circle gets drawn but then the pink goes over the
+          whole thing so you cant see it
+      # mirrors the rubric's partial: right result, no reason given
+      - expect: partial
+        answer: |
+          all pink, circle not visible
+      # the other partial branch: knows top-to-bottom, wrong conclusion
+      - expect: partial
+        answer: |
+          top to bottom: canvas, circle, background. circle comes first so its
+          in front -> circle on pink
+      - expect: incorrect
+        answer: |
+          circle on pink. the background is always first anyway, its like the
+          paper colour
+
+  - question: canvas-coordinates
+    answers:
+      - expect: correct
+        answer: |
+          (0,0) is top left and y gets bigger downwards, not up like in math
+      # correct, German
+      - expect: correct
+        answer: |
+          nullpunkt links oben, y wird nach unten größer. umgekehrt wie in mathe
+      # mirrors the rubric's partial: exactly one of the two facts
+      - expect: partial
+        answer: |
+          (0,0) is in the top left corner
+      # wrong-term/paraphrase case: "inverted axis" is fluent jargon but only
+      # covers the direction; the origin is never named -> the rubric's partial
+      # ("only one of the two facts is right")
+      - expect: partial
+        answer: |
+          the y axis is inverted, down is plus
+      # EXCEPTION - stays long on purpose: confident and fluent, but the
+      # position of the origin is invented
+      - expect: incorrect
+        answer: |
+          The origin sits exactly in the middle of the canvas, like in a
+          normal coordinate system from math class. From there y grows upwards
+          and becomes negative in the lower half.
+
+  - question: circle-parameters
+    answers:
+      - expect: correct
+        answer: |
+          200 = x of the middle, 260 = y of the middle, 360 = diameter
+      # everyday wording, never uses "parameter", "centre" or "diameter"
+      - expect: correct
+        answer: |
+          first two say where the middle is, 200 right and 260 down. last one
+          is how big, 360
+      # mirrors the rubric's partial: roles known, x and y swapped
+      - expect: partial
+        answer: |
+          position and size. 200 is how far down and 260 how far right i think,
+          not sure
+      # EXCEPTION - stays long on purpose: only the numbers are wrong, correct
+      # roles mapped to the wrong slots in confident technical prose
+      - expect: incorrect
+        answer: |
+          The parameter list of circle is (x, y, d). So here the centre of the
+          circle sits at x = 360 and y = 200, and the diameter is 260, which
+          gives a medium sized circle near the right edge of the canvas.
+      - expect: incorrect
+        answer: |
+          the numbers are the colour, 200 red 260 green 360 blue
+
+  - question: red-squiggles
+    answers:
+      - expect: correct
+        answer: |
+          editor found a mistake, like spell check in word. i hover over it and
+          read the message
+      # correct via the "names the actual mistake" branch, sloppy wording
+      - expect: correct
+        answer: |
+          that word is not ok. Background with big B, but the command is
+          background small b. usually i just hover over it
+      # mirrors the rubric's partial: meaning only, no way to find the problem
+      - expect: partial
+        answer: |
+          means the editor already found a mistake in that line
+      # the other partial branch: a step, but never says what the squiggle means
+      - expect: partial
+        answer: |
+          mouse on the red line, then a box pops up and i read it
+      # wrong-term/paraphrase case: "compiler" and "syntax error" are the wrong
+      # words here (it's the editor checking while you type), and the answer
+      # gives no way to find the problem -> the rubric's partial ("knows what
+      # the squiggle means but no way to find the problem")
+      - expect: partial
+        answer: |
+          the compiler marks a syntax error there
+      # EXCEPTION - stays long on purpose: wrong, but sounds knowledgeable and
+      # technical
+      - expect: incorrect
+        answer: |
+          The red squiggle is just the editor's syntax highlighting while it is
+          still parsing the file. It disappears by itself as soon as the
+          program runs, so you can keep typing and ignore it.
+
+  - question: comments
+    answers:
+      - expect: correct
+        answer: |
+          comments. notes for humans, computer skips them
+      # EXCEPTION - stays long on purpose: correct answer padded with true but
+      # irrelevant facts (must not score higher than the one-liner above)
+      - expect: correct
+        answer: |
+          Lines with // are comments. A program is a sequence of statements
+          that run from top to bottom, every statement ends with a semicolon,
+          and the canvas origin is in the top left corner. Anyway, a comment is
+          just a note for a human reader, for example for my teacher or for me
+          next week, and the computer skips it and does nothing with it.
+      # mirrors the rubric's partial: only who they are for
+      - expect: partial
+        answer: |
+          little notes that explain the code so you get it later
+      - expect: incorrect
+        answer: |
+          the computer reads them as extra instructions, so // draw the head
+          makes it draw a head
+
+  - question: create-canvas
+    answers:
+      - expect: correct
+        answer: |
+          makes the canvas you draw on, 400 wide and 500 tall. everything after
+          draws on it
+      # correct, German, everyday wording
+      - expect: correct
+        answer: |
+          das blatt papier zum zeichnen. erste zahl breite 400, zweite höhe 500
+      # mirrors the rubric's partial: canvas + size right, width/height swapped
+      - expect: partial
+        answer: |
+          makes the canvas. the numbers are the size, 400 height and 500 width
+          i'd say
+      # wrong-term/paraphrase case: "drawing window" instead of canvas and a
+      # vague "how big it is" - the size is understood but the answer never
+      # says which number is width and which is height -> the rubric's partial
+      # ("the numbers are its size, but width and height are swapped or unsure")
+      - expect: partial
+        answer: |
+          opens the drawing window, the numbers say how big it is
+      # EXCEPTION - stays long on purpose: only the meaning of the numbers is
+      # wrong, said very confidently in technical prose
+      - expect: incorrect
+        answer: |
+          createCanvas places the drawing area inside the browser window: the
+          first number, 400, is the distance from the left edge of the window
+          and the second one, 500, the distance from the top edge.
+      - expect: incorrect
+        answer: |
+          it paints the background of the page, the numbers are the colour
+
+  - question: write-create-canvas
+    answers:
+      - expect: correct
+        answer: |
+          createCanvas(300, 200);
+      # same statement, only spacing differs - the rubric says that's fine
+      - expect: correct
+        answer: |
+          createCanvas(300,200);
+      # course rule: correct code but missing semicolon must cap at partial
+      - expect: partial
+        answer: |
+          createCanvas(300, 200)
+      # mirrors the rubric's other partial: numbers swapped
+      - expect: partial
+        answer: |
+          createCanvas(200, 300);
+      - expect: incorrect
+        answer: |
+          canvas 300x200;
+      - expect: incorrect
+        answer: |
+          circle(300, 200);
+
+  - question: formatting
+    answers:
+      - expect: correct
+        answer: |
+          because people read it too, me in 2 weeks, my classmates, the
+          teacher. and you find mistakes like a missing brace faster
+      # correct in sloppy everyday words, names no rule and no term
+      - expect: correct
+        answer: |
+          otherwise you open your own file later and have no idea whats going
+          on. and when its lined up you actually see if a bracket is missing
+      # mirrors the rubric's partial: appearance only, no who and no what
+      - expect: partial
+        answer: |
+          looks nicer and tidier
+      # EXCEPTION - stays long on purpose: wrong, wrapped in confident
+      # technical language
+      - expect: incorrect
+        answer: |
+          Formatting is purely cosmetic. Whitespace and line breaks are
+          stripped out before the code runs, so it makes no difference at all
+          how you write it.

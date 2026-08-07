@@ -1,0 +1,168 @@
+id: ddp-arcs-smiley-quiz-eval
+target: ./0070-arcs-smiley-quiz.yaml
+
+questions:
+  - question: arc-angle-parameters
+    answers:
+      - expect: correct
+        answer: |
+          25 start angle, 180 end angle. only that bit of the circle is drawn
+      # correct in sloppy everyday words, avoids "start angle" / "end angle"
+      - expect: correct
+        answer: |
+          first one is where it starts going round, second where it stops.
+          you only see the piece between
+      # INTENTIONALLY VERBOSE: correct, but padded with true-but-irrelevant
+      # chapter facts - tests that length is not rewarded
+      - expect: correct
+        answer: |
+          arc has six parameters, way more than circle, and you can hover over
+          it in the playground to see them all in the tooltip. The first four
+          are the same as an ellipse. The last two, 25 and 180, are the two
+          angles: the drawing begins at 25 degrees and ends at 180 degrees,
+          and only that slice of the outline is painted. We also need
+          angleMode(DEGREES) at the top for this to work in degrees.
+      # mirrors the rubric's own `partial`: angles/degrees named, no start/end
+      - expect: partial
+        answer: |
+          thats the angles, in degrees
+      # INTENTIONALLY FLUENT AND CONFIDENT: angles and start/stop understood,
+      # only the assignment is swapped — per the rubric's swapped line this
+      # is partial; still guards against a `correct` verdict
+      - expect: partial
+        answer: |
+          The last two parameters are the angles of the arc: 180 is the start
+          angle, so the drawing begins there, and 25 is the end angle where it
+          stops. That is why the mouth runs from 180 degrees back to 25
+          degrees.
+      - expect: incorrect
+        answer: |
+          25 is how thick the line is, 180 how far the mouth is turned
+
+  - question: angle-mode
+    answers:
+      - expect: correct
+        answer: |
+          p5 normally uses radians, this switches it to degrees
+      # correct in everyday words, never says "radians", uses the 360 argument
+      - expect: correct
+        answer: |
+          without it the angles are in some other unit we dont know yet. with
+          it its normal degrees, 360 = full circle
+      # German, correct, unit switch plus reason
+      - expect: correct
+        answer: |
+          p5 rechnet normal in Radiant. damit stellt mans auf Grad um, also
+          360 für nen ganzen Kreis
+      # mirrors the rubric's own `partial`: degrees named, no idea what changes
+      - expect: partial
+        answer: |
+          something with degrees for the angles. i just always write it at the
+          top
+      # INTENTIONALLY VERBOSE AND CONFIDENT: technical-sounding prose that
+      # describes something else entirely - tests that fluency is not credit
+      - expect: incorrect
+        answer: |
+          The statement sets the rotation mode of the canvas, so that every
+          shape you draw afterwards is rotated by the number of degrees you
+          give it. Without it the shapes would all stay in their default
+          orientation.
+      - expect: incorrect
+        answer: |
+          makes the corners round instead of sharp
+
+  - question: angle-direction
+    answers:
+      - expect: correct
+        answer: |
+          0 is right, angles grow clockwise, so 90 is at the bottom
+      # correct in sloppy everyday words, clock picture instead of "clockwise"
+      - expect: correct
+        answer: |
+          zero is on the right like 3 o clock, then round the same way as the
+          hands of a clock
+      # mirrors the rubric's own `partial`: only the direction fact is there
+      - expect: partial
+        answer: |
+          clockwise, not the other way like in math
+      # INTENTIONALLY FLUENT AND CONFIDENT: wrong-angles-in-prose trap, the
+      # ONLY mistake is where 0 degrees sits - still only half right
+      - expect: partial
+        answer: |
+          On the canvas 0 degrees points straight up at the top, and from there
+          the angles grow clockwise, so 90 degrees points to the right and 180
+          degrees points down.
+      - expect: incorrect
+        answer: |
+          same as in math. 0 at the top, counterclockwise, 90 on the left
+      - expect: incorrect
+        answer: |
+          0 is in the middle where the shape is and it gets bigger the further
+          out you go
+
+  - question: flattened-arc
+    answers:
+      - expect: correct
+        answer: |
+          mouth gets squashed. wider than tall, so not a piece of a real
+          circle anymore, looks relaxed
+      # correct in sloppy everyday words, never says ellipse or flattened
+      - expect: correct
+        answer: |
+          looks kinda pressed down, like someone sat on the circle. broad
+          smile instead of a deep round one
+      # INTENTIONALLY VERBOSE: correct, but padded with true-but-irrelevant
+      # statements - tests that length is not rewarded
+      - expect: correct
+        answer: |
+          arc always takes the center first, so 200 and 250 is where the mouth
+          sits on the canvas, and the face is drawn before it. Because the
+          width 200 and the height 150 are not the same, the invisible shape
+          behind the arc is an ellipse and not a circle. That means the smile
+          is wide and flat. If you want a perfect circle piece you would have
+          to use 200 for both.
+      # mirrors the rubric's own `partial`: size named, no effect on the shape
+      - expect: partial
+        answer: |
+          200 wide, 150 high. thats just the size of the mouth
+      # INTENTIONALLY VERBOSE AND CONFIDENT: correct-sounding, the ONLY mistake
+      # is reading the two numbers the wrong way round
+      - expect: incorrect
+        answer: |
+          Because the height of 150 is bigger than the width of 200, the arc is
+          stretched upwards. The mouth becomes narrow and tall, so the smile
+          looks deep and steep instead of wide.
+      - expect: incorrect
+        answer: |
+          mouth moves 50 pixels up, because the height is 50 smaller
+
+  - question: one-change-at-a-time
+    answers:
+      - expect: correct
+        answer: |
+          if you change 3 numbers and the picture is different you dont know
+          which one did it
+      # correct in everyday words, cause and effect without the words
+      - expect: correct
+        answer: |
+          you wanna know what one number does, and you only see that if
+          nothing else changed too
+      # German, correct
+      - expect: correct
+        answer: |
+          sonst weiß man nicht welche änderung was bewirkt hat. bei einer
+          sieht man genau was der parameter macht
+      # mirrors the rubric's own `partial`: easier/clearer, no cause-and-effect
+      - expect: partial
+        answer: |
+          way less confusing, you keep the overview
+      - expect: incorrect
+        answer: |
+          because the program crashes if you change more than one
+      # INTENTIONALLY VERBOSE AND CONFIDENT: technical-sounding invention about
+      # how p5.js works - tests that confident prose is not credit
+      - expect: incorrect
+        answer: |
+          p5.js only applies one parameter change per run, so if you edit
+          several numbers at once the later ones are simply ignored until you
+          start the program again.
