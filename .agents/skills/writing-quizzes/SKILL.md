@@ -4,30 +4,42 @@ description: >-
   Author, revise, and publish novedu chapter quizzes and compound (section)
   quizzes for this Creative Coding book. Use this skill whenever the user asks
   to create a quiz for a chapter, add/change/review quiz questions, adjust a
-  grading rubric or evaluation prompt, build the section-level exam-prep quiz,
-  add an image to a quiz question, or publish/update a quiz (validate, upload,
-  mint a code, link it from the chapter) — even if they don't say "quiz YAML"
-  or name the novedu app. Also use it when reviewing existing
-  *-quiz.yaml files for question or rubric quality.
+  grading rubric or evaluation prompt, write or run golden-answer evals, diagnose
+  eval mismatches, build the section-level exam-prep quiz, add an image to a quiz
+  question, or publish/update a quiz (validate, upload, mint a code, link it from
+  the chapter) — even if they don't say "quiz YAML", "eval YAML", or name the
+  novedu app. Also use it when reviewing existing *-quiz.yaml or
+  *-quiz.eval.yaml files for question, rubric, or regression-test quality.
 ---
 
 # Writing quizzes for the Creative Coding book
 
 Each book chapter gets one LLM-graded quiz (`<chapter>-quiz.yaml`, sibling of
-the `.qmd`), and each book part gets one compound quiz that imports all of its
-chapter quizzes for exam preparation. Quizzes are novedu activities: open-ended
-questions only, graded by a small LLM against a hidden rubric, with an optional
-per-question discussion chat. Students use them as anonymous self-checks.
+the `.qmd`) and one paired golden-answer regression file
+(`<chapter>-quiz.eval.yaml`). Each book part gets one compound quiz that imports
+all of its chapter quizzes for exam preparation. Quizzes are novedu activities:
+open-ended questions only, graded by a small LLM against a hidden rubric, with
+an optional per-question discussion chat. Students use them as anonymous
+self-checks. Eval files are teacher-only test data; never publish them as
+activities or mint codes for them.
 
 Ground truth for the platform lives in the novedu repo
 (`~/github/chat-prototype`): authoring guide `activities/quizzes/README.md`,
-CLI skill `.claude/skills/novedu-tutor-cli/SKILL.md`. Don't re-derive platform
-rules — the CLI validates with the app's exact pipeline.
+eval guide `activities/evals/README.md`, teacher guide
+`teacher-docs/content/10-yaml-for-teachers/06-testing-the-grader.md`, and CLI
+skill `.agents/skills/novedu-tutor-cli/SKILL.md` (the repo's `.claude` symlink
+exposes the same file at `.claude/skills/novedu-tutor-cli/SKILL.md`). Don't
+re-derive platform rules — the CLI validates with the app's exact pipeline.
 
 Read `references/question-design.md` before writing or reviewing questions —
 it distills the assessment literature this course follows and ends with the
 audit checklist. The rules below are the course-specific contract; the
 reference explains the why and the general craft.
+
+Read `references/golden-answer-evals.md` whenever creating or changing a quiz,
+touching an `evaluation` rubric, reviewing an eval file, or diagnosing grading.
+It captures the calibrated case design established by the Introduction (0010)
+quizzes and the exact validate/run loop.
 
 ## Chapter quiz skeleton
 
@@ -191,6 +203,43 @@ One per book part, e.g. `0010-introduction/introduction-quiz.yaml`:
 - Set `question_count` to a sensible attempt length (~2× a chapter quiz);
   leave `shuffle` on.
 - No own `questions` needed.
+- Do not copy every chapter's golden answers into a compound eval. The source
+  rubrics are already protected by their chapter evals. Create a small compound
+  eval only when an integration behavior needs testing, using namespaced
+  `<alias>/<question-id>` ids.
+
+## Golden-answer evals
+
+Treat the paired `<chapter>-quiz.eval.yaml` as part of the quiz, not as an
+optional afterthought. Its synthetic student answers pin down what `correct`,
+`partial`, and `incorrect` mean so rubric improvements cannot silently break a
+previous boundary.
+
+- Create or update the eval in the same change as its quiz. Cover every new or
+  materially changed question; preserve cases for unchanged questions as
+  regression tests.
+- Model how these students really answer: short fragments, everyday words,
+  lowercase starts, occasional harmless typos, and at least one German answer
+  where the concept can be expressed naturally in German. Do not paste or
+  lightly anonymize a real student's answer; all cases must be synthetic.
+- For each covered question, include a clearly correct answer, each meaningful
+  half-right branch named by the rubric, and a confidently wrong answer. Add
+  adversarial cases where relevant: a terse correct paraphrase, a verbose
+  correct answer padded with irrelevant facts, fluent technical prose with one
+  decisive error, swapped values, or an exact code boundary such as a missing
+  required semicolon.
+- Make cases discriminate between verdicts. An answer copied from `Expected:`
+  proves little; a partial case should closely mirror the rubric's declared
+  boundary, and a wrong case should probe the misconception most likely to be
+  over-graded. Use `expect: [partial, incorrect]` only when both really are
+  defensible, never to hide uncertainty about the rubric.
+- Keep short comments above non-obvious cases explaining the boundary or bias
+  being tested. This makes future rubric changes reviewable.
+
+The reference contains the exact skeleton, CLI commands, cost/auth cautions,
+report interpretation, and repair loop. Validation is free and must happen
+whenever the pair changes. Running `eval` calls the real model and spends tokens,
+so validate first and obtain user approval before a large or repeated run.
 
 ## Publish workflow
 
@@ -199,14 +248,18 @@ Quizzes are served straight from the book's public GitHub repo
 URL on every load, so publishing an edit = `git push`. The CLI runs from the
 novedu repo (`cd ~/github/chat-prototype`, prefix commands with
 `npm run cli --silent --`, and pass ABSOLUTE paths for files in the book
-repo); only `codes sync` needs a signed-in teacher (`whoami` to check;
-`login` opens a browser the human must finish).
+repo); `codes sync` and `eval` need a signed-in teacher (`whoami` to check;
+`login` opens a browser the human must finish). Validation needs no sign-in.
 
-1. Author/edit the YAML in the book repo.
-2. Validate locally: `validate <path> --kind quiz` (works because the
-   fragment ref `../ddp-quiz-fragments.yaml` resolves on the filesystem too).
-3. Commit and push (quiz edits go live immediately for existing codes).
-4. First publish only: confirm the published render —
+1. Author/edit the quiz YAML and its sibling golden-answer eval in the book
+   repo.
+2. Validate the quiz with `validate <quiz-path> --kind quiz`, then validate the
+   eval with `validate <eval-path> --kind eval` (the latter also strict-checks
+   the target quiz). Relative fragment references resolve on the filesystem.
+3. When authorized, run the eval through the real grader and repair genuine
+   mismatches before publishing. Read the false-correct and unstable counts.
+4. Commit and push (quiz edits go live immediately for existing codes).
+5. First publish only: confirm the published render —
    `validate https://raw.githubusercontent.com/rstropek/ddp-ts-p5-beginner-course/refs/heads/main/<folder>/<file>.yaml --kind quiz`
    — then add ONE entry to the **activity registry** `ddp-activities.yaml`
    (book-repo root) under `activities.quizzes`, keyed by chapter slug
@@ -223,13 +276,11 @@ repo); only `codes sync` needs a signed-in teacher (`whoami` to check;
    commit registry AND lock file. Book quizzes carry no `start`/`end` and no
    `llm` override. Later edits need no new code and no sync (the code points
    at the raw URL).
-5. First publish only: add a "Check your understanding" section at the end
+6. First publish only: add a "Check your understanding" section at the end
    of the chapter `.qmd` (unique anchor `{#sec-quiz-<short>}`): a short
    intro naming the question count, then
    `{{< quiz <chapter-slug> title="<Chapter title>" >}}` — the registry KEY,
    never a code. An unknown key fails the render.
-6. Ask the user to spot-check grading with one deliberately half-right answer
-   (the correct/partial boundary is the fragile part).
 
 **Never `codes create` a book quiz and never paste a code into a chapter**:
 the registry plus its lock file are the only place codes live. `codes sync`
@@ -247,7 +298,9 @@ Keep the library minimal — a broken fragment fails ALL quizzes at once.
 feeds the discussion chat. A policy sentence (reveal the answer, keep it tiny,
 answer in German) is edited once there and every quiz follows. After editing
 the library, re-validate a couple of quizzes too: a changed `input_schema`
-breaks their markers, not the library.
+breaks their markers, not the library. If `quiz_context` changes grading
+behavior, validate the chapter eval files and, when authorized, run the affected
+eval suite; `discussion_frame`-only changes do not need grader evals.
 
 (Alternative: `files upload <name>` app-hosts a file at
 `https://novedu.at/api/files/<name>`; only relevant if a quiz must not live
@@ -257,5 +310,8 @@ in the public repo.)
 
 Students can flag a chat or a graded answer. `reports list` / `reports show
 <id>` (embeds the transcript or the question/answer/feedback snapshot) →
-usually the fix is a rubric edit in the quiz YAML → upload → `reports resolve
-<id…>`. Reports usually point at rubric boundaries, not questions.
+usually the fix is a rubric edit in the quiz YAML → add a synthetic regression
+case → validate and evaluate → push → `reports resolve <id…>`. Reports usually
+point at rubric boundaries, not questions. Never copy the student's answer into
+the committed eval; write a new answer with the same misconception. Re-run the
+full regression set so the same grading failure stays fixed.

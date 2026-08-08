@@ -84,10 +84,12 @@ example answers per verdict in every rubric (Mertler/CMU recommend them).
 They roughly triple rubric length for marginal gain on simple items. Add an
 example answer only to a rubric that student reports show is wobbling.
 
-**Calibrate like code.** After material rubric edits, re-test with 2-3 known
-answers (one clearly correct, one designed-to-be-partial, one wrong) via the
-live quiz, and check the verdicts land. The correct/partial boundary is the
-part to probe.
+**Calibrate like code.** Pair each chapter quiz with a golden-answer eval file
+and keep known correct, deliberately partial, and confidently wrong answers as
+regression cases. Validate the pair after edits, then run the eval through the
+real grader when authorized. The correct/partial boundary and false-correct
+cases are the parts to probe. See `golden-answer-evals.md` for the course's case
+design and CLI workflow.
 
 ## Audit checklist
 
@@ -105,8 +107,9 @@ Before publishing, check every question:
    paraphrases listed; literal values kept literal.
 8. Quiz `description` carries the length hint ("one or two sentences are
    enough").
-9. After rubric edits: spot-check with a correct, a partial, and a wrong
-   answer.
+9. Paired golden-answer eval updated: each changed rubric has a correct case,
+   every meaningful partial branch, and a confidently wrong case; the eval
+   validates, and the real grader run is green when one was authorized.
 
 ## Sources
 
