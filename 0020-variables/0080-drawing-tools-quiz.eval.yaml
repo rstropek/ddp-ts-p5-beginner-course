@@ -1,0 +1,69 @@
+id: drawing-tools-quiz-eval
+target: ./0080-drawing-tools-quiz.yaml
+
+questions:
+  - question: ellipse-vs-circle
+    answers:
+      - expect: correct
+        answer: "circle only has one diameter, but the tool needs different width and height values, which ellipse accepts"
+      - expect: partial
+        answer: "ellipse lets you give width and height separately"
+      - expect: partial
+        answer: "circle can only make a perfect circle because it has one size"
+      - expect: incorrect
+        answer: "circle cannot follow the mouse, while ellipse can use mouseX and mouseY"
+
+  - question: abs-distance
+    answers:
+      - expect: correct
+        answer: "w is 140. without abs, 130 - 200 is negative on the left, so the width would be -140 instead of a distance"
+      - expect: partial
+        answer: "140"
+      - expect: partial
+        answer: "abs makes -70 positive but I forgot times two, so w is 70"
+      - expect: incorrect
+        answer: "-140, because abs keeps the sign so the program knows the mouse is left of center"
+
+  - question: pi-is-a-value
+    answers:
+      - expect: correct
+        answer: "PI is already a constant number, not a function to call, so it has no parentheses"
+      - expect: correct
+        answer: "PI ist ein fertiger Wert und keine Funktion"
+      - expect: partial
+        answer: "PI means the number 3.14159"
+      - expect: incorrect
+        answer: "parentheses are optional for every p5 function when it has no parameters"
+
+  - question: rect-vs-ellipse-anchor
+    answers:
+      - expect: correct
+        answer: "ellipse x,y is its center but rect x,y is its top left corner, so subtract half the rect width and height from the canvas center"
+      - expect: partial
+        answer: "ellipse uses the center and rect uses the top left corner"
+      - expect: incorrect
+        answer: "both positions are their center, so width/2 and height/2 center either shape directly"
+
+  - question: snap-a-size
+    answers:
+      - expect: correct
+        answer: "140"
+      - expect: correct
+        answer: "130/20 is 6.5, round gives 7, then 7*20 is 140"
+      - expect: partial
+        answer: "120 because I rounded 6.5 down to 6"
+      - expect: partial
+        answer: "7"
+      - expect: incorrect
+        answer: "130 because snapping only changes positions, never sizes"
+
+  - question: text-align-right
+    answers:
+      - expect: correct
+        answer: "the coordinate becomes where the text ends, so the label grows left from that point"
+      - expect: correct
+        answer: "der Text endet an der angegebenen Position statt dort anzufangen"
+      - expect: partial
+        answer: "it changes the text to right alignment"
+      - expect: incorrect
+        answer: "it moves the text to the right edge of the canvas no matter which position you pass"

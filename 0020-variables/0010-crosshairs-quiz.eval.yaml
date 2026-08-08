@@ -1,0 +1,74 @@
+id: crosshairs-quiz-eval
+target: ./0010-crosshairs-quiz.yaml
+
+questions:
+  - question: variable-vs-constant
+    answers:
+      - expect: correct
+        answer: "a constant keeps the first value, a variable can get a new value while it runs"
+      # German, correct in everyday wording.
+      - expect: correct
+        answer: "beide speichern einen Wert unter einem Namen, aber nur die Variable kann später geändert werden"
+      - expect: partial
+        answer: "a constant is set once and never changes"
+      - expect: partial
+        answer: "both are names for values in the program"
+      # Fluent prose must not earn credit when the distinction is false.
+      - expect: incorrect
+        answer: "A variable stores numeric data while a constant stores text, so their value types decide which declaration is used."
+
+  - question: system-variables
+    answers:
+      - expect: correct
+        answer: "its the mouses current x place and p5 keeps updating it for us"
+      - expect: partial
+        answer: "mouseX says how far the mouse is from the left side"
+      - expect: partial
+        answer: "p5.js fills it automatically all the time"
+      - expect: incorrect
+        answer: "the circle command puts its diameter into mouseX so the next circle knows its size"
+
+  - question: setup-runs-once
+    answers:
+      - expect: correct
+        answer: "setup only happens once at the start. put circle in mouseMoved so it draws at every move"
+      - expect: partial
+        answer: "setup runs one time, so the circle never gets redrawn"
+      - expect: partial
+        answer: "move that circle line into mouseMoved"
+      - expect: incorrect
+        answer: "mouseX is always zero inside setup because system variables only work in mouseClicked"
+
+  - question: event-name-typo
+    answers:
+      - expect: correct
+        answer: "it has to be mouseMoved with a capital M. p5 doesnt recognize mousemoved so it never calls it"
+      - expect: partial
+        answer: "mousemoved is spelled wrong, use mouseMoved"
+      # Knowing the symptom but blaming another line is confidently wrong.
+      - expect: incorrect
+        answer: "background clears the event before the circle can appear; delete that first line"
+
+  - question: background-erases
+    answers:
+      - expect: correct
+        answer: "all the old crosshairs stay there, so moving makes a big trail of lines"
+      # German terse correct answer.
+      - expect: correct
+        answer: "die alten Fadenkreuze werden nicht übermalt und bleiben als Spur sichtbar"
+      - expect: partial
+        answer: "background normally paints over everything from before"
+      - expect: incorrect
+        answer: "nothing changes because p5 automatically clears the canvas before every mouseMoved"
+
+  - question: offset-calculation
+    answers:
+      - expect: correct
+        answer: "(85, 60) to (115, 60)"
+      # One endpoint only is the rubric's explicit partial boundary.
+      - expect: partial
+        answer: "it starts at (85, 60)"
+      - expect: partial
+        answer: "from (85, 60) to (105, 60), I added the second one wrong"
+      - expect: incorrect
+        answer: "from (100, 15) to (100, 15), because mouseX and mouseY are the coordinates"

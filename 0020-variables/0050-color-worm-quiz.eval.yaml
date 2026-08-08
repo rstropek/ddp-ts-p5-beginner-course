@@ -1,0 +1,84 @@
+id: color-worm-quiz-eval
+target: ./0050-color-worm-quiz.yaml
+
+questions:
+  - question: let-vs-const
+    answers:
+      - expect: correct
+        answer: "const says the value stays the same, let says it can be replaced later"
+      - expect: correct
+        answer: "const darf nach dem Setzen nicht mehr geändert werden, bei let darf der Wert wechseln"
+      - expect: partial
+        answer: "const never changes"
+      - expect: partial
+        answer: "let is for variables"
+      - expect: incorrect
+        answer: "let is for numbers that change and const is for text that stays fixed"
+
+  - question: assignment-two-steps
+    answers:
+      - expect: correct
+        answer: "it takes the old 40, adds 5, then saves 45 back into colorHue"
+      - expect: partial
+        answer: "45"
+      - expect: partial
+        answer: "first calculate the right side and store it back, so 40 + 5 = 50"
+      - expect: incorrect
+        answer: "the computer cannot solve colorHue = colorHue + 5 because the two sides are unequal"
+
+  - question: global-variable-needed
+    answers:
+      - expect: correct
+        answer: "every mouse move creates colorHue as 0 again, so the +5 is lost. declare it above all functions so it survives"
+      - expect: partial
+        answer: "it resets to zero each time mouseMoved runs"
+      - expect: partial
+        answer: "make colorHue a global variable outside the function"
+      - expect: incorrect
+        answer: "modulo changes every hue back to zero; remove % 360 but keep the declaration inside mouseMoved"
+
+  - question: modulo-remainder
+    answers:
+      - expect: correct
+        answer: "1, its what is left over after dividing 9 by 4"
+      - expect: correct
+        answer: "1, weil 9 durch 4 zweimal geht und ein Rest bleibt"
+      - expect: partial
+        answer: "1"
+      - expect: partial
+        answer: "% gives the remainder, and 9 % 4 is 2"
+      - expect: incorrect
+        answer: "2.25, the percent sign is another division operator"
+
+  - question: modulo-wrap
+    answers:
+      - expect: correct
+        answer: "0, so the hue goes back to red and the rainbow begins again"
+      - expect: partial
+        answer: "0"
+      - expect: partial
+        answer: "it wraps to the start of the hue circle at 360"
+      - expect: incorrect
+        answer: "360 stays in colorHue, and the worm stops changing color at the end of the scale"
+
+  - question: trail-on-purpose
+    answers:
+      - expect: correct
+        answer: "the old circles need to stay because their trail is the worm. repainting would leave only the newest circle"
+      - expect: correct
+        answer: "ohne background bleiben die früheren Kreise sichtbar und bilden den Wurm"
+      - expect: partial
+        answer: "background would erase the old drawing"
+      - expect: partial
+        answer: "the background was already drawn once in setup"
+      - expect: incorrect
+        answer: "background cannot be called in mouseMoved because event functions only allow shape commands"
+
+  - question: global-caution
+    answers:
+      - expect: correct
+        answer: "any function can change a global, so in a big program its hard to find who changed it and caused a bug"
+      - expect: partial
+        answer: "globals are risky and bad style in a large program"
+      - expect: incorrect
+        answer: "global variables make every event slower because p5 copies them into each function"

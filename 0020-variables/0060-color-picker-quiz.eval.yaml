@@ -1,0 +1,70 @@
+id: color-picker-quiz-eval
+target: ./0060-color-picker-quiz.yaml
+
+questions:
+  - question: mouse-clicked-event
+    answers:
+      - expect: correct
+        answer: "p5 calls it once for each click, and mouseX mouseY are where that click happened"
+      - expect: correct
+        answer: "bei jedem Klick wird es automatisch aufgerufen; mouseX und mouseY sind dann die Klickposition"
+      - expect: partial
+        answer: "it runs automatically when the mouse is clicked"
+      - expect: partial
+        answer: "inside it mouseX and mouseY hold the click coordinates"
+      - expect: incorrect
+        answer: "the programmer calls mouseClicked on every mouse move, and the variables hold the canvas size"
+
+  - question: canvas-size-trick
+    answers:
+      - expect: correct
+        answer: "360 matches the hue range and 100 matches saturation, so mouseX and mouseY can be used directly without converting"
+      - expect: partial
+        answer: "HSB hue goes to 360 and saturation goes to 100"
+      - expect: partial
+        answer: "mouseX can be the hue and mouseY can be saturation without a formula"
+      - expect: incorrect
+        answer: "360 is a full circle and 100 is a percentage, so those sizes make the canvas look balanced"
+
+  - question: min-guard
+    answers:
+      - expect: correct
+        answer: "100; min picks the smaller value so saturation can never go above its maximum"
+      - expect: partial
+        answer: "100"
+      - expect: partial
+        answer: "it caps saturation at 100, but the result for this click is 180"
+      - expect: incorrect
+        answer: "180 because min keeps mouseY unchanged when it is in the bottom half"
+
+  - question: repaint-only-top
+    answers:
+      - expect: correct
+        answer: "the bottom half keeps the clicked color. repainting everything on mouse movement would cover that saved choice"
+      - expect: partial
+        answer: "the rectangle is exactly the preview area that changes"
+      - expect: incorrect
+        answer: "background is too slow to run on mouse movement, so a smaller rect makes the program fast enough"
+
+  - question: paint-as-memory
+    answers:
+      - expect: correct
+        answer: "the chosen color is the paint already on the bottom of the canvas, and nothing covers it until another click"
+      - expect: partial
+        answer: "it is stored on the canvas"
+      - expect: incorrect
+        answer: "mouseX and mouseY keep the old clicked color after the mouse moves away"
+      # Fluent but wrong: local constants do not survive event calls.
+      - expect: incorrect
+        answer: "The constants created inside mouseClicked persist between calls, so they act as hidden memory for the selected HSB values."
+
+  - question: draw-order-bug
+    answers:
+      - expect: correct
+        answer: "the later rectangle paints over the text. draw the rectangle first and the text after it"
+      - expect: correct
+        answer: "das Rechteck überdeckt den Text, weil es später gezeichnet wird"
+      - expect: partial
+        answer: "the statements are in the wrong order"
+      - expect: incorrect
+        answer: "text cannot be drawn inside mouseClicked, so it needs to move into setup"

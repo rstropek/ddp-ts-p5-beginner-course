@@ -1,0 +1,84 @@
+id: color-basics-quiz-eval
+target: ./0040-color-basics-quiz.yaml
+
+questions:
+  - question: why-numbers
+    answers:
+      - expect: correct
+        answer: "there arent names for millions of tiny color differences, but numbers can describe all of them"
+      - expect: partial
+        answer: "numbers let you choose colors much more precisely"
+      - expect: incorrect
+        answer: "computers can draw numeric colors faster than named colors"
+
+  - question: rgb-meaning
+    answers:
+      - expect: correct
+        answer: "bright green. the values control red, green and blue in that order"
+      - expect: partial
+        answer: "the background is green"
+      - expect: partial
+        answer: "the three numbers are red, green and blue strengths, but this makes blue"
+      - expect: incorrect
+        answer: "it draws red because the first number is the x coordinate of the strongest light"
+
+  - question: light-vs-paint
+    answers:
+      - expect: correct
+        answer: "yellow, because adding red and green light is different from mixing pigments in paint"
+      - expect: correct
+        answer: "am Bildschirm gelb. Lichtfarben mischen sich anders als die Farben im Malkasten"
+      - expect: partial
+        answer: "yellow"
+      - expect: partial
+        answer: "light and paint use different mixing rules, and the screen will be orange"
+      - expect: incorrect
+        answer: "brown, because red and green always make brown when they mix"
+
+  - question: gray-shortcut
+    answers:
+      - expect: correct
+        answer: "medium gray; one number is shorthand for equal red green and blue values"
+      - expect: partial
+        answer: "the canvas is gray"
+      - expect: partial
+        answer: "it means 128,128,128, but that produces white"
+      - expect: incorrect
+        answer: "it is dark red because the single argument controls only the red light"
+
+  - question: why-255
+    answers:
+      - expect: correct
+        answer: "one color channel uses one byte, which has 256 values from 0 through 255"
+      - expect: correct
+        answer: "8 bits können 256 verschiedene Werte speichern, deshalb endet es bei 255"
+      - expect: partial
+        answer: "its because of how computers store the number in memory"
+      - expect: incorrect
+        answer: "255 is the largest brightness a monitor can physically produce"
+
+  - question: hsb-meaning
+    answers:
+      - expect: correct
+        answer: "hue, saturation, brightness: color kind, intensity, and how light or dark"
+      - expect: correct
+        answer: "Farbton, Sättigung, Helligkeit"
+      - expect: partial
+        answer: "hue, saturation, not sure what B is"
+      - expect: partial
+        answer: "brightness, saturation, hue"
+      - expect: incorrect
+        answer: "the strengths of the red, green and blue lights"
+
+  - question: hsb-adjustment
+    answers:
+      - expect: correct
+        answer: "turn the third value, brightness, down"
+      - expect: correct
+        answer: "Helligkeit verringern"
+      - expect: partial
+        answer: "increase brightness"
+      - expect: partial
+        answer: "lower one of the three values"
+      - expect: incorrect
+        answer: "lower hue, saturation and brightness together so the color stays identical"

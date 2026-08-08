@@ -1,0 +1,74 @@
+id: responsive-robot-quiz-eval
+target: ./0030-responsive-robot-quiz.yaml
+
+questions:
+  - question: fixed-numbers-problem
+    answers:
+      - expect: correct
+        answer: "the robot doesnt resize with the canvas, so parts can stick out. all its coordinates stayed the same"
+      - expect: partial
+        answer: "the robot will be off center and some of it is outside"
+      - expect: partial
+        answer: "fixed pixel numbers are the problem"
+      - expect: incorrect
+        answer: "p5 scales every old coordinate down when createCanvas gets narrower, so the whole robot shrinks"
+
+  - question: percent-as-formula
+    answers:
+      - expect: correct
+        answer: "width * 0.2"
+      # Equivalent formula, proving the grader does not require one spelling.
+      - expect: correct
+        answer: "width / 5"
+      - expect: partial
+        answer: "width * 20"
+      - expect: incorrect
+        answer: "80"
+
+  - question: centering-formula
+    answers:
+      - expect: correct
+        answer: "x is 100 because 300/2 - 100/2 = 100"
+      - expect: correct
+        answer: "100; start from canvas middle and go left by half the head"
+      - expect: partial
+        answer: "x = 100"
+      - expect: partial
+        answer: "300/2 - 100/2 = 110"
+      - expect: incorrect
+        answer: "150 because the rectangle's x coordinate is its center"
+
+  - question: min-smaller-side
+    answers:
+      - expect: correct
+        answer: "min picks whichever side is shorter, so an eye based on it cannot grow too large to fit the head"
+      - expect: partial
+        answer: "it returns the smaller number"
+      - expect: partial
+        answer: "the eyes should use that side so they still fit when the head is stretched"
+      - expect: incorrect
+        answer: "min calculates the average width and height, which keeps the eye centered"
+
+  - question: scale-vs-formulas
+    answers:
+      - expect: correct
+        answer: "scale gives every part the same factor and keeps all proportions. here the head changes shape but the eyes need their own rule to stay round"
+      - expect: partial
+        answer: "scale resizes every shape by the same amount"
+      - expect: partial
+        answer: "each robot part needs a separate formula"
+      - expect: incorrect
+        answer: "scale only works on lines and circles, not rectangles, so it cannot resize the whole robot"
+
+  - question: fixed-number-bug
+    answers:
+      - expect: correct
+        answer: "there is still a hard coded pixel coordinate in the antenna. replace it with a formula using width or height"
+      - expect: correct
+        answer: "eine feste Zahl steckt noch im Code; sie muss aus width und height berechnet werden"
+      - expect: partial
+        answer: "look for a fixed number in the antenna code"
+      - expect: partial
+        answer: "use a responsive formula based on the canvas size"
+      - expect: incorrect
+        answer: "the antenna needs scale(SCALE), because formulas cannot move a line"

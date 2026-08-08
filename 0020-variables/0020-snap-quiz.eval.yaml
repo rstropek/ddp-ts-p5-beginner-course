@@ -1,0 +1,83 @@
+id: snap-quiz-eval
+target: ./0020-snap-quiz.yaml
+
+questions:
+  - question: type-promise
+    answers:
+      - expect: correct
+        answer: "it promises a number but hello is text, so the types dont match"
+      # German, correct, with both specific types.
+      - expect: correct
+        answer: "hinter dem Doppelpunkt steht number, aber \"hello\" ist ein string"
+      - expect: partial
+        answer: "the value has the wrong type for that declaration"
+      - expect: incorrect
+        answer: "quotes are illegal on the right side of a const declaration"
+
+  - question: data-types
+    answers:
+      - expect: correct
+        answer: "40 is number and lightblue in quotes is string"
+      - expect: partial
+        answer: "40 is a number, not sure about the other one"
+      - expect: partial
+        answer: "40 is a string and lightblue is text"
+      - expect: incorrect
+        answer: "both values are colors, since 40 is a gray color"
+
+  - question: naming-conventions
+    answers:
+      - expect: correct
+        answer: "SCALE looks like a setting for the whole program at the top. markerSize is just a normal constant inside some function"
+      - expect: partial
+        answer: "ALL_CAPS tells readers this is a global setting they can tweak"
+      - expect: partial
+        answer: "it is just a convention for humans, it doesnt change the code"
+      - expect: incorrect
+        answer: "TypeScript requires capitals for constants outside functions, while local constants must use camelCase"
+
+  - question: snap-formula-trace
+    answers:
+      - expect: correct
+        answer: "90/40 = 2.25, round is 2, then 2*40 = 80"
+      # Correct result alone is sufficient according to the rubric.
+      - expect: correct
+        answer: "80"
+      - expect: partial
+        answer: "2.25 rounds up to 3, so x is 120"
+      - expect: incorrect
+        answer: "x is 2 because round removes the decimal part"
+
+  - question: why-store-in-constant
+    answers:
+      - expect: correct
+        answer: "you can reuse x four times instead of copying that long formula everywhere"
+      - expect: correct
+        answer: "dann muss der Computer die Rechnung nur einmal machen"
+      - expect: partial
+        answer: "its cleaner and better style"
+      - expect: incorrect
+        answer: "p5 cannot calculate formulas inside parameters, so a constant is required"
+
+  - question: template-string
+    answers:
+      - expect: correct
+        answer: "80/200"
+      # The values were substituted, but template punctuation incorrectly remains.
+      - expect: partial
+        answer: "${80}/${200}"
+      - expect: partial
+        answer: "the canvas literally shows `80/200` including the backticks"
+      - expect: incorrect
+        answer: "${x}/${y}"
+
+  - question: width-height
+    answers:
+      - expect: correct
+        answer: "height is the current canvas height. subtracting 5 keeps it 5 px above the bottom even if the canvas changes"
+      - expect: partial
+        answer: "height contains how tall the canvas is"
+      - expect: partial
+        answer: "it still works when you resize the canvas instead of only working at 200"
+      - expect: incorrect
+        answer: "height stores the text height, so minus 5 makes the letters five pixels smaller"

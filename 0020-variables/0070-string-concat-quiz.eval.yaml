@@ -1,0 +1,63 @@
+id: string-concat-quiz-eval
+target: ./0070-string-concat-quiz.yaml
+
+questions:
+  - question: concat-trace
+    answers:
+      - expect: correct
+        answer: "0/0, 50/90"
+      # The rubric explicitly tolerates a missing space.
+      - expect: correct
+        answer: "0/0,50/90"
+      - expect: partial
+        answer: "50/90"
+      - expect: partial
+        answer: "50/90, 0/0"
+      - expect: incorrect
+        answer: "${clickPositions}, ${mouseX}/${mouseY}"
+
+  - question: why-global-let
+    answers:
+      - expect: correct
+        answer: "it needs let because each click assigns a new string, and global so the old clicks survive between mouseClicked calls"
+      - expect: correct
+        answer: "let weil der Wert geändert wird; global weil er zwischen den Klicks erhalten bleiben muss"
+      - expect: partial
+        answer: "let allows the variable to be assigned a new value"
+      - expect: partial
+        answer: "global means it does not get reset for every click"
+      - expect: incorrect
+        answer: "strings always have to use let, and global makes concatenation run faster"
+
+  - question: text-box-wrapping
+    answers:
+      - expect: correct
+        answer: "they set the width and height of an invisible text box, so long text wraps onto another line"
+      - expect: partial
+        answer: "the last two numbers make a box for the text"
+      - expect: partial
+        answer: "they make long text wrap to the next line"
+      - expect: incorrect
+        answer: "width - 10 sets the font size and height - 10 sets the line color"
+
+  - question: variable-remembers
+    answers:
+      - expect: correct
+        answer: "clickPositions keeps the whole protocol even when the paint is erased, then the program draws that full string again"
+      - expect: partial
+        answer: "the global variable remembers all clicks"
+      - expect: partial
+        answer: "the program redraws all the protocol text after clearing"
+      - expect: incorrect
+        answer: "background only removes shapes, not text, so all older lines remain protected on the canvas"
+
+  - question: order-bug
+    answers:
+      - expect: correct
+        answer: "the newest click is missing, so the display is one click behind because it draws before adding the new position"
+      - expect: partial
+        answer: "the protocol shown is always one click behind"
+      - expect: partial
+        answer: "the update and drawing statements are in the wrong order"
+      - expect: incorrect
+        answer: "the protocol stays empty forever because assigning after text deletes the entire string"
