@@ -1,0 +1,197 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Parsing: numbers hidden in a string"
+# (0050-arrays/0050-parsing.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: parseInt,
+# the buffer that collects digits until a separator arrives, the default
+# branch catching the digits, the flush after the loop, carrying the
+# previous point across rounds, and the ! operator with the first-point
+# guard.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: parsing-quiz
+name: "Quiz: Parsing"
+
+title: "Check your understanding: parsing"
+description: |
+  Six short questions about the chapter *Parsing: numbers hidden in a
+  string*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="case \",\": x = parseInt(coordinates); coordinates = \"\"; break;"
+      scope="after the parsing chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "while and for loops, `switch` with case/break/default, if/else chains"
+        "strings as rows of characters with zero-based indexes, `.length`, and `word[i]`"
+        "their first array and `random(myArray)`"
+        "`parseInt(text)` converting a digit string into a number"
+        "the buffer pattern: collect digits with `+=`, convert and empty at a separator"
+        "finishing the last value after the loop (the flush)"
+        "carrying the previous point with `x1 = x2; y1 = y2;`"
+        "the `!` operator negating a boolean, as in `if (!isFirstPoint)`")
+      not_yet=(array
+        "the `split` function (mentioned, but banned in these exercises)"
+        "reading array elements with `myArray[i]` in their own loops"
+        "`push` and `splice` on arrays"
+        "`millis()`"
+        "writing their own functions with parameters or return values")}}
+
+questions:
+  - id: parseint-what
+    title: "Text or number?"
+    question: |
+      `"42"` and `42` look almost the same. What is the difference
+      between them, and what does `parseInt("42")` do?
+    evaluation: |
+      Expected: "42" is a string (two characters), 42 is a number
+      you can calculate with. parseInt converts the digit string
+      into the number 42.
+
+      - `correct`   - names the type difference (string/text vs
+                      number) AND that parseInt converts the string
+                      into the number.
+      - `partial`   - only one half: the conversion without the
+                      difference, or the difference without saying
+                      what parseInt does.
+      - `incorrect` - anything else, e.g. they are the same, or
+                      parseInt rounds a number down like floor.
+
+      Feedback: ask what "42" + 1 should even mean if "42" is text,
+      and which function makes it calculable first.
+
+  - id: buffer-trace
+    title: "Trace the buffer"
+    question: |
+      The parser reads the string `"83,9 "` character by character.
+      What does the buffer `coordinates` hold just before the comma
+      is processed, and which value does `x` get at the comma?
+    evaluation: |
+      Expected: the buffer holds "83" (the digit 8, then the digit 3
+      appended), and at the comma x = parseInt("83") = 83, after
+      which the buffer is emptied.
+
+      - `correct`   - both: the buffer "83" AND x becomes 83.
+      - `partial`   - one right, for example x = 83 but the buffer
+                      described as holding single characters, or
+                      "83" in the buffer without saying what x
+                      becomes.
+      - `incorrect` - anything else, e.g. the buffer holds 839, or
+                      x becomes 8 and y becomes 3.
+
+      Feedback: walk the first three characters one by one: what
+      does the default branch do with "8", what with "3", and what
+      does the comma case do then?
+
+  - id: default-digits
+    title: "The default branch"
+    question: |
+      The parser's `switch` has cases for `","` and `" "`, and a
+      `default` branch. Which characters end up in `default`, and
+      what happens to them there?
+    evaluation: |
+      Expected: every character that is not a comma or a space,
+      which here means the digits. They are appended to the buffer
+      string with += so the number grows digit by digit.
+
+      - `correct`   - says the digits (or: everything that is no
+                      separator) land there AND get appended to the
+                      buffer/collected.
+      - `partial`   - only one half: "the digits" without what
+                      happens, or "they get collected" without
+                      saying which characters.
+      - `incorrect` - anything else, e.g. default handles errors
+                      and stops the program, or spaces land there.
+
+      Feedback: list the characters of "50,50 " and sort each one
+      into its switch case by hand.
+
+  - id: flush-why
+    title: "The missing circle"
+    question: |
+      Without the two lines after the loop, the parser draws only
+      three of the four circles. Why does the last circle need extra
+      code after the loop?
+    evaluation: |
+      Expected: a circle is only drawn at a space, and after the
+      last pair there is no space; the string just ends. The y
+      digits of the last point are still in the buffer when the
+      loop finishes, so they must be converted and drawn after the
+      loop.
+
+      - `correct`   - says the last pair has no space/separator
+                      after it, so its circle is never triggered
+                      inside the loop ("the buffer still holds the
+                      last number" counts as the same idea).
+      - `partial`   - says the loop misses the last circle without
+                      the separator reasoning, or explains the
+                      buffer leftover without connecting it to the
+                      drawing.
+      - `incorrect` - anything else, e.g. the loop condition is off
+                      by one and should be <=, or the last circle
+                      is outside the canvas.
+
+      Feedback: what ends every earlier coordinate pair, and what
+      comes after the last one instead?
+
+  - id: prev-point
+    title: "The slide"
+    question: |
+      In the lines exercise, the space case ends with
+      `x1 = x2; y1 = y2;`. What do these two assignments do for the
+      next round?
+    evaluation: |
+      Expected: they save the point that was just parsed as the
+      previous point: the current point becomes the start of the
+      next line, so the next parsed point can be connected to it.
+
+      - `correct`   - says the current point becomes the previous
+                      one / the start of the next line ("the line
+                      continues where the last one ended" counts).
+      - `partial`   - says the values are copied/saved without
+                      saying what for, or talks about remembering a
+                      point without the next-line connection.
+      - `incorrect` - anything else, e.g. it swaps the two points,
+                      or it resets the coordinates to the origin.
+
+      Feedback: a line needs a start and an end. Where does the
+      start of the NEXT line come from?
+
+  - id: not-operator
+    title: "The exclamation mark"
+    question: |
+      The line `if (!isFirstPoint) { line(...); }` contains the new
+      operator `!`. What does the condition mean, and why must the
+      first point be skipped?
+    evaluation: |
+      Expected: ! negates a boolean, so the condition reads "not
+      the first point": draw only from the second point on. The
+      first point has no previous point yet, so there is nothing to
+      connect a line to.
+
+      - `correct`   - both: ! flips/negates the boolean (or a
+                      correct reading of the condition) AND the
+                      first point has no predecessor to connect to.
+      - `partial`   - only one half: explains ! without the reason
+                      for skipping, or the missing-predecessor idea
+                      without explaining the operator.
+      - `incorrect` - anything else, e.g. ! marks an important
+                      condition, or the first point is skipped
+                      because it is (0, 0).
+
+      Feedback: how many points have been parsed when the guard
+      first blocks the line call, and how many does a line need?

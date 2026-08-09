@@ -1,0 +1,210 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Strings have parts: Word Swirrel"
+# (0050-arrays/0010-word-swirrel.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: zero-based
+# string indexes and .length, substring with its excluded end index, growing
+# a string with += from the empty string, the shrinking-string loop that is
+# guaranteed to end, and the given guess function with its parameter.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: word-swirrel-quiz
+name: "Quiz: Strings have parts"
+
+title: "Check your understanding: strings have parts"
+description: |
+  Six short questions about the chapter *Strings have parts: Word
+  Swirrel*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in German
+  is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat comes from
+# the shared fragment library. Edit ddp-quiz-fragments.yaml, never inline
+# here. Chapter-specific limits belong in discussion.instructions below.
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="scrambledWord += wordToScramble[letterIndex];"
+      scope="after the first chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "variables and constants with explicit data types"
+        "if/else chains, comparisons, `||` and `&&`, and the `switch` statement"
+        "while loops and for loops, also nested"
+        "`translate`, `push`, and `pop`"
+        "that a string is a row of characters with zero-based indexes"
+        "`word.length` and reading one character with `word[i]`"
+        "`substring(start, end)` with the end index not included"
+        "growing a string with `+` and `+=` from the empty string"
+        "that the playground calls the given `guess(textInput)` function and they only fill in its body")
+      not_yet=(array
+        "arrays"
+        "`random(myArray)` picking an element"
+        "`rotate` and `scale`"
+        "`parseInt` and parsing strings"
+        "`push` and `splice` on arrays"
+        "writing their own functions with parameters or return values")}}
+
+questions:
+  - id: index-length
+    title: "Read the row"
+    question: |
+      A program contains this line:
+
+      ```typescript
+      const word: string = "melon";
+      ```
+
+      What is `word[1]`, and what is `word.length`?
+    evaluation: |
+      Expected: `word[1]` is `"e"` (indexes start at 0, so index 1 is
+      the second character), and `word.length` is 5.
+
+      - `correct`   - both values: the character e AND the length 5.
+      - `partial`   - one of the two right and the other missing or
+                      wrong, for example "m" for `word[1]` (counted
+                      from 1) but the length 5.
+      - `incorrect` - anything else, e.g. both values wrong, or
+                      "word[1] is the whole word".
+
+      Feedback: if the student wrote "m", say it in one sentence: the
+      first character has index 0, so index 1 is the second one.
+
+  - id: substring-predict
+    title: "Predict the cut"
+    question: |
+      What does this expression return, and why not one character
+      more?
+
+      ```typescript
+      "flower".substring(2, 4)
+      ```
+    evaluation: |
+      Expected: `"ow"`. The copy starts at index 2 and ends just
+      before index 4: the character at the end index (the "e") is not
+      included.
+
+      - `correct`   - the result ow AND the reason: the end index is
+                      excluded ("stops before index 4" counts).
+      - `partial`   - the result ow without the reason, or a clearly
+                      stated stops-before-the-end rule applied with
+                      wrong indexes (for example counted from 1).
+      - `incorrect` - anything else, e.g. "owe" with "from index 2
+                      to index 4" (the end treated as included).
+
+      Feedback: write the indexes under f-l-o-w-e-r, from 0 to 5,
+      and mark which ones substring(2, 4) copies: 2 and 3.
+
+  - id: last-character
+    title: "The last character"
+    question: |
+      A classmate wants the last character of a word and writes
+      `word[word.length]`, but gets `undefined`. Why, and which index
+      holds the last character?
+    evaluation: |
+      Expected: indexes start at 0, so a string with length n uses
+      the indexes 0 to n - 1. `word[word.length]` points one past the
+      end, where nothing is stored; the last character is at
+      `word[word.length - 1]`.
+
+      - `correct`   - names the fix length - 1 AND the reason: zero-
+                      based counting / the index goes one past the
+                      end.
+      - `partial`   - only one half: the fix without a reason, or
+                      explains zero-based indexing without giving the
+                      index of the last character.
+      - `incorrect` - anything else, e.g. blames a missing semicolon,
+                      or says strings simply cannot be read at the
+                      end.
+
+      Feedback: for "apple" (length 5), have the student list the
+      valid indexes: 0, 1, 2, 3, 4. Which number is missing?
+
+  - id: accumulator-trace
+    title: "Collect the letters"
+    question: |
+      What does `result` hold after these lines?
+
+      ```typescript
+      const word: string = "apple";
+      let result: string = "";
+      result += word[3];
+      result += word[0];
+      ```
+    evaluation: |
+      Expected: `"la"`. `word[3]` is "l" (indexes 0-4), `word[0]` is
+      "a", and += hangs each character on the right end of result.
+
+      - `correct`   - the value la (with or without an explanation).
+      - `partial`   - "al" (right characters, order of += confused),
+                      or "pa" / another result that shows off-by-one
+                      indexing but correct += handling, with the
+                      reasoning shown.
+      - `incorrect` - anything else, e.g. "apple", the empty string,
+                      or a number.
+
+      Feedback: two steps: which character sits at index 3, which at
+      index 0? Then glue them in the order of the two += lines.
+
+  - id: shrink-loop
+    title: "Why the loop ends"
+    question: |
+      The scramble loop runs `while (wordToScramble.length > 0)`, and
+      there is no counter like `i += 1` anywhere. Why is this loop
+      still guaranteed to end?
+    evaluation: |
+      Expected: every round removes one character from
+      wordToScramble (the two substring pieces glued together skip
+      one letter), so its length shrinks by one per round and
+      eventually reaches 0, which makes the condition false. The
+      shrinking string IS the update step.
+
+      - `correct`   - says the string gets shorter every round (one
+                      letter removed) until the length is 0 / the
+                      condition becomes false.
+      - `partial`   - says the loop stops when the string is empty
+                      without explaining what makes it shorter, or
+                      points at the substring line without connecting
+                      it to the condition.
+      - `incorrect` - anything else, e.g. "while loops always stop on
+                      their own", or "random eventually returns 0 and
+                      that ends it".
+
+      Feedback: ask what wordToScramble looks like after one round:
+      longer, shorter, or the same, and why.
+
+  - id: guess-function
+    title: "Who calls guess?"
+    question: |
+      Your program never contains a line like `guess("apple");`, and
+      still the code inside `guess` runs. When does it run, and what
+      is inside the parameter `textInput` at that moment?
+    evaluation: |
+      Expected: the playground calls guess automatically when the
+      player clicks the Guess button (like mouseClicked is called on
+      a click), and textInput then holds the text the player typed
+      into the box.
+
+      - `correct`   - both halves: runs on the button click (called
+                      automatically / by the playground or browser)
+                      AND textInput holds the typed text.
+      - `partial`   - only one half: names the button click without
+                      saying what textInput holds, or explains the
+                      parameter without saying when the function
+                      runs.
+      - `incorrect` - anything else, e.g. guess runs once at the
+                      start like setup, or textInput holds the
+                      secret word.
+
+      Feedback: compare with mouseClicked: who calls that function,
+      and when? guess works the same way, just for the button.

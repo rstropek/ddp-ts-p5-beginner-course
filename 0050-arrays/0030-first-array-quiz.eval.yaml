@@ -1,0 +1,160 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0030-first-array-quiz.yaml ("Your first array").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: first-array-quiz-eval
+target: ./0030-first-array-quiz.yaml
+
+questions:
+  - question: literal-read
+    answers:
+      - expect: correct
+        answer: |
+          3 elements, index 1 is "lime"
+      - expect: correct
+        answer: |
+          drei elemente. bei index 1 steht lime, weil bei 0 gezählt wird.
+      # Counted from 1.
+      - expect: partial
+        answer: |
+          3 elements and index 1 is red, the first one
+      # Count missing.
+      - expect: partial
+        answer: |
+          lime
+      - expect: incorrect
+        answer: |
+          it has one element, the whole list counts as one value.
+      # Count right, element wrong: one-of-two-right partial branch.
+      - expect: partial
+        answer: |
+          3 elements, index 1 is gold.
+
+  - question: type-meaning
+    answers:
+      - expect: correct
+        answer: |
+          the variable holds an array of strings, a list where every
+          element is a string
+      - expect: correct
+        answer: |
+          das ist eine liste von strings, also viele wörter in einer
+          variable.
+      # Array idea without element type.
+      - expect: partial
+        answer: |
+          it's a list
+      # Everyday paraphrase, counts as correct per rubric.
+      - expect: correct
+        answer: |
+          many strings in one variable, like a row of boxes with text in
+          them
+      - expect: incorrect
+        answer: |
+          a string that contains square brackets.
+      - expect: incorrect
+        answer: |
+          it means the string can be as long as you want.
+
+  - question: random-array
+    answers:
+      - expect: correct
+        answer: |
+          one random word from the array, so a string
+      - expect: correct
+        answer: |
+          ein zufälliges element aus dem array, hier also eines der
+          wörter.
+      # Element/index mixed but picking idea shown.
+      - expect: partial
+        answer: |
+          it picks a random spot in the list and gives you that
+      - expect: incorrect
+        answer: |
+          a random number between 0 and the length of the array.
+      - expect: incorrect
+        answer: |
+          the array in a random order.
+      # Verbose but right.
+      - expect: correct
+        answer: |
+          normally random gives you a decimal number, but if you put an
+          array in, p5 picks one element for you. with the words array you
+          get one of the words back, like "cherry", and you don't need
+          floor or an index for it.
+
+  - question: let-not-const
+    answers:
+      - expect: correct
+        answer: |
+          the value is only decided in setup by random(WORDS), and a const
+          must get its value right when it is declared
+      - expect: correct
+        answer: |
+          eine const braucht ihren wert sofort bei der deklaration. hier
+          wird der wert erst später in setup zugewiesen, also let.
+      # Const rule without the late-assignment connection.
+      - expect: partial
+        answer: |
+          const can't be changed
+      # Random half without the const rule.
+      - expect: partial
+        answer: |
+          because the word is random now
+      - expect: incorrect
+        answer: |
+          const doesn't work with random, random needs let variables.
+      - expect: incorrect
+        answer: |
+          let is just the newer keyword, const is old-fashioned.
+
+  - question: global-trap
+    answers:
+      - expect: correct
+        answer: |
+          declared inside setup the variable only exists in setup, so guess
+          can't see it. it has to be global so both functions can use it
+      - expect: correct
+        answer: |
+          die variable ist dann lokal in setup. guess ist eine andere
+          funktion und sieht sie nicht. sie muss ausserhalb aller
+          funktionen deklariert werden.
+      # Problem without fix.
+      - expect: partial
+        answer: |
+          guess can't see variables from setup
+      # Fix without reason.
+      - expect: partial
+        answer: |
+          you have to declare it at the top, outside
+      - expect: incorrect
+        answer: |
+          guess runs before setup, so the value doesn't exist yet.
+      - expect: incorrect
+        answer: |
+          random isn't allowed inside setup, only in draw.
+
+  - question: adapt-length
+    answers:
+      - expect: correct
+        answer: |
+          no, the loop condition uses wordToGuess.length so it runs 11
+          times automatically
+      - expect: correct
+        answer: |
+          nein. die schleife läuft bis zur länge des gewählten worts,
+          die passt sich von selbst an.
+      # Answer without reason.
+      - expect: partial
+        answer: |
+          no change needed
+      # Reason without clear answer.
+      - expect: partial
+        answer: |
+          .length tells you how long the word is
+      - expect: incorrect
+        answer: |
+          yes, you have to change the loop to i < 11.
+      - expect: incorrect
+        answer: |
+          yes, long words don't fit and crash the letter loop.

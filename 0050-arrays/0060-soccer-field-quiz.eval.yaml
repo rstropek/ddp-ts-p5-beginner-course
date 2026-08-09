@@ -1,0 +1,158 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0060-soccer-field-quiz.yaml ("Parallel arrays").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: soccer-field-quiz-eval
+target: ./0060-soccer-field-quiz.yaml
+
+questions:
+  - question: element-read
+    answers:
+      - expect: correct
+        answer: |
+          22 Rüdiger
+      - expect: correct
+        answer: |
+          "22 Rüdiger", index 2 ist das dritte element in beiden arrays.
+      # Counted from 1: consistent same-index pair, off by one.
+      - expect: partial
+        answer: |
+          17 Vázquez, the second player
+      # Elements named but not combined.
+      - expect: partial
+        answer: |
+          numbers[2] is 22 and names[2] is Rüdiger
+      # Mixed indexes.
+      - expect: incorrect
+        answer: |
+          22 Vázquez
+      - expect: incorrect
+        answer: |
+          it prints both arrays completely.
+
+  - question: same-index
+    answers:
+      - expect: correct
+        answer: |
+          only the position connects them. both arrays are in the same
+          order, so the same index is the same player
+      - expect: correct
+        answer: |
+          die arrays sind gleich lang und gleich sortiert. index i gehört
+          in beiden zum selben spieler, darauf muss man selber aufpassen.
+      # Vague togetherness.
+      - expect: partial
+        answer: |
+          they belong together because they were written in the same order
+      # Sync duty without the mapping.
+      - expect: partial
+        answer: |
+          you have to keep them in sync yourself
+      - expect: incorrect
+        answer: |
+          typescript connects arrays that are declared next to each other.
+      - expect: incorrect
+        answer: |
+          the program compares the strings to find which name fits which
+          number.
+
+  - question: index-vs-element
+    answers:
+      - expect: correct
+        answer: |
+          i is the position in the array, playerNumbers[i] is the value
+          stored there, the real shirt number
+      - expect: correct
+        answer: |
+          i ist nur der zähler (0 bis 10). playerNumbers[i] holt das
+          element an dieser stelle, also die echte rückennummer. richtig
+          wäre text(playerNumbers[i], ...).
+      # Fix without explanation.
+      - expect: partial
+        answer: |
+          it should be text(playerNumbers[i], ...)
+      # Halfway explanation.
+      - expect: partial
+        answer: |
+          i is just the loop counter
+      - expect: incorrect
+        answer: |
+          the loop has to start at i = 1, then the numbers are right.
+      - expect: incorrect
+        answer: |
+          the array is sorted wrong, that's why the numbers are too small.
+
+  - question: length-promise
+    answers:
+      - expect: correct
+        answer: |
+          the last row shows the first name and undefined, because
+          lastNames[10] doesn't exist
+      - expect: correct
+        answer: |
+          in der letzten runde gibt es lastNames[10] nicht mehr, da kommt
+          undefined raus, also steht dort "Kylian undefined".
+      # Breakage without naming undefined.
+      - expect: partial
+        answer: |
+          the last name is missing so the row looks broken
+      # undefined without the length connection.
+      - expect: partial
+        answer: |
+          undefined appears
+      - expect: incorrect
+        answer: |
+          the program crashes with an index error.
+      - expect: incorrect
+        answer: |
+          the loop notices and stops after 10 players.
+
+  - question: meters-pixels
+    answers:
+      - expect: correct
+        answer: |
+          scale(SCALE) multiplies everything by 5, so a meter becomes 5
+          pixels and 100 meters are 500 pixels
+      - expect: correct
+        answer: |
+          scale(5). dadurch wird jede zahl mal 5 genommen, ein meter ist
+          dann 5 pixel.
+      # Names the call without the effect.
+      - expect: partial
+        answer: |
+          scale
+      # Effect without the call.
+      - expect: partial
+        answer: |
+          everything gets multiplied so the meters turn into pixels
+      - expect: incorrect
+        answer: |
+          createCanvas stretches whatever you draw to fit the window.
+      - expect: incorrect
+        answer: |
+          translate(MARGIN, MARGIN) blows the field up by the margin
+          factor.
+
+  - question: alpha-hex
+    answers:
+      - expect: correct
+        answer: |
+          they set the transparency, the plate is about 80% opaque so the
+          field shows through
+      - expect: correct
+        answer: |
+          das ist der alpha-wert, also wie durchsichtig die farbe ist.
+      # Effect without locating it.
+      - expect: partial
+        answer: |
+          the plate is see-through
+      # Wrong word, right effect described.
+      - expect: partial
+        answer: |
+          it's the brightness, that's why you can see the field behind it
+      - expect: incorrect
+        answer: |
+          d0 makes the green darker.
+      - expect: incorrect
+        answer: |
+          the last two digits are the stroke color of the rectangle.

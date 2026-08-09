@@ -1,0 +1,162 @@
+---
+title: "Parallel arrays: the starting eleven"
+---
+
+![The finished dashboard for the TV station: a to-scale soccer field with the starting lineup on a semi-transparent plate. Numbers orange and right-aligned, names yellow and left-aligned, all read from arrays. In your version, the real shirt numbers from the playerNumbers array appear instead of 1 to 11.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/soccer-field.png){width=460}
+
+A local TV station hires you: before the match, they want to show
+the starting lineup on a drawn soccer field. This is the first real
+job for arrays. Eleven players means eleven numbers, eleven first
+names, eleven last names, and nobody wants 33 variables. Three
+arrays carry all of it, and one loop paints the whole list. Along
+the way, the soccer field itself brings back an old friend: the
+part 1 practice project drew this very field with a magic recipe,
+and you now own every word of it.
+
+## AI tutor {#sec-tutor-soccer-field}
+
+The field has many small parts, and real-world measurements make
+every number mean something. If your penalty box sits in the wrong
+spot or your names refuse to line up, describe to the tutor what
+you measured and what the canvas shows.
+
+{{< tutor tutor-arrays >}}
+
+## Three arrays, one team {#sec-parallel-arrays}
+
+The starter code hands you the team as data:
+
+```typescript
+const playerNumbers: number[] = [1, 17, 22, 23, 20, 6, 15, 5, 11, 7, 9];
+const firstNames: string[] = ["Thibaut", "Lucas", "Antonio", /* ... */];
+const lastNames: string[] = ["Courtois", "Vázquez", "Rüdiger", /* ... */];
+```
+
+`number[]` is the second array type promised earlier: a row of
+numbers, here the shirt numbers. And reading an element works
+exactly like reading a character of a string, with square brackets
+and a zero-based index: `firstNames[1]` is `"Lucas"`,
+`playerNumbers[1]` is `17`.
+
+The three arrays are a team in a second sense: **the same index
+belongs to the same player.** Index 1 means Lucas Vázquez with
+shirt number 17; three arrays, one person per column. Arrays used
+this way are called **parallel arrays**, and they only work while
+you keep the promise that all of them have the same length and the
+same order. Swap two names in `lastNames` without swapping the
+first names, and player 1 becomes Lucas Rüdiger on live TV.
+
+![Parallel arrays: one column, one player. The index i ties playerNumbers[i], firstNames[i], and lastNames[i] together.](images/parallel-arrays.svg){width=440}
+
+## The loop over an array {#sec-array-loop}
+
+Drawing the list is the letter loop of the criss-cross chapter,
+applied to an array. From 0, while less than length, one step at a
+time:
+
+```typescript
+fill("yellow");
+textAlign(LEFT);
+for (let i = 0; i < firstNames.length; i++) {
+    text(`${firstNames[i]} ${lastNames[i]}`, 33, 12 + i * 5);
+}
+```
+
+Three details carry the section. First, `firstNames.length` is 11,
+so the loop visits each player once; add a twelfth player to all
+three arrays and the loop follows without a change. Second, the
+template string glues the two name parts of the *same index*
+together; that is a parallel-array read. Third, the y position
+`12 + i * 5` computes the row from the index, exactly like the
+zebra stripes computed their y from the loop variable: index 0
+draws at 12, index 1 at 17, each player 5 units lower.
+
+The numbers work the same way in a second loop, with
+`textAlign(RIGHT)` so the digits line up like a table, orange fill
+and bold `textStyle(BOLD)`, and `text(playerNumbers[i], 30, 12 + i * 5)`.
+Two loops, same row formula, and the columns meet neatly at the
+gap between x = 30 and x = 33.
+
+## Meters as pixels {#sec-meters-pixels}
+
+A real soccer field is 100 by 70 meters, and the starter code draws
+it with those exact numbers:
+
+```typescript
+createCanvas((100 + MARGIN * 2) * SCALE, (70 + MARGIN * 2) * SCALE);
+// ...
+push();
+scale(SCALE);
+translate(MARGIN, MARGIN);
+rect(0, 0, 100, 70);   // the field, in meters
+```
+
+This is the part 1 soccer recipe, and after the last chapter it
+reads like an open book: `scale(SCALE)` multiplies everything drawn
+afterwards by 5, so one "meter" becomes 5 pixels; `translate`
+shifts the field by the margin, *in meters*, because the translate
+happens after the scale. From then on, every measurement from the
+real world goes into the code unchanged: the penalty box is 16.5
+deep because it really is 16.5 meters deep. Even
+`strokeWeight(0.5)` speaks meters: the lines are half a meter
+wide, like real field markings. The canvas size does the same
+computation in reverse, so the window always fits the field plus
+its margins.
+
+## Field details worth stealing {#sec-field-details}
+
+Two drawing tricks in this exercise deserve a place in your
+toolbox:
+
+- **The penalty arc without arc math.** The curve at the penalty
+  box is officially a circle of radius 9.15 meters around the
+  penalty spot, but only the part outside the box is drawn. The
+  sample solution draws the *full* circle, then paints the penalty
+  area over it with an opaque green rectangle: only the arc
+  survives. Painting over is a legal move; you have known that
+  since the very first chapter.
+- **See-through color.** The name plate is
+  `fill("#008000d0")`: a hex color with *eight* digits. The first
+  six are the RGB color you know from the Variables part; the extra
+  two are the **alpha value**, the transparency. `d0` is 208 of
+  255, about 80 percent opaque, so the field shimmers through the
+  plate. Alpha `ff` is fully opaque, `00` fully invisible.
+
+The corners are little quarter circles, drawn with `arc` and
+degree angles, the same `arc` you learned in part 1. The goal
+areas, the center circle, and the penalty spots are plain rects,
+circles, and points measured off the official diagram.
+
+## Your exercise: Soccer Field {#sec-soccer-field-exercise}
+
+1. **Paper first, with real units.** Look up the field measurements
+   linked in the exercise (goal area 5.5 by 18.32, penalty area
+   16.5 by 40.32, center circle radius 9.15). Sketch the field on
+   graph paper in meters, and label each part with its numbers.
+   Your sketch is the field; the code just reads it aloud.
+2. **Task 1: the field.** The starter draws the outer rectangle;
+   you add the center line, center circle, goal and penalty areas,
+   penalty spots, penalty arcs (full circle, then paint over), and
+   the corner arcs. Change `SCALE` to 2 and 3 between runs: the
+   whole field must follow.
+3. **Task 2: the lineup.** Two loops over the arrays, numbers
+   right-aligned in orange and bold, names left-aligned in yellow
+   (@sec-array-loop). One heads-up: the exercise's screenshot
+   shows the row numbers 1 to 11, but your program must print the
+   real shirt numbers from `playerNumbers`, so your plate will
+   show 1, 17, 22, and so on. Print the numbers, not the index.
+4. **Your team.** Replace the eleven with your favorite lineup.
+   All three arrays must change together; that is the parallel-
+   array promise.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/soccer-field.yaml title="Soccer Field" >}}
+
+## Check your understanding {#sec-quiz-soccer-field}
+
+When your field survives a `SCALE` change and your own team stands
+on the plate, take the short quiz below. You answer six questions
+about this chapter in your own words, and an AI reads your answers
+and tells you what you already understand and what you should read
+again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz soccer-field title="Parallel arrays" >}}

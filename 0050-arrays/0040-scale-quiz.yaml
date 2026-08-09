@@ -1,0 +1,203 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Scale: bigger and smaller"
+# (0050-arrays/0040-scale.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: scale
+# multiplies coordinates, sizes, and stroke weight; the strokeWeight
+# compensation; the origin as the fixed point; the translate-then-draw-at-
+# (0,0) recipe; push/pop hygiene around scale; and shrinking with factors
+# below 1.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: scale-quiz
+name: "Quiz: Scale"
+
+title: "Check your understanding: scale"
+description: |
+  Six short questions about the chapter *Scale: bigger and smaller*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="push(); scale(2); circle(0, 0, 50); pop();"
+      scope="after the scale chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "while loops and for loops, strings with indexes, and their first array"
+        "`translate`, `push`, `pop`, and `rotate`"
+        "`scale(factor)` multiplying coordinates, sizes, and the stroke weight"
+        "compensating the stroke weight, like `strokeWeight(3 / 2)` after `scale(2)`"
+        "that the origin is the fixed point of scaling"
+        "the recipe: translate to the target spot, then draw at (0, 0)"
+        "factors below 1 shrinking the drawing")
+      not_yet=(array
+        "reading array elements with `myArray[i]` in their own loops"
+        "`parseInt` and parsing strings"
+        "`push` and `splice` on arrays"
+        "`millis()`"
+        "writing their own functions with parameters or return values")}}
+
+questions:
+  - id: predict-landing
+    title: "Where does it land?"
+    question: |
+      A program calls:
+
+      ```typescript
+      scale(2);
+      circle(50, 50, 50);
+      ```
+
+      Where is the circle's center on the canvas, and how big is its
+      diameter?
+    evaluation: |
+      Expected: center (100, 100), diameter 100. Scaling multiplies
+      the coordinates as well as the size, so the point (50, 50)
+      lands twice as far from the origin.
+
+      - `correct`   - both: center (100, 100) AND diameter 100.
+      - `partial`   - one right, one wrong or missing, for example
+                      "diameter 100 but it stays at (50, 50)".
+      - `incorrect` - anything else, e.g. everything unchanged, or
+                      only the stroke gets thicker.
+
+      Feedback: remind the student that scale multiplies EVERY
+      number the drawing uses: what is 50 * 2 for the x, the y, and
+      the diameter?
+
+  - id: stroke-compensate
+    title: "The strange strokeWeight"
+    question: |
+      In the type-in code, `scale(2)` is followed by
+      `strokeWeight(3 / 2)`. Why one and a half pixels, of all
+      values?
+    evaluation: |
+      Expected: scale multiplies the stroke weight too. 1.5 pixels,
+      scaled by 2, appears as 3 pixels, the same visual thickness as
+      the unscaled blue circle. The division pre-compensates the
+      scaling.
+
+      - `correct`   - says the scaling doubles the stroke, so 3 / 2
+                      ends up looking like 3 ("so all circles have
+                      the same outline" with the mechanism counts).
+      - `partial`   - says it is compensation / keeps the lines
+                      equal without explaining that scale affects
+                      the stroke, or names the mechanism without
+                      the resulting 3 pixels.
+      - `incorrect` - anything else, e.g. strokeWeight must always
+                      be halved after push, or 1.5 makes the line
+                      smoother.
+
+      Feedback: ask what a 3-pixel stroke looks like under
+      scale(2), and what value, times 2, gives 3.
+
+  - id: fixed-point
+    title: "The point that stays"
+    question: |
+      After `scale(4)`, almost every point of the canvas has moved,
+      except one. Which point does scaling never move, and why that
+      one?
+    evaluation: |
+      Expected: the origin (0, 0). Scaling multiplies each
+      coordinate by the factor, and 0 times any factor is still 0,
+      so the origin is the fixed point.
+
+      - `correct`   - names the origin / (0, 0) AND the reason
+                      0 * factor = 0 ("zero times anything is zero"
+                      counts).
+      - `partial`   - names the origin without the multiplication
+                      reason, or gives the 0-times-anything argument
+                      without naming the point.
+      - `incorrect` - anything else, e.g. the canvas center, the
+                      last translate target, "the smallest circle",
+                      or a circular answer that only restates "the
+                      point that does not change".
+
+      Feedback: let the student compute where (0, 0) lands when
+      every coordinate is multiplied by 4.
+
+  - id: centered-recipe
+    title: "Growing without moving"
+    question: |
+      You want a circle at the canvas position (150, 150) that
+      `scale` makes bigger but never moves. Which two steps does the
+      chapter's recipe use to achieve that?
+    evaluation: |
+      Expected: first translate(150, 150) to move the origin to the
+      target spot, then draw the circle at (0, 0) (with scale
+      applied around it). On the fixed point, scaling changes only
+      the size.
+
+      - `correct`   - both steps: translate to the spot AND draw at
+                      (0, 0) ("move the origin there, then draw at
+                      the origin" counts).
+      - `partial`   - only one step, for example "draw it at 0,0"
+                      without the translate, or the right idea with
+                      the order reversed and no sign of
+                      understanding why.
+      - `incorrect` - anything else, e.g. scale first and then
+                      subtract the difference, or use resetMatrix
+                      after scaling.
+
+      Feedback: which point does scale never move, and how do you
+      get your circle onto exactly that point?
+
+  - id: leaky-scale
+    title: "The forgotten pop"
+    question: |
+      A classmate writes `push(); scale(2);` for the red circle but
+      forgets the `pop()`. The next block calls `scale(4)` for the
+      green circle. By which factor is the green circle really
+      scaled, and why?
+    evaluation: |
+      Expected: by 8. Without the pop, the scale(2) is still active,
+      and scale calls multiply together: 2 * 4 = 8. (Also accepted:
+      the green block's own push/pop can only restore what was
+      saved after the leak.)
+
+      - `correct`   - the factor 8 AND the reason: the first scale
+                      stays active and the factors multiply.
+      - `partial`   - says the scalings combine / the green circle
+                      gets too big without committing to 8, or
+                      says 8 without any reason.
+      - `incorrect` - anything else, e.g. 4 because the newer scale
+                      wins, or 6 because they add.
+
+      Feedback: compare with translate: two translates add their
+      distances. What do two scales do with their factors?
+
+  - id: shrink-factor
+    title: "Smaller than 1"
+    question: |
+      What does `scale(0.5)` do to a `rect(100, 100, 80, 80)` drawn
+      after it?
+    evaluation: |
+      Expected: everything is halved: the rectangle appears at
+      (50, 50) with size 40 by 40. Factors below 1 shrink the
+      drawing, positions included.
+
+      - `correct`   - says it is half as big AND half as far from
+                      the origin (naming (50, 50) and 40 counts, as
+                      does "everything halves, position too").
+      - `partial`   - only the size halving, without the position
+                      moving closer to the origin (or the other way
+                      around).
+      - `incorrect` - anything else, e.g. scale below 1 is an
+                      error, or the rectangle doubles because 0.5
+                      flips the direction.
+
+      Feedback: scale multiplies every number by 0.5: what is
+      100 * 0.5 and 80 * 0.5?

@@ -1,0 +1,166 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0070-bubbles-quiz.yaml ("Arrays that grow and shrink").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: bubbles-quiz-eval
+target: ./0070-bubbles-quiz.yaml
+
+questions:
+  - question: push-trace
+    answers:
+      - expect: correct
+        answer: |
+          a holds 5 and 9, length is 2
+      - expect: correct
+        answer: |
+          [5, 9], die länge ist 2. push hängt hinten an.
+      # Elements right, length missing.
+      - expect: partial
+        answer: |
+          5 at index 0 and 9 at index 1
+      # Length right, order reversed.
+      - expect: partial
+        answer: |
+          two elements, 9 first then 5
+      - expect: incorrect
+        answer: |
+          only 9, the second push overwrites the first value.
+      - expect: incorrect
+        answer: |
+          nothing, you can't push into a const array.
+
+  - question: const-mutate
+    answers:
+      - expect: correct
+        answer: |
+          const forbids assigning a new array to the variable, but the
+          content can change with push and splice
+      - expect: correct
+        answer: |
+          const heisst nur, dass man der variable kein neues array zuweisen
+          darf. was drinnen ist, darf sich ändern.
+      # One half.
+      - expect: partial
+        answer: |
+          const means you can't use = on it again
+      # Vague box metaphor without the allowed part... actually box metaphor covers both; make it one-sided.
+      - expect: partial
+        answer: |
+          push is allowed on const arrays
+      - expect: incorrect
+        answer: |
+          push makes a secret copy of the array, that's why there is no
+          error.
+      - expect: incorrect
+        answer: |
+          const arrays may only grow, shrinking would be an error.
+
+  - question: lockstep-bug
+    answers:
+      - expect: correct
+        answer: |
+          circlesFill is shorter than the others, so the colors don't
+          match their bubbles anymore and the newest bubbles get
+          undefined as color
+      - expect: correct
+        answer: |
+          die arrays sind nicht mehr synchron. ab da bekommt jede blase
+          die farbe einer anderen, und für die letzten gibt es gar keine
+          farbe (undefined).
+      # Symptom without the index connection.
+      - expect: partial
+        answer: |
+          the colors are wrong
+      # Length observation only.
+      - expect: partial
+        answer: |
+          the fill array is shorter than the rest
+      - expect: incorrect
+        answer: |
+          the program stops with an error because the arrays must have
+          the same length.
+      - expect: incorrect
+        answer: |
+          nothing, p5 fills missing colors with white automatically.
+
+  - question: millis-deadline
+    answers:
+      - expect: correct
+        answer: |
+          it sets the time when the next bubble is due, somewhere between
+          0.5 and 2 seconds from now
+      - expect: correct
+        answer: |
+          aktuelle zeit plus 500 bis 2000 ms, also der zeitpunkt für die
+          nächste blase. draw vergleicht jeden frame millis() damit.
+      # Wait idea without deadline comparison.
+      - expect: partial
+        answer: |
+          it waits a random time before the next bubble
+      # millis explained, purpose missing.
+      - expect: partial
+        answer: |
+          millis() is the time since the start in milliseconds
+      - expect: incorrect
+        answer: |
+          it pauses the whole program for up to 2 seconds.
+      - expect: incorrect
+        answer: |
+          it sets how long the new bubble stays on the screen.
+
+  - question: redraw-truth
+    answers:
+      - expect: correct
+        answer: |
+          the bubbles are stored in the arrays and the loop redraws all of
+          them every frame after the background
+      - expect: correct
+        answer: |
+          die blasen leben in den arrays, nicht am canvas. nach dem
+          schwarzmalen zeichnet die schleife alle gespeicherten blasen
+          neu.
+      # Redraw without memory idea.
+      - expect: partial
+        answer: |
+          the loop draws them again each frame
+      # Memory without redraw.
+      - expect: partial
+        answer: |
+          they are saved in the arrays
+      - expect: incorrect
+        answer: |
+          background only runs once at the very beginning, so nothing is
+          wiped.
+      - expect: incorrect
+        answer: |
+          the canvas keeps the old circles behind the new background
+          layer.
+
+  - question: splice-backwards
+    answers:
+      - expect: correct
+        answer: |
+          splice shifts the later elements one to the left. going forward
+          the loop would skip the element that slides into the removed
+          spot, going backward nothing gets skipped
+      - expect: correct
+        answer: |
+          beim entfernen rutschen alle späteren elemente nach links.
+          vorwärts würde die schleife das nachgerückte element
+          überspringen, rückwärts passiert das nicht.
+      # Skipping without shift explanation.
+      - expect: partial
+        answer: |
+          going forward you would skip elements
+      # Shift without consequence.
+      - expect: partial
+        answer: |
+          because splice moves the indexes of everything after it
+      - expect: incorrect
+        answer: |
+          backwards loops are faster because the length is only read
+          once.
+      - expect: incorrect
+        answer: |
+          splice can only remove the last element, so you have to start
+          at the end.

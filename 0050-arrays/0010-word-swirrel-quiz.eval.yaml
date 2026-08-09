@@ -1,0 +1,168 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0010-word-swirrel-quiz.yaml ("Strings have parts").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: word-swirrel-quiz-eval
+target: ./0010-word-swirrel-quiz.yaml
+
+questions:
+  - question: index-length
+    answers:
+      - expect: correct
+        answer: |
+          word[1] is "e" and the length is 5
+      - expect: correct
+        answer: |
+          e, weil der index bei 0 anfängt. länge ist 5.
+      # Counted from 1: one value wrong, one right.
+      - expect: partial
+        answer: |
+          word[1] is m because it's the first letter, and word.length is 5
+      # Only the length.
+      - expect: partial
+        answer: |
+          the length is 5
+      - expect: incorrect
+        answer: |
+          word[1] gives you the whole word once, and length is how many
+          words there are, so 1.
+      # Verbose but right — must stay correct.
+      - expect: correct
+        answer: |
+          ok so the indexes go 0 for m, 1 for e, 2 for l, 3 for o, 4 for n.
+          that means word[1] is the letter e. and melon has five letters so
+          word.length is 5.
+
+  - question: substring-predict
+    answers:
+      - expect: correct
+        answer: |
+          "ow", because the end index 4 is not included
+      - expect: correct
+        answer: |
+          ow. substring hört VOR dem index 4 auf, das e ist nicht mehr dabei.
+      # Value without reasoning.
+      - expect: partial
+        answer: |
+          ow
+      # Rule right, result wrong.
+      - expect: partial
+        answer: |
+          it stops before the end index, so you get "owe"... wait no, "we"
+      - expect: incorrect
+        answer: |
+          "owe", from index 2 to index 4.
+      # End-exclusive rule stated correctly but counted from 1: lands on
+      # the rubric's wrong-indexes partial branch.
+      - expect: partial
+        answer: |
+          "lo", you take the 2nd to 4th letter but not the 4th, so letters
+          two and three.
+
+  - question: last-character
+    answers:
+      - expect: correct
+        answer: |
+          because indexes start at 0, the last one is word.length - 1
+      - expect: correct
+        answer: |
+          die indexe gehen von 0 bis länge minus 1. word[word.length] zeigt
+          hinter das ende, dort ist nichts, deshalb undefined. richtig wäre
+          word[word.length - 1].
+      # Fix without reason.
+      - expect: partial
+        answer: |
+          use word.length - 1
+      # Reason without the fix.
+      - expect: partial
+        answer: |
+          the counting starts at zero so the numbers are shifted
+      - expect: incorrect
+        answer: |
+          the string is const, you can't read it after the end. you have to
+          make it a let first.
+      - expect: incorrect
+        answer: |
+          word.length is wrong, it should be word.count
+      # Everyday paraphrase, still both halves.
+      - expect: correct
+        answer: |
+          apple has 5 letters but the boxes are numbered 0 1 2 3 4, so box
+          number 5 is empty. the last letter sits in box length minus one.
+
+  - question: accumulator-trace
+    answers:
+      - expect: correct
+        answer: |
+          "la"
+      - expect: correct
+        answer: |
+          la. word[3] ist l, word[0] ist a, += hängt hinten an.
+      # Off-by-one but += logic shown.
+      - expect: partial
+        answer: |
+          word[3] is the third letter p and word[0] is a, so result is "pa"
+      # Right letters, order swapped.
+      - expect: partial
+        answer: |
+          al
+      - expect: incorrect
+        answer: |
+          result is still "" because you can't add letters to an empty
+          string.
+      - expect: incorrect
+        answer: |
+          it holds "apple" because += adds the whole word.
+
+  - question: shrink-loop
+    answers:
+      - expect: correct
+        answer: |
+          each round one letter is removed, so the word gets shorter until
+          the length is 0 and the condition is false
+      - expect: correct
+        answer: |
+          die substring-zeile baut das wort jede runde ohne einen buchstaben
+          neu zusammen. irgendwann ist es leer, dann ist length > 0 falsch.
+      # Endpoint without mechanism.
+      - expect: partial
+        answer: |
+          it stops when the string is empty
+      # Points at the line without connecting to the condition.
+      - expect: partial
+        answer: |
+          because of the line with the two substrings
+      - expect: incorrect
+        answer: |
+          random gets smaller every round and when it reaches 0 the loop is
+          done.
+      - expect: incorrect
+        answer: |
+          while loops always end after the number of rounds in the
+          parentheses, here after length rounds from the start.
+
+  - question: guess-function
+    answers:
+      - expect: correct
+        answer: |
+          it runs when you click the Guess button, and textInput contains
+          what the player typed
+      - expect: correct
+        answer: |
+          der playground ruft guess automatisch beim klick auf den button
+          auf, so wie mouseClicked. in textInput steht der getippte text.
+      # Only the trigger.
+      - expect: partial
+        answer: |
+          it runs automatically when the button is clicked
+      # Only the parameter.
+      - expect: partial
+        answer: |
+          textInput is the text from the input box
+      - expect: incorrect
+        answer: |
+          guess runs once at the start of the program, like setup, and
+          textInput is the word to guess.
+      - expect: incorrect
+        answer: |
+          you have to call it yourself in draw, otherwise it never runs.

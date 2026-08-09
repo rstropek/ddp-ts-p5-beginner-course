@@ -1,0 +1,162 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0020-criss-cross-quiz.yaml ("Letters criss-cross").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: criss-cross-quiz-eval
+target: ./0020-criss-cross-quiz.yaml
+
+questions:
+  - question: loop-bound
+    answers:
+      - expect: correct
+        answer: |
+          because the last index is length - 1. with <= the loop would try
+          word[length] and that is undefined
+      - expect: correct
+        answer: |
+          die indexe gehen nur bis länge minus 1. mit <= würde die schleife
+          eine runde zu viel laufen.
+      # Consequence without index reasoning.
+      - expect: partial
+        answer: |
+          with <= it runs one time too often
+      # Reasoning without answering the question.
+      - expect: partial
+        answer: |
+          strings start counting at 0
+      - expect: incorrect
+        answer: |
+          both work the same, < is just shorter to type.
+      - expect: incorrect
+        answer: |
+          you need < so that i can start at 0.
+
+  - question: word-i-role
+    answers:
+      - expect: correct
+        answer: |
+          the letter at position i, so every round draws the next letter
+      - expect: correct
+        answer: |
+          das ist ein einzelner buchstabe, in runde 0 der erste, in runde 1
+          der zweite usw.
+      # Vague half.
+      - expect: partial
+        answer: |
+          a letter of the word
+      # Describes loop effect, not the expression.
+      - expect: partial
+        answer: |
+          it draws the whole word spread over the canvas
+      - expect: incorrect
+        answer: |
+          it hands over the whole word every round, the loop just moves it
+          around.
+      - expect: incorrect
+        answer: |
+          the number i as text.
+
+  - question: rotate-pivot
+    answers:
+      - expect: correct
+        answer: |
+          around the origin (0,0). translate moves the origin to the letter
+          first so the letter turns in place
+      - expect: correct
+        answer: |
+          rotate dreht um den ursprung. darum schiebt man den ursprung
+          vorher mit translate zum buchstaben, sonst schwingt alles um die
+          ecke links oben.
+      # Pivot only.
+      - expect: partial
+        answer: |
+          it turns around 0,0
+      # Translate reason only.
+      - expect: partial
+        answer: |
+          you translate first so the letter stays where it should be
+      - expect: incorrect
+        answer: |
+          rotate always turns the shape around its own middle, translate is
+          only for spacing.
+      - expect: incorrect
+        answer: |
+          it rotates around the center of the canvas.
+
+  - question: missing-push-pop
+    answers:
+      - expect: correct
+        answer: |
+          the translates and rotates add up, every letter starts from where
+          the last one ended and they drift off the canvas
+      - expect: correct
+        answer: |
+          ohne push/pop bauen die transformationen aufeinander auf. jede
+          runde verschiebt und dreht weiter, bis die buchstaben draussen
+          sind.
+      # Reset idea without mechanism.
+      - expect: partial
+        answer: |
+          push and pop reset the position, without them it doesn't reset
+      # Only one transformation named as accumulating.
+      - expect: partial
+        answer: |
+          the rotations add up so the letters spin more and more
+      - expect: incorrect
+        answer: |
+          pop is what actually draws the letter, so without it nothing
+          appears.
+      - expect: incorrect
+        answer: |
+          without push the random values stay the same for all letters.
+
+  - question: rotate-adds-up
+    answers:
+      - expect: correct
+        answer: |
+          60 degrees, the rotations add up
+      - expect: correct
+        answer: |
+          60 grad. rotate ist relativ, wie translate: jeder aufruf dreht
+          weiter.
+      # Value only.
+      - expect: partial
+        answer: |
+          60
+      # Idea only, no committed angle.
+      - expect: partial
+        answer: |
+          they add together like translate does
+      - expect: incorrect
+        answer: |
+          30, the second rotate overwrites the first one.
+      - expect: incorrect
+        answer: |
+          0, two rotations in the same push/pop cancel each other.
+
+  - question: fresh-scatter
+    answers:
+      - expect: correct
+        answer: |
+          every run starts setup again and random gives new values, so the
+          positions and angles are different
+      - expect: correct
+        answer: |
+          setup läuft bei jedem start neu und random liefert jedes mal
+          andere zahlen.
+      # Random named without the setup connection.
+      - expect: partial
+        answer: |
+          because of random
+      # Setup half without random.
+      - expect: partial
+        answer: |
+          setup runs again every time you press run
+      - expect: incorrect
+        answer: |
+          draw runs secretly in the background and keeps moving the
+          letters.
+      - expect: incorrect
+        answer: |
+          the browser shuffles the canvas when the page reloads, the code
+          has nothing to do with it.

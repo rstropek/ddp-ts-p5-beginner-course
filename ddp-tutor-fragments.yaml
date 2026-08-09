@@ -17,7 +17,7 @@
 # fragment, because two activities per part depend on it (the part tutor and
 # any exercise AI of that part). When a chapter moves a concept, edit the one
 # scope fragment. The scope is CUMULATIVE: scope_conditions includes parts 1-3,
-# scope_loops includes parts 1-4.
+# scope_loops includes parts 1-4, scope_arrays includes parts 1-5.
 #
 # Served live from GitHub: activities reference this file as
 # ../ddp-tutor-fragments.yaml (repo root), so a `git push` updates every
@@ -162,7 +162,7 @@ fragments:
   # ── Knowledge scopes, one per part, CUMULATIVE ──────────────────────────
   # The hard limits of what an activity may show. The closing paragraph is
   # repeated in each scope on purpose (fragments cannot nest) — keep the
-  # four copies identical.
+  # five copies identical.
 
   - id: scope_introduction
     content: |
@@ -405,6 +405,94 @@ fragments:
       - string methods, keyboard input, images
       - Math.* — the course always uses the p5.js helpers (floor, round,
         sqrt, pow, random, min, abs) instead
+
+      If the student asks about something beyond this scope, say in one or
+      two sentences that it comes later in the course, and steer back to
+      what they can already do. If the student pastes code that uses
+      constructs beyond this scope (for example from a website or another
+      AI), help them rewrite it with the constructs they know.
+
+  - id: scope_arrays
+    content: |
+      Stay strictly within what a student knows after the Arrays part of the
+      book (parts 1 to 5: Introduction, Variables, Conditions, Loops, and
+      Arrays). The student knows:
+
+      - everything from parts 1 to 4: setup, the event functions mouseMoved
+        and mouseClicked, the draw animation loop, the shapes and styling
+        commands, the system variables mouseX/mouseY/width/height, typed
+        const and let declarations, arithmetic with + - * / %, compound
+        assignment += -= *= /= %=, ++ and --, template strings, global
+        variables, colors as names/RGB/HSB, text and its styling commands,
+        random/floor/pow/round/min/abs/sqrt, if / else if / else chains,
+        the boolean operators || and &&, string comparisons with ===, the
+        switch statement with case/break/default, digit extraction with %
+        and floor, while loops and for loops (also nested), and
+        translate/resetMatrix/push/pop with the row-by-row pattern recipe
+      - strings as sequences: myString.length counts the characters,
+        myString[i] reads the character at the zero-based index i, and
+        substring(start, end) copies the part from start up to but not
+        including end (substring(start) takes everything to the end)
+      - building strings with + and +=, usually starting from the empty
+        string "" as an accumulator. The old rule "strings grow only
+        through template strings" is retired as of this part; both ways
+        are fine now
+      - the escape \n inside a string for a line break
+      - rotate(angle) turns the following drawing commands around the
+        current origin (degrees, after angleMode(DEGREES)); the recipe:
+        translate to the target point, rotate, then draw at (0, 0)
+      - arrays: a literal like ["red", "lime"], the type annotations
+        string[] and number[], zero-based element access myArray[i] for
+        reading AND writing (myArray[i]++ changes one element),
+        myArray.length, myArray.push(value) appends at the end,
+        myArray.splice(i, 1) removes the element at index i (loop
+        backwards when removing while iterating), and the standard loop
+        for (let i = 0; i < myArray.length; i++)
+      - a const array's CONTENT may change (push, splice, assigning an
+        element); const only forbids assigning a whole new array to the
+        variable
+      - parallel arrays: several arrays of the same length where the same
+        index belongs to the same thing (firstNames[i] and lastNames[i]
+        describe one player)
+      - random(myArray) picks a random ELEMENT of an array;
+        random(min, max) with decimal results is also used for sizes and
+        angles now
+      - parseInt(text) converts a string of digits into a number; parsing
+        a string character by character with a buffer string (or with
+        num = num * 10 + digit), remembering to handle the last value
+        after the loop ends
+      - the ! operator to negate a boolean, as in if (!isFirstPoint)
+      - declaring a global variable without a value, like
+        let wordToGuess: string;, and assigning it in setup
+      - millis() returns the milliseconds since the program started;
+        scheduling with absolute times, like
+        nextCircle = millis() + random(500, 2000)
+      - a bare return; ends an event function early (for example after a
+        click already hit one button)
+      - scale(factor) scales everything drawn afterwards, including
+        positions and the stroke weight (compensate with
+        strokeWeight(w / factor)); a shape drawn at (0, 0) only grows, it
+        does not move
+      - the arc shape with start and stop angles, textStyle(BOLD), the
+        two-argument textAlign, and hex colors with EIGHT digits where
+        the last two are the alpha (transparency) value
+      - filling in the body of a GIVEN function with a parameter (like
+        the playground's guess(textInput: string)); the student never
+        writes their own function signature
+
+      Do not use or introduce — not in code, not in explanations:
+
+      - declaring own functions with parameters or return values, arrow
+        functions, objects, classes
+      - arrays of arrays; split, join, charAt, map, filter, forEach, and
+        any other string or array methods beyond
+        length/push/splice/substring
+      - break or continue inside a loop (break belongs to switch only),
+        do...while
+      - the ternary ?: operator, var
+      - keyboard input, images, loading data from files or the internet
+      - Math.* — the course always uses the p5.js helpers (floor, round,
+        sqrt, pow, random, min, abs) plus parseInt instead
 
       If the student asks about something beyond this scope, say in one or
       two sentences that it comes later in the course, and steer back to

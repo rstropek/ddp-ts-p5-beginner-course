@@ -1,0 +1,209 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Arrays that grow and shrink"
+# (0050-arrays/0070-bubbles.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: empty
+# arrays and push, const arrays whose content changes, keeping parallel
+# arrays in step, the millis deadline pattern, redrawing everything from
+# the arrays each frame, and splice with the backwards removal loop.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: bubbles-quiz
+name: "Quiz: Arrays that grow and shrink"
+
+title: "Check your understanding: arrays that grow and shrink"
+description: |
+  Six short questions about the chapter *Arrays that grow and shrink*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="circlesLifetime.push(millis() + random(2000, 4000));"
+      scope="after the bubbles chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, strings with indexes, `translate`, `push`/`pop`, `rotate`, and `scale`"
+        "arrays with `string[]`/`number[]`, element access, `.length`, and parallel arrays"
+        "empty array literals and growing an array with `myArray.push(value)`"
+        "that a `const` array's content may still change"
+        "`millis()` and the deadline pattern `next = millis() + random(...)`"
+        "repainting the background every frame and redrawing everything from the arrays"
+        "`myArray.splice(i, 1)` removing one element and shifting the rest left"
+        "walking backwards when removing elements inside a loop")
+      not_yet=(array
+        "writing their own functions with parameters or return values"
+        "objects and classes"
+        "arrays of arrays"
+        "`split` and other string or array methods beyond length/push/splice/substring")}}
+
+questions:
+  - id: push-trace
+    title: "Growing from empty"
+    question: |
+      What does `a` hold after these lines, and what is `a.length`?
+
+      ```typescript
+      const a: number[] = [];
+      a.push(5);
+      a.push(9);
+      ```
+    evaluation: |
+      Expected: the array holds 5 and 9 (5 at index 0, 9 at index
+      1), and a.length is 2. push appends at the end.
+
+      - `correct`   - the two elements in the right order AND the
+                      length 2.
+      - `partial`   - the elements right but the length wrong or
+                      missing, or length 2 with the order reversed.
+      - `incorrect` - anything else, e.g. only 9 because push
+                      replaces, or an error because the array is
+                      const.
+
+      Feedback: ask what push does to the END of the array, one
+      call at a time.
+
+  - id: const-mutate
+    title: "Pushing into a const"
+    question: |
+      `circlesDiameter` is declared with `const`, and still
+      `circlesDiameter.push(d)` works without an error. What exactly
+      does `const` forbid for an array, and what stays allowed?
+    evaluation: |
+      Expected: const forbids reassigning the variable (giving it a
+      whole new array, like circlesDiameter = [...]). Changing the
+      content (push, splice, assigning elements) stays allowed.
+
+      - `correct`   - both halves: no reassignment of the variable
+                      AND content changes are fine ("the box is
+                      fixed, not what's inside" counts).
+      - `partial`   - only one half, for example "const only means
+                      you can't use = on it again" without saying
+                      the content may change.
+      - `incorrect` - anything else, e.g. push secretly makes a
+                      copy, or const arrays may only grow but not
+                      shrink.
+
+      Feedback: which line would actually produce the red squiggle:
+      the push, or circlesDiameter = []?
+
+  - id: lockstep-bug
+    title: "The forgotten push"
+    question: |
+      A classmate creates each bubble with pushes into
+      `circlesCenterX`, `circlesCenterY`, and `circlesDiameter`, but
+      forgets `circlesFill.push(...)`. What goes wrong when the
+      drawing loop runs?
+    evaluation: |
+      Expected: the arrays fall out of step: circlesFill is shorter,
+      so bubbles get the colors of the wrong index (colors shift),
+      and for the newest bubbles circlesFill[i] is undefined, so
+      they get no valid color. Same index no longer means same
+      bubble.
+
+      - `correct`   - says the arrays are out of sync: colors no
+                      longer match their bubbles and/or undefined
+                      shows up for the extra indexes.
+      - `partial`   - says "the colors are wrong" or "the arrays
+                      have different lengths" without connecting
+                      index to bubble, or only mentions an
+                      undefined color for one bubble.
+      - `incorrect` - anything else, e.g. the program refuses to
+                      run, or push fails on the other arrays too.
+
+      Feedback: the drawing loop reads circlesFill[i] for the
+      bubble at index i. Which color does bubble number 5 get if
+      circlesFill only has 4 entries?
+
+  - id: millis-deadline
+    title: "Read the deadline"
+    question: |
+      In the bubble creation code, what does this line do?
+
+      ```typescript
+      nextCircle = millis() + random(500, 2000);
+      ```
+    evaluation: |
+      Expected: it schedules the next bubble: current time plus half
+      a second to two seconds gives the moment (in milliseconds
+      since program start) when the next bubble is due. draw
+      compares millis() >= nextCircle each frame and creates the
+      bubble when the deadline is reached.
+
+      - `correct`   - says it sets the time when the next bubble
+                      appears, some random 0.5-2 s in the future
+                      ("deadline"/"zeitpunkt" wording counts).
+      - `partial`   - says it delays the next bubble / waits a
+                      random time without the deadline-comparison
+                      idea, or explains millis() without what the
+                      sum is for.
+      - `incorrect` - anything else, e.g. it pauses the whole
+                      program for that time, or it sets how long a
+                      bubble lives.
+
+      Feedback: ask what millis() returns, and what the sum then
+      represents on that clock.
+
+  - id: redraw-truth
+    title: "Wiped every frame"
+    question: |
+      `draw` starts with `background("black")`, which wipes the
+      canvas 60 times per second. Why do the old bubbles not
+      disappear?
+    evaluation: |
+      Expected: the bubbles are stored in the arrays, not on the
+      canvas. After the wipe, the loop redraws every stored bubble
+      from the arrays, every frame, so they reappear instantly. The
+      arrays are the memory; the canvas only shows them.
+
+      - `correct`   - says all bubbles are saved in the arrays and
+                      redrawn each frame after the wipe.
+      - `partial`   - says "the loop draws them again" without the
+                      arrays-as-memory idea, or "they are stored"
+                      without the redraw.
+      - `incorrect` - anything else, e.g. background only wipes
+                      once at the start, or the canvas remembers
+                      shapes behind the background.
+
+      Feedback: where does the drawing loop get the positions from,
+      every single frame?
+
+  - id: splice-backwards
+    title: "Why backwards?"
+    question: |
+      The removal loop runs
+      `for (let i = circlesLifetime.length - 1; i >= 0; i--)`. Why
+      must a loop that splices elements walk backwards through the
+      array?
+    evaluation: |
+      Expected: splice(i, 1) shifts all later elements one index to
+      the left. Walking forwards, the element that slides into the
+      removed spot is never checked (the loop skips it). Walking
+      backwards, the shifting only affects indexes the loop has
+      already handled, so nothing is skipped.
+
+      - `correct`   - says removing shifts the later elements and a
+                      forward loop would skip the shifted element;
+                      backwards avoids that.
+      - `partial`   - says forward loops "mess up the indexes" or
+                      "skip elements" without explaining the shift,
+                      or explains the shift without the skipping
+                      consequence.
+      - `incorrect` - anything else, e.g. backwards is faster, or
+                      splice only works on the last element.
+
+      Feedback: remove index 1 from [a, b, c, d] on paper: which
+      element sits at index 2 before and after? Where does a
+      forward loop continue?

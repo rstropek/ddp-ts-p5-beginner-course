@@ -1,0 +1,168 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0080-silos-quiz.yaml ("Silos").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: silos-quiz-eval
+target: ./0080-silos-quiz.yaml
+
+questions:
+  - question: build-number
+    answers:
+      - expect: correct
+        answer: |
+          42. the * 10 shifts the 4 into the tens place so the 2 can be
+          the ones
+      - expect: correct
+        answer: |
+          zuerst 0*10+4=4, dann 4*10+2=42. das mal 10 rückt die ziffern
+          eine stelle nach links.
+      # Value without the shifting idea.
+      - expect: partial
+        answer: |
+          42
+      # Shifting idea, wrong value.
+      - expect: partial
+        answer: |
+          the *10 moves the digits left, so you get 24
+      - expect: incorrect
+        answer: |
+          6, because 4 + 2.
+      - expect: incorrect
+        answer: |
+          "42" as text, the digits are just glued together.
+
+  - question: element-write
+    answers:
+      - expect: correct
+        answer: |
+          only the element at index i goes up by 1, the rest of the array
+          stays the same
+      - expect: correct
+        answer: |
+          der füllstand von silo i wird um 1 erhöht. die anderen silos und
+          die länge des arrays ändern sich nicht.
+      # Effect without locating the slot.
+      - expect: partial
+        answer: |
+          the fill level goes up by one
+      # Vague array change.
+      - expect: partial
+        answer: |
+          the array changes
+      - expect: incorrect
+        answer: |
+          all silos go up by 1 at once.
+      - expect: incorrect
+        answer: |
+          a new element with value 1 is appended at the end.
+
+  - question: data-driven
+    answers:
+      - expect: correct
+        answer: |
+          a seventh silo shows up with buttons and label, because all the
+          loops run to silos.length and the parser now pushes 7 values
+      - expect: correct
+        answer: |
+          es gibt ein siebtes silo. die schleifen laufen bis silos.length,
+          und das wird durch das parsen automatisch 7.
+      # What without why.
+      - expect: partial
+        answer: |
+          you get one more silo
+      # Why without what.
+      - expect: partial
+        answer: |
+          the loops all use silos.length
+      - expect: incorrect
+        answer: |
+          nothing changes, you also have to raise the loop limits to 7.
+      - expect: incorrect
+        answer: |
+          the program crashes because the canvas is only made for 6
+          silos.
+
+  - question: derived-setup
+    answers:
+      - expect: correct
+        answer: |
+          the positions never change while the program runs, so you
+          compute them once and afterwards draw and mouseClicked just
+          look them up
+      - expect: correct
+        answer: |
+          die x-positionen hängen nur von konstanten ab und bleiben immer
+          gleich. einmal in setup berechnen reicht, draw und mouseClicked
+          schauen nur noch nach.
+      # Performance only.
+      - expect: partial
+        answer: |
+          it would be slower to calculate it 60 times a second
+      # Sharing only.
+      - expect: partial
+        answer: |
+          so mouseClicked can use the same positions
+      - expect: incorrect
+        answer: |
+          draw is not allowed to do calculations, only drawing commands.
+      - expect: incorrect
+        answer: |
+          arrays can only be filled in setup, later push doesn't work
+          anymore.
+
+  - question: hit-test
+    answers:
+      - expect: correct
+        answer: |
+          they check that the mouse is inside the button rectangle,
+          between left and right edge and between top and bottom. with &&
+          all four have to be true at the same time
+      - expect: correct
+        answer: |
+          die maus muss im rechteck des buttons sein: rechts von der
+          linken kante, links von der rechten, unter der oberkante, über
+          der unterkante. && heisst alle vier gleichzeitig.
+      # Inside idea without && role.
+      - expect: partial
+        answer: |
+          it checks if the mouse is over the button
+      # && explained, comparisons vague.
+      - expect: partial
+        answer: |
+          && means everything has to be true, the conditions are about
+          the mouse position somehow
+      - expect: incorrect
+        answer: |
+          each condition checks a different button, so one if handles
+          four buttons.
+      - expect: incorrect
+        answer: |
+          it checks whether the button has been drawn already.
+
+  - question: early-return
+    answers:
+      - expect: correct
+        answer: |
+          return ends mouseClicked immediately. a click can only hit one
+          button, so there is no point checking the rest
+      - expect: correct
+        answer: |
+          das return beendet die funktion sofort. ein klick trifft
+          höchstens einen button, der rest muss nicht mehr geprüft
+          werden.
+      # Mechanism without reasoning.
+      - expect: partial
+        answer: |
+          it stops the function right there
+      # Reasoning without mechanism.
+      - expect: partial
+        answer: |
+          you already found the button so the other checks are useless
+      - expect: incorrect
+        answer: |
+          return sends the new fill level back to draw so it can be
+          painted.
+      - expect: incorrect
+        answer: |
+          it restarts mouseClicked from the beginning for the next
+          button.

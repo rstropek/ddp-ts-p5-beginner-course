@@ -67,6 +67,16 @@ book:
         - 0040-loops/0060-for-loop.qmd
         - 0040-loops/0070-move-origin.qmd
         - 0040-loops/0080-patterns.qmd
+    - part: "Arrays"
+      chapters:
+        - 0050-arrays/0010-word-swirrel.qmd
+        - 0050-arrays/0020-criss-cross.qmd
+        - 0050-arrays/0030-first-array.qmd
+        - 0050-arrays/0040-scale.qmd
+        - 0050-arrays/0050-parsing.qmd
+        - 0050-arrays/0060-soccer-field.qmd
+        - 0050-arrays/0070-bubbles.qmd
+        - 0050-arrays/0080-silos.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

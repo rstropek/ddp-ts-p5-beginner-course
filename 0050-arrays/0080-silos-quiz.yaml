@@ -1,0 +1,215 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Silos: the array runs the show"
+# (0050-arrays/0080-silos.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: building a
+# number with num * 10 + digit, writing into an element with silos[i]++,
+# the data-driven silo count, derived arrays precomputed in setup, the
+# bounding-box hit test, and the bare return as an early exit.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: silos-quiz
+name: "Quiz: Silos"
+
+title: "Check your understanding: silos"
+description: |
+  Six short questions about the chapter *Silos: the array runs the
+  show*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or
+  two sentences are enough for most answers, and answering in German
+  is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="if (mouseX >= upX[i] && mouseX <= upX[i] + BUTTON_SIZE && ...) { silos[i]++; return; }"
+      scope="after the silos chapter, the last chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, strings with indexes, `translate`, `push`/`pop`, `rotate`, and `scale`"
+        "arrays: literals, `string[]`/`number[]`, element access, `.length`, `push`, `splice`, parallel arrays"
+        "parsing a string with a character loop, `parseInt`, and building numbers with `num * 10 + digit`"
+        "writing into an element, like `silos[i]++`"
+        "derived layout arrays computed once in setup"
+        "the bounding-box hit test with four comparisons and `&&`"
+        "that `mouseX`/`mouseY` are canvas coordinates unaffected by translate"
+        "the bare `return;` ending an event function early"
+        "`millis()` and deadline scheduling")
+      not_yet=(array
+        "writing their own functions with parameters or return values"
+        "objects and classes"
+        "arrays of arrays"
+        "`split`, `map`, `filter`, and other array methods beyond length/push/splice")}}
+
+questions:
+  - id: build-number
+    title: "Digits into a number"
+    question: |
+      The parser reads the characters `"4"` and then `"2"`, and each
+      time runs `num = num * 10 + parseInt(ch);` (with `num`
+      starting at 0). What is `num` after the two characters, and
+      what does the `* 10` accomplish?
+    evaluation: |
+      Expected: num is 42. First 0 * 10 + 4 = 4, then
+      4 * 10 + 2 = 42: the * 10 shifts the digits one decimal place
+      to the left so the new digit can take the ones place. It is
+      digit extraction in reverse.
+
+      - `correct`   - the value 42 AND the shifting idea ("moves
+                      the 4 to the tens place" / "macht aus 4
+                      vierzig" counts).
+      - `partial`   - only 42 without explaining the * 10, or the
+                      shifting idea with a wrong final value.
+      - `incorrect` - anything else, e.g. num is 6 because 4 + 2,
+                      or 24, or "42" as a string.
+
+      Feedback: compute the two rounds one after the other:
+      0 * 10 + 4, then that result * 10 + 2.
+
+  - id: element-write
+    title: "Writing into a slot"
+    question: |
+      The add button's code runs `silos[i]++;`. What exactly does
+      this line change, and what stays unchanged?
+    evaluation: |
+      Expected: it increases the single element at index i by 1
+      (the fill level of that one silo). The rest of the array, its
+      length, and the other silos stay unchanged. Square brackets
+      work on the writing side too: silos[i] acts like a variable.
+
+      - `correct`   - says one element / the value of silo i goes
+                      up by 1 and the others (or the length) are
+                      untouched.
+      - `partial`   - says the fill level goes up without locating
+                      it at index i, or "the array changes" without
+                      saying that only one slot does.
+      - `incorrect` - anything else, e.g. all silos go up by 1, a
+                      new element is appended, or i increases.
+
+      Feedback: ask what silos looks like before and after the line
+      when silos is [3, 7] and i is 1.
+
+  - id: data-driven
+    title: "The seventh silo"
+    question: |
+      You change the first line to
+      `const INITIAL_FILL = "3,7,8,3,10,2,5";` and touch nothing
+      else. What appears on the canvas, and which detail of the
+      code makes that possible without any other change?
+    evaluation: |
+      Expected: a seventh silo appears, complete with buttons and
+      label. The parser pushes one more value, so silos.length
+      becomes 7, and every loop (layout, drawing, clicking) runs to
+      silos.length instead of a fixed number: the drawing is driven
+      by the data.
+
+      - `correct`   - a seventh silo appears AND the reason: the
+                      loops use silos.length (the count comes from
+                      the parsed array).
+      - `partial`   - only one half: "one more silo" without the
+                      .length reasoning, or the reasoning without
+                      saying what appears.
+      - `incorrect` - anything else, e.g. nothing changes until the
+                      loops are edited to 7, or the program breaks
+                      because the canvas is fixed.
+
+      Feedback: search the code for the number 6. It is not there;
+      where does the program learn how many silos exist?
+
+  - id: derived-setup
+    title: "Computed once"
+    question: |
+      The x positions in `silosX`, `upX`, and `downX` are computed
+      in `setup`. `draw` could just as well compute
+      `SILO_GAP + i * (SILO_WIDTH + SILO_GAP)` every frame. Why
+      does the program compute the positions once and store them in
+      arrays instead?
+    evaluation: |
+      Expected: the positions never change while the program runs
+      (they depend only on constants and the silo count), so
+      computing them once in setup is enough. Afterwards, draw and
+      mouseClicked just look them up, which keeps their code simple
+      and avoids repeating the same formula in several places
+      (and repeating work sixty times a second).
+
+      - `correct`   - says the positions are fixed, so compute once
+                      and look up everywhere ("so draw and
+                      mouseClicked use the same values without
+                      repeating the formula" counts, as does
+                      avoiding needless recomputation).
+      - `partial`   - only "it's faster" / "not 60 times a second"
+                      without the fixed-positions idea, or "so
+                      other functions can use them" without why
+                      once is enough.
+      - `incorrect` - anything else, e.g. draw cannot do
+                      calculations, or arrays are only writable in
+                      setup.
+
+      Feedback: ask when the x position of silo 3 could ever
+      change while the program runs.
+
+  - id: hit-test
+    title: "Read the hit test"
+    question: |
+      In your own words: what do the four mouse comparisons of the
+      hit test check together, and why are they connected with
+      `&&`?
+
+      ```typescript
+      mouseX >= upX[i] && mouseX <= upX[i] + BUTTON_SIZE &&
+      mouseY >= BUTTON_TOP && mouseY <= BUTTON_TOP + BUTTON_SIZE
+      ```
+    evaluation: |
+      Expected: they check that the mouse is inside the button's
+      rectangle: between its left and right edge horizontally AND
+      between its top and bottom edge vertically. All four must be
+      true at once (that is the &&), otherwise the mouse is outside
+      on at least one side.
+
+      - `correct`   - says the mouse must be inside the button
+                      rectangle and the && requires all four edge
+                      checks at once.
+      - `partial`   - explains the inside-the-rectangle idea
+                      without the role of &&, or explains && but
+                      describes the comparisons only vaguely.
+      - `incorrect` - anything else, e.g. it checks whether the
+                      button was drawn, or the conditions test four
+                      different buttons.
+
+      Feedback: take one condition away, say the last one: which
+      clicks would wrongly count as hits then?
+
+  - id: early-return
+    title: "Stop right there"
+    question: |
+      After `silos[i]++;` the click code runs a bare `return;`. What
+      does that `return` do, and why is it fine to skip the rest of
+      the checks?
+    evaluation: |
+      Expected: return ends mouseClicked immediately; no further
+      silos or buttons are checked. One click can only hit one
+      button, so once the hit is found and handled, checking the
+      others is pointless.
+
+      - `correct`   - says it exits/ends the function right away
+                      AND one click hits at most one button, so
+                      the rest need not be checked.
+      - `partial`   - only one half: "it stops the function"
+                      without the one-click-one-button reasoning,
+                      or the reasoning without saying what return
+                      does.
+      - `incorrect` - anything else, e.g. return restarts draw,
+                      returns the new fill level to the caller, or
+                      ends the whole program.
+
+      Feedback: what could possibly happen in the remaining loop
+      rounds after the clicked button was already found?

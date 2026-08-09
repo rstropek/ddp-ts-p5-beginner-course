@@ -38,6 +38,9 @@ activities:
     tutor-loops:
       file: 0040-loops/loops-tutor.yaml
       note: "Creative Coding book: AI tutor for part 4, Loops — GitHub-hosted"
+    tutor-arrays:
+      file: 0050-arrays/arrays-tutor.yaml
+      note: "Creative Coding book: AI tutor for part 5, Arrays — GitHub-hosted"
 
     # Exercise AIs: the code-generating counterparts for the book's
     # designated AI exercises (the part tutors stay strictly hint-only).
@@ -148,3 +151,28 @@ activities:
     patterns:
       file: 0040-loops/0080-patterns-quiz.yaml
       note: "Creative Coding book: Patterns (0040-loops/0080) — GitHub-hosted"
+
+    word-swirrel:
+      file: 0050-arrays/0010-word-swirrel-quiz.yaml
+      note: "Creative Coding book: Strings have parts (0050-arrays/0010) — GitHub-hosted"
+    criss-cross:
+      file: 0050-arrays/0020-criss-cross-quiz.yaml
+      note: "Creative Coding book: Letters criss-cross (0050-arrays/0020) — GitHub-hosted"
+    first-array:
+      file: 0050-arrays/0030-first-array-quiz.yaml
+      note: "Creative Coding book: Your first array (0050-arrays/0030) — GitHub-hosted"
+    scale:
+      file: 0050-arrays/0040-scale-quiz.yaml
+      note: "Creative Coding book: Scale (0050-arrays/0040) — GitHub-hosted"
+    parsing:
+      file: 0050-arrays/0050-parsing-quiz.yaml
+      note: "Creative Coding book: Parsing (0050-arrays/0050) — GitHub-hosted"
+    soccer-field:
+      file: 0050-arrays/0060-soccer-field-quiz.yaml
+      note: "Creative Coding book: Parallel arrays (0050-arrays/0060) — GitHub-hosted"
+    bubbles:
+      file: 0050-arrays/0070-bubbles-quiz.yaml
+      note: "Creative Coding book: Arrays that grow and shrink (0050-arrays/0070) — GitHub-hosted"
+    silos:
+      file: 0050-arrays/0080-silos-quiz.yaml
+      note: "Creative Coding book: Silos (0050-arrays/0080) — GitHub-hosted"

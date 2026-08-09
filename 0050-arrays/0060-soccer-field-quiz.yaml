@@ -1,0 +1,215 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Parallel arrays: the starting eleven"
+# (0050-arrays/0060-soccer-field.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: number[]
+# arrays and element access, parallel arrays tied by the index, .length as
+# the loop bound, index vs element, the meters-as-pixels scale frame, and
+# eight-digit hex colors with alpha.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: soccer-field-quiz
+name: "Quiz: Parallel arrays"
+
+title: "Check your understanding: parallel arrays"
+description: |
+  Six short questions about the chapter *Parallel arrays: the starting
+  eleven*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="text(`${firstNames[i]} ${lastNames[i]}`, 33, 12 + i * 5);"
+      scope="after the soccer-field chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, strings with indexes, `translate`, `push`, `pop`, `rotate`, and `scale`"
+        "arrays with the type annotations `string[]` and `number[]`"
+        "reading elements with `myArray[i]` and the loop bound `myArray.length`"
+        "parallel arrays: the same index describes the same thing across several arrays"
+        "computing a layout position from the index, like `12 + i * 5`"
+        "the meters-as-pixels frame: `scale(SCALE)` and drawing in real-world units"
+        "hex colors with eight digits, where the last two are the alpha value")
+      not_yet=(array
+        "`push` and `splice` on arrays"
+        "`millis()`"
+        "arrays that grow or shrink while the program runs"
+        "writing their own functions with parameters or return values"
+        "objects and classes")}}
+
+questions:
+  - id: element-read
+    title: "Read the lineup"
+    question: |
+      A program declares:
+
+      ```typescript
+      const numbers: number[] = [1, 17, 22, 23];
+      const names: string[] = ["Courtois", "Vázquez", "Rüdiger", "Mendy"];
+      ```
+
+      What does `` `${numbers[2]} ${names[2]}` `` produce?
+    evaluation: |
+      Expected: "22 Rüdiger". Index 2 is the third element of each
+      array (counting starts at 0), and the template string glues
+      the two elements together with a space.
+
+      - `correct`   - the result 22 Rüdiger (index reasoning may be
+                      implicit).
+      - `partial`   - "17 Vázquez" (counted from 1) or another
+                      matching same-index pair that is off by one,
+                      or the right elements named without combining
+                      them.
+      - `incorrect` - anything else, e.g. mixing indexes ("22
+                      Vázquez"), or the whole arrays printed.
+
+      Feedback: if the student answered 17 Vázquez, one sentence:
+      index 2 is the third element, counting starts at 0.
+
+  - id: same-index
+    title: "What ties them together"
+    question: |
+      Nothing in the code connects `firstNames` and `lastNames` to
+      each other. Why does `firstNames[i]` still always match
+      `lastNames[i]` as one real player?
+    evaluation: |
+      Expected: only the position ties them together: the arrays
+      are kept in the same order and the same length, so the same
+      index means the same player. The programmer maintains that
+      promise; the language does not check it.
+
+      - `correct`   - says the connection is the shared index /
+                      position because the arrays are in the same
+                      order ("you have to keep them in sync
+                      yourself" strengthens it but is not
+                      required).
+      - `partial`   - says "they belong together" or "same order"
+                      without the index idea being clear, or only
+                      that the programmer must keep them
+                      synchronized without saying how they map.
+      - `incorrect` - anything else, e.g. TypeScript links arrays
+                      declared next to each other, or the names are
+                      matched by comparing the strings.
+
+      Feedback: ask what happens to player 1 if someone sorts
+      lastNames alphabetically and touches nothing else.
+
+  - id: index-vs-element
+    title: "The wrong numbers"
+    question: |
+      A classmate writes the number loop like this:
+
+      ```typescript
+      for (let i = 0; i < playerNumbers.length; i++) {
+          text(i, 30, 12 + i * 5);
+      }
+      ```
+
+      The plate now shows 0 to 10 instead of the shirt numbers.
+      What is the difference between `i` and `playerNumbers[i]`?
+    evaluation: |
+      Expected: i is the index, the position in the array (0 to
+      10); playerNumbers[i] is the element stored at that position,
+      the actual shirt number. The fix is text(playerNumbers[i], ...).
+
+      - `correct`   - explains index (position/counter) vs element
+                      (the stored value / shirt number); naming the
+                      fix strengthens it but is not required.
+      - `partial`   - gives the fix playerNumbers[i] without
+                      explaining the difference, or explains it
+                      only halfway ("i is just the loop counter").
+      - `incorrect` - anything else, e.g. i must start at 1, or
+                      the array is in the wrong order.
+
+      Feedback: two questions: what values does i take, and what is
+      stored in the array at position i?
+
+  - id: length-promise
+    title: "The broken promise"
+    question: |
+      Someone deletes the last entry of `lastNames`, so it has 10
+      elements while `firstNames` still has 11. The name loop runs
+      `while i < firstNames.length`. What appears in the last row of
+      the lineup?
+    evaluation: |
+      Expected: the loop still runs 11 times, and in round 10,
+      lastNames[10] does not exist, so it yields undefined: the row
+      shows something like "Kylian undefined". Parallel arrays only
+      work while all of them keep the same length.
+
+      - `correct`   - says the last row shows undefined for the
+                      missing last name (the first name plus
+                      undefined) because the index runs past the
+                      shorter array.
+      - `partial`   - says the last row breaks / shows something
+                      wrong without naming undefined, or names
+                      undefined without connecting it to the
+                      differing lengths.
+      - `incorrect` - anything else, e.g. the program crashes with
+                      an error message, or the loop stops early at
+                      the shorter array.
+
+      Feedback: remind the student of word[5] in "apple": what did
+      reading past the end give there?
+
+  - id: meters-pixels
+    title: "A field in meters"
+    question: |
+      The code draws the field with `rect(0, 0, 100, 70)`, using
+      the real measurements in meters, and it still fills a canvas
+      that is 540 pixels wide. Which call makes that possible, and
+      what does it do?
+    evaluation: |
+      Expected: scale(SCALE) (with SCALE = 5). It multiplies
+      everything drawn afterwards by 5, so one meter becomes 5
+      pixels and the 100-meter field becomes 500 pixels wide. The
+      code can keep speaking meters.
+
+      - `correct`   - names scale (scale(SCALE) / scale(5)) AND
+                      says it multiplies the drawn units into
+                      pixels ("1 meter = 5 pixels" counts).
+      - `partial`   - names scale without explaining the meters-to-
+                      pixels effect, or explains the multiplication
+                      idea without naming which call does it.
+      - `incorrect` - anything else, e.g. createCanvas stretches
+                      the drawing, or translate enlarges the
+                      field.
+
+      Feedback: what does scale do to the number 100 inside
+      rect(0, 0, 100, 70)?
+
+  - id: alpha-hex
+    title: "Eight digits"
+    question: |
+      The name plate is drawn with `fill("#008000d0")`. Six-digit
+      hex colors you know. What do the extra two digits `d0` do?
+    evaluation: |
+      Expected: they are the alpha value, the transparency of the
+      color. d0 (208 of 255) is about 80 percent opaque, so the
+      field shimmers through the plate. ff would be fully opaque,
+      00 invisible.
+
+      - `correct`   - says the last two digits set the
+                      transparency/alpha ("how see-through the
+                      color is" counts).
+      - `partial`   - says the plate is see-through because of the
+                      color without locating it in the last two
+                      digits, or calls it "brightness" but
+                      describes the see-through effect.
+      - `incorrect` - anything else, e.g. a darker shade of green,
+                      the stroke color, or a checksum.
+
+      Feedback: split the string: which six digits are the RGB
+      color, and what is left?

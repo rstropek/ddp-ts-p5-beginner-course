@@ -1,0 +1,202 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Your first array"
+# (0050-arrays/0030-first-array.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the array
+# literal and the string[] type annotation, zero-based element access,
+# random(array) returning an element, why wordToGuess became a let declared
+# without a value, the global-variable trap, and that the letter loop adapts
+# through .length.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: first-array-quiz
+name: "Quiz: Your first array"
+
+title: "Check your understanding: your first array"
+description: |
+  Six short questions about the chapter *Your first array*. Answer in
+  your own words. There are no answer options to pick from, and this
+  quiz is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are
+  enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="const WORDS: string[] = [\"apple\", \"banana\"];"
+      scope="after the first-array chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "while loops and for loops, `translate`, `push`, `pop`, and `rotate`"
+        "strings as rows of characters with zero-based indexes, `.length`, and `word[i]`"
+        "the array literal in square brackets and the type annotations `string[]` and `number[]`"
+        "that array elements are counted from index 0"
+        "`random(myArray)` returning a random element of the array"
+        "declaring a global variable without a value, like `let wordToGuess: string;`, and assigning it in setup"
+        "the rule that a variable two functions share must be global")
+      not_yet=(array
+        "reading array elements with `myArray[i]` in their own loops (that starts with the soccer field chapter)"
+        "`myArray.length` as a loop bound"
+        "`push` and `splice` on arrays"
+        "`scale`"
+        "`parseInt` and parsing strings"
+        "writing their own functions with parameters or return values")}}
+
+questions:
+  - id: literal-read
+    title: "Read the array"
+    question: |
+      A program contains this declaration:
+
+      ```typescript
+      const COLORS: string[] = ["red", "lime", "gold"];
+      ```
+
+      How many elements does `COLORS` have, and which element sits at
+      index 1?
+    evaluation: |
+      Expected: three elements, and index 1 holds "lime" (counting
+      starts at 0, so index 1 is the second element).
+
+      - `correct`   - both: three elements AND lime at index 1.
+      - `partial`   - one of the two right, for example three
+                      elements but the wrong element at index 1, or
+                      lime without the count.
+      - `incorrect` - anything else, e.g. "one element, a list", or
+                      both values wrong.
+
+      Feedback: if the student wrote red, remind them in one
+      sentence: arrays count like strings, the first element has
+      index 0.
+
+  - id: type-meaning
+    title: "The strange type"
+    question: |
+      What does the type annotation `string[]` tell you about the
+      variable it belongs to?
+    evaluation: |
+      Expected: the variable holds an array (a list/row) of strings:
+      not one string, but a collection where every single element is
+      a string.
+
+      - `correct`   - says it is an array/list of strings ("many
+                      strings in one variable", "eine liste von
+                      strings" count).
+      - `partial`   - says it is a list/array without saying what the
+                      elements are, or "several texts" without the
+                      array idea being clear.
+      - `incorrect` - anything else, e.g. a string with brackets in
+                      it, an empty string, or "a longer string".
+
+      Feedback: split the annotation in two: what does string mean,
+      and what do the square brackets add?
+
+  - id: random-array
+    title: "random gets an array"
+    question: |
+      `random(6)` returns a random number. What does `random(WORDS)`
+      return when `WORDS` is the word array?
+    evaluation: |
+      Expected: one random element of the array, so here a string
+      (one of the words), not a number. Every element is equally
+      likely.
+
+      - `correct`   - says it returns an element / one of the words
+                      / a string from the array.
+      - `partial`   - says "a random word's position" or otherwise
+                      mixes element and index, but shows the idea
+                      that random picks from the array.
+      - `incorrect` - anything else, e.g. a random number between 0
+                      and the array length, or the whole array
+                      shuffled.
+
+      Feedback: ask what type wordToGuess has, and whether a number
+      could be scrambled into letters.
+
+  - id: let-not-const
+    title: "Why let now?"
+    question: |
+      In level 2 the secret word was
+      `const wordToGuess = "apple";`. Level 3 changes it to
+      `let wordToGuess: string;`. Why can this variable not stay a
+      `const`?
+    evaluation: |
+      Expected: the value is only known when setup runs
+      (random(WORDS) decides it), so the variable is declared
+      without a value and assigned later. A const must receive its
+      value right at the declaration, so a split like this needs
+      let.
+
+      - `correct`   - says the value comes later / is assigned in
+                      setup, and a const cannot be assigned after
+                      its declaration.
+      - `partial`   - only one half: "const can't be changed" without
+                      connecting it to the late assignment, or "the
+                      value is only known once setup runs" without
+                      the const rule.
+      - `incorrect` - anything else, e.g. let is faster, or the
+                      false claim that random's result cannot be
+                      stored in a const (a const initialized with
+                      random(WORDS) in one line would be legal; the
+                      problem is only the assignment coming later).
+
+      Feedback: ask what value the program could possibly write at
+      the declaration line, before setup has run.
+
+  - id: global-trap
+    title: "Cannot find name"
+    question: |
+      A classmate writes `const wordToGuess = random(WORDS);` as the
+      first line *inside* `setup`. The scatter works, but the
+      `guess` function now has a red squiggle:
+      "Cannot find name 'wordToGuess'". Why?
+    evaluation: |
+      Expected: declared inside setup, the variable is local to
+      setup and only visible there. guess is a different function
+      and cannot see it. The variable must be declared globally
+      (outside every function) so setup can assign it and guess can
+      read it.
+
+      - `correct`   - says the variable is local to setup / other
+                      functions can't see it, and the fix is a
+                      global declaration.
+      - `partial`   - names the visibility problem without the fix,
+                      or says "declare it outside" without saying
+                      why guess fails.
+      - `incorrect` - anything else, e.g. random must not be called
+                      in setup, or guess runs before setup so the
+                      value is missing.
+
+      Feedback: where does a variable live that two functions need?
+      Recall the global-variable rule from the click counter.
+
+  - id: adapt-length
+    title: "A longer word"
+    question: |
+      You add `"dragonfruit"` (11 letters) to the `WORDS` array. Does
+      the letter loop need any change to draw all 11 letters when
+      that word is picked? Why or why not?
+    evaluation: |
+      Expected: no change needed. The loop runs while
+      `i < wordToGuess.length`, and length is 11 for that word, so
+      the loop automatically runs 11 times. The bound comes from the
+      data, not from a fixed number.
+
+      - `correct`   - no AND the reason: the condition uses
+                      .length, so it adapts to the picked word.
+      - `partial`   - "no" without a reason, or explains .length
+                      without clearly answering the question.
+      - `incorrect` - anything else, e.g. yes, the loop must be
+                      changed to 11, or long words crash the
+                      program.
+
+      Feedback: point at the loop condition: which part of it
+      changes its value when the word changes?

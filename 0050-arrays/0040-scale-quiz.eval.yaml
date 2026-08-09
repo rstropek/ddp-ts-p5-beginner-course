@@ -1,0 +1,158 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0040-scale-quiz.yaml ("Scale").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: scale-quiz-eval
+target: ./0040-scale-quiz.yaml
+
+questions:
+  - question: predict-landing
+    answers:
+      - expect: correct
+        answer: |
+          center at (100, 100), diameter 100
+      - expect: correct
+        answer: |
+          alles wird verdoppelt: mittelpunkt (100, 100), durchmesser 100.
+      # Size right, position misconception.
+      - expect: partial
+        answer: |
+          the diameter is 100 but the center stays at 50, 50
+      # Position right, size missing.
+      - expect: partial
+        answer: |
+          it lands at 100, 100
+      - expect: incorrect
+        answer: |
+          nothing changes, scale only affects shapes drawn with scale() in
+          the same line.
+      - expect: incorrect
+        answer: |
+          the circle stays the same size, only the line gets thicker.
+
+  - question: stroke-compensate
+    answers:
+      - expect: correct
+        answer: |
+          scale doubles the stroke too, so 1.5 times 2 looks like 3 again
+      - expect: correct
+        answer: |
+          scale(2) verdoppelt auch die linienstärke. 3/2 wird durch das
+          skalieren wieder zu 3, damit alle kreise gleich dick aussehen.
+      # Compensation idea without mechanism.
+      - expect: partial
+        answer: |
+          so all three circles have the same outline
+      # Mechanism without the resulting value.
+      - expect: partial
+        answer: |
+          because scale makes the stroke thicker too
+      - expect: incorrect
+        answer: |
+          after a push you always have to halve the strokeWeight.
+      - expect: incorrect
+        answer: |
+          1.5 gives smoother edges than 3.
+
+  - question: fixed-point
+    answers:
+      - expect: correct
+        answer: |
+          the origin (0,0), because 0 times any factor is still 0
+      - expect: correct
+        answer: |
+          der ursprung. 0 mal 4 ist 0, also bleibt genau dieser punkt wo
+          er ist.
+      # Point without reason.
+      - expect: partial
+        answer: |
+          the origin
+      # Circular restatement without the point or the zero argument.
+      - expect: incorrect
+        answer: |
+          the point where multiplying by 4 changes nothing
+      # The zero argument without naming the point.
+      - expect: partial
+        answer: |
+          zero times anything stays zero, so that spot can't move
+          anywhere
+      - expect: incorrect
+        answer: |
+          the center of the canvas at (200, 200) never moves.
+      - expect: incorrect
+        answer: |
+          the smallest circle stays, scaling only moves the big shapes.
+
+  - question: centered-recipe
+    answers:
+      - expect: correct
+        answer: |
+          translate(150, 150) first, then draw the circle at (0, 0)
+      - expect: correct
+        answer: |
+          mit translate den ursprung zum punkt schieben und den kreis bei
+          (0,0) zeichnen. dann ändert scale nur die grösse.
+      # One step only.
+      - expect: partial
+        answer: |
+          draw it at 0,0
+      # One step only, the other one.
+      - expect: partial
+        answer: |
+          you translate to 150, 150 before scaling
+      - expect: incorrect
+        answer: |
+          scale it first and then move it back by the difference with
+          another circle call.
+      - expect: incorrect
+        answer: |
+          use resetMatrix after the scale so the position resets.
+
+  - question: leaky-scale
+    answers:
+      - expect: correct
+        answer: |
+          by 8, the scale(2) is still active and the factors multiply
+      - expect: correct
+        answer: |
+          faktor 8. ohne pop wirkt scale(2) weiter und scale(4) kommt
+          multipliziert dazu, 2 mal 4.
+      # Idea without committed factor.
+      - expect: partial
+        answer: |
+          the scalings stack so the green circle is way too big
+      # Factor without any reason.
+      - expect: partial
+        answer: |
+          8
+      - expect: incorrect
+        answer: |
+          4, the newest scale call replaces the old one.
+      - expect: incorrect
+        answer: |
+          6, because 2 + 4.
+
+  - question: shrink-factor
+    answers:
+      - expect: correct
+        answer: |
+          everything is halved, the rect shows up at (50, 50) with size
+          40 by 40
+      - expect: correct
+        answer: |
+          alles halbiert sich, auch die position: (50, 50) und 40 mal 40
+          gross.
+      # Size only.
+      - expect: partial
+        answer: |
+          the rectangle is half as big
+      # Position only.
+      - expect: partial
+        answer: |
+          it moves closer to the corner, to 50, 50
+      - expect: incorrect
+        answer: |
+          scale below 1 is not allowed and gives a red squiggle.
+      - expect: incorrect
+        answer: |
+          0.5 flips the drawing, so it doubles in the other direction.

@@ -1,0 +1,164 @@
+---
+title: "Letters criss-cross: rotate"
+---
+
+![Word Swirrel, level 2: the letters of the secret word scattered across the canvas, each one at a random position, in a random size, a random color, and tilted at a random angle.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/word-swirrel-1.png){width=440}
+
+In the first Word Swirrel, the scrambled word sat in the middle of
+the canvas as one block of text. Level 2 makes it look the part:
+every letter gets its own place, its own size, its own color, and
+its own tilt. Two ideas carry the whole chapter. First, a for loop
+that visits a string one character at a time; you will write this
+exact loop shape for the rest of the course. Second, a new
+transformation: `rotate`, the missing sibling of `translate`, which
+tilts everything you draw. Scrambling is not even needed anymore;
+letters thrown all over the canvas are puzzle enough.
+
+## AI tutor {#sec-tutor-criss-cross}
+
+Rotation is famous for surprising beginners: you rotate a letter and
+it swings to a completely different place. If that happens, tell the
+tutor which transformation calls you make in which order, and where
+the letter lands.
+
+{{< tutor tutor-arrays >}}
+
+## One letter at a time {#sec-letter-loop}
+
+The scramble loop of the last chapter ate the word up. This chapter
+needs something gentler: visit every character once, in order, and
+draw it. That is a for loop over the indexes:
+
+```typescript
+for (let i = 0; i < wordToGuess.length; i++) {
+    // wordToGuess[i] is the character of this round
+}
+```
+
+Read the header with the indexes in mind: `i` starts at 0, the first
+index. The loop runs while `i < wordToGuess.length`, and stops
+exactly when `i` reaches the length, which is one past the last
+index. For `"apple"` (length 5), `i` takes the values 0, 1, 2, 3, 4:
+every index once, none twice, no `undefined`. The `<` does the
+off-by-one thinking for you; with `<=` the loop would run once too
+often and read past the end.
+
+Learn this loop by heart. "From 0, while less than length, one step
+at a time" is *the* pattern for walking through anything that has
+indexes, and the coming array chapters use it on every page.
+
+## rotate: turning the paper {#sec-rotate}
+
+You know `translate`: it moves the origin, and everything drawn
+afterwards moves with it. `rotate` is its sibling: it turns the
+whole coordinate system, and everything drawn afterwards is tilted.
+The angle is in degrees, clockwise, thanks to `angleMode(DEGREES)`
+in setup, the same setting you used for `arc` in part 1.
+
+The catch: `rotate` turns the paper **around the current origin**,
+the point (0, 0). A shape close to the origin tilts almost in place;
+a shape far from the origin swings around it like a hammer thrower.
+That is why rotation almost always comes as a team of three:
+
+```typescript
+translate(x, y);   // 1. move the origin to where the shape belongs
+rotate(angle);     // 2. turn the paper around that point
+text(letter, 0, 0); // 3. draw AT the origin
+```
+
+Move first, then turn, then draw at (0, 0). The letter sits at
+(x, y) and is tilted by `angle`, and because it sits *on* the pivot
+point, it tilts in place instead of swinging away. You met the same
+draw-at-the-origin idea in the pattern recipe (@sec-cumulative);
+rotation makes it essential.
+
+::: {.callout-note}
+## Rotate turns the system, not one shape
+Like `translate`, `rotate` does not touch any shape that is already
+drawn. It changes the coordinate system for everything that comes
+after it, and a second `rotate` adds to the first. That is also why
+the order matters: translate-then-rotate pins the letter to its
+spot, rotate-then-translate makes the move itself happen in a tilted
+direction.
+:::
+
+## The scatter recipe {#sec-scatter}
+
+Now the loop and the transformation team up. One round of the loop
+places one letter, and everything about the letter is random:
+
+```typescript
+for (let i = 0; i < wordToGuess.length; i++) {
+    const x = random(MARGIN, WIDTH - MARGIN);
+    const y = random(MARGIN, HEIGHT - MARGIN);
+    const charSize = random(50, 150);
+    const textColor = random(0, 360);
+    const angle = random(-90, 90);
+
+    push();
+    translate(x, y);
+    rotate(angle);
+    fill(textColor, 100, 100);
+    textSize(charSize);
+    text(wordToGuess[i], 0, 0);
+    pop();
+}
+```
+
+A few details are worth a second look:
+
+- **push and pop wrap every letter.** Translate and rotate calls add
+  up, so without the note-taking, letter 2 would be measured from
+  letter 1's tilted position, and the scatter would drift off the
+  canvas. Each round starts fresh from the saved origin.
+- **The random values are decimals.** So far you mostly wrapped
+  `random` in `floor` to get whole numbers, like dice. Positions,
+  sizes, and angles don't need whole numbers: `rotate(23.7)` is a
+  perfectly fine tilt, so the `floor` stays away.
+- **Negative angles are allowed.** `random(-90, 90)` tilts letters
+  up to a quarter turn in either direction; a negative angle turns
+  counterclockwise.
+- **The color is HSB.** `colorMode(HSB)` is set in setup, so
+  `fill(textColor, 100, 100)` with a hue from 0 to 360 gives full
+  saturation and brightness, like in the colored rays.
+- **MARGIN keeps letters visible.** The random position stays
+  `MARGIN` pixels away from every edge, so even a big rotated letter
+  is not cut off.
+
+One more thing has changed since level 1: the `guess` function comes
+finished in the starter code. You built it yourself last chapter;
+this time it is simply there, and your work happens in `setup`.
+
+## Your exercise: Word Swirrel (Level 2) {#sec-criss-cross-exercise}
+
+1. **Paper first.** Sketch the canvas (500 by 300) on graph paper
+   and mark the margin band of 50 pixels. Pick two spots inside and
+   draw a tilted letter at each, one leaning left, one leaning
+   right. Which angle sign is which?
+2. **The loop without rotation.** Write the for loop with the
+   random position, size, and color, but leave `rotate` out:
+   translate, then draw the letter at (0, 0). Run it; the letters
+   scatter, still standing upright.
+3. **Add the tilt.** Put `rotate(angle)` between `translate` and
+   `text`, run, and compare with the goal picture. If a letter
+   seems to vanish, check the order of your three steps
+   (@sec-rotate).
+4. **Break it on purpose.** Comment out `push()` and `pop()` and
+   predict the picture before you run. The transformations pile up,
+   and the letters wander away. Put them back.
+5. **Run it a few times.** Every run scatters differently, because
+   `setup` runs once per start and asks `random` for fresh values
+   each time. Play the game with a classmate: they guess, you
+   check.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/word-swirrel-1.yaml title="Word Swirrel (Level 2)" >}}
+
+## Check your understanding {#sec-quiz-criss-cross}
+
+When your letters scatter and tilt like in the goal picture, take
+the short quiz below. You answer six questions about this chapter in
+your own words, and an AI reads your answers and tells you what you
+already understand and what you should read again. The quiz is
+anonymous, and answering in German is fine too.
+
+{{< quiz criss-cross title="Letters criss-cross" >}}

@@ -1,0 +1,206 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Letters criss-cross: rotate"
+# (0050-arrays/0020-criss-cross.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the
+# canonical for loop over a string's indexes (i < length), what word[i]
+# delivers, rotate turning the system around the current origin, the
+# translate-rotate-draw-at-(0,0) order, push/pop around each letter, and
+# why every run scatters differently.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: criss-cross-quiz
+name: "Quiz: Letters criss-cross"
+
+title: "Check your understanding: letters criss-cross"
+description: |
+  Six short questions about the chapter *Letters criss-cross: rotate*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="for (let i = 0; i < wordToGuess.length; i++) { ... }"
+      scope="after the criss-cross chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "while loops and for loops, also nested"
+        "`translate`, `push`, and `pop`"
+        "strings as rows of characters with zero-based indexes, `word.length`, and `word[i]`"
+        "the for loop over a string's indexes: from 0, while `i < word.length`"
+        "`rotate(angle)` turning the coordinate system around the current origin, in degrees"
+        "the order translate, then rotate, then draw at (0, 0)"
+        "HSB colors with `colorMode(HSB)`"
+        "that `random` gives decimals and negative ranges like `random(-90, 90)` are fine")
+      not_yet=(array
+        "arrays"
+        "`random(myArray)` picking an element"
+        "`scale`"
+        "`parseInt` and parsing strings"
+        "`push` and `splice` on arrays"
+        "writing their own functions with parameters or return values")}}
+
+questions:
+  - id: loop-bound
+    title: "The loop's end"
+    question: |
+      The letter loop runs
+      `for (let i = 0; i < wordToGuess.length; i++)`. Why is the
+      condition `i < wordToGuess.length` and not
+      `i <= wordToGuess.length`?
+    evaluation: |
+      Expected: indexes go from 0 to length - 1. With `<` the loop
+      stops after the last index; with `<=` it would run one extra
+      round and read past the end (word[length] is undefined).
+
+      - `correct`   - connects `<` to the last index being
+                      length - 1 / says `<=` would run one round too
+                      many or hit undefined.
+      - `partial`   - says `<=` would be one round too many without
+                      the index reasoning, or explains zero-based
+                      indexes without answering about the condition.
+      - `incorrect` - anything else, e.g. "< and <= do the same
+                      here", or "the loop needs < to start at 0".
+
+      Feedback: for "apple" with length 5, list the indexes the loop
+      visits with < and with <=. Which list contains an index that
+      does not exist?
+
+  - id: word-i-role
+    title: "The letter of the round"
+    question: |
+      Inside the loop, the drawing line is
+      `text(wordToGuess[i], 0, 0);`. What does `wordToGuess[i]` hand
+      to `text` in each round?
+    evaluation: |
+      Expected: the single character at index i, so each round draws
+      exactly one letter of the word: round 0 the first letter,
+      round 1 the second, and so on, until every letter is drawn
+      once.
+
+      - `correct`   - says it is one character/letter of the word,
+                      picked by the round's index ("in every round
+                      the next letter" counts).
+      - `partial`   - says "a letter of the word" without connecting
+                      it to i / the rounds, or describes only the
+                      loop's overall effect (the whole word ends up
+                      spread over the canvas) without saying what
+                      the single expression delivers.
+      - `incorrect` - anything else, e.g. the whole word every time,
+                      the number i, or a random letter.
+
+      Feedback: let the student evaluate wordToGuess[i] by hand for
+      "sun" with i = 0, 1, 2. What comes out each time?
+
+  - id: rotate-pivot
+    title: "The pivot point"
+    question: |
+      Around which point does `rotate(45)` turn the drawing, and why
+      does the recipe call `translate(x, y)` *before* `rotate`?
+    evaluation: |
+      Expected: rotate turns around the current origin (0, 0). The
+      translate moves the origin to the letter's spot first, so the
+      letter tilts in place; without it, everything would swing
+      around the canvas corner.
+
+      - `correct`   - names the origin / (0, 0) as the pivot AND
+                      says translate puts the pivot at the letter's
+                      position ("so it rotates in place" counts).
+      - `partial`   - only one half: the pivot without the reason
+                      for translate, or "translate first so the
+                      letter stays put" without naming the pivot.
+      - `incorrect` - anything else, e.g. rotate turns around the
+                      shape's own center automatically, or around
+                      the mouse.
+
+      Feedback: ask where the origin is right before rotate runs,
+      once with and once without the translate.
+
+  - id: missing-push-pop
+    title: "Letters wander off"
+    question: |
+      A classmate removed `push()` and `pop()` from the letter loop.
+      Now most letters are gone from the canvas. What happens to the
+      translate and rotate calls without push and pop?
+    evaluation: |
+      Expected: they add up across the rounds. Every round translates
+      and rotates starting from the previous round's already moved
+      and tilted system, so the letters drift and spin further away
+      until they leave the canvas. push/pop restores the saved origin
+      before each new letter.
+
+      - `correct`   - says the transformations add up / each letter
+                      starts from the previous one's position, so
+                      they wander off ("stack" or "build on each
+                      other" counts).
+      - `partial`   - says push/pop is needed to reset without
+                      explaining what adds up, or says only rotate
+                      (or only translate) accumulates.
+      - `incorrect` - anything else, e.g. the letters become
+                      invisible because pop draws them, or push is
+                      what draws the letter.
+
+      Feedback: trace two rounds on paper: where is the origin after
+      round 1's translate(200, 100), and where does round 2's
+      translate start from?
+
+  - id: rotate-adds-up
+    title: "Two rotations"
+    question: |
+      Inside one push/pop pair, a program calls `rotate(30)` and a
+      few lines later `rotate(30)` again, then draws a letter. By
+      how many degrees is the letter tilted, and what does that tell
+      you about how rotate works?
+    evaluation: |
+      Expected: 60 degrees. rotate is relative: each call turns the
+      system further from where it currently is, so rotations add up
+      (like translate calls do).
+
+      - `correct`   - the value 60 AND the idea that rotations add
+                      up / are relative to the current tilt.
+      - `partial`   - only the value 60, or "they add up" without
+                      committing to the resulting angle.
+      - `incorrect` - anything else, e.g. 30 because the second call
+                      replaces the first, or 0 because they cancel.
+
+      Feedback: compare with translate: does a second
+      translate(100, 0) start from the corner or from where the
+      origin already is? rotate behaves the same way.
+
+  - id: fresh-scatter
+    title: "A new picture every run"
+    question: |
+      The program has no `draw` function, only `setup`. Why does the
+      scatter still look different every time you press Run?
+    evaluation: |
+      Expected: setup runs once per program start, and on every start
+      the random calls produce fresh values, so each run gets new
+      positions, sizes, colors, and angles. No draw is needed for
+      that; the picture just stays as setup drew it.
+
+      - `correct`   - says random gives new/different values on each
+                      run of setup ("every start rolls new numbers"
+                      counts).
+      - `partial`   - says "because of random" without connecting it
+                      to setup running again on each start, or
+                      explains setup runs once without mentioning
+                      random.
+      - `incorrect` - anything else, e.g. draw runs secretly in the
+                      background, or the browser moves the letters
+                      when the page loads.
+
+      Feedback: ask when setup runs, and what
+      random(MARGIN, WIDTH - MARGIN) returns the second time the
+      program is started.

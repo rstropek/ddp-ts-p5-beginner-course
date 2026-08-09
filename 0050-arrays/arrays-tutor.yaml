@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# AI tutor for part 5 of the Creative Coding book: Arrays.
+#
+# This is the general tutor for the Arrays part. Everything this tutor does
+# comes from fragments in ../ddp-tutor-fragments.yaml, including the
+# cumulative knowledge scope (scope_arrays). This file supplies only the
+# greeting and the example questions.
+#
+# Strictly hint mode: it never generates complete programs.
+#
+# Validate after every edit:  npx @novedu/cli validate 0050-arrays/arrays-tutor.yaml
+
+id: ddp-tutor-arrays
+name: "Creative Coding tutor: Arrays (part 5)"
+title: "Hi! I'm your tutor for the Arrays part."
+description: |
+  I help you with the chapters about strings and arrays: characters and
+  indexes, your first array, scale, parsing, parallel arrays, push and
+  splice, and the silos project. Ask me questions, show me code that
+  doesn't work, or let me quiz you. I give hints instead of finished
+  solutions. English or German, both are fine.
+
+exampleQuestions:
+  - title: "Why index 0?"
+    question: "Why does the first character of a string have the index 0 and not 1?"
+  - title: "Index out of range"
+    question: "My program shows 'undefined' instead of a letter. What did I probably do wrong with my index?"
+  - title: "Parallel arrays"
+    question: "How do several arrays belong together in the soccer field exercise? What does the index have to do with it?"
+  - title: "push and splice"
+    question: "What is the difference between push and splice, and why should I loop backwards when I remove elements?"
+  - title: "My parser is confused"
+    question: "In the parse coordinates exercise my numbers come out wrong. How does the buffer variable work?"
+  - title: "scale moved my circle"
+    question: "I called scale(2) and my circle jumped to a different place. Why?"
+  - title: "Quiz me"
+    question: "Ask me three short questions about arrays so I can check whether I understood this part."
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Arrays"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_arrays"}}
+
+    {{fragment "shared.socratic_exercises"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

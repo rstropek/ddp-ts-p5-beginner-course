@@ -1,0 +1,165 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0050-parsing-quiz.yaml ("Parsing").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: parsing-quiz-eval
+target: ./0050-parsing-quiz.yaml
+
+questions:
+  - question: parseint-what
+    answers:
+      - expect: correct
+        answer: |
+          "42" is a string, 42 is a number. parseInt turns the string into
+          the number
+      - expect: correct
+        answer: |
+          "42" ist text aus zwei zeichen, 42 eine zahl zum rechnen.
+          parseInt("42") macht aus dem text die zahl 42.
+      # Conversion without the type difference.
+      - expect: partial
+        answer: |
+          parseInt makes 42 out of "42"
+      # Difference without parseInt's job.
+      - expect: partial
+        answer: |
+          one is text and one is a number you can calculate with
+      - expect: incorrect
+        answer: |
+          they are the same, the quotes are just decoration.
+      # floor confusion.
+      - expect: incorrect
+        answer: |
+          parseInt rounds a decimal number down, like floor.
+
+  - question: buffer-trace
+    answers:
+      - expect: correct
+        answer: |
+          the buffer holds "83" and x becomes 83
+      - expect: correct
+        answer: |
+          im puffer steht "83", beim beistrich wird daraus mit parseInt
+          die zahl 83 für x, und der puffer wird geleert.
+      # One half right.
+      - expect: partial
+        answer: |
+          x gets 83
+      # Buffer idea wrong, digits split.
+      - expect: partial
+        answer: |
+          the buffer has "8" and "3" separately, and x becomes 83
+      - expect: incorrect
+        answer: |
+          x becomes 8 and y becomes 3, one digit each.
+      - expect: incorrect
+        answer: |
+          the buffer holds "83,9" until the space comes.
+
+  - question: default-digits
+    answers:
+      - expect: correct
+        answer: |
+          the digits go to default and get appended to the buffer
+      - expect: correct
+        answer: |
+          alles was kein beistrich und kein leerzeichen ist, also die
+          ziffern. sie werden mit += an den puffer angehängt.
+      # Which without what.
+      - expect: partial
+        answer: |
+          the digits
+      # What without which.
+      - expect: partial
+        answer: |
+          default collects the characters
+      - expect: incorrect
+        answer: |
+          default catches errors and stops the switch if something
+          unexpected comes.
+      - expect: incorrect
+        answer: |
+          the spaces end up there because they are nothing special.
+
+  - question: flush-why
+    answers:
+      - expect: correct
+        answer: |
+          circles are only drawn at a space, and after the last pair there
+          is no space, so the last y is still in the buffer when the loop
+          ends
+      - expect: correct
+        answer: |
+          nach dem letzten paar kommt kein leerzeichen mehr, der string
+          hört einfach auf. darum muss man den rest im puffer nach der
+          schleife noch verarbeiten.
+      # Observation without reason.
+      - expect: partial
+        answer: |
+          the loop skips the last circle
+      # Buffer-leftover shorthand: the rubric counts it as the same idea
+      # as the missing separator, so this terse form is correct.
+      - expect: correct
+        answer: |
+          there are still digits in the buffer at the end
+      - expect: incorrect
+        answer: |
+          the condition should be ix <= circles.length, then the loop
+          would catch it.
+      - expect: incorrect
+        answer: |
+          the fourth circle is outside the canvas, the code after the loop
+          moves it back in.
+
+  - question: prev-point
+    answers:
+      - expect: correct
+        answer: |
+          the point just parsed becomes the previous point, so the next
+          line starts where this one ended
+      - expect: correct
+        answer: |
+          der aktuelle punkt wird als startpunkt für die nächste linie
+          gespeichert.
+      # Copying without purpose.
+      - expect: partial
+        answer: |
+          the values of x2 and y2 are copied into x1 and y1
+      # Remembering without the next-line connection.
+      - expect: partial
+        answer: |
+          the program remembers the point for later
+      - expect: incorrect
+        answer: |
+          it swaps the start and end so the line flips direction.
+      - expect: incorrect
+        answer: |
+          it resets the line to the origin for the next round.
+
+  - question: not-operator
+    answers:
+      - expect: correct
+        answer: |
+          ! means not, so the line is only drawn when it is NOT the first
+          point. the first point has no previous point to connect to
+      - expect: correct
+        answer: |
+          das rufzeichen dreht den boolean um. beim allerersten punkt gibt
+          es noch keinen vorgänger, also keine linie.
+      # Operator without reason.
+      - expect: partial
+        answer: |
+          it flips true to false, so the if runs when isFirstPoint is
+          false
+      # Reason without operator.
+      - expect: partial
+        answer: |
+          the first point can't be connected to anything yet
+      - expect: incorrect
+        answer: |
+          the ! makes the condition extra important so it is checked
+          first.
+      - expect: incorrect
+        answer: |
+          the first point is skipped because it is at (0, 0) and would
+          draw into the corner.
