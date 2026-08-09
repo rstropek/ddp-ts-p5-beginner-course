@@ -117,3 +117,6 @@ activities:
     binary-hex-conversions:
       file: 0030-conditions/0050-binary-hex-conversions-quiz.yaml
       note: "Creative Coding book: Binary and hexadecimal conversions (0030-conditions/0050) — GitHub-hosted"
+    dice-switch:
+      file: 0030-conditions/0080-dice-switch-quiz.yaml
+      note: "Creative Coding book: The switch statement (0030-conditions/0080) — GitHub-hosted"

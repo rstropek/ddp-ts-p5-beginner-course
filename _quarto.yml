@@ -56,6 +56,7 @@ book:
         - 0030-conditions/0050-binary-hex-conversions.qmd
         - 0030-conditions/0060-number-systems.qmd
         - 0030-conditions/0070-rock-paper-scissors.qmd
+        - 0030-conditions/0080-dice-switch.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

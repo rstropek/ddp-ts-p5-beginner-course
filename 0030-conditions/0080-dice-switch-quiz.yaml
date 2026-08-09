@@ -1,0 +1,263 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The switch statement: many cases, one question"
+# (0030-conditions/0080-dice-switch.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: reading a
+# switch (first matching case runs), break and the fall-through mistake,
+# default as the chain's final else, switch only for exact === cases, and
+# writing a case from an else-if line.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: dice-switch-quiz
+name: "Quiz: The switch statement"
+
+title: "Check your understanding: the switch statement"
+description: |
+  Six short questions about the chapter *The switch statement: many
+  cases, one question*. Answer in your own words. There are no answer
+  options to pick from, and this quiz is anonymous: it's here for you,
+  so you can see what you already understand and what you should read
+  again. One or two sentences are enough for most answers, and answering
+  in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="switch (dice) { case 1: ... }"
+      scope="after the switch chapter"
+      knows=(array
+        "drawing commands"
+        "mouse events"
+        "variables and constants with explicit data types, including global variables"
+        "comparisons with `===` and `!==` on numbers and on strings"
+        "the if/else if/else chain with braces around every block"
+        "nested if statements"
+        "`random`, `floor`, and `pow`"
+        "the `draw` animation loop"
+        "the boolean operators `||` and `&&`, also combined in one condition with parentheses"
+        "a boolean value stored in a typed constant"
+        "emoji as characters inside strings"
+        "the empty string as a \"nothing yet\" value"
+        "the `switch` statement with `case`, `break`, and an optional `default` case")
+      not_yet=(array
+        "arrays"
+        "for/while loops"
+        "functions with parameters or return values"
+        "the `!` operator"
+        "string methods"
+        "deliberate fall-through, where several `case` labels share one block")}}
+
+questions:
+  - id: switch-trace
+    title: "Reading a switch"
+    question: |
+      A program contains this code:
+
+      ```typescript
+      const dice: number = 4;
+
+      let message: string;
+      switch (dice) {
+          case 1:
+              message = "Eins";
+              break;
+          case 4:
+              message = "Vier";
+              break;
+          default:
+              message = "Sechs";
+              break;
+      }
+      ```
+
+      What does `message` hold after the switch, and why?
+    evaluation: |
+      Expected: `"Vier"`. The line `case 4:` asks "is dice exactly 4?",
+      that case matches, its statement runs, and `break` leaves the
+      switch. The default does not run because a case matched.
+
+      - `correct`   - "Vier" AND the reason: case 4 matches / dice is
+                      exactly 4 ("the computer jumps to case 4" counts).
+      - `partial`   - "Vier" without a reason, or the right mechanism
+                      (the matching case runs, the others don't) with a
+                      wrong or missing value.
+      - `incorrect` - anything else, e.g. "Sechs" because default always
+                      runs, or "Eins" because the first case runs first.
+
+      Feedback: which case asks the same question as `dice === 4`?
+
+  - id: missing-break
+    title: "The missing break"
+    question: |
+      A classmate deleted one `break`:
+
+      ```typescript
+      switch (dice) {
+          case 1:
+              message = "Eins";
+          case 2:
+              message = "Zwei";
+              break;
+          case 3:
+              message = "Drei";
+              break;
+      }
+      ```
+
+      The program rolls a 1. What does `message` hold after the switch,
+      and why?
+    evaluation: |
+      Expected: `"Zwei"`. Case 1 has no `break`, so after storing
+      "Eins" the execution falls through into case 2's statements and
+      stores "Zwei"; the `break` there ends the switch.
+
+      - `correct`   - "Zwei" AND the reason: without break the computer
+                      keeps running into the next case ("it falls
+                      through" or "case 2 runs too" counts).
+      - `partial`   - "Zwei" without a reason, or describes that the
+                      switch doesn't stop after case 1 / both
+                      assignments run without naming the final value.
+      - `incorrect` - anything else, e.g. "Eins" because case 2 doesn't
+                      match, or claims an error message appears.
+
+      Feedback: without break the computer runs on into the next case's
+      statements. Which assignment runs last?
+
+  - id: default-job
+    title: "The job of default"
+    question: |
+      A switch can end with a `default:` case. When does the default
+      run, and which branch of an `if`/`else if` chain does the same
+      job?
+    evaluation: |
+      Expected: the default runs when no case matched, and it does the
+      job of the plain `else` at the end of a chain.
+
+      - `correct`   - runs when no case matches ("when nothing else
+                      fits" counts) AND names the final else / the else
+                      without a condition.
+      - `partial`   - only one of the two halves: when the default runs,
+                      or the matching chain branch.
+      - `incorrect` - anything else, e.g. default always runs, runs
+                      first, or catches errors.
+
+      Feedback: think of the word dice: which line of the chain became
+      the default?
+
+  - id: switch-or-if
+    title: "The wrong tool"
+    question: |
+      A classmate wants to rewrite this decision as a switch:
+
+      ```typescript
+      if (mouseX < 100) {
+          fill("red");
+      } else {
+          fill("blue");
+      }
+      ```
+
+      Why is switch the wrong tool here?
+    evaluation: |
+      Expected: a case holds one exact value; a switch asks only "is
+      the value exactly this?", the `===` question. A range like
+      `mouseX < 100` covers many values and cannot be written as a
+      case, so the decision stays with `if`.
+
+      - `correct`   - a case is one exact value / switch only does
+                      exact (===) comparisons, so a range or `<`
+                      comparison doesn't fit ("you'd need a case for
+                      every number" counts).
+      - `partial`   - says the if should stay / switch doesn't work
+                      here, without the exact-value reason.
+      - `incorrect` - anything else, e.g. suggests `case mouseX < 100:`
+                      would work, or claims switch only works for dice
+                      numbers.
+
+      Feedback: a case names one exact value; the question a case asks
+      is the `===` question, never `<` or `>`.
+
+  - id: case-for-five
+    title: "Write one case"
+    question: |
+      This line comes from the word dice chain:
+
+      ```typescript
+      else if (dice === 5) { message = "Fünf"; }
+      ```
+
+      Write the same decision as a case inside `switch (dice) { ... }`.
+    evaluation: |
+      Expected code (line breaks and indentation don't matter):
+
+      ```
+      case 5:
+          message = "Fünf";
+          break;
+      ```
+
+      - `correct`   - `case 5:` with the assignment `message = "Fünf";`
+                      and `break;`, all semicolons in place.
+      - `partial`   - case and assignment right but the `break` is
+                      missing, or the code is right except for missing
+                      end-of-statement semicolons.
+      - `incorrect` - anything else, e.g. `case dice === 5:` or
+                      `case === 5:`.
+
+      Feedback: a case names only the value (the variable already
+      stands in the switch header), and the case ends with break.
+
+  - id: no-case-matches
+    title: "Nothing matches"
+    question: |
+      A program contains this code:
+
+      ```typescript
+      let message: string = "Start";
+
+      const n: number = 9;
+      switch (n) {
+          case 1:
+              message = "Eins";
+              break;
+          case 2:
+              message = "Zwei";
+              break;
+      }
+      ```
+
+      What does `message` hold after the switch, and why?
+    evaluation: |
+      Expected: `"Start"`. No case matches 9 and there is no default,
+      so the switch does nothing and the variable keeps its old value.
+
+      - `correct`   - "Start" AND the reason: no case matches and there
+                      is no default, so nothing in the switch runs ("the
+                      program just continues after the switch" counts).
+      - `partial`   - "Start" without a reason, or says no case runs /
+                      the switch does nothing without naming the value.
+      - `incorrect` - anything else, e.g. an error occurs, "Eins"
+                      because the first case runs anyway, or message
+                      becomes empty.
+
+      Feedback: no case fits the 9 and a default is missing, so the
+      switch changes nothing. What was in `message` before the switch?

@@ -315,6 +315,11 @@ fragments:
         hex digits per RGB channel as in #FF0000), digit extraction with %
         and floor — always computed, never written as 0b or 0x literals
       - the numeric separator in long numbers, like 1_000_000
+      - the switch statement on a number or a string: switch (value) with
+        one case per exact value (the === question), a break at the end of
+        every case, and an optional default that runs when no case matches;
+        a missing break (fall-through) has been shown as a classic mistake,
+        never used on purpose
 
       Do not use or introduce — not in code, not in explanations:
 
@@ -322,8 +327,8 @@ fragments:
         removed with clever conditions
       - functions with parameters or return values, arrow functions,
         objects, classes
-      - ++ and -- (the course writes += 1), the ! operator, switch, the
-        ternary ?: operator
+      - ++ and -- (the course writes += 1), the ! operator, the ternary
+        ?: operator
       - if branches without curly braces, var
       - binary or hex literals like 0b1101 and 0xFF, string methods
       - Math.* — the course always uses the p5.js helpers (floor, round,

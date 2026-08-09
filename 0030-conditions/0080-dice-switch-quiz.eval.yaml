@@ -1,0 +1,183 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden-answer regression cases for the switch chapter quiz
+# (0030-conditions/0080-dice-switch.qmd). Teacher-only test data —
+# never publish as an activity, never mint a code.
+
+id: dice-switch-quiz-eval
+target: ./0080-dice-switch-quiz.yaml
+
+questions:
+  - question: switch-trace
+    answers:
+      - expect: correct
+        answer: |
+          "Vier". dice is 4, so the computer jumps to case 4 and the
+          break ends the switch
+      # German correct answer: the bilingual policy must hold.
+      - expect: correct
+        answer: |
+          vier, weil case 4 genau zum wert von dice passt und break
+          danach den switch beendet
+      # Bare value, no reason — declared partial branch.
+      - expect: partial
+        answer: |
+          Vier
+      # Right mechanism, no value — the other partial branch.
+      - expect: partial
+        answer: |
+          the computer runs only the one case that matches the value
+          and skips all the others
+      # Classic misconception: default runs at the end of every switch.
+      - expect: incorrect
+        answer: |
+          Sechs, because the default always runs at the end
+      # Misreading top-to-bottom as "first case wins no matter what".
+      - expect: incorrect
+        answer: |
+          Eins, the switch starts at the top so case 1 runs first
+
+  - question: missing-break
+    answers:
+      - expect: correct
+        answer: |
+          zwei. case 1 has no break so it falls through into case 2,
+          and the break there stops it
+      # Everyday paraphrase of fall-through, no technical term.
+      - expect: correct
+        answer: |
+          message is "Zwei". after storing Eins the computer just keeps
+          going into the next case because nothing says stop, only the
+          break in case 2 ends the switch
+      - expect: correct
+        answer: |
+          "Zwei", weil nach case 1 kein break kommt und der computer
+          einfach in case 2 weiterläuft
+      # Mechanism described but final value not named — declared
+      # partial branch.
+      - expect: partial
+        answer: |
+          the switch doesnt stop after case 1, both assignments run
+      # Bare value, no reason — the other partial branch.
+      - expect: partial
+        answer: |
+          Zwei
+      # Confident wrong idea: only the matching case can run.
+      - expect: incorrect
+        answer: |
+          Eins, case 2 doesnt match a 1 so only case 1 runs
+      # Classic beginner belief that a missing break is a syntax error.
+      - expect: incorrect
+        answer: |
+          you get an error, every case must end with a break
+
+  - question: default-job
+    answers:
+      - expect: correct
+        answer: |
+          default runs when no case fits. its like the plain else at
+          the end of an if chain
+      - expect: correct
+        answer: |
+          default kommt dran wenn kein case passt, so wie das letzte
+          else ohne bedingung in der kette
+      # When-half only — declared partial branch.
+      - expect: partial
+        answer: |
+          it runs when nothing else matches
+      # Chain-branch half only — the other partial branch.
+      - expect: partial
+        answer: |
+          its the same as the else
+      # Classic misconception: default as an always-running finisher.
+      - expect: incorrect
+        answer: |
+          the default runs at the end of every switch, after the
+          matching case is done
+
+  - question: switch-or-if
+    answers:
+      - expect: correct
+        answer: |
+          a case can only hold one exact value like case 1. mouseX < 100
+          is a range with hundreds of values, you cant write that as a
+          case
+      - expect: correct
+        answer: |
+          ein case fragt nur "ist es genau dieser wert". mouseX < 100
+          ist ein bereich, das geht mit case nicht
+      # Verbose padded answer with an irrelevant p5.js fact — must stay
+      # correct, not more, not less.
+      - expect: correct
+        answer: |
+          switch only asks "is it exactly this value", the same question
+          as ===. a comparison like mouseX < 100 is true for every
+          number below 100, and you cannot list all of them as cases,
+          so the if has to stay. by the way fill("red") sets the color
+          for every shape drawn after it.
+      # Right conclusion without the exact-value reason — declared
+      # partial branch.
+      - expect: partial
+        answer: |
+          switch doesnt work for this, you should keep the if here
+      # Confident wrong syntax claim.
+      - expect: incorrect
+        answer: |
+          you can just write case mouseX < 100: and it works like the if
+
+  - question: case-for-five
+    answers:
+      - expect: correct
+        answer: |
+          case 5: message = "Fünf"; break;
+      # Multi-line formatting must count the same as one line.
+      - expect: correct
+        answer: |
+          case 5:
+              message = "Fünf";
+              break;
+      # Missing break — declared partial branch.
+      - expect: partial
+        answer: |
+          case 5: message = "Fünf";
+      # Missing end-of-statement semicolons — course rule makes this
+      # partial, never correct.
+      - expect: partial
+        answer: |
+          case 5:
+              message = "Fünf"
+              break
+      # Repeats the whole comparison inside the case label.
+      - expect: incorrect
+        answer: |
+          case dice === 5: message = "Fünf"; break;
+      # Did not do the task: wrote an if instead of a case.
+      - expect: incorrect
+        answer: |
+          if (dice === 5) { message = "Fünf"; }
+
+  - question: no-case-matches
+    answers:
+      - expect: correct
+        answer: |
+          it still holds "Start". 9 matches no case and there is no
+          default, so the switch does nothing
+      - expect: correct
+        answer: |
+          da bleibt "Start" drin. kein case passt zu 9 und ein default
+          gibt es nicht, also passiert einfach nichts
+      # No value named — declared partial branch.
+      - expect: partial
+        answer: |
+          nothing happens, none of the cases run
+      # Bare value, no reason — the other partial branch.
+      - expect: partial
+        answer: |
+          Start
+      # Confident crash claim.
+      - expect: incorrect
+        answer: |
+          the program crashes because there is no case for 9
+      # Wrong idea that the switch clears the variable.
+      - expect: incorrect
+        answer: |
+          message is empty afterwards because no case set a value
