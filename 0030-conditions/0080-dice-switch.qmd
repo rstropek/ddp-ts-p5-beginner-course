@@ -129,9 +129,12 @@ number, by the way: a switch can also ask about a string, with the
 same character-for-character exactness you know from comparing
 strings with `===`.
 
-One more reason to learn the shape by heart: `switch` exists almost
-unchanged in C, Java, and C#, the languages your semicolon habit is
-already preparing you for.
+One more reason to learn the shape by heart: a similar `switch` exists
+in C, Java, and C#, the languages your semicolon habit is already
+preparing you for. Some languages even grow the idea further: C# and
+Rust, for example, offer more powerful variants that can match whole
+patterns, not just single values. The shape you learn here is the
+foundation for all of them.
 
 ## Your exercise: the dice in words {#sec-simple-dice-exercise}
 
