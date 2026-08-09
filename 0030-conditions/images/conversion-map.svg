@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="536" height="160" class="svgbob">
+  <style>.svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon {
+  stroke: black;
+  stroke-width: 2;
+  stroke-opacity: 1;
+  fill-opacity: 1;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+}
+
+.svgbob text {
+  white-space: pre;
+  fill: black;
+  font-family: Iosevka Fixed, monospace;
+  font-size: 14px;
+}
+
+.svgbob rect.backdrop {
+  stroke: none;
+  fill: white;
+}
+
+.svgbob .broken {
+  stroke-dasharray: 8;
+}
+
+.svgbob .filled {
+  fill: black;
+}
+
+.svgbob .bg_filled {
+  fill: white;
+  stroke-width: 1;
+}
+
+.svgbob .nofill {
+  fill: white;
+}
+
+.svgbob .end_marked_arrow {
+  marker-end: url(#arrow);
+}
+
+.svgbob .start_marked_arrow {
+  marker-start: url(#arrow);
+}
+
+.svgbob .end_marked_diamond {
+  marker-end: url(#diamond);
+}
+
+.svgbob .start_marked_diamond {
+  marker-start: url(#diamond);
+}
+
+.svgbob .end_marked_circle {
+  marker-end: url(#circle);
+}
+
+.svgbob .start_marked_circle {
+  marker-start: url(#circle);
+}
+
+.svgbob .end_marked_open_circle {
+  marker-end: url(#open_circle);
+}
+
+.svgbob .start_marked_open_circle {
+  marker-start: url(#open_circle);
+}
+
+.svgbob .end_marked_big_open_circle {
+  marker-end: url(#big_open_circle);
+}
+
+.svgbob .start_marked_big_open_circle {
+  marker-start: url(#big_open_circle);
+}
+
+</style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="536" height="160"></rect>
+  <rect x="4" y="40" width="80" height="64" class="solid nofill" rx="4"></rect>
+  <text x="18" y="76" >decimal</text>
+  <rect x="236" y="40" width="72" height="64" class="solid nofill" rx="4"></rect>
+  <text x="250" y="76" >binary</text>
+  <rect x="460" y="40" width="64" height="64" class="solid nofill" rx="4"></rect>
+  <text x="482" y="76" >hex</text>
+  <text x="82" y="12" >divide</text>
+  <text x="138" y="12" >by</text>
+  <text x="162" y="12" >2</text>
+  <text x="178" y="12" >and</text>
+  <text x="210" y="12" >read</text>
+  <text x="82" y="28" >the</text>
+  <text x="114" y="28" >remainders</text>
+  <text x="202" y="28" >upward</text>
+  <text x="82" y="124" >multiply</text>
+  <text x="154" y="124" >each</text>
+  <text x="194" y="124" >bit</text>
+  <text x="226" y="124" >by</text>
+  <text x="82" y="140" >its</text>
+  <text x="114" y="140" >place</text>
+  <text x="162" y="140" >value</text>
+  <text x="210" y="140" >and</text>
+  <text x="242" y="140" >add</text>
+  <text x="330" y="12" >group</text>
+  <text x="378" y="12" >four</text>
+  <text x="418" y="12" >bits</text>
+  <text x="330" y="28" >from</text>
+  <text x="370" y="28" >the</text>
+  <text x="402" y="28" >right</text>
+  <text x="330" y="124" >replace</text>
+  <text x="394" y="124" >each</text>
+  <text x="434" y="124" >hex</text>
+  <text x="330" y="140" >digit</text>
+  <text x="378" y="140" >with</text>
+  <text x="418" y="140" >four</text>
+  <text x="458" y="140" >bits</text>
+  <line x1="96" y1="56" x2="216" y2="56" class="solid"></line>
+  <polygon points="216,52 224,56 216,60" class="filled"></polygon>
+  <line x1="320" y1="56" x2="440" y2="56" class="solid"></line>
+  <polygon points="440,52 448,56 440,60" class="filled"></polygon>
+  <polygon points="104,84 96,88 104,92" class="filled"></polygon>
+  <line x1="104" y1="88" x2="224" y2="88" class="solid"></line>
+  <polygon points="328,84 320,88 328,92" class="filled"></polygon>
+  <line x1="328" y1="88" x2="448" y2="88" class="solid"></line>
+</svg>

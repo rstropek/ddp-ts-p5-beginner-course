@@ -1,0 +1,9 @@
+          divide by 2 and read           group four bits
+          the remainders upward          from the right
+.---------.                  .--------.                  .-------.
+|         | ---------------> |        | ---------------> |       |
+| decimal |                  | binary |                  |  hex  |
+|         | <--------------- |        | <--------------- |       |
+'---------'                  '--------'                  '-------'
+          multiply each bit by           replace each hex
+          its place value and add        digit with four bits

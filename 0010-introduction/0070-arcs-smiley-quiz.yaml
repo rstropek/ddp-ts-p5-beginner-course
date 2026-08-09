@@ -65,8 +65,9 @@ questions:
       ```
 
       The first four parameters work like you expect from other shapes: the
-      center position (200, 250) and the size (200 wide, 150 tall). What do
-      the last two parameters, 25 and 180, tell the `arc` command?
+      center position (200, 250) and the size (200 wide, 150 tall). The last
+      two parameters are 25 and 180. What kind of values are these, and what
+      do they tell the `arc` command?
     evaluation: |
       Expected: 25 is the start angle and 180 is the end angle. They say
       where on the outline the visible piece begins and where it ends.
@@ -74,9 +75,11 @@ questions:
       - `correct`   - both numbers identified as angles that mark where the
                       drawn piece starts and stops ("from 25 degrees to
                       180 degrees" in any wording counts).
-      - `partial`   - says they are angles or degrees, but not that they
-                      mark the start and end of the visible piece, or has
-                      start and end swapped (180 as start, 25 as end).
+      - `partial`   - only one half: says they are angles or degrees but not
+                      what they mark, or says where the drawn piece starts
+                      and stops without naming them as angles or degrees;
+                      also when start and end are swapped (180 as start, 25
+                      as end).
       - `incorrect` - anything else, e.g. reading them as a position or a
                       size.
 

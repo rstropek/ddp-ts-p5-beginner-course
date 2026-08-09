@@ -8,7 +8,15 @@ questions:
         answer: |
           25 start angle, 180 end angle. only that bit of the circle is drawn
       # correct in sloppy everyday words, avoids "start angle" / "end angle"
+      # but still names the unit the question asks for
       - expect: correct
+        answer: |
+          the two numbers are degrees. it starts drawing at 25 and stops at
+          180, so you only see the piece between
+      # mirrors the rubric's other `partial` half: says where the piece starts
+      # and stops, but never says the numbers are angles or degrees - the
+      # question asks for both
+      - expect: partial
         answer: |
           first one is where it starts going round, second where it stops.
           you only see the piece between

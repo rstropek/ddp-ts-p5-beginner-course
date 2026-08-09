@@ -20,8 +20,8 @@
 base-url: "https://raw.githubusercontent.com/rstropek/ddp-ts-p5-beginner-course/refs/heads/main/"
 
 activities:
-  # One AI tutor per book part. Every chapter of a part links to its part's
-  # tutor via the {{< tutor <key> >}} shortcode at the top of the chapter.
+  # Each part has a general AI tutor. A chapter can also have a dedicated
+  # tutor when a focused practice workflow needs different instructions.
   tutors:
     tutor-introduction:
       file: 0010-introduction/introduction-tutor.yaml
@@ -32,6 +32,9 @@ activities:
     tutor-conditions:
       file: 0030-conditions/conditions-tutor.yaml
       note: "Creative Coding book: AI tutor for part 3, Conditions — GitHub-hosted"
+    tutor-number-conversions:
+      file: 0030-conditions/number-conversions-tutor.yaml
+      note: "Creative Coding book: dedicated number conversion tutor (0030-conditions/0050) — GitHub-hosted"
 
     # Exercise AIs: the code-generating counterparts for the book's
     # designated AI exercises (the part tutors stay strictly hint-only).
@@ -106,5 +109,8 @@ activities:
       file: 0030-conditions/0040-bouncing-ball-quiz.yaml
       note: "Creative Coding book: The bouncing ball (0030-conditions/0040) — GitHub-hosted"
     number-systems:
-      file: 0030-conditions/0050-number-systems-quiz.yaml
-      note: "Creative Coding book: Number systems (0030-conditions/0050) — GitHub-hosted"
+      file: 0030-conditions/0060-number-systems-quiz.yaml
+      note: "Creative Coding book: Number systems in code (0030-conditions/0060) — GitHub-hosted"
+    binary-hex-conversions:
+      file: 0030-conditions/0050-binary-hex-conversions-quiz.yaml
+      note: "Creative Coding book: Binary and hexadecimal conversions (0030-conditions/0050) — GitHub-hosted"

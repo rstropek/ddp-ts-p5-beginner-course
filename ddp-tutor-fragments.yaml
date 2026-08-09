@@ -3,10 +3,10 @@
 #
 # Two kinds of activities pull from this library:
 #
-#   * PART TUTORS (one per book part; every chapter links to its part's
-#     tutor): tutor_role + topic_limits + scope_<part> + socratic_exercises
-#     + course_habits + teenager_safety. Strictly hint mode — they never
-#     write a complete program.
+#   * TUTORS (general part tutors and focused chapter tutors): tutor_role +
+#     topic_limits + scope_<part> + socratic_exercises + course_habits +
+#     teenager_safety. Strictly hint mode — they never write a complete
+#     program.
 #   * EXERCISE AIs (one per designated AI exercise, e.g. cat-to-elephant,
 #     dice rewrite): ai_workbench + topic_limits + scope_<part> +
 #     teenager_safety. They DO generate complete code — that is the

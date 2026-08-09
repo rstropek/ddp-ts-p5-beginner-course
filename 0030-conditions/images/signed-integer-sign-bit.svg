@@ -1,0 +1,160 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="776" height="192" class="svgbob">
+  <style>.svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon {
+  stroke: black;
+  stroke-width: 2;
+  stroke-opacity: 1;
+  fill-opacity: 1;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+}
+
+.svgbob text {
+  white-space: pre;
+  fill: black;
+  font-family: Iosevka Fixed, monospace;
+  font-size: 14px;
+}
+
+.svgbob rect.backdrop {
+  stroke: none;
+  fill: white;
+}
+
+.svgbob .broken {
+  stroke-dasharray: 8;
+}
+
+.svgbob .filled {
+  fill: black;
+}
+
+.svgbob .bg_filled {
+  fill: white;
+  stroke-width: 1;
+}
+
+.svgbob .nofill {
+  fill: white;
+}
+
+.svgbob .end_marked_arrow {
+  marker-end: url(#arrow);
+}
+
+.svgbob .start_marked_arrow {
+  marker-start: url(#arrow);
+}
+
+.svgbob .end_marked_diamond {
+  marker-end: url(#diamond);
+}
+
+.svgbob .start_marked_diamond {
+  marker-start: url(#diamond);
+}
+
+.svgbob .end_marked_circle {
+  marker-end: url(#circle);
+}
+
+.svgbob .start_marked_circle {
+  marker-start: url(#circle);
+}
+
+.svgbob .end_marked_open_circle {
+  marker-end: url(#open_circle);
+}
+
+.svgbob .start_marked_open_circle {
+  marker-start: url(#open_circle);
+}
+
+.svgbob .end_marked_big_open_circle {
+  marker-end: url(#big_open_circle);
+}
+
+.svgbob .start_marked_big_open_circle {
+  marker-start: url(#big_open_circle);
+}
+
+</style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="776" height="192"></rect>
+  <rect x="196" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="210" y="92" >0</text>
+  <rect x="340" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="354" y="92" >1</text>
+  <rect x="484" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="498" y="92" >0</text>
+  <rect x="148" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="162" y="92" >0</text>
+  <rect x="244" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="258" y="92" >1</text>
+  <rect x="292" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="306" y="92" >0</text>
+  <rect x="388" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="402" y="92" >0</text>
+  <rect x="436" y="72" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="450" y="92" >1</text>
+  <rect x="148" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="162" y="156" >1</text>
+  <rect x="196" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="210" y="156" >1</text>
+  <rect x="244" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="258" y="156" >0</text>
+  <rect x="292" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="306" y="156" >1</text>
+  <rect x="340" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="354" y="156" >0</text>
+  <rect x="388" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="402" y="156" >1</text>
+  <rect x="436" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="450" y="156" >1</text>
+  <rect x="484" y="136" width="32" height="32" class="solid nofill" rx="4"></rect>
+  <text x="498" y="156" >0</text>
+  <text x="266" y="12" >the</text>
+  <text x="298" y="12" >other</text>
+  <text x="346" y="12" >seven</text>
+  <line x1="212" y1="48" x2="212" y2="52" class="solid"></line>
+  <polygon points="208,52 216,52 212,64" class="filled"></polygon>
+  <line x1="356" y1="48" x2="356" y2="52" class="solid"></line>
+  <polygon points="352,52 360,52 356,64" class="filled"></polygon>
+  <line x1="500" y1="48" x2="500" y2="52" class="solid"></line>
+  <polygon points="496,52 504,52 500,64" class="filled"></polygon>
+  <text x="394" y="12" >bits</text>
+  <line x1="164" y1="16" x2="164" y2="52" class="solid"></line>
+  <polygon points="160,52 168,52 164,64" class="filled"></polygon>
+  <text x="546" y="92" >sign</text>
+  <text x="586" y="92" >bit</text>
+  <text x="618" y="92" >0</text>
+  <text x="634" y="92" >means</text>
+  <text x="682" y="92" >nonnegative</text>
+  <text x="546" y="156" >sign</text>
+  <text x="586" y="156" >bit</text>
+  <text x="618" y="156" >1</text>
+  <text x="634" y="156" >means</text>
+  <text x="682" y="156" >negative</text>
+  <text x="122" y="12" >sign bit</text>
+  <text x="10" y="92" >positive 42</text>
+  <text x="10" y="156" >negative -42</text>
+  <g>
+    <line x1="356" y1="16" x2="356" y2="40" class="solid"></line>
+    <line x1="212" y1="40" x2="500" y2="40" class="solid"></line>
+  </g>
+</svg>

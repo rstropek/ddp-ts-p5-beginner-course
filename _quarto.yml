@@ -53,7 +53,8 @@ book:
         - 0030-conditions/0020-color-quadrants.qmd
         - 0030-conditions/0030-dice.qmd
         - 0030-conditions/0040-bouncing-ball.qmd
-        - 0030-conditions/0050-number-systems.qmd
+        - 0030-conditions/0050-binary-hex-conversions.qmd
+        - 0030-conditions/0060-number-systems.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

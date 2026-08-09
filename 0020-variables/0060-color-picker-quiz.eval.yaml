@@ -63,6 +63,9 @@ questions:
       - expect: correct
         answer: "the later rectangle paints over the text. draw the rectangle first and the text after it"
       - expect: correct
+        answer: "zuerst das Rechteck zeichnen und den Text danach, sonst überdeckt das Rechteck den Text"
+      # names the cover-up but offers no fix, which the question now asks for
+      - expect: partial
         answer: "das Rechteck überdeckt den Text, weil es später gezeichnet wird"
       - expect: partial
         answer: "the statements are in the wrong order"

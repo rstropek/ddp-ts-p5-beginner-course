@@ -1,0 +1,167 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Binary and hexadecimal conversions"
+# (0030-conditions/0050-binary-hex-conversions.qmd).
+
+id: binary-hex-conversions-quiz
+name: "Quiz: Binary and hexadecimal conversions"
+title: "Check your understanding: binary and hexadecimal conversions"
+description: |
+  Six questions about the chapter *Binary and hexadecimal conversions*.
+  Answer in your own words. Show your calculation steps for the conversion
+  questions. One or two sentences are enough for the research questions, and
+  answering in German is fine too. This quiz is anonymous: it's here for you,
+  so you can see what you already understand and what you should read again.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml"
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      scope="after the binary and hexadecimal conversion chapter"
+      knows=(array
+        "decimal, binary, and hexadecimal place values"
+        "decimal-to-binary conversion with repeated division by 2"
+        "binary-to-decimal conversion with powers of 2"
+        "the four-bit connection between binary and hexadecimal"
+        "the hexadecimal digits A to F and their values 10 to 15"
+        "hexadecimal-to-decimal conversion with place values"
+        "decimal-to-hexadecimal conversion with repeated division by 16")
+      not_yet=(array
+        "arrays"
+        "for/while loops"
+        "writing your own functions with parameters")}}
+
+questions:
+  - id: decimal-to-binary-process
+    title: "Decimal to binary"
+    question: |
+      Convert decimal 26 to binary. Write the binary result and show how
+      repeated division by 2 produces it.
+    evaluation: |
+      Expected: The divisions give quotient/remainder pairs 13/0, 6/1, 3/0,
+      1/1, and 0/1. Reading the remainders from bottom to top gives 11010.
+
+      - `correct`   - gives 11010 AND shows all repeated divisions or
+                      equivalent quotient/remainder steps in the right order.
+      - `partial`   - gives 11010 and names the repeated-division method
+                      (divide by 2, collect the remainders) even when no
+                      individual division is written out, or shows the steps
+                      with one arithmetic or reading-order mistake.
+      - `incorrect` - anything else, including a bare 11010 with no method
+                      named at all.
+
+      Feedback: keep dividing the quotient by 2 until it reaches zero, then
+      read the remainder column from bottom to top.
+
+  - id: binary-to-hex-process
+    title: "Binary to hex"
+    question: |
+      Convert binary 10110110 to hexadecimal. Show how grouping the bits
+      produces each hexadecimal digit.
+    evaluation: |
+      Expected: Group the bits from the right as 1011 0110. The first group
+      has value 11, which is B, and the second has value 6, so the result is B6.
+
+      - `correct`   - gives B6 AND shows the groups 1011 and 0110 with their
+                      translations to B and 6.
+      - `partial`   - gives B6 and names or shows the four-bit grouping but
+                      omits one or both translations, or groups from the right
+                      but makes one value or letter mistake.
+      - `incorrect` - anything else, including a bare B6 with no grouping
+                      named at all, or treating the full binary number as
+                      decimal digits.
+
+      Feedback: mark groups of four from the right, then use one hex digit for
+      each group without changing their order.
+
+  - id: decimal-to-hex-process
+    title: "Decimal to hex"
+    question: |
+      Convert decimal 62 to hexadecimal. Write the hexadecimal result and
+      show how repeated division by 16 produces it. A result without the
+      conversion process does not receive credit.
+    evaluation: |
+      Expected: 62 / 16 gives quotient 3 and remainder 14, which is E;
+      3 / 16 gives quotient 0 and remainder 3. Reading the remainders from
+      bottom to top gives 3E.
+
+      - `correct`   - gives 3E AND shows both divisions or equivalent
+                      quotient/remainder steps, E = 14, and the reading order.
+      - `partial`   - gives 3E and describes the process, but one intermediate
+                      value, letter translation, or reading statement is wrong.
+      - `incorrect` - anything else; 3E alone without a process is incorrect,
+                      not partial.
+
+      Feedback: show the quotients and remainders, then read the remainder
+      digits from the last division back to the first.
+
+  - id: hex-to-decimal-process
+    title: "Hex to decimal"
+    question: |
+      Convert hexadecimal 3B to decimal. Write the decimal result and show
+      how the digit values and place values produce it. A result without the
+      conversion process does not receive credit.
+    evaluation: |
+      Expected: B has value 11. The places are 16 and 1, so
+      3B = 3 × 16 + 11 × 1 = 48 + 11 = 59.
+
+      - `correct`   - gives 59 AND shows B = 11 and the contributions from
+                      the 16 and 1 places, or an equivalent complete process.
+      - `partial`   - gives 59 and describes the process, but one digit value,
+                      place value, multiplication, or intermediate sum is wrong.
+      - `incorrect` - anything else; 59 alone without a process is incorrect,
+                      not partial.
+
+      Feedback: replace B with 11, multiply each digit by its place value,
+      and add the two contributions.
+
+  - id: research-hexspeak
+    title: "Research Hexspeak"
+    question: |
+      Research **Hexspeak**. Describe in your own words what it is, and give
+      at least one example.
+    evaluation: |
+      Expected: Hexspeak makes words or recognizable messages from characters
+      that are valid hexadecimal digits, sometimes using digits as letter-like
+      substitutions. Examples include DEADBEEF, CAFEBABE, BADC0DE, and C0FFEE.
+
+      - `correct`   - gives a roughly accurate word-or-message explanation AND
+                      one plausible Hexspeak example; accept an imprecise use or
+                      history because the question asks for light research.
+      - `partial`   - gives the general idea without an example, or gives a
+                      plausible example without explaining the idea.
+      - `incorrect` - anything else, including an example that cannot be read
+                      as a word or message and no relevant explanation.
+
+      Feedback: look at which letters and letter-like digits are available in
+      hexadecimal, then try reading the example aloud.
+
+  - id: research-morse-binary
+    title: "Morse code and binary"
+    question: |
+      At first glance, Morse code also uses two signals: short and long. Is
+      that the same idea as binary? This is not a simple question. Research
+      the difference, then explain it in your own words.
+    evaluation: |
+      Expected: Morse code maps variable-length dot-and-dash patterns to
+      characters and also relies on gaps or timing. Binary in this chapter is
+      a base-2 place-value number system using 0 and 1. Morse can be stored as
+      bits, but its own rules are not the binary number system.
+
+      - `correct`   - distinguishes both systems by purpose or structure, such
+                      as character patterns versus place-value numbers, or
+                      Morse timing and gaps versus bit positions.
+      - `partial`   - says they differ and explains only one useful side, such
+                      as Morse timing, without a clear contrast to binary.
+      - `incorrect` - anything else, including saying they are the same only
+                      because each appears to have two signal types.
+
+      Feedback: compare what one complete pattern represents and what role
+      position, length, and gaps play in each system.

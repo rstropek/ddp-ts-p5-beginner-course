@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
-# Quiz for the book chapter "Number systems: how computers count"
-# (0030-conditions/0050-number-systems.qmd in ts-ddp-first).
+# Quiz for the book chapter "Number systems in code"
+# (0030-conditions/0060-number-systems.qmd in ts-ddp-first).
 # Students check their understanding of the chapter's NEW ideas: % and
 # floor as digit extractors, reading binary, why computers use two digits,
 # hex letters, the && operator, and converting bits back to a number.
@@ -11,8 +11,8 @@ name: "Quiz: Number systems"
 
 title: "Check your understanding: number systems"
 description: |
-  Seven short questions about the chapter *Number systems: how computers
-  count*. Answer in your own words. There are no answer options to pick
+  Seven short questions about the chapter *Number systems in code*. Answer
+  in your own words. There are no answer options to pick
   from, and this quiz is anonymous: it's here for you, so you can see
   what you already understand and what you should read again. One or two
   sentences are enough for most answers, and answering in German is fine

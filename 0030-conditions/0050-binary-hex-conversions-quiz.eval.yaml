@@ -1,0 +1,152 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+id: binary-hex-conversions-quiz-eval
+target: ./0050-binary-hex-conversions-quiz.yaml
+
+questions:
+  - question: decimal-to-binary-process
+    answers:
+      - expect: correct
+        answer: |
+          26 / 2 is 13 remainder 0, then 6 r1, 3 r0, 1 r1, and 0 r1.
+          Reading the remainders upward gives 11010.
+      - expect: correct
+        answer: |
+          26 = 13 * 2 + 0, 13 = 6 * 2 + 1, 6 = 3 * 2 + 0,
+          3 = 1 * 2 + 1, 1 = 0 * 2 + 1. Von unten: 11010.
+      # The result is right, but the requested process is incomplete.
+      - expect: partial
+        answer: |
+          I divide by 2 and collect the remainders. They give 11010.
+      # One division slip should not erase evidence of the correct method.
+      - expect: partial
+        answer: |
+          26 / 2 is 13 remainder 0, then 7 remainder 1, 3 remainder 0,
+          1 remainder 1, 0 remainder 1. I read upward and get 11010.
+      - expect: incorrect
+        answer: "11010"
+      - expect: incorrect
+        answer: |
+          Binary is made of 0 and 1, so I remove the other digits from 26
+          and the answer is 0.
+
+  - question: binary-to-hex-process
+    answers:
+      - expect: correct
+        answer: |
+          I group from the right: 1011 0110. 1011 is 11, so it is B,
+          and 0110 is 6. The result is B6.
+      - expect: correct
+        answer: |
+          Vierergruppen sind 1011 und 0110. Die erste ist B und die zweite
+          ist 6, also B6.
+      # The final value is present, but the group translations are missing.
+      - expect: partial
+        answer: |
+          Split it into groups of four and convert them. The answer is B6.
+      # The method is valid, with one incorrect group value.
+      - expect: partial
+        answer: |
+          I group it as 1011 0110. 1011 is B and 0110 is 7, so I get B7.
+      - expect: incorrect
+        answer: "B6"
+      - expect: incorrect
+        answer: |
+          I read 10110110 as a decimal number and divide it by 16.
+
+  - question: decimal-to-hex-process
+    answers:
+      - expect: correct
+        answer: |
+          62 / 16 is 3 remainder 14, so the first digit is E. Then 3 / 16
+          is 0 remainder 3. Reading the remainders backwards gives 3E.
+      - expect: correct
+        answer: |
+          62 = 3 * 16 + 14 und 14 ist E. Danach 3 = 0 * 16 + 3. Von
+          unten nach oben gelesen ergibt das 3E.
+      # The final result is right, but one intermediate remainder is wrong.
+      - expect: partial
+        answer: |
+          62 / 16 gives quotient 3 and remainder 13, then 3 / 16 gives
+          remainder 3. Reading from bottom to top gives 3E.
+      # The requested process is absent, so the literal result must not pass.
+      - expect: incorrect
+        answer: "3E"
+      - expect: incorrect
+        answer: |
+          62 / 16 = 3.875, so I remove the decimal point and get 3875 in hex.
+
+  - question: hex-to-decimal-process
+    answers:
+      - expect: correct
+        answer: |
+          B means 11. The places are 16 and 1, so 3 * 16 + 11 * 1 is
+          48 + 11 = 59.
+      - expect: correct
+        answer: |
+          B hat den Wert 11. Daher ist 3B gleich 3 mal 16 plus 11 mal 1,
+          also 59.
+      # The right result is supported by a real process with one wrong place.
+      - expect: partial
+        answer: |
+          B is 11. I calculate 3 * 15 + 11 * 1 and get 59.
+      # The requested process is absent, so the literal result must not pass.
+      - expect: incorrect
+        answer: "59"
+      - expect: incorrect
+        answer: |
+          B means 11, so I put it after the 3 and the decimal answer is 311.
+
+  - question: research-hexspeak
+    answers:
+      - expect: correct
+        answer: |
+          It is writing recognizable words with symbols that work as hex
+          digits. DEADBEEF is an example.
+      - expect: correct
+        answer: |
+          Man baut Wörter aus Hex-Zeichen, manchmal sehen Zahlen wie
+          Buchstaben aus. Ein Beispiel ist C0FFEE.
+      # Gentle grading accepts a vague explanation when an example anchors it.
+      - expect: correct
+        answer: |
+          Programmers make readable messages out of hexadecimal numbers,
+          for example CAFEBABE.
+      - expect: partial
+        answer: |
+          It is a way programmers make words from hexadecimal characters.
+      - expect: partial
+        answer: "BADC0DE"
+      - expect: incorrect
+        answer: |
+          It means speaking about computers in hexadecimal. My example is 19GZ.
+
+  - question: research-morse-binary
+    answers:
+      - expect: correct
+        answer: |
+          Morse patterns stand for letters and can have different lengths,
+          with pauses separating letters and words. Binary numbers use 0 and
+          1 in fixed place values, so two signal types do not make them equal.
+      - expect: correct
+        answer: |
+          Morse codiert Zeichen mit Punkten, Strichen und Pausen. Binär ist
+          hier ein Stellenwertsystem zur Darstellung von Zahlen mit 0 und 1.
+      # A nuanced answer may say Morse can be encoded in bits without equating it
+      # with the binary number system.
+      - expect: correct
+        answer: |
+          A computer can store dots, dashes, and gaps as bits, but Morse itself
+          maps variable-length patterns to characters. Base 2 gives bit
+          positions numerical values, which is a different rule.
+      - expect: partial
+        answer: |
+          They are different because Morse also needs pauses of different
+          lengths between parts of a message.
+      - expect: partial
+        answer: |
+          Morse is for letters and binary is for computers, but I do not know
+          how their structures differ.
+      - expect: incorrect
+        answer: |
+          Yes, Morse is binary because a dot is 0 and a dash is 1. There is no
+          other difference.

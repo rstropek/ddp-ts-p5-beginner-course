@@ -1,23 +1,31 @@
 ---
-title: "Number systems: how computers count"
+title: "Number systems in code"
 ---
 
 ![The binary guesser, solved: the player toggled the four binary digits to 1100, the program checked the guess and everything turns green.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/binary-guesser.png){width=360}
 
-This chapter ends with a game you can challenge your friends with: the
-program shows a number, and the player has to click it together in
-binary, the number system computers use internally. When the guess is
-right, the whole display flashes green. The path to that game leads
-through three warm-up exercises: first you'll take ordinary numbers
-apart digit by digit, then you'll do the same in binary, then in
-hexadecimal. By the end you'll not only have a game, you'll read the
-computer's own number language.
+In the previous chapter you converted numbers with pen and paper. Now the
+conversions become working TypeScript. You'll take decimal, binary, and
+hexadecimal numbers apart digit by digit, and the chapter ends with a game
+you can challenge your friends with: the program shows a decimal number,
+the player clicks together its binary representation, and when the guess
+is right, the display flashes green. Three smaller exercises prepare you
+for the game: first you take an ordinary decimal number apart, then a
+binary number, and finally a hexadecimal number.
+
+These number systems are everyday tools in programming, not just theory.
+Bits represent switches, flags, and pixel data; hex codes such as
+`#FF8800` name colors on the web; and debugging tools show memory
+addresses in hex. Whenever you meet them, the digit-by-digit thinking from
+this chapter is what makes them readable.
 
 ## AI tutor {#sec-tutor-number-systems}
 
-Binary and hexadecimal are number languages you have to practice, and this
-chapter can only show a handful of examples. Ask the AI tutor of this part for
-more numbers to convert whenever you want extra practice.
+Use the tutor from the conversion chapter (@sec-tutor-binary-hex) when a
+conversion step is still unclear. Use the Conditions tutor below when you
+need help applying the
+conversion in TypeScript, laying out the digit boxes, or checking the binary
+guesser.
 
 {{< tutor tutor-conditions >}}
 
@@ -133,29 +141,19 @@ own yellow box.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/digits.yaml >}}
 
-## Counting with only two digits: binary {#sec-binary}
+## Apply binary in code {#sec-binary}
 
-Here's a thought experiment: our number system has ten digits, 0 to 9,
-probably because we have ten fingers. A computer has no fingers. Deep
-inside, it's electronics, and a wire knows only two states: current on
-or current off, 1 or 0. So computers count with exactly two digits,
-and a number system with two digits is called **binary**.
-
-Binary works precisely like decimal, only the place values change.
-Decimal places are powers of ten: 1, 10, 100, 1000. Binary places are
-powers of two: 1, 2, 4, 8, 16, 32, each place double the one before.
-A single binary digit is called a **bit**. The binary number 1101
-means one 8, one 4, no 2, and one 1:
+You already practiced the conversion: binary uses the digits 0 and 1, and
+its place values are 1, 2, 4, 8, 16, 32, and so on. A single binary digit is
+called a **bit**. The binary number 1101 means one 8, one 4, no 2, and one 1:
 
 ![The binary number 1101 taken apart: the place values are the powers
 of two, and they add up to 13.](images/binary-weights.svg){width=380}
 
-With six binary digits, the largest number you can write is 111111,
-which is 32 + 16 + 8 + 4 + 2 + 1 = 63. Practice reading a few: 101 is
-5, 1000 is 8, 1010 is 10. Then practice writing: to turn 11 into
-binary, hunt for the powers of two from big to small: an 8 fits (3
-left), a 4 doesn't fit into 3, a 2 fits (1 left), a 1 fits. So 11 is
-1011.
+With six binary digits, the largest number you can write is 111111, which is
+32 + 16 + 8 + 4 + 2 + 1 = 63. If that conversion is not clear yet, return to
+the previous chapter (@sec-binary-to-decimal) before you continue. In this
+exercise, the new question is how your program can extract those six bits.
 
 And the digit-extraction recipe? It carries over beautifully. In
 decimal you divided by the place values, the powers of ten, and took
@@ -197,22 +195,17 @@ random number in binary.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/binary-digits.yaml >}}
 
-## Sixteen digits: hexadecimal {#sec-hex}
+## Apply hexadecimal in code {#sec-hex}
 
-Binary is honest but long-winded: 1101 0111 for a number as small as
-215. Programmers therefore love a third system, **hexadecimal** (or
-just *hex*), with sixteen digits. Sixteen is a power of two, and that
-makes hex a perfect abbreviation for binary: one hex digit stands for
-exactly four bits. The place values are the powers of sixteen: 1, 16,
-256.
+You also practiced the hexadecimal system in the previous chapter. Hex uses
+16 digits, with A to F standing for the values 10 to 15. Its place values are
+1, 16, 256, and so on. One hex digit represents four bits. Two hex digits can
+therefore represent one byte, from 00 to FF.
 
-Sixteen digits need sixteen symbols, and after 0 to 9 we run out. Hex
-borrows letters for the rest: A stands for 10, B for 11, up to F for
-15. The hex number 2F means 2 times 16 plus 15, which is 47. You've
-already brushed against hex without knowing it: an RGB channel value
-from 0 to 255 fits exactly two hex digits, from 00 to FF, and that's
-why colors on the web are often written as codes like `#FF0000`, red
-at full power and the other channels at zero.
+Now apply those facts in code. The program must extract three hex digits as
+numbers. It must then translate the values 10 to 15 into the visible letters
+A to F. This is where number conversion meets the `if` and `else if` chains
+from this part.
 
 Extracting hex digits is the same recipe a third time, with the
 divisors 1, 16, and 256, and `% 16` at the end. Typing those place

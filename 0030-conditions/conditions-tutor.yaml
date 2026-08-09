@@ -1,11 +1,12 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
 # AI tutor for part 3 of the Creative Coding book: Conditions.
 #
-# One tutor serves ALL chapters of this part; every chapter links to it via
-# {{< tutor tutor-conditions >}}. Everything it does comes from fragments in
-# ../ddp-tutor-fragments.yaml — including this part's cumulative knowledge
-# scope (scope_conditions), which it shares with the dice-rewrite exercise
-# AI. This file supplies only the greeting and the example questions.
+# This is the general tutor for the Conditions part. Manual conversion
+# practice has a dedicated tutor in number-conversions-tutor.yaml. Everything
+# this tutor does comes from fragments in ../ddp-tutor-fragments.yaml,
+# including the cumulative knowledge scope (scope_conditions), which it shares
+# with the dedicated tutor and the dice-rewrite exercise AI. This file supplies
+# only the greeting and the example questions.
 #
 # Strictly hint mode: the dice rewrite has its own AI
 # (dice-rewrite-tutor.yaml), so this tutor never generates complete
@@ -31,8 +32,8 @@ exampleQuestions:
     question: "My bouncing ball flies off the canvas instead of bouncing back. Can you help me find the problem?"
   - title: "|| and &&"
     question: "What is the difference between || and &&, and when do I use which one?"
-  - title: "Binary numbers"
-    question: "I don't really get binary numbers. Can you explain how 1101 becomes 13?"
+  - title: "Binary digits in code"
+    question: "How do floor and % 2 let my program extract each binary digit?"
   - title: "Quiz me"
     question: "Ask me three short questions about conditions so I can check whether I understood this part."
 

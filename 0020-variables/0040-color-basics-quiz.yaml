@@ -122,8 +122,8 @@ questions:
                       wording (light mixes differently than paint).
       - `partial`   - yellow without a reason, or the light/paint contrast
                       with a wrong resulting color.
-      - `incorrect` - anything else, e.g. brown or orange as the screen
-                      result.
+      - `incorrect` - anything else, e.g. a wrong screen color with no
+                      light-versus-paint contrast at all.
 
       Feedback: the two rule sets — screens mix light (all lights on
       gives white), paint boxes mix pigment (everything mixed gives muddy
@@ -145,8 +145,9 @@ questions:
       - `correct`   - gray (medium gray) AND the rule (a single number is
                       a gray value / stands for three equal values).
       - `partial`   - one half only: gray without the rule, or the
-                      equal-values rule without naming the resulting
-                      color.
+                      equal-values rule (128, 128, 128) either without
+                      naming the resulting color or with the wrong color
+                      named (e.g. white or black).
       - `incorrect` - anything else, e.g. an error message, or a dark
                       red.
 

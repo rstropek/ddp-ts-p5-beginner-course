@@ -193,7 +193,7 @@ questions:
       and then paints the bottom half with `rect`. The program runs, but
       the values never appear on the canvas.
 
-      What happened to the text?
+      What happened to the text, and how would you fix it?
     evaluation: |
       Expected: the rectangle is painted after the text and covers it up.
       Statements run top to bottom, so the text must be drawn after the
@@ -202,7 +202,9 @@ questions:
       - `correct`   - the rect covers / paints over the text AND the fix
                       or rule (draw the text after the rect / the order
                       matters).
-      - `partial`   - blames the order without saying what covers what.
+      - `partial`   - one half only: says the rect covers the text but
+                      gives no fix or rule, or blames the order without
+                      saying what covers what.
       - `incorrect` - anything else, e.g. the text color is wrong, or
                       text does not work inside mouseClicked.
 
