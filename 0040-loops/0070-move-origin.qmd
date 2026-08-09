@@ -24,7 +24,7 @@ landed; the tutor knows the way of thinking that untangles it.
 
 {{< tutor tutor-loops >}}
 
-## The origin moves {#sec-translate}
+## The origin moves {#sec-translate-relative}
 
 Every coordinate you have ever written is measured from the
 **origin**, the point (0, 0), and so far the origin has always been

@@ -140,7 +140,7 @@ The shift needs two small changes, and both use ideas you already
 own. A `translate` *before* the loops moves the whole pattern's
 starting point by half a side length and half a height, using
 negative values where the shift goes left or up
-(@sec-translate). And the loop bounds change a little so the cut
+(@sec-translate-relative). And the loop bounds change a little so the cut
 shapes at the edges still get drawn: loop bounds are ordinary
 numbers, and nothing stops a loop from starting at
 `-SIDE_LENGTH / 2` or running one extra round. Sketch the first
