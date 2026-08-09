@@ -4,16 +4,19 @@ activity-codes:
   arcs-smiley: 4apvb2639v
   binary-hex-conversions: a8x26bojrp
   bouncing-ball: plle66s4sn
+  bubbles: y7b4xgsghu
   chessboard: fp2zmgx8nu
   color-areas: yssdu8rvub
   color-basics: hvtp1kckvk
   color-picker: lins9ye9y5
   color-quadrants: b8csdlsb7t
   color-worm: dyalv4urnz
+  criss-cross: tnz7purvi7
   crosshairs: 4ab60ta898
   dice: t2qras3t25
   dice-switch: lalbmak227
   drawing-tools: nlc90ezf5z
+  first-array: wmjczc9nyj
   first-own-program: 42n5iebrhx
   first-program: t8bw13i9of
   for-loop: yi7f6zh59w
@@ -23,6 +26,7 @@ activity-codes:
   number-systems: lyiv0m32ml
   olympic-rings: lgvuw6j4me
   olympic-rings-advanced: xnv1c6rukr
+  parsing: 3yzl9kixwm
   patterns: r45k675yq7
   pixel-x: 0954qd5jph
   practice-cat: b5pho3shsu
@@ -30,8 +34,12 @@ activity-codes:
   rays: 1cycn92t25
   responsive-robot: hc19co9aeh
   rock-paper-scissors: xe4ol18b8o
+  scale: vy4bnex8y6
+  silos: 1ntnicxb7n
   snap: ll65a7jzrc
+  soccer-field: fhsu2kmye5
   string-concat: by697nszk6
+  tutor-arrays: 6yl97qktby
   tutor-conditions: qmqpi3bvvo
   tutor-dice-rewrite: 2p865y1o6f
   tutor-elephant: d9oc1sinyd
@@ -40,3 +48,4 @@ activity-codes:
   tutor-number-conversions: 1tt7ufe7ed
   tutor-variables: v5t4dtm2v1
   welcome: cu4afwoa23
+  word-swirrel: e3feraeoew
