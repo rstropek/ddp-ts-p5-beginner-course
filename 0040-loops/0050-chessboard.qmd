@@ -1,0 +1,169 @@
+---
+title: "Chessboard: rows, columns, and one clever loop"
+---
+
+![A chessboard with brown and light yellow squares, the files a to h labeled along the bottom margin and the ranks 1 to 8 up the left margin.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/chessboard.png){width=400}
+
+A chessboard is a small exam in disguise. It needs nested loops for
+the 64 squares, the parity trick for the two colors, `text` for the
+markings in the margin, and a `switch` to turn the numbers 1 to 8
+into the letters a to h. Every one of those tools is already in your
+toolbox; this chapter is about making them work together. And at the
+end, for the ambitious, the board reveals a clever connection: a
+chessboard can be drawn with a *single* loop, using the same
+arithmetic you used to take numbers apart in the number systems
+chapter.
+
+## AI tutor {#sec-tutor-chessboard}
+
+This drawing has many small parts: squares, colors, numbers,
+letters. Work on one part at a time, and when a part misbehaves,
+show the tutor only that part. "My colors are striped instead of
+checkered" is a great opening sentence.
+
+{{< tutor tutor-loops >}}
+
+## Rows and columns {#sec-rows-cols}
+
+The board is a grid of cells, and for grids of cells the counting
+style of loop (@sec-counter) is the natural choice: an outer loop
+counts the rows 0 to 7, an inner loop counts the columns 0 to 7.
+Square positions are computed from the counts, like the zebra
+stripes, only in two directions:
+
+```typescript
+x = SQUARE_SIZE + col * SQUARE_SIZE
+y = SQUARE_SIZE + row * SQUARE_SIZE
+```
+
+The extra `SQUARE_SIZE` at the front shifts the whole board one
+square in from the edge: the canvas is 500 pixels, the board is 400,
+and the remaining border leaves room for the letters and numbers.
+Row 0, column 0 is the top left square at (50, 50); row 7, column 7
+is the bottom right square at (400, 400).
+
+## Coloring by parity {#sec-board-parity}
+
+Which squares are brown? Walk along a row: the colors alternate with
+every step, so the column's parity decides. Walk down a column: they
+alternate again, so the row's parity matters too. The neat trick is
+to add the two counts. Moving one square in any direction changes
+`row + col` by exactly one, so the sum flips between even and odd
+just like the colors flip:
+
+```typescript
+if ((row + col) % 2 === 0) {
+    fill("lightyellow");
+} else {
+    fill("brown");
+}
+```
+
+This is the zebra's `% 2` (@sec-if-in-loop), grown into two
+dimensions. Check it against the goal picture: the top left square
+has `row + col` equal to 0, even, and is indeed light yellow.
+
+## Letters and numbers in the margin {#sec-board-markings}
+
+The markings need one more loop, counting `i` from 1 to 8. Each
+round places two things: the rank number `i` in the left margin, and
+a file letter at the bottom.
+
+The numbers are positions to compute. Chess counts its ranks from
+the bottom, so rank 1 sits next to the *lowest* row. Rank `i` sits
+`i` squares above the bottom margin, centered in the margin column;
+work the expression out on paper before you type it.
+
+The letters are a translation: 1 becomes "a", 2 becomes "b", and so
+on, one exact case per value. That is the `switch` statement's home
+game (@sec-switch-from-chain):
+
+```typescript
+let file: string = "";
+switch (i) {
+    case 1: file = "a"; break;
+    case 2: file = "b"; break;
+    // ... the cases 3 to 8 ...
+}
+text(file, SQUARE_SIZE * i + SQUARE_SIZE / 2, height - SQUARE_SIZE / 2);
+```
+
+The variable starts as the empty string, the "nothing yet" value you
+know from rock-paper-scissors, and the switch fills it. A `switch`
+inside a loop body runs once per round, with the current `i`, so
+each round translates its own number.
+
+::: {.callout-tip}
+## text prints numbers too
+For the rank numbers, pass `i` to `text` directly: `text(i, x, y)`
+draws the number without any template string around it. Set
+`textSize(20)`, `textAlign(CENTER, CENTER)`, and `fill("white")`
+once, before the loop; they apply to every marking.
+:::
+
+## Advanced: one loop for the whole board {#sec-one-loop}
+
+Now the clever part, step 3 of the exercise. Number the squares 0 to
+63, row by row: squares 0 to 7 form the top row, 8 to 15 the next,
+and so on. Can one loop over `i` from 0 to 63 recover the row and
+column from the number alone? You did exactly this in the number
+systems chapter, splitting a number into digits with `%` and `floor`
+(@sec-extract-digits). A square number works like a two-digit number
+in base 8:
+
+```typescript
+const row = floor(i / 8);
+const col = i % 8;
+```
+
+`floor(i / 8)` counts how many *complete* rows of eight fit below
+`i`, and `i % 8` is what's left over: the position inside the row.
+Check it with a small table on paper:
+
+| `i` | `floor(i / 8)` | `i % 8` | square |
+|-----|----------------|---------|-----------------|
+| 0   | 0              | 0       | first row, first column |
+| 7   | 0              | 7       | first row, last column |
+| 8   | 1              | 0       | second row, first column |
+| 42  | 5              | 2       | sixth row, third column |
+| 63  | 7              | 7       | last row, last column |
+
+: Recovering row and column from the square number. {#tbl-square-numbers}
+
+One warning before you compare with the playground's sample
+solution: it rounds with `Math.floor`. You know the chore from the
+switch chapter (@sec-simple-dice-exercise): this course always uses
+the p5.js helper `floor`, which does the same job.
+
+## Your exercise: Chessboard {#sec-chessboard-exercise}
+
+The starter code contains only the canvas, the two constants, and
+`noStroke()`. Build the board in the exercise's three steps.
+
+1. **Paper first.** Sketch the canvas: 10 by 10 cells of 50 pixels,
+   the board filling the middle 8 by 8. Shade a few squares to
+   check the parity rule, and mark where rank 1 and the letter a
+   belong.
+2. **Step 1: the squares.** Nested counting loops over `row` and
+   `col`, the parity `if`, one `rect` per square. Run and compare
+   corners with the goal picture.
+3. **Step 2: the markings.** The 1-to-8 loop with the rank number
+   and the switch-translated letter, text settings before the loop.
+   Getting the rank numbers to count from the bottom is the fiddly
+   part; your paper sketch has the answer.
+4. **Step 3 (advanced): one loop.** Replace the nested square loops
+   with a single loop over the square numbers 0 to 63, and compute
+   `row` and `col` with `floor` and `%` as shown above
+   (@sec-one-loop). The picture must not change at all.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/chessboard.yaml title="Chessboard" >}}
+
+## Check your understanding {#sec-quiz-chessboard}
+
+When your board is checkered and labeled, take the short quiz below.
+You answer six questions about this chapter in your own words, and
+an AI reads your answers and tells you what you already understand
+and what you should read again. The quiz is anonymous, and answering
+in German is fine too.
+
+{{< quiz chessboard title="Chessboard" >}}

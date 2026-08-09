@@ -35,6 +35,9 @@ activities:
     tutor-number-conversions:
       file: 0030-conditions/number-conversions-tutor.yaml
       note: "Creative Coding book: dedicated number conversion tutor (0030-conditions/0050) — GitHub-hosted"
+    tutor-loops:
+      file: 0040-loops/loops-tutor.yaml
+      note: "Creative Coding book: AI tutor for part 4, Loops — GitHub-hosted"
 
     # Exercise AIs: the code-generating counterparts for the book's
     # designated AI exercises (the part tutors stay strictly hint-only).
@@ -120,3 +123,28 @@ activities:
     dice-switch:
       file: 0030-conditions/0080-dice-switch-quiz.yaml
       note: "Creative Coding book: The switch statement (0030-conditions/0080) — GitHub-hosted"
+
+    grid:
+      file: 0040-loops/0010-grid-quiz.yaml
+      note: "Creative Coding book: The while loop (0040-loops/0010) — GitHub-hosted"
+    rays:
+      file: 0040-loops/0020-rays-quiz.yaml
+      note: "Creative Coding book: Rays (0040-loops/0020) — GitHub-hosted"
+    pixel-x:
+      file: 0040-loops/0030-pixel-x-quiz.yaml
+      note: "Creative Coding book: Pixel X and zebra stripes (0040-loops/0030) — GitHub-hosted"
+    mesh:
+      file: 0040-loops/0040-mesh-quiz.yaml
+      note: "Creative Coding book: Nested loops (0040-loops/0040) — GitHub-hosted"
+    chessboard:
+      file: 0040-loops/0050-chessboard-quiz.yaml
+      note: "Creative Coding book: Chessboard (0040-loops/0050) — GitHub-hosted"
+    for-loop:
+      file: 0040-loops/0060-for-loop-quiz.yaml
+      note: "Creative Coding book: The for loop (0040-loops/0060) — GitHub-hosted"
+    move-origin:
+      file: 0040-loops/0070-move-origin-quiz.yaml
+      note: "Creative Coding book: Moving the origin (0040-loops/0070) — GitHub-hosted"
+    patterns:
+      file: 0040-loops/0080-patterns-quiz.yaml
+      note: "Creative Coding book: Patterns (0040-loops/0080) — GitHub-hosted"

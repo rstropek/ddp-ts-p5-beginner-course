@@ -1,0 +1,8 @@
+  outer loop    left = 50      left = 100     left = 150            left = 350
+                     |              |              |         ...         |
+                     v              v              v                     v
+  inner loop    right runs     right runs     right runs            right runs
+                50 to 350      50 to 350      50 to 350             50 to 350
+                     |              |              |                     |
+                     v              v              v                     v
+                  7 lines        7 lines        7 lines              7 lines

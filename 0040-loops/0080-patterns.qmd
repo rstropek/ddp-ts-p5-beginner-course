@@ -1,0 +1,178 @@
+---
+title: "Patterns: repeat, move, repeat"
+---
+
+![A grid of overlapping yellow circles covering the whole canvas, drawn by nested loops that never name a coordinate: the origin wanders, row by row.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/push-pop-pattern.png){width=400}
+
+This closing chapter of the Loops part brings everything together:
+nested for loops, `translate`, and the `push`/`pop` pair combine
+into one recipe that draws wallpapers, tilings, and textile
+patterns. The recipe is worth learning by heart, because you will
+use it every time a drawing repeats in rows and columns. You meet it
+twice: first in a finished program that you study and convert, then
+in a triangle pattern that you build yourself, including the
+professional touch of letting the pattern run over the edges.
+
+## AI tutor {#sec-tutor-patterns}
+
+The row recipe has four moving parts, and swapping any two of them
+changes the picture completely. If your pattern drifts, stacks, or
+vanishes, tell the tutor what you expected, what you see, and paste
+your two loops.
+
+{{< tutor tutor-loops >}}
+
+## The row recipe {#sec-row-recipe}
+
+Here is the pattern program from the exercise, still with while
+loops. Read it slowly; every line has a job:
+
+```typescript
+let y = 0;
+while (y <= SIZE) {
+    // Save the current origin (start of the current row)
+    push();
+
+    let x = 0;
+    while (x <= SIZE) {
+        circle(0, 0, CIRCLE_DIAMETER);
+        translate(CIRCLE_DIAMETER, 0); // move one step right
+        x += CIRCLE_DIAMETER;
+    }
+
+    // Back to the start of the row
+    pop();
+
+    // Move one row down
+    translate(0, CIRCLE_DIAMETER);
+    y += CIRCLE_DIAMETER;
+}
+```
+
+The rhythm of one outer round: **note, draw across, back, down.**
+
+1. `push()` writes the note: "this is where the row starts."
+2. The inner loop draws the row: circle at the origin, step right,
+   circle, step right, like a typewriter.
+3. After the row, the origin sits far off to the right. `pop()`
+   brings it back to the note, the row's start.
+4. `translate(0, CIRCLE_DIAMETER)` moves one row down, and the next
+   outer round begins there.
+
+Could you skip the `push`/`pop` and translate back to the left by
+hand? You would have to know exactly how far the inner loop walked
+and undo it precisely. The note is simpler and always exact; this is
+the situation `push` and `pop` were made for.
+
+Two details deserve a second look. First, the loop variables `x`
+and `y` never appear in a drawing command: they only count how far
+the row and column have come, while the real position lives in the
+origin, exactly like in the diagonal of circles (@sec-cumulative).
+Second, the conditions use `<=`, so the last circle of each row
+sits at the canvas edge and is half cut off. That is on purpose:
+patterns run to the edge, like wallpaper, not like a framed picture
+with margins.
+
+## Your exercise: Pattern with Push and Pop {#sec-pattern-exercise}
+
+The starter code is the finished while version. Your job is to
+understand it, then convert it.
+
+1. **Read the starter code closely.** Walk through the first outer
+   round on paper: where is the origin after the third circle?
+   After the `pop`? After the row translate?
+2. **Convert both loops to for loops.** The headers take over
+   initialize, check, and update (@sec-for-anatomy); the `push`,
+   `pop`, and both translates keep their places. Run: the picture
+   must not change.
+3. **Break it on purpose.** Comment out the `pop()` and predict the
+   picture before you run. The rows start where the previous row
+   ended, and the pattern staircases off the canvas. Put the `pop`
+   back; you have just seen why the note matters.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/push-pop-pattern.yaml title="Pattern with Push and Pop" >}}
+
+## Triangles in local coordinates {#sec-local-coords}
+
+The second exercise tiles the canvas with triangles, and you build
+the recipe yourself. One new skill is needed: drawing a shape
+*around* the origin. The triangle of the pattern is described like
+this:
+
+```typescript
+triangle(0, 0, SIDE_LENGTH / 2, -HEIGHT, SIDE_LENGTH, 0);
+```
+
+All three corners are measured from the current origin: the left
+corner of the base sits *on* the origin at (0, 0), the right corner
+one side length further at (SIDE_LENGTH, 0), and the tip above the
+middle of the base, at (SIDE_LENGTH / 2, -HEIGHT). The y value of
+the tip is negative, and that is no trick: negative coordinates
+simply lie left of or above the origin. Since the origin moves with
+every translate, "above the origin" is exactly where a tip should
+be.
+
+The height of the triangle comes from geometry. The pattern uses
+equilateral triangles (in German: gleichseitiges Dreieck, all three
+sides the same length), and an equilateral triangle with side
+length `s` has the height `s * sqrt(3) / 2`:
+
+```typescript
+const HEIGHT = SIDE_LENGTH * sqrt(3) / 2;
+```
+
+`sqrt` is the square root, a p5.js helper like `floor` and `round`.
+The starter code writes `Math.sqrt`; you know the chore
+(@sec-simple-dice-exercise): change it to the p5.js spelling. Note
+what the constant is used for next: the canvas itself is created
+with the height `HEIGHT * 9`, so the drawing surface is computed
+from the pattern, not the other way around.
+
+## Level 2: over the edges {#sec-clipped-edges}
+
+Level 1 of the exercise places the first triangle exactly at the
+corner, and the pattern looks planned. Level 2 shifts the whole
+grid: half a side length to the left, half a height up. Now the
+edge rows and columns are cut in half, and the pattern looks like a
+piece of endless wallpaper.
+
+The shift needs two small changes, and both use ideas you already
+own. A `translate` *before* the loops moves the whole pattern's
+starting point by half a side length and half a height, using
+negative values where the shift goes left or up
+(@sec-translate). And the loop bounds change a little so the cut
+shapes at the edges still get drawn: loop bounds are ordinary
+numbers, and nothing stops a loop from starting at
+`-SIDE_LENGTH / 2` or running one extra round. Sketch the first
+row's corners on paper, then fiddle with the pre-loop translate and
+the bounds until the picture matches the goal; that fiddling *is*
+the exercise.
+
+## Your exercise, part 2: Triangles {#sec-triangles-exercise}
+
+1. **The chore first.** Change `Math.sqrt` in the starter code to
+   `sqrt`.
+2. **Paper first.** Draw one triangle on graph paper with its base
+   left corner on a point you call the origin: base to the right,
+   tip above the middle. Label the three corners with their local
+   coordinates.
+3. **Level 1: the grid.** Build the row recipe around the triangle:
+   inner loop draws and translates right by `SIDE_LENGTH`, outer
+   loop pushes, pops, and translates down by `HEIGHT`. Compare with
+   the level 1 goal picture.
+4. **Level 2: the shift.** Add the pre-loop translate and widen the
+   bounds until the edges show clean half-triangles, as in the
+   level 2 picture.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/triangles.yaml title="Triangles" >}}
+
+## Check your understanding {#sec-quiz-patterns}
+
+The row recipe is the finish line of the Loops part: with it, you
+can repeat, decide inside loops, nest loops, and move the paper
+under the pen. Take the short quiz below. You answer six questions
+about this chapter in your own words, and an AI reads your answers
+and tells you what you already understand and what you should read
+again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz patterns title="Patterns" >}}

@@ -1,0 +1,159 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0070-move-origin-quiz.yaml ("Moving the origin").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: move-origin-quiz-eval
+target: ./0070-move-origin-quiz.yaml
+
+questions:
+  - question: circle-zero
+    answers:
+      - expect: correct
+        answer: |
+          because translate moves the origin, and circle(0,0) draws where
+          the origin is right now
+      - expect: correct
+        answer: |
+          die koordinaten werden vom ursprung aus gemessen, und translate
+          verschiebt den ursprung. (0,0) ist also jedes mal woanders.
+      # Everyday "paper" metaphor from the chapter.
+      - expect: correct
+        answer: |
+          the paper moves under the pen. the circle always draws at the
+          origin and translate keeps moving the origin.
+      # Mentions translate without the measuring idea.
+      - expect: partial
+        answer: |
+          translate moves the circles around
+      - expect: incorrect
+        answer: |
+          the for loop puts different values into the zeros each round.
+      - expect: incorrect
+        answer: |
+          p5.js remembers where the last circle was and draws the next one
+          a bit further automatically.
+
+  - question: loop-translate
+    answers:
+      - expect: correct
+        answer: |
+          (50,50), (100,100), (150,150)
+      - expect: correct
+        answer: |
+          bei 50/50, dann 100/100, dann 150/150, weil sich die translates
+          aufsummieren
+      # Absolute-translate misconception, first point accidentally right.
+      - expect: partial
+        answer: |
+          all three at (50, 50), translate always moves to that exact
+          position
+      # Right idea, one point off.
+      - expect: partial
+        answer: |
+          (50,50), (100,100), (200,200)
+      # Draw-before-translate ordering error.
+      - expect: incorrect
+        answer: |
+          (0,0), (50,50), (100,100)
+      - expect: incorrect
+        answer: |
+          all at (0,0), circle(0,0) always draws in the corner.
+
+  - question: negative-translate
+    answers:
+      - expect: correct
+        answer: |
+          25 left and 50 up, so the origin is at (75, 50)
+      - expect: correct
+        answer: |
+          nach links und nach oben
+      # One axis only.
+      - expect: partial
+        answer: |
+          it moves the origin up
+      # Directions right, arithmetic off.
+      - expect: partial
+        answer: |
+          left and up, it lands at (75, 150)
+      - expect: incorrect
+        answer: |
+          it moves 25 right and 50 down, to (125, 150).
+      - expect: incorrect
+        answer: |
+          negative values reset the origin back to the corner.
+
+  - question: resetmatrix
+    answers:
+      - expect: correct
+        answer: |
+          back in the top left corner, like before any translate
+      - expect: correct
+        answer: |
+          links oben im eck, als hätte es nie ein translate gegeben
+      # Undo without location.
+      - expect: partial
+        answer: |
+          all the translates are undone
+      - expect: incorrect
+        answer: |
+          it only undoes the last translate, one step back.
+      - expect: incorrect
+        answer: |
+          the canvas is cleared and everything drawn so far is erased.
+      # Verbose but right — must stay correct.
+      - expect: correct
+        answer: |
+          resetMatrix throws away the whole chain of translations at once,
+          no matter how many there were, doesn't matter if it was two or
+          twenty. the origin is back at the default, the top left corner
+          of the canvas, and x grows right and y grows down like always.
+
+  - question: push-pop-trace
+    answers:
+      - expect: correct
+        answer: |
+          at (100, 100), because pop restores the origin that push saved
+      - expect: correct
+        answer: |
+          bei 100/100. push hat sich den ursprung gemerkt, das
+          translate(50, 0) wird durch pop wieder rückgängig gemacht.
+      # Value without mechanism.
+      - expect: partial
+        answer: |
+          (100, 100)
+      # Mechanism right, value wrong.
+      - expect: partial
+        answer: |
+          pop brings back what push saved, so the circle is at (50, 0)
+      - expect: incorrect
+        answer: |
+          (150, 100), the translate came after the push so it stays.
+      - expect: incorrect
+        answer: |
+          (0, 0), pop resets the origin to the corner like resetMatrix.
+
+  - question: what-pop-restores
+    answers:
+      - expect: correct
+        answer: |
+          both: the origin goes back to where it was at push, and the
+          stroke color and other styles are restored too
+      - expect: correct
+        answer: |
+          der ursprung UND die einstellungen wie stroke und fill werden
+          auf den stand vom letzten push zurückgesetzt.
+      # Origin only — declared partial branch.
+      - expect: partial
+        answer: |
+          the origin goes back to the saved position
+      # Styles only — declared partial branch.
+      - expect: partial
+        answer: |
+          the stroke color changes back
+      - expect: incorrect
+        answer: |
+          pop erases everything that was drawn between push and pop.
+      - expect: incorrect
+        answer: |
+          pop resets the whole program to how it was at the start of
+          setup.

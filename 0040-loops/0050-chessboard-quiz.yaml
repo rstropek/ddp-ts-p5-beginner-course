@@ -1,0 +1,229 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Chessboard: rows, columns, and one clever loop"
+# (0040-loops/0050-chessboard.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the
+# two-dimensional parity rule (row + col) % 2, computing square positions
+# from counts with an inset margin, a switch inside a loop, and recovering
+# row and column from a single square number with floor(i / 8) and i % 8.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: chessboard-quiz
+name: "Quiz: Chessboard"
+
+title: "Check your understanding: chessboard"
+description: |
+  Six short questions about the chapter *Chessboard: rows, columns, and
+  one clever loop*. Answer in your own words. There are no answer
+  options to pick from, and this quiz is anonymous: it's here for you,
+  so you can see what you already understand and what you should read
+  again. One or two sentences are enough for most answers, and answering
+  in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="const row = floor(i / 8);"
+      scope="after the chessboard chapter"
+      knows=(array
+        "drawing commands, styling, and `text` with `textAlign` and `textSize`"
+        "variables and constants with explicit data types"
+        "if/else chains, the boolean operators, and the `switch` statement"
+        "the modulo operator `%` and `floor`, including digit extraction"
+        "the while loop, loop tables, counting loops, and nested while loops"
+        "the parity rule `(row + col) % 2` for checkered patterns"
+        "computing positions from counts, like `SQUARE_SIZE + col * SQUARE_SIZE`"
+        "a `switch` inside a loop body, translating the loop variable"
+        "recovering row and column from a square number with `floor(i / 8)` and `i % 8`")
+      not_yet=(array
+        "for loops"
+        "arrays"
+        "`translate`, `push`, and `pop`"
+        "functions with parameters or return values"
+        "string methods or computing letters from character codes")}}
+
+questions:
+  - id: board-parity
+    title: "Which color?"
+    question: |
+      The chessboard picks its colors like this:
+
+      ```typescript
+      if ((row + col) % 2 === 0) {
+          fill("lightyellow");
+      } else {
+          fill("brown");
+      }
+      ```
+
+      Which color does the square at `row = 3`, `col = 4` get, and
+      why?
+    evaluation: |
+      Expected: brown. 3 + 4 = 7, and 7 % 2 is 1, not 0, so the else
+      branch runs. The sum is odd, and odd squares are brown.
+
+      - `correct`   - brown AND the reason: 3 + 4 is odd / 7 % 2 is
+                      1 / the condition is false.
+      - `partial`   - brown without a reason, or the right parity
+                      computation with the colors swapped in the
+                      conclusion.
+      - `incorrect` - anything else, e.g. lightyellow because 7 % 2
+                      is 0, or "it depends on the neighboring
+                      squares".
+
+      Feedback: add row and col, then take % 2. Is the result 0?
+
+  - id: index-to-rowcol
+    title: "Square number 42"
+    question: |
+      The single-loop chessboard computes the position of each square
+      from its number:
+
+      ```typescript
+      const row = floor(i / 8);
+      const col = i % 8;
+      ```
+
+      What are `row` and `col` for `i = 42`?
+    evaluation: |
+      Expected: row = 5 and col = 2. floor(42 / 8) = floor(5.25) = 5,
+      and 42 % 8 = 2 (five full eights are 40, remainder 2).
+
+      - `correct`   - row 5 AND col 2 (order swapped but clearly
+                      labeled counts).
+      - `partial`   - one of the two values right and the other
+                      wrong or missing, e.g. row 6 col 2 from
+                      rounding 5.25 up instead of flooring.
+      - `incorrect` - anything else, e.g. row 42 col 8, or both
+                      values wrong.
+
+      Feedback: how many complete eights fit into 42, and what is
+      left over?
+
+  - id: row-col-formulas
+    title: "Why the formulas work"
+    question: |
+      In the single-loop chessboard, the squares are numbered 0 to
+      63, row by row, eight per row. Why does `floor(i / 8)` give the
+      row of square `i`?
+    evaluation: |
+      Expected: each row holds exactly eight squares, so
+      `floor(i / 8)` counts how many complete rows of eight come
+      before square `i`; that count is the row number. (The remainder
+      `i % 8` is then the position inside the row.) Comparing it to
+      digit extraction with % and floor also counts as a reason.
+
+      - `correct`   - dividing by 8 counts the full rows of eight
+                      before the square ("every 8 squares the row
+                      goes up by one, floor throws away the rest"
+                      counts, as does "same trick as splitting off
+                      digits, with 8 instead of 10").
+      - `partial`   - says dividing by 8 gives the row without the
+                      why (no mention of eight squares per row or
+                      complete rows).
+      - `incorrect` - anything else, e.g. floor rounds to the
+                      nearest row, or 8 is the number of rows so
+                      dividing gives the column.
+
+      Feedback: squares 0 to 7 are row 0, squares 8 to 15 are row 1.
+      How many complete eights sit below square 17?
+
+  - id: switch-letter
+    title: "The letter loop"
+    question: |
+      The markings loop translates its counter into a letter:
+
+      ```typescript
+      let file: string = "";
+      switch (i) {
+          case 1: file = "a"; break;
+          case 2: file = "b"; break;
+          case 3: file = "c"; break;
+          // ... the cases 4 to 8 ...
+      }
+      ```
+
+      In the round where `i` is 3, what does `file` hold after the
+      switch, and why?
+    evaluation: |
+      Expected: `"c"`. The line `case 3:` asks "is i exactly 3?",
+      that case matches, its assignment runs, and `break` leaves the
+      switch.
+
+      - `correct`   - "c" AND the reason: case 3 matches / i is
+                      exactly 3 ("the computer jumps to case 3"
+                      counts).
+      - `partial`   - "c" without a reason, or the right mechanism
+                      with a wrong letter.
+      - `incorrect` - anything else, e.g. "a" because the first case
+                      always runs, or the empty string because
+                      nothing matches.
+
+      Feedback: which case asks the same question as `i === 3`?
+
+  - id: grid-position
+    title: "Where is column 3?"
+    question: |
+      A square's x position is computed as
+      `SQUARE_SIZE + col * SQUARE_SIZE`, with `SQUARE_SIZE` = 50.
+      What is the x position of a square in `col = 3`?
+    evaluation: |
+      Expected: 200. That is 50 + 3 * 50 = 50 + 150.
+
+      - `correct`   - 200 (with or without the calculation).
+      - `partial`   - 150 (the margin term forgotten but the
+                      multiplication right), with the calculation
+                      shown.
+      - `incorrect` - anything else, e.g. 53, or 150 stated with a
+                      confident wrong explanation like "the first
+                      SQUARE_SIZE only applies to row 0".
+
+      Feedback: multiplication before addition: what is 3 * 50, and
+      what does the leading 50 add?
+
+  - id: board-inset
+    title: "The extra SQUARE_SIZE"
+    question: |
+      The position formulas start with an extra term:
+      `SQUARE_SIZE + col * SQUARE_SIZE` instead of just
+      `col * SQUARE_SIZE`. What is the extra `SQUARE_SIZE` at the
+      front for?
+    evaluation: |
+      Expected: it shifts the whole board one square in from the
+      canvas edge, creating the empty margin where the letters and
+      the rank numbers are drawn. Without it, the board would start
+      directly at the edge and there would be no room for the
+      markings.
+
+      - `correct`   - names the margin / border for the letters and
+                      numbers, or that the board moves one square
+                      away from the edge to make room ("otherwise
+                      the board sticks to the corner and the labels
+                      have no space" counts).
+      - `partial`   - says the board is shifted or doesn't start at
+                      0, without the reason (room for the markings).
+      - `incorrect` - anything else, e.g. it makes the squares
+                      bigger, or col starts at 1 so one SQUARE_SIZE
+                      must be added back.
+
+      Feedback: look at the goal picture: what lives in the space
+      between the board and the canvas edge?

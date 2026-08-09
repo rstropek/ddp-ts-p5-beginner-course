@@ -1,0 +1,264 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The while loop: teaching the computer to repeat"
+# (0040-loops/0010-grid.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the while
+# loop's four steps, tracing a loop with a loop table, the check-before-work
+# rule (a loop can run zero times), the infinite loop when the update is
+# missing, resetting a loop variable without a second let, and writing a
+# small while loop.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: grid-quiz
+name: "Quiz: The while loop"
+
+title: "Check your understanding: the while loop"
+description: |
+  Six short questions about the chapter *The while loop: teaching the
+  computer to repeat*. Answer in your own words. There are no answer
+  options to pick from, and this quiz is anonymous: it's here for you,
+  so you can see what you already understand and what you should read
+  again. One or two sentences are enough for most answers, and answering
+  in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="while (i < SIZE) { line(i, 0, i, SIZE); i += GRID; }"
+      scope="after the first while-loop chapter"
+      knows=(array
+        "drawing commands and styling"
+        "mouse events and the `draw` animation loop"
+        "variables and constants with explicit data types"
+        "if/else chains, comparisons, and the boolean operators `||` and `&&`"
+        "the compound assignment operators like `+=`"
+        "the `switch` statement"
+        "the while loop with its four steps: initialize, check the condition, do the work, update the loop variable"
+        "tracing a loop with a loop table on paper"
+        "that a while loop checks its condition before every round and can run zero times"
+        "that a missing update causes an infinite loop and a frozen browser tab"
+        "resetting an existing loop variable with a plain assignment, without a second `let`")
+      not_yet=(array
+        "for loops"
+        "nested loops (a loop inside a loop)"
+        "the `++` operator (the course writes `+= 1` for now)"
+        "arrays"
+        "`translate`, `push`, and `pop`"
+        "functions with parameters or return values")}}
+
+questions:
+  - id: circle-trace
+    title: "Trace a loop"
+    question: |
+      A program contains this loop:
+
+      ```typescript
+      let i = 10;
+      while (i < 40) {
+          circle(i, 50, 8);
+          i += 10;
+      }
+      ```
+
+      How many circles does the loop draw, and at which x positions?
+    evaluation: |
+      Expected: three circles, at x = 10, 20, and 30. At i = 40 the
+      check `40 < 40` is false, so no circle is drawn there.
+
+      - `correct`   - three circles AND the positions 10, 20, 30 (a
+                      loop table with these rows counts).
+      - `partial`   - the count three without the positions, or the
+                      positions without the count, or four circles
+                      with positions 10, 20, 30, 40 but everything
+                      else right.
+      - `incorrect` - anything else, e.g. an infinite loop, or
+                      circles at 10 to 40 "because 40 is the limit".
+
+      Feedback: play computer with a loop table: i = 10, 20, 30, 40.
+      For which of these values is `i < 40` still true?
+
+  - id: missing-update
+    title: "The missing step"
+    question: |
+      A classmate wrote this loop and now the browser tab freezes:
+
+      ```typescript
+      let y = 25;
+      while (y < 400) {
+          line(0, y, 400, y);
+      }
+      ```
+
+      Which of the four loop steps is missing, and what does the
+      computer do because of that?
+    evaluation: |
+      Expected: step 4, the update of the loop variable (for example
+      `y += 25;`), is missing. `y` stays 25, the condition never
+      becomes false, and the loop runs forever (an infinite loop
+      freezes the tab).
+
+      - `correct`   - names the missing update (step 4 / "y never
+                      changes" / suggests adding `y += 25`) AND says
+                      the loop never ends ("endless loop", "läuft
+                      ewig" count).
+      - `partial`   - only one half: names the missing update without
+                      the consequence, or says it loops forever
+                      without naming what is missing.
+      - `incorrect` - anything else, e.g. blames the condition
+                      syntax, or claims 400 lines are drawn.
+
+      Feedback: walk the four steps: initialize, check, work, update.
+      Which one never happens to `y`?
+
+  - id: zero-rounds
+    title: "A loop that draws nothing"
+    question: |
+      A program contains this loop:
+
+      ```typescript
+      let i = 500;
+      while (i < 400) {
+          circle(i, 200, 20);
+          i += 25;
+      }
+      ```
+
+      What does the loop draw, and why?
+    evaluation: |
+      Expected: nothing. The condition is checked before the first
+      round, `500 < 400` is false right away, so the body never runs.
+      A while loop can run zero times.
+
+      - `correct`   - nothing/no circles AND the reason: the check
+                      comes first and is false immediately ("the loop
+                      is skipped" counts).
+      - `partial`   - nothing without a reason, or explains the check
+                      happens first without saying what is drawn.
+      - `incorrect` - anything else, e.g. one circle is drawn before
+                      the loop notices, or an error message appears.
+
+      Feedback: when does a while loop check its condition: before or
+      after the first round of work?
+
+  - id: second-let
+    title: "The red squiggle"
+    question: |
+      After the vertical lines, a classmate starts the second loop
+      like this and gets a red squiggle on the first line:
+
+      ```typescript
+      let i = GRID;
+      while (i < SIZE) {
+          line(0, i, SIZE, i);
+          i += GRID;
+      }
+      ```
+
+      The first loop above already used `let i = GRID;`. What must
+      change to fix the error?
+    evaluation: |
+      Expected: remove the `let`: the variable `i` already exists, so
+      the second loop resets it with a plain assignment `i = GRID;`.
+      A variable may only be declared once.
+
+      - `correct`   - drop the second `let` / write `i = GRID;` as an
+                      assignment ("i is already declared" as the
+                      reason counts, but the fix must be named).
+      - `partial`   - explains that `i` is declared twice without
+                      giving the fix, or proposes renaming the second
+                      variable to something new (works, but misses
+                      the chapter's reuse idea).
+      - `incorrect` - anything else, e.g. blames the condition or the
+                      braces, or says loops can't be repeated.
+
+      Feedback: `let` creates a variable, and creating the same name
+      twice is an error. What is left when you remove the word `let`?
+
+  - id: write-loop
+    title: "Write one loop"
+    question: |
+      Write a while loop that draws circles with diameter 20 at
+      y = 50, at the x positions 100, 200, and 300. Use a loop
+      variable, the loop condition, and an update, like in the grid.
+    evaluation: |
+      Expected code (names and formatting may differ):
+
+      ```
+      let x = 100;
+      while (x < 400) {
+          circle(x, 50, 20);
+          x += 100;
+      }
+      ```
+
+      Any condition that stops after 300 counts (`x < 400`,
+      `x <= 300`, `x < 301`, ...).
+
+      - `correct`   - all four steps present and right: initialize to
+                      100, a condition that stops after 300, a
+                      `circle(x, 50, 20)` call using the variable, an
+                      update by 100; all semicolons in place.
+      - `partial`   - the loop shape is right but one detail is off:
+                      a boundary that draws one circle too many or too
+                      few, the update missing or wrong, the variable
+                      not used inside `circle`, or missing
+                      end-of-statement semicolons.
+      - `incorrect` - anything else, e.g. three separate circle
+                      statements without a loop, or code that is not
+                      a while loop.
+
+      Feedback: check the four steps one by one: where does x start,
+      when does the loop stop, what is drawn, how does x move?
+
+  - id: loop-variable-job
+    title: "The job of i"
+    question: |
+      In the grid loop, the variable `i` is 25, then 50, then 75, and
+      so on:
+
+      ```typescript
+      let i = GRID;
+      while (i < SIZE) {
+          line(i, 0, i, SIZE);
+          i += GRID;
+      }
+      ```
+
+      What job does `i` do inside the `line` statement?
+    evaluation: |
+      Expected: `i` is the x position of the line drawn in the
+      current round. Each round draws its line at a new x, because
+      the update moves `i` one grid step to the right; that is how
+      one statement produces many lines at different places.
+
+      - `correct`   - says `i` is the x position / where the line is
+                      drawn, and that it changes each round so every
+                      line lands somewhere else ("it moves the line
+                      to the right" counts).
+      - `partial`   - says `i` counts the rounds or "goes up by 25"
+                      without connecting it to the line's position.
+      - `incorrect` - anything else, e.g. `i` is the number of lines,
+                      the line's length, or the line's thickness.
+
+      Feedback: look at where `i` appears in
+      `line(i, 0, i, SIZE)`: which of the four numbers of a line are
+      its x coordinates?

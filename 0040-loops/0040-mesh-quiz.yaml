@@ -1,0 +1,238 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Mesh: a loop inside a loop"
+# (0040-loops/0040-mesh.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: how nested
+# loops execute (the complete inner loop per outer round), counting rounds
+# by multiplying, the inner-variable re-initialization bug, the execution
+# order (inner variable moves fast), statement placement (once, per fan, or
+# per line), and sequential versus nested loops.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: mesh-quiz
+name: "Quiz: Nested loops"
+
+title: "Check your understanding: nested loops"
+description: |
+  Six short questions about the chapter *Mesh: a loop inside a loop*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what you
+  already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="while (left <= SIZE - MARGIN) { let right = MARGIN; ... }"
+      scope="after the mesh chapter"
+      knows=(array
+        "drawing commands and styling"
+        "variables and constants with explicit data types, including global variables"
+        "if/else chains, comparisons, and the modulo operator `%`"
+        "the HSB color model with hue values 0 to 360"
+        "the while loop with its four steps, loop tables, and running values"
+        "nested while loops: the complete inner loop runs for every round of the outer loop"
+        "initializing the inner loop variable inside the outer loop's body"
+        "that statement placement decides how often it runs: before both loops, per outer round, or per inner round")
+      not_yet=(array
+        "for loops"
+        "arrays"
+        "`translate`, `push`, and `pop`"
+        "functions with parameters or return values")}}
+
+questions:
+  - id: nested-count
+    title: "Count the circles"
+    question: |
+      A program contains this nested loop:
+
+      ```typescript
+      let y = 0;
+      while (y < 3) {
+          let x = 0;
+          while (x < 4) {
+              circle(x * 50, y * 50, 20);
+              x++;
+          }
+          y++;
+      }
+      ```
+
+      How many circles does it draw, and how did you get that number?
+    evaluation: |
+      Expected: 12 circles. The outer loop runs 3 rounds, the inner
+      loop runs 4 rounds for each of them: 3 times 4 is 12.
+
+      - `correct`   - 12 AND the multiplication reasoning: 3 outer
+                      rounds times 4 inner rounds ("4 circles per
+                      row, 3 rows" counts).
+      - `partial`   - 12 without a reason, or the right reasoning
+                      (rows times columns) with a miscounted bound
+                      (e.g. 3 times 3 = 9 or 4 times 4 = 16).
+      - `incorrect` - anything else, e.g. 7 circles from adding
+                      3 + 4, or 3 circles because the loops share
+                      their rounds.
+
+      Feedback: how often does the inner loop run completely, and
+      how many circles does each of those complete runs draw?
+
+  - id: inner-reinit
+    title: "Only the first fan"
+    question: |
+      A classmate rearranged the mesh loops like this, and now only
+      the first fan of lines appears:
+
+      ```typescript
+      let left = MARGIN;
+      let right = MARGIN;
+      while (left <= SIZE - MARGIN) {
+          while (right <= SIZE - MARGIN) {
+              line(MARGIN, left, width - MARGIN, right);
+              right += MARGIN;
+          }
+          left += MARGIN;
+      }
+      ```
+
+      Why do the other fans stay missing?
+    evaluation: |
+      Expected: `right` is initialized only once, outside the outer
+      loop. After the first fan it is past 350 (the inner condition
+      is false), and nothing resets it, so in every later outer round
+      the inner loop runs zero times. The fix is `let right = MARGIN;`
+      inside the outer loop's body.
+
+      - `correct`   - right is never reset / keeps its big value, so
+                      the inner loop doesn't run again ("the
+                      initialization must move inside the outer
+                      loop" counts as the same insight).
+      - `partial`   - says the inner loop runs only once without
+                      explaining why, or names the fix (move the let
+                      inside) without the reason.
+      - `incorrect` - anything else, e.g. blames the missing braces,
+                      or says the outer loop stops after one round.
+
+      Feedback: after the first fan, what value does right hold, and
+      what does the inner check say about that value?
+
+  - id: execution-order
+    title: "The first three lines"
+    question: |
+      In the finished mesh, both loops start at `MARGIN` = 50 and
+      step by 50. The outer variable is `left`, the inner variable
+      is `right`. Which value pairs (`left`, `right`) do the first
+      three drawn lines use?
+    evaluation: |
+      Expected: (50, 50), (50, 100), (50, 150). The inner variable
+      moves first; `left` stays at 50 until the whole first fan is
+      done.
+
+      - `correct`   - the three pairs with left staying 50 and right
+                      at 50, 100, 150 (any clear notation counts).
+      - `partial`   - says left stays and right moves without the
+                      concrete pairs, or the first pair right and
+                      then both variables stepped together.
+      - `incorrect` - anything else, e.g. (50,50), (100,100),
+                      (150,150), or left moving first.
+
+      Feedback: which of the two variables completes its whole lap
+      before the other takes a single step?
+
+  - id: statement-placement
+    title: "Where the stroke goes"
+    question: |
+      In the colored mesh, all lines of one fan share a color, and
+      the next fan gets the next color. The `stroke` call sits in the
+      outer loop's body, before the inner loop. Why exactly there?
+    evaluation: |
+      Expected: there it runs once per outer round, that is once per
+      fan. All lines of the fan are drawn afterwards with that
+      color; the next outer round sets the next color. In the inner
+      body it would run per line (each line its own color), before
+      both loops only once (one color for everything).
+
+      - `correct`   - once per fan / once per outer round, so the
+                      whole fan shares the color (naming one of the
+                      two wrong placements as contrast is a bonus,
+                      not required).
+      - `partial`   - says the color changes per fan without
+                      connecting it to how often the statement runs,
+                      or explains the three placements without
+                      choosing why this one is right.
+      - `incorrect` - anything else, e.g. stroke must always come
+                      before line, or the outer loop is faster.
+
+      Feedback: count with the loop: how often does a statement in
+      the outer body run, and how often one in the inner body?
+
+  - id: hue-trace
+    title: "The third fan"
+    question: |
+      The colored mesh starts with `lineColor` at 0 and adds 60 at
+      the end of every outer round:
+
+      ```typescript
+      let lineColor: number = 0;
+      // outer loop: stroke(lineColor, 100, 100); ... lineColor += 60;
+      ```
+
+      Which hue value does the third fan get?
+    evaluation: |
+      Expected: 120. Fan one is drawn with 0, fan two with 60, fan
+      three with 120: the addition happens after each fan.
+
+      - `correct`   - 120 (with or without listing 0, 60, 120).
+      - `partial`   - 180 (counted the addition before drawing), or
+                      lists the sequence 0, 60, 120 without naming
+                      which value the third fan gets.
+      - `incorrect` - anything else, e.g. 60, or 3, or "each line of
+                      the fan gets a different hue".
+
+      Feedback: write down the hue of fan one, then fan two, then
+      fan three. The += 60 runs after a fan is finished.
+
+  - id: sequential-vs-nested
+    title: "After each other, or inside each other"
+    question: |
+      The grid chapter used two loops one *after* the other and drew
+      30 lines. The mesh uses one loop *inside* the other and draws
+      49 lines from two loops of seven rounds each. What is the
+      difference in how the rounds add up?
+    evaluation: |
+      Expected: loops after each other add their rounds (15 + 15 =
+      30): the first finishes, then the second runs. A nested loop
+      multiplies (7 times 7 = 49), because the complete inner loop
+      runs for every single outer round.
+
+      - `correct`   - sequential adds and nested multiplies, with
+                      the reason for multiplying: the inner loop
+                      runs completely per outer round ("plus versus
+                      times" with that explanation counts).
+      - `partial`   - names adding versus multiplying without the
+                      why, or explains the inner-loop-per-outer-round
+                      idea without the add/multiply contrast.
+      - `incorrect` - anything else, e.g. nested loops just run
+                      faster, or both add their rounds.
+
+      Feedback: in the mesh, how often does the inner loop start
+      from the beginning?

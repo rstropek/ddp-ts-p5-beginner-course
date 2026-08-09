@@ -57,6 +57,16 @@ book:
         - 0030-conditions/0060-number-systems.qmd
         - 0030-conditions/0070-rock-paper-scissors.qmd
         - 0030-conditions/0080-dice-switch.qmd
+    - part: "Loops"
+      chapters:
+        - 0040-loops/0010-grid.qmd
+        - 0040-loops/0020-rays.qmd
+        - 0040-loops/0030-pixel-x.qmd
+        - 0040-loops/0040-mesh.qmd
+        - 0040-loops/0050-chessboard.qmd
+        - 0040-loops/0060-for-loop.qmd
+        - 0040-loops/0070-move-origin.qmd
+        - 0040-loops/0080-patterns.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

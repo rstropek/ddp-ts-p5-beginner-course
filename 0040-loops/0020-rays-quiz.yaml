@@ -1,0 +1,252 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Rays: loops meet the mouse"
+# (0040-loops/0020-rays.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: a loop
+# inside an event function with repaint-first, one loop variable marking
+# points on several edges, a global running value that survives between
+# frames, % as wrap-around, draw versus mouseMoved for animations, and the
+# effect of updating the running value inside versus after the loop.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: rays-quiz
+name: "Quiz: Rays"
+
+title: "Check your understanding: rays"
+description: |
+  Six short questions about the chapter *Rays: loops meet the mouse*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what you
+  already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="rayColor = (rayColor + 0.25) % 360;"
+      scope="after the rays chapter"
+      knows=(array
+        "drawing commands and styling"
+        "mouse events, `mouseX`/`mouseY`, and the `draw` animation loop with repaint-first"
+        "variables and constants with explicit data types, including global variables"
+        "if/else chains, comparisons, and the boolean operators"
+        "the HSB color model with `colorMode(HSB)` and hue values 0 to 360"
+        "the while loop with its four steps and loop tables on paper"
+        "a while loop inside `mouseMoved` or `draw` that redraws the whole picture"
+        "one loop variable used in several drawing statements per round"
+        "a global running value updated each round and wrapped with `% 360`")
+      not_yet=(array
+        "for loops"
+        "nested loops (a loop inside a loop)"
+        "the `++` operator (the course writes `+= 1` for now)"
+        "arrays"
+        "`translate`, `push`, and `pop`"
+        "functions with parameters or return values")}}
+
+questions:
+  - id: why-background
+    title: "The first statement"
+    question: |
+      The rays program starts its event function like this:
+
+      ```typescript
+      function mouseMoved() {
+          background("black");
+          // ... the while loop draws all rays ...
+      }
+      ```
+
+      A classmate deletes the `background("black");` line. What does
+      the canvas look like after moving the mouse for a while, and
+      why?
+    evaluation: |
+      Expected: the old rays stay on the canvas, so every mouse
+      position leaves its lines behind and the picture smears into a
+      tangle of lines. `background` repaints the canvas, erasing the
+      previous rays before the new ones are drawn.
+
+      - `correct`   - old lines remain / the picture smears or fills
+                      up AND the reason: nothing erases the previous
+                      drawing ("the canvas is never cleared" counts).
+      - `partial`   - says it looks wrong or full of lines without
+                      the erasing reason, or explains what background
+                      does without saying what the canvas shows.
+      - `incorrect` - anything else, e.g. the program crashes, the
+                      canvas stays black, or nothing changes.
+
+      Feedback: the canvas remembers everything ever drawn on it.
+      Which statement painted over the old rays before?
+
+  - id: accumulator-trace
+    title: "Trace the running value"
+    question: |
+      A program contains this code:
+
+      ```typescript
+      let hue: number = 0;
+
+      function draw() {
+          hue = (hue + 90) % 360;
+      }
+      ```
+
+      What is the value of `hue` after each of the first four frames?
+    evaluation: |
+      Expected: 90, 180, 270, 0. In the fourth frame, 270 + 90 = 360,
+      and 360 % 360 is 0: the value wraps around.
+
+      - `correct`   - the four values 90, 180, 270, 0 (with or
+                      without the wrap explanation).
+      - `partial`   - 90, 180, 270, 360 (the wrap is missed but the
+                      adding is right), or the first three values
+                      right with the fourth missing.
+      - `incorrect` - anything else, e.g. 90 every time "because hue
+                      restarts each frame", or 0, 90, 180, 270.
+
+      Feedback: compute the fourth frame in two steps: what is
+      270 + 90, and what is the remainder of that number divided
+      by 360?
+
+  - id: global-vs-local
+    title: "A variable in the wrong place"
+    question: |
+      A classmate moves the declaration of the running value into
+      `draw`:
+
+      ```typescript
+      function draw() {
+          let rayColor: number = 0;
+          background("black");
+          // ... loop with stroke(rayColor, 100, 100) and
+          //     rayColor = (rayColor + 0.25) % 360; ...
+      }
+      ```
+
+      Now the color animation is gone. Why?
+    evaluation: |
+      Expected: `rayColor` is created fresh with the value 0 in every
+      frame, so the hue never gets past the small steps of one frame.
+      Only a global variable, declared outside every function, keeps
+      its value from one frame to the next.
+
+      - `correct`   - the variable restarts at 0 each frame ("draw
+                      resets it every time" counts) AND the fix or
+                      contrast: it must be global / outside the
+                      functions to survive.
+      - `partial`   - only one half: says it resets each frame
+                      without the global idea, or says it must be
+                      global without explaining what goes wrong
+                      inside draw.
+      - `incorrect` - anything else, e.g. blames the % 360, or says
+                      let is not allowed inside draw.
+
+      Feedback: draw runs about 60 times per second, and every run
+      executes the let line again. What value does rayColor have at
+      the start of each frame?
+
+  - id: draw-vs-mousemoved
+    title: "Two event functions"
+    question: |
+      The plain rays live in `mouseMoved`, the colored rays live in
+      `draw`. Why does the color animation need `draw`?
+    evaluation: |
+      Expected: `mouseMoved` runs only while the mouse moves, so the
+      color would freeze as soon as the mouse rests. `draw` runs about
+      60 times per second no matter what, so the color keeps cycling
+      on its own.
+
+      - `correct`   - mouseMoved only runs on movement AND draw runs
+                      all the time / ~60 times per second ("the color
+                      would stop when you stop moving" counts).
+      - `partial`   - only one half: what mouseMoved does or what
+                      draw does, without the contrast.
+      - `incorrect` - anything else, e.g. mouseMoved can't contain
+                      loops, or draw is needed for mouseX to work.
+
+      Feedback: what happens to the color cycling in the moment you
+      take your hand off the mouse, in each of the two versions?
+
+  - id: gradient-position
+    title: "Inside or after the loop"
+    question: |
+      In the colored rays, this update runs at the end of the loop
+      body, once per ray:
+
+      ```typescript
+      rayColor = (rayColor + 0.25) % 360;
+      ```
+
+      A classmate moves the line directly after the loop, so it runs
+      once per frame. How does the picture change?
+    evaluation: |
+      Expected: the soft gradient across the fan disappears. Inside
+      the loop, every ray gets a slightly different hue; after the
+      loop, all rays of one frame share the same hue, and the whole
+      fan changes color together (more slowly, since the hue now
+      takes one small step per frame instead of one per ray).
+
+      - `correct`   - all rays of a frame get the same color / the
+                      gradient between the rays disappears (the
+                      still-cycling color may or may not be
+                      mentioned).
+      - `partial`   - says the animation gets slower without the
+                      same-color observation, or says something
+                      changes about the colors without what.
+      - `incorrect` - anything else, e.g. the animation stops
+                      completely, the program breaks, or nothing
+                      changes.
+
+      Feedback: with the update inside the loop, ray number 1 and ray
+      number 2 of the same frame have different hues. And with the
+      update after the loop?
+
+  - id: anchor-points
+    title: "Where the rays start"
+    question: |
+      In the rays loop, `MARGIN` is 25 and in the current round `i`
+      is 100:
+
+      ```typescript
+      line(MARGIN, i, mouseX, mouseY);
+      line(i, MARGIN, mouseX, mouseY);
+      ```
+
+      Where do these two lines start? Name both starting points.
+    evaluation: |
+      Expected: the first line starts at (25, 100), a point on the
+      left edge; the second starts at (100, 25), a point on the top
+      edge. Both run to the mouse position.
+
+      - `correct`   - both points right: (25, 100) and (100, 25);
+                      naming the edges without the exact numbers, but
+                      with x and y assigned the right way around, also
+                      counts ("left edge at height 100, top edge at
+                      x = 100").
+      - `partial`   - one point right and one wrong or missing, or
+                      both pairs given but swapped ((100, 25) for the
+                      first line).
+      - `incorrect` - anything else, e.g. both lines start at the
+                      mouse, or both start at (25, 100).
+
+      Feedback: in `line(x1, y1, x2, y2)` the first two numbers are
+      the starting point. Which number stands where in the two calls?

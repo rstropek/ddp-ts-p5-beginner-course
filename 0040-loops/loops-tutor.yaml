@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# AI tutor for part 4 of the Creative Coding book: Loops.
+#
+# This is the general tutor for the Loops part. Everything this tutor does
+# comes from fragments in ../ddp-tutor-fragments.yaml, including the
+# cumulative knowledge scope (scope_loops). This file supplies only the
+# greeting and the example questions.
+#
+# Strictly hint mode: it never generates complete programs.
+#
+# Validate after every edit:  npx @novedu/cli validate 0040-loops/loops-tutor.yaml
+
+id: ddp-tutor-loops
+name: "Creative Coding tutor: Loops (part 4)"
+title: "Hi! I'm your tutor for the Loops part."
+description: |
+  I help you with the chapters about repetition: the while loop and its
+  four steps, loops inside loops, the for loop, and moving the origin with
+  translate, push, and pop. Ask me questions, show me code that doesn't
+  work, or let me quiz you. I give hints instead of finished solutions.
+  English or German, both are fine.
+
+exampleQuestions:
+  - title: "The four steps"
+    question: "Can you explain the four steps of a while loop and why their order matters?"
+  - title: "My loop never stops"
+    question: "My program freezes the browser tab when I run it. What did I probably forget in my while loop?"
+  - title: "Loops inside loops"
+    question: "When one loop runs inside another, which one finishes first? Can you walk me through it?"
+  - title: "while or for?"
+    question: "What is the difference between a while loop and a for loop, and when do I use which one?"
+  - title: "What does translate move?"
+    question: "Does translate move my shapes or something else? And what does resetMatrix do?"
+  - title: "push and pop"
+    question: "What exactly does push save, and what does pop bring back?"
+  - title: "Quiz me"
+    question: "Ask me three short questions about loops so I can check whether I understood this part."
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Loops"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_loops"}}
+
+    {{fragment "shared.socratic_exercises"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

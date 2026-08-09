@@ -1,0 +1,196 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0010-grid-quiz.yaml ("The while loop").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: grid-quiz-eval
+target: ./0010-grid-quiz.yaml
+
+questions:
+  - question: circle-trace
+    answers:
+      - expect: correct
+        answer: |
+          3 circles, at x = 10, 20 and 30
+      # Loop-table style answer — the chapter's own instrument must count.
+      - expect: correct
+        answer: |
+          i=10 draws one, i=20 draws one, i=30 draws one, at 40 the loop
+          stops. so three circles.
+      - expect: correct
+        answer: |
+          drei Kreise, bei 10, 20 und 30. Bei 40 ist i < 40 falsch.
+      # Count without positions — first declared partial branch.
+      - expect: partial
+        answer: |
+          it draws 3 circles
+      # Classic off-by-one: includes the boundary round.
+      - expect: partial
+        answer: |
+          four circles, at 10, 20, 30 and 40
+      # Confident misconception: reads the limit as inclusive count.
+      - expect: incorrect
+        answer: |
+          40 circles, because the loop runs while i is less than 40.
+
+  - question: missing-update
+    answers:
+      - expect: correct
+        answer: |
+          step 4 is missing, y never changes so the condition stays true
+          forever and the loop never ends
+      - expect: correct
+        answer: |
+          das update fehlt (y += 25). y bleibt immer 25, darum ist y < 400
+          immer wahr und der loop läuft ewig.
+      # Names the fix in code without the step number — must count.
+      - expect: correct
+        answer: |
+          you have to add y += 25; inside the loop, without it y stays 25
+          and it loops forever, that freezes the tab
+      # Only the consequence, not the cause.
+      - expect: partial
+        answer: |
+          its an infinite loop, the browser tab freezes
+      # Only the cause, not the consequence.
+      - expect: partial
+        answer: |
+          the update of the loop variable is missing
+      # Confident wrong diagnosis with fluent wording.
+      - expect: incorrect
+        answer: |
+          The condition is wrong: while needs === instead of <, so the
+          comparison never works and the tab freezes.
+
+  - question: zero-rounds
+    answers:
+      - expect: correct
+        answer: |
+          nothing, because 500 < 400 is already false at the first check,
+          the body never runs
+      - expect: correct
+        answer: |
+          es wird nichts gezeichnet. die bedingung wird vor der ersten
+          runde geprüft und ist sofort falsch.
+      # Everyday paraphrase of "the check comes first".
+      - expect: correct
+        answer: |
+          no circles. the loop looks at the condition first and skips
+          straight past the closing brace.
+      - expect: partial
+        answer: |
+          it draws nothing
+      # Right mechanism, missing the answer to "what is drawn".
+      - expect: partial
+        answer: |
+          the while loop checks the condition before every round
+      # The classic do-once misconception.
+      - expect: incorrect
+        answer: |
+          one circle at 500, because the loop always runs at least once
+          before it checks the condition.
+
+  - question: second-let
+    answers:
+      - expect: correct
+        answer: |
+          remove the let and just write i = GRID; because i already exists
+      - expect: correct
+        answer: |
+          das zweite let muss weg. i ist schon deklariert, man setzt es
+          einfach mit i = GRID; zurück.
+      # Reason without the fix.
+      - expect: partial
+        answer: |
+          the variable i is declared twice, thats not allowed
+      # Working alternative that misses the reuse idea — declared partial.
+      - expect: partial
+        answer: |
+          call the second variable j instead: let j = GRID;
+      - expect: incorrect
+        answer: |
+          the condition i < SIZE is wrong in the second loop, it has to be
+          i > SIZE because the lines go the other way.
+      # Verbose padded answer around the right fix — must stay correct.
+      - expect: correct
+        answer: |
+          So the problem is that the first loop already said let i = GRID;
+          and let creates the variable, and you can only create a variable
+          with the same name once in the function. p5.js has nothing to do
+          with it. You fix it by writing i = GRID; without let, that only
+          puts the value back into the existing variable.
+
+  - question: write-loop
+    answers:
+      - expect: correct
+        answer: |
+          let x = 100;
+          while (x < 400) {
+              circle(x, 50, 20);
+              x += 100;
+          }
+      # Different but valid boundary and name.
+      - expect: correct
+        answer: |
+          let pos = 100;
+          while (pos <= 300) {
+              circle(pos, 50, 20);
+              pos += 100;
+          }
+      # Missing end-of-statement semicolons — course rule makes this partial.
+      - expect: partial
+        answer: |
+          let x = 100
+          while (x < 400) {
+              circle(x, 50, 20)
+              x += 100
+          }
+      # Boundary draws one circle too many.
+      - expect: partial
+        answer: |
+          let x = 100;
+          while (x <= 400) {
+              circle(x, 50, 20);
+              x += 100;
+          }
+      # Variable never used for the position.
+      - expect: partial
+        answer: |
+          let x = 100;
+          while (x < 400) {
+              circle(100, 50, 20);
+              x += 100;
+          }
+      # No loop at all.
+      - expect: incorrect
+        answer: |
+          circle(100, 50, 20);
+          circle(200, 50, 20);
+          circle(300, 50, 20);
+
+  - question: loop-variable-job
+    answers:
+      - expect: correct
+        answer: |
+          i is the x position of the line. every round it gets bigger, so
+          the next line is drawn further right.
+      - expect: correct
+        answer: |
+          i ist die x-koordinate der linie. weil i jede runde um GRID
+          wächst, landet jede linie weiter rechts.
+      # Everyday paraphrase without the word coordinate.
+      - expect: correct
+        answer: |
+          it says where the line goes. first line at 25, next at 50, the
+          loop moves the line across the canvas.
+      # Counting description without the position connection.
+      - expect: partial
+        answer: |
+          i counts up in steps of 25 until it reaches SIZE
+      - expect: incorrect
+        answer: |
+          i is how many lines get drawn, the loop draws i lines in total.
+      # Fluent but decisively wrong: confuses position with length.
+      - expect: incorrect
+        answer: |
+          i controls the length of each line, so the lines get longer and
+          longer until they fill the canvas.

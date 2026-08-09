@@ -1,0 +1,221 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Moving the origin: translate, push, and pop"
+# (0040-loops/0070-move-origin.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: coordinates
+# are measured from the origin, translate moves the origin relatively (and
+# adds up, also across loop rounds), negative translate values, resetMatrix,
+# and push/pop saving and restoring origin plus style settings.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: move-origin-quiz
+name: "Quiz: Moving the origin"
+
+title: "Check your understanding: moving the origin"
+description: |
+  Six short questions about the chapter *Moving the origin: translate,
+  push, and pop*. Answer in your own words. There are no answer options
+  to pick from, and this quiz is anonymous: it's here for you, so you
+  can see what you already understand and what you should read again.
+  One or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="translate(100, 100); circle(0, 0, 50);"
+      scope="after the move-origin chapter"
+      knows=(array
+        "drawing commands and styling"
+        "variables and constants with explicit data types"
+        "while and for loops, including nested loops and loops that only count rounds"
+        "that all coordinates are measured from the origin (0, 0)"
+        "`translate` moving the origin relative to its current place, adding up across calls and loop rounds"
+        "negative translate values moving left and up"
+        "`resetMatrix` putting the origin back into the top left corner"
+        "`push` saving the origin and the style settings, `pop` restoring the most recent save"
+        "the course rule that every push gets its pop")
+      not_yet=(array
+        "arrays"
+        "`rotate` and `scale` for patterns"
+        "functions with parameters or return values"
+        "the row-by-row pattern recipe (it comes in the next chapter)")}}
+
+questions:
+  - id: circle-zero
+    title: "A circle at zero"
+    question: |
+      In the diagonal exercise, every circle is drawn with the same
+      statement, `circle(0, 0, 50);`, and yet the circles appear all
+      over the canvas. How can the same statement draw at different
+      places?
+    evaluation: |
+      Expected: coordinates are measured from the origin, and
+      `translate` moves the origin between the calls. `circle(0, 0, ...)`
+      means "draw where the origin currently is", so each call draws
+      at the origin's newest position.
+
+      - `correct`   - the origin moves (via translate) and the
+                      circle's (0, 0) is measured from the current
+                      origin ("the circle draws where the origin is
+                      right now" counts).
+      - `partial`   - mentions translate moving things without the
+                      measured-from-the-origin idea, or says the
+                      origin changes without connecting it to the
+                      circle's coordinates.
+      - `incorrect` - anything else, e.g. p5.js remembers the last
+                      circle and offsets automatically, or the loop
+                      changes the 0 values.
+
+      Feedback: what point do the coordinates in circle(x, y, d)
+      count from, and which command moved that point?
+
+  - id: loop-translate
+    title: "Three rounds of translate"
+    question: |
+      The origin starts in the top left corner, then this loop runs:
+
+      ```typescript
+      for (let i = 0; i < 3; i++) {
+          translate(50, 50);
+          circle(0, 0, 20);
+      }
+      ```
+
+      Where do the three circles appear (their center points, in
+      canvas coordinates)?
+    evaluation: |
+      Expected: at (50, 50), (100, 100), and (150, 150). Each
+      translate moves the origin another 50 right and down, so the
+      moves add up round by round.
+
+      - `correct`   - the three points (50,50), (100,100), (150,150).
+      - `partial`   - all three circles at (50, 50) with translate
+                      explained as absolute, but the first point
+                      right, or the right diagonal idea with one
+                      point off.
+      - `incorrect` - anything else, e.g. all at (0, 0), or (0,0),
+                      (50,50), (100,100) from drawing before
+                      translating.
+
+      Feedback: the translate runs before each circle, and each one
+      moves the origin further. Track the origin round by round.
+
+  - id: negative-translate
+    title: "Going back up"
+    question: |
+      The origin currently sits at (100, 100). What does
+      `translate(-25, -50);` do to it?
+    evaluation: |
+      Expected: it moves the origin 25 pixels to the left and 50
+      pixels up, to (75, 50). Negative x goes left, negative y goes
+      up.
+
+      - `correct`   - left and up, ideally with the result (75, 50);
+                      naming the directions correctly without the
+                      final numbers also counts.
+      - `partial`   - the right idea for one axis only, or "it moves
+                      back" without directions, or correct directions
+                      with a miscalculated result.
+      - `incorrect` - anything else, e.g. it moves right and down,
+                      it resets the origin, or negative values are
+                      an error.
+
+      Feedback: positive x in translate goes right and positive y
+      goes down. Negative values go the opposite way.
+
+  - id: resetmatrix
+    title: "Starting over"
+    question: |
+      After many translate calls, a program runs `resetMatrix();`.
+      Where is the origin afterwards?
+    evaluation: |
+      Expected: back in the top left corner of the canvas, at the
+      default (0, 0), as if no translate had ever happened.
+
+      - `correct`   - top left corner / the default position, as if
+                      no translate happened.
+      - `partial`   - says the translates are undone without where
+                      the origin ends up.
+      - `incorrect` - anything else, e.g. back to the previous
+                      translate only, the center of the canvas, or
+                      the canvas is erased.
+
+      Feedback: resetMatrix undoes ALL translations at once. Where
+      was the origin before the very first translate?
+
+  - id: push-pop-trace
+    title: "The detour"
+    question: |
+      The origin starts in the top left corner, then this code runs:
+
+      ```typescript
+      translate(100, 100);
+      push();
+      translate(50, 0);
+      pop();
+      circle(0, 0, 20);
+      ```
+
+      Where does the circle appear, and why?
+    evaluation: |
+      Expected: at (100, 100). `push` saved the origin at (100, 100),
+      the translate moved it to (150, 100), and `pop` restored the
+      saved (100, 100) before the circle was drawn.
+
+      - `correct`   - (100, 100) AND the reason: pop restored what
+                      push saved / the translate between them is
+                      undone.
+      - `partial`   - (100, 100) without a reason, or the
+                      push-saves-pop-restores mechanism explained
+                      with a wrong or missing position.
+      - `incorrect` - anything else, e.g. (150, 100) because
+                      translate wins, or (0, 0) because pop resets
+                      everything.
+
+      Feedback: what did the origin look like at the moment of
+      push(), and what does pop() bring back?
+
+  - id: what-pop-restores
+    title: "What the note holds"
+    question: |
+      Between `push()` and `pop()`, a program changes the stroke
+      color and translates the origin. What is restored when `pop()`
+      runs?
+    evaluation: |
+      Expected: both come back: the origin returns to where it was
+      at the `push`, and the style settings (stroke, fill, and so
+      on) return to their saved values. `pop` restores the most
+      recent `push`'s complete note.
+
+      - `correct`   - names both the origin (or translate state) and
+                      the styles (stroke/fill/drawing settings)
+                      being restored.
+      - `partial`   - names only one of the two (only the origin, or
+                      only the colors/styles).
+      - `incorrect` - anything else, e.g. pop only erases what was
+                      drawn since push, or pop resets everything to
+                      program start.
+
+      Feedback: the push note saves two kinds of things. The origin
+      is one; what happens to a stroke("red") from inside the
+      detour?

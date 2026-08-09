@@ -1,0 +1,172 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0040-mesh-quiz.yaml ("Nested loops").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: mesh-quiz-eval
+target: ./0040-mesh-quiz.yaml
+
+questions:
+  - question: nested-count
+    answers:
+      - expect: correct
+        answer: |
+          12, because 3 times 4
+      - expect: correct
+        answer: |
+          12 kreise. der äußere loop läuft 3 mal und jedes mal macht der
+          innere 4 kreise, 3 * 4 = 12.
+      # Rows-times-columns everyday wording.
+      - expect: correct
+        answer: |
+          every row has 4 circles and there are 3 rows, so 12
+      # Value without reasoning.
+      - expect: partial
+        answer: |
+          12 circles
+      # Right method, miscounted bound.
+      - expect: partial
+        answer: |
+          3 rows times 3 circles = 9
+      # The classic adding misconception.
+      - expect: incorrect
+        answer: |
+          7 circles, 3 from the outer loop plus 4 from the inner loop.
+
+  - question: inner-reinit
+    answers:
+      - expect: correct
+        answer: |
+          right is only set to MARGIN once. after the first fan it is too
+          big, and nobody resets it, so the inner loop never runs again.
+          the let right = MARGIN; has to be inside the outer loop.
+      - expect: correct
+        answer: |
+          right wird nie zurückgesetzt. nach dem ersten fächer ist right
+          über 350, die innere bedingung ist sofort falsch. die
+          initialisierung muss in den äußeren loop.
+      # Names the fix, reason implied.
+      - expect: correct
+        answer: |
+          you have to move let right = MARGIN into the outer loop so the
+          inner loop starts fresh every round, right now it keeps its old
+          value
+      # Observation without cause.
+      - expect: partial
+        answer: |
+          the inner loop only runs one time
+      # Fix without reason.
+      - expect: partial
+        answer: |
+          put the let right line inside the first while
+      - expect: incorrect
+        answer: |
+          the outer loop stops after one round because left gets too big
+          immediately.
+
+  - question: execution-order
+    answers:
+      - expect: correct
+        answer: |
+          (50, 50), (50, 100), (50, 150)
+      - expect: correct
+        answer: |
+          left bleibt 50, right geht 50, 100, 150
+      - expect: partial
+        answer: |
+          left stays the same at first and right counts up
+      # Diagonal misconception — both variables stepping together.
+      - expect: incorrect
+        answer: |
+          (50, 50), (100, 100), (150, 150), both loops count up together.
+      # Outer-first misconception.
+      - expect: incorrect
+        answer: |
+          (50, 50), (100, 50), (150, 50), the outer loop moves first.
+      # Verbose but right — must stay correct.
+      - expect: correct
+        answer: |
+          so the outer loop picks left = 50 and then the whole inner loop
+          runs before left ever changes. that means line one is left 50
+          right 50, line two is left 50 right 100, line three is left 50
+          right 150. only after right reaches 350 does left move to 100.
+
+  - question: statement-placement
+    answers:
+      - expect: correct
+        answer: |
+          in the outer body it runs once per fan, so all 7 lines of the
+          fan get the same color and the next fan gets the next one
+      - expect: correct
+        answer: |
+          dort läuft es einmal pro äußerer runde, also einmal pro fächer.
+          im inneren loop würde jede linie eine eigene farbe bekommen.
+      # Effect without frequency reasoning.
+      - expect: partial
+        answer: |
+          because that way every fan has its own color
+      # Describes placements without choosing.
+      - expect: partial
+        answer: |
+          before the loops it runs once, in the outer loop once per round,
+          in the inner loop once per line
+      - expect: incorrect
+        answer: |
+          stroke always has to come directly before line, otherwise p5.js
+          ignores it.
+      - expect: incorrect
+        answer: |
+          because the outer loop is faster than the inner loop.
+
+  - question: hue-trace
+    answers:
+      - expect: correct
+        answer: |
+          120
+      - expect: correct
+        answer: |
+          fächer 1 hat 0, fächer 2 hat 60, fächer 3 hat 120
+      # Off-by-one branch.
+      - expect: partial
+        answer: |
+          180, because 3 times 60
+      # Sequence without the pick.
+      - expect: partial
+        answer: |
+          the hues go 0, 60, 120, 180 and so on
+      - expect: incorrect
+        answer: |
+          60, the third fan is the second step
+      - expect: incorrect
+        answer: |
+          every line in the third fan has a different hue, it's a gradient.
+
+  - question: sequential-vs-nested
+    answers:
+      - expect: correct
+        answer: |
+          after each other you add the rounds (15 + 15), nested you
+          multiply (7 * 7) because the inner loop runs completely for
+          every outer round
+      - expect: correct
+        answer: |
+          hintereinander addieren sich die runden, verschachtelt
+          multiplizieren sie sich, weil der innere loop bei jeder äußeren
+          runde komplett läuft.
+      # Plus-versus-times without the why.
+      - expect: partial
+        answer: |
+          one is plus and the other is times
+      # The why without the contrast.
+      - expect: partial
+        answer: |
+          in the mesh the inner loop runs again for every round of the
+          outer loop
+      - expect: incorrect
+        answer: |
+          nested loops are just faster, both draw the same number of lines
+          in the end.
+      # Fluent but decisively wrong.
+      - expect: incorrect
+        answer: |
+          both add up their rounds, the mesh has 49 lines because 7 + 7
+          plus the 35 crossing points.

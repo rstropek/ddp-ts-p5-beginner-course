@@ -1,0 +1,234 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Patterns: repeat, move, repeat"
+# (0040-loops/0080-patterns.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the row
+# recipe (push, draw across, pop, translate down), what breaks without pop
+# or without the row translate, shapes in local coordinates with negative
+# values, the counting role of the loop variables, and patterns running over
+# the canvas edges.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: patterns-quiz
+name: "Quiz: Patterns"
+
+title: "Check your understanding: patterns"
+description: |
+  Six short questions about the chapter *Patterns: repeat, move,
+  repeat*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or
+  two sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="push(); ... pop(); translate(0, CIRCLE_DIAMETER);"
+      scope="after the patterns chapter, at the end of the Loops part"
+      knows=(array
+        "drawing commands and styling"
+        "variables and constants with explicit data types"
+        "while and for loops, nested loops, and loop tables"
+        "`translate`, `resetMatrix`, and `push`/`pop` with the every-push-gets-its-pop rule"
+        "the row recipe: push, draw the row with translate steps, pop, translate one row down"
+        "loop variables that only count rounds while the position lives in the origin"
+        "shapes in local coordinates around the origin, including negative values like a tip at -HEIGHT"
+        "the `sqrt` helper and the equilateral triangle height `SIDE_LENGTH * sqrt(3) / 2`"
+        "patterns running over the canvas edges with `<=` bounds and shifted starts")
+      not_yet=(array
+        "arrays"
+        "`rotate` and `scale` for patterns"
+        "functions with parameters or return values"
+        "`break` or `continue` inside loops")}}
+
+questions:
+  - id: push-pop-job
+    title: "The note in the recipe"
+    question: |
+      The row recipe pushes at the start of each row and pops after
+      the inner loop:
+
+      ```typescript
+      push();
+      // inner loop: circle, then translate right, many times
+      pop();
+      translate(0, CIRCLE_DIAMETER);
+      ```
+
+      What do the `push` and the `pop` achieve for the pattern?
+    evaluation: |
+      Expected: `push` saves the origin at the start of the row;
+      after the inner loop has translated far to the right, `pop`
+      brings the origin back to the row's start. Only then does
+      "one row down" move to the right place: straight below the
+      row's beginning.
+
+      - `correct`   - push remembers the row start and pop returns
+                      there after the row, so the next row starts at
+                      the left again ("without going back, the down
+                      step would happen at the row's end" counts).
+      - `partial`   - says push/pop save and restore the origin
+                      without connecting it to the row start or the
+                      next row, or only says "so the rows line up".
+      - `incorrect` - anything else, e.g. push/pop draw the row, or
+                      pop deletes the circles of the row.
+
+      Feedback: where does the origin sit right after the inner
+      loop finishes, and where should the next row begin?
+
+  - id: missing-pop
+    title: "The drifting pattern"
+    question: |
+      A classmate removed the `pop()` from the row recipe. What does
+      the pattern look like now, and why?
+    evaluation: |
+      Expected: each row starts where the previous row ended, far to
+      the right, so the rows drift rightward like a staircase and
+      quickly leave the canvas; usually only the first row (and a
+      stub of the next) stays visible. Without the pop, nothing
+      returns the origin to the row's start.
+
+      - `correct`   - rows start at the previous row's end / drift
+                      or staircase off the canvas, AND the reason:
+                      the origin is never brought back to the row
+                      start.
+      - `partial`   - says the pattern is broken or shifted without
+                      the accumulating-origin reason, or explains
+                      the missing return without describing the
+                      picture.
+      - `incorrect` - anything else, e.g. nothing changes, an error
+                      message appears, or the circles overlap in one
+                      spot.
+
+      Feedback: after one row, the origin sits at the row's right
+      end. Where does translate(0, D) put the next row then?
+
+  - id: row-translate
+    title: "One row down"
+    question: |
+      The last statement of each outer round is
+      `translate(0, CIRCLE_DIAMETER);`. What would the pattern look
+      like without this line?
+    evaluation: |
+      Expected: all rows would be drawn at the same height, on top
+      of each other: pop returns to the same saved origin every
+      round, and nothing moves the origin down, so only one visible
+      row of circles remains (drawn many times).
+
+      - `correct`   - all rows land on top of each other / only one
+                      row is visible AND the reason: nothing moves
+                      the origin down between rows.
+      - `partial`   - says the rows are all in the same place
+                      without the origin reason, or says the pattern
+                      stays in the first row without why.
+      - `incorrect` - anything else, e.g. the pattern moves
+                      diagonally, or the loop becomes infinite.
+
+      Feedback: pop puts the origin back on the note. If the note
+      never moves down, where does every row start?
+
+  - id: local-triangle
+    title: "The tip above the base"
+    question: |
+      The triangle of the pattern is drawn with
+
+      ```typescript
+      triangle(0, 0, 25, -43, 50, 0);
+      ```
+
+      Where is the corner at (25, -43), relative to the current
+      origin?
+    evaluation: |
+      Expected: 25 pixels to the right of the origin and 43 pixels
+      *above* it: the negative y goes up. It is the triangle's tip
+      over the middle of the base.
+
+      - `correct`   - right 25 and up 43 / above the origin
+                      ("negative y means up, so the tip floats over
+                      the base" counts).
+      - `partial`   - one direction right (e.g. "above the origin")
+                      without the other, or calls it the tip without
+                      decoding the coordinates.
+      - `incorrect` - anything else, e.g. 43 below the origin, or
+                      "negative coordinates are outside the canvas
+                      and invisible".
+
+      Feedback: y grows downward, so where does a negative y value
+      lie relative to the origin?
+
+  - id: counter-role
+    title: "The silent variables"
+    question: |
+      In the pattern loops, the variables `x` and `y` never appear
+      inside a drawing command; the circle is always
+      `circle(0, 0, CIRCLE_DIAMETER)`. What job do `x` and `y` do?
+    evaluation: |
+      Expected: they only count how far the row and the column have
+      come, so the conditions know when to stop. The actual drawing
+      position lives in the origin, moved by the translate calls.
+
+      - `correct`   - they count the progress / decide when the loop
+                      stops, while translate carries the position
+                      ("they're just counters, the origin does the
+                      moving" counts).
+      - `partial`   - says they are counters or control the loop
+                      without contrasting with where the position
+                      lives.
+      - `incorrect` - anything else, e.g. they secretly set the
+                      circle position, or they are unnecessary and
+                      could be deleted without replacement.
+
+      Feedback: if x never reaches a drawing command, what still
+      reads x in every round of the inner loop?
+
+  - id: negative-start
+    title: "Starting left of the canvas"
+    question: |
+      In level 2 of the triangles, the inner loop starts at a
+      negative value:
+
+      ```typescript
+      for (let x = -SIDE_LENGTH / 2; x <= SIZE; x += SIDE_LENGTH) {
+      ```
+
+      What does the negative start achieve for the picture?
+    evaluation: |
+      Expected: the first triangle of each row starts half a side
+      length left of the canvas edge, so only its right half is
+      visible. The pattern gets cut shapes at the edges and looks
+      like endless wallpaper instead of a framed grid. (A loop bound
+      is an ordinary number; negative starts are allowed.)
+
+      - `correct`   - the first shape hangs half off the left edge /
+                      the edges show cut shapes so the pattern seems
+                      to continue beyond the canvas.
+      - `partial`   - says the pattern is shifted left without the
+                      cut-shapes-at-the-edge effect, or says
+                      negative starts are allowed without what it
+                      does here.
+      - `incorrect` - anything else, e.g. negative bounds make the
+                      loop run backward, or the first round is
+                      skipped because x is negative.
+
+      Feedback: where is a triangle whose base starts at
+      x = -25, and how much of it can the canvas show?

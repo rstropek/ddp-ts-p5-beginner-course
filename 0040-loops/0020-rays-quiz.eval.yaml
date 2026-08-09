@@ -1,0 +1,180 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0020-rays-quiz.yaml ("Rays").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: rays-quiz-eval
+target: ./0020-rays-quiz.yaml
+
+questions:
+  - question: why-background
+    answers:
+      - expect: correct
+        answer: |
+          the old rays stay visible, the canvas gets full of lines because
+          nothing paints over them anymore
+      - expect: correct
+        answer: |
+          die alten strahlen bleiben stehen und alles verschmiert, weil der
+          schwarze hintergrund sie nicht mehr überdeckt.
+      # Everyday paraphrase for erasing.
+      - expect: correct
+        answer: |
+          it smears. background wipes the picture clean before the new rays,
+          without it every old mouse position keeps its lines.
+      - expect: partial
+        answer: |
+          the picture looks completely wrong, way too many lines
+      # Explains background without answering what the canvas shows.
+      - expect: partial
+        answer: |
+          background paints the whole canvas black
+      - expect: incorrect
+        answer: |
+          nothing changes, the background is only needed once in setup.
+      # Fluent p5.js jargon around a decisive error.
+      - expect: incorrect
+        answer: |
+          Deleting background("black") improves performance because p5.js
+          then only re-renders the changed pixels, so the rays look exactly
+          the same but the sketch runs faster.
+
+  - question: accumulator-trace
+    answers:
+      - expect: correct
+        answer: |
+          90, 180, 270, 0
+      - expect: correct
+        answer: |
+          nach frame 1: 90, frame 2: 180, frame 3: 270, frame 4: 0 (wegen
+          360 % 360 = 0)
+      # Wrap missed — first declared partial branch.
+      - expect: partial
+        answer: |
+          90, 180, 270, 360
+      # First three right, fourth missing.
+      - expect: partial
+        answer: |
+          it goes 90, then 180, then 270
+      # Reset-per-frame misconception.
+      - expect: incorrect
+        answer: |
+          90 every time, because hue starts at 0 again in every frame.
+      # Off-by-one confident error.
+      - expect: incorrect
+        answer: |
+          0, 90, 180, 270, because the frame shows the value before the
+          update.
+
+  - question: global-vs-local
+    answers:
+      - expect: correct
+        answer: |
+          because draw runs the let line every frame, rayColor starts at 0
+          again each time. it has to be global so the value survives.
+      - expect: correct
+        answer: |
+          die variable wird bei jedem frame neu mit 0 erstellt. sie muss
+          außerhalb von draw deklariert werden, damit der wert erhalten
+          bleibt.
+      # One half: reset observation without the global idea.
+      - expect: partial
+        answer: |
+          rayColor is always 0 at the start of every frame
+      # One half: the rule without the mechanism.
+      - expect: partial
+        answer: |
+          you have to declare it globally
+      - expect: incorrect
+        answer: |
+          the % 360 keeps setting it back to 0, you have to remove the
+          modulo.
+      # Verbose padded answer with the right core — must stay correct.
+      - expect: correct
+        answer: |
+          ok so draw runs about 60 times per second, that's how animations
+          work in p5.js, and every single one of those runs executes
+          let rayColor: number = 0; again, so whatever the loop added in the
+          frame before is thrown away and the color is stuck near 0. the
+          declaration belongs outside every function, as a global variable,
+          like in the color worm.
+
+  - question: draw-vs-mousemoved
+    answers:
+      - expect: correct
+        answer: |
+          mouseMoved only runs when you move the mouse, so the colors would
+          freeze when the mouse stops. draw runs about 60 times per second
+          all the time.
+      - expect: correct
+        answer: |
+          mouseMoved läuft nur bei mausbewegung. draw läuft ständig, darum
+          ändert sich die farbe auch wenn die maus still steht.
+      # One half only.
+      - expect: partial
+        answer: |
+          because draw runs 60 times per second
+      - expect: partial
+        answer: |
+          mouseMoved only reacts to the mouse
+      - expect: incorrect
+        answer: |
+          because mouseX and mouseY only work inside draw, in mouseMoved
+          you can't read the mouse position.
+      - expect: incorrect
+        answer: |
+          draw is faster at drawing lines, mouseMoved would be too slow for
+          60 rays.
+
+  - question: gradient-position
+    answers:
+      - expect: correct
+        answer: |
+          then all rays in one frame have the same color, the gradient
+          between the rays is gone
+      - expect: correct
+        answer: |
+          dann sind alle strahlen in einem frame gleich gefärbt und der
+          regenbogen-verlauf im fächer verschwindet. die farbe ändert sich
+          nur noch von frame zu frame.
+      # Slower-only observation — declared partial branch.
+      - expect: partial
+        answer: |
+          the color changes much slower
+      - expect: partial
+        answer: |
+          the colors look different than before
+      - expect: incorrect
+        answer: |
+          the animation stops completely because the update is outside the
+          loop.
+      - expect: incorrect
+        answer: |
+          nothing changes, it doesn't matter where the line is as long as
+          it runs.
+
+  - question: anchor-points
+    answers:
+      - expect: correct
+        answer: |
+          first line starts at (25, 100), second at (100, 25)
+      - expect: correct
+        answer: |
+          die erste linie startet am linken rand auf höhe 100, also (25,100),
+          die zweite oben bei x = 100, also (100, 25).
+      # Edges named with the roles right but without exact numbers.
+      - expect: correct
+        answer: |
+          one starts on the left edge at height 100, the other on the top
+          edge 100 pixels from the left
+      # Swapped pairs — declared partial branch.
+      - expect: partial
+        answer: |
+          (100, 25) and (25, 100), the first is on the top and the second
+          on the left... wait, the first line is the top one.
+      # One point right, one missing.
+      - expect: partial
+        answer: |
+          the first one starts at (25, 100)
+      - expect: incorrect
+        answer: |
+          both lines start at the mouse position and go to the edges.

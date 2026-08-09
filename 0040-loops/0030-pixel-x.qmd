@@ -1,0 +1,164 @@
+---
+title: "Pixel X and zebra stripes: the loop variable works harder"
+---
+
+![An X made of yellow and lime squares, like giant pixels: one diagonal runs from the top left down to the bottom right, the other from the bottom left up to the top right.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/pixel-x.png){width=400}
+
+The grid gave you a finished loop to copy, and the rays came with a
+scaffold. This chapter takes the training wheels off: two exercises,
+two empty canvases, and you write every loop yourself. Both drawings
+look simple, and both hide a new skill. The pixel X teaches you to
+*compute* with the loop variable, so that one variable places two
+squares in one round. The zebra stripes teach you a second style of
+loop, where the variable counts rounds instead of measuring pixels,
+and where an `if` inside the loop body lets every second round act
+differently.
+
+## AI tutor {#sec-tutor-pixel-x}
+
+Writing a loop from scratch is different from completing one. If your
+diagonal bends the wrong way or your stripes are all one color, show
+the tutor your loop and your loop table; the mistake is usually
+visible in the table.
+
+{{< tutor tutor-loops >}}
+
+## Computing with the loop variable {#sec-mirror}
+
+Start with the first diagonal of the X. A square sits at every
+position where x and y are equal, so one `rect` with the loop
+variable in both slots draws the whole diagonal:
+
+```typescript
+rect(i, i, GRID, GRID);
+```
+
+The second diagonal is the mirror image: when the yellow square is
+near the top, the lime square is near the bottom. Mirroring a
+position means subtracting it from the canvas height, roughly
+`height - i`. But remember how `rect` measures: its first two
+arguments are the *top left corner* of the rectangle. So `height - i`
+would put the square's top edge where its bottom edge belongs, one
+cell too low.
+The correct top edge sits one grid step higher:
+
+```typescript
+rect(i, height - GRID - i, GRID, GRID);
+```
+
+One loop, one variable, and each round places a yellow square at
+`(i, i)` and a lime square at `(i, height - GRID - i)`. The loop
+variable is no longer just a position you draw at; it is a value you
+compute with.
+
+::: {.callout-tip}
+## Test expressions at the edges
+Before you trust an expression like `height - GRID - i`, feed it the
+first and the last value of the loop on paper. First round,
+`i = 25`, height 425: the lime square lands at y = 375, one cell
+above the bottom edge. Last round, `i = 375`: y = 25, one cell below
+the top edge. Both ends look right, so the middle will be right too.
+Two small calculations catch most mirror mistakes.
+:::
+
+## Your exercise: Pixel X {#sec-pixel-x-exercise}
+
+The canvas is 425 pixels, the squares are 25, and the X keeps a
+margin of one empty cell on every side. The starter code contains
+only the canvas setup and `noStroke()`.
+
+1. **Paper first.** The canvas is 17 cells of 25 pixels. Sketch it,
+   shade the diagonal squares, and read off: the first square sits at
+   (25, 25), the last at (375, 375). Your loop runs from `GRID` while
+   `i < SIZE - GRID`, both margins included in the plan.
+2. **Draw the yellow diagonal alone.** Four steps, one `rect(i, i,
+   GRID, GRID)` in the body, `fill("yellow")` before it. Run.
+3. **Derive the lime expression on paper**, as in the section above,
+   then add `fill("lime")` and the mirrored `rect` to the same loop
+   body. Like the rays, the body switches colors every round: fill,
+   yellow square, fill, lime square.
+4. **Check the crossing.** In the middle of the X, the two diagonals
+   meet. Which color wins there, and why? Think about the order of
+   the two `rect` calls in your body.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/pixel-x.yaml title="Pixel X" >}}
+
+## Counting instead of measuring {#sec-counter}
+
+![Eight horizontal stripes filling the canvas, alternating lime and yellow from top to bottom.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/zebra-stripes.png){width=400}
+
+All your loops so far measured pixels: `i` was an x or y coordinate,
+and the update jumped one grid step. For the zebra stripes, a second
+style is more natural: let the variable simply count the stripes,
+0, 1, 2, 3, and compute the position from the count when you need
+it. Stripe number `i` starts at `y = i * STRIPE_THICKNESS`:
+
+```typescript
+let i = 0;
+while (i * STRIPE_THICKNESS < SIZE) {
+    // draw stripe number i
+    i += 1;
+}
+```
+
+Both styles are correct, and you will use both. The measuring style
+is direct: the variable *is* the position. The counting style keeps
+the round number, and that is worth money here, because the stripe's
+number decides its color.
+
+Counting up by one is so common that TypeScript has an extra-short
+form for it: `i++` does exactly what `i += 1` does. Until now the
+course held the `++` back; from this chapter on you may use it, but
+only for steps of one. For every other step size, `+=` stays the
+right tool.
+
+## A decision inside the loop {#sec-if-in-loop}
+
+The loop body may contain any statements, including an `if`. Every
+round can look at the loop variable and act differently:
+
+```typescript
+if (i % 2 === 0) {
+    fill("lime");
+} else {
+    fill("yellow");
+}
+```
+
+The test `i % 2 === 0` is the modulo operator in its parity role.
+You used `% 2` in the binary chapter to split off the last binary
+digit (@sec-extract-digits); the answer is 0 for even numbers and 1
+for odd ones, even, odd, even, odd, in exactly the rhythm a zebra
+needs. Stripes 0, 2, 4, and 6 come out lime, stripes 1, 3, 5, and 7
+yellow.
+
+## Your exercise: Zebra Stripes {#sec-zebra-exercise}
+
+The canvas is 400 pixels, each stripe 50 thick, and the rule of the
+exercise is strict: your output must match the goal picture exactly,
+and you may use only a **single** while loop.
+
+1. **Paper first.** 400 divided by 50 is eight stripes. Look closely
+   at the goal picture: which color is the top stripe? Number the
+   stripes 0 to 7 and write each one's color next to it.
+2. **Make a loop table** with four columns: `i`, the stripe's y
+   position `i * STRIPE_THICKNESS`, the value of `i % 2`, and the
+   color.
+3. **Write the loop**: the counting skeleton from above, the `if`
+   deciding the fill, then one `rect` for stripe number `i`. It
+   spans the full canvas width and is `STRIPE_THICKNESS` tall.
+4. **Change the constants.** `STRIPE_THICKNESS = 25` must give 16
+   thinner stripes, `STRIPE_THICKNESS = 100` four fat ones, with the
+   colors still alternating from the same starting color.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/zebra-stripes.yaml title="Zebra Stripes" >}}
+
+## Check your understanding {#sec-quiz-pixel-x}
+
+When your X crosses cleanly and your zebra wears its stripes, take
+the short quiz below. You answer six questions about this chapter in
+your own words, and an AI reads your answers and tells you what you
+already understand and what you should read again. The quiz is
+anonymous, and answering in German is fine too.
+
+{{< quiz pixel-x title="Pixel X and zebra stripes" >}}

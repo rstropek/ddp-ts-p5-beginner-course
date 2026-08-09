@@ -1,0 +1,179 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0060-for-loop-quiz.yaml ("The for loop").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: for-loop-quiz-eval
+target: ./0060-for-loop-quiz.yaml
+
+questions:
+  - question: for-parts
+    answers:
+      - expect: correct
+        answer: |
+          let d = 20 initializes, d <= 60 is the check, d += 20 is the
+          update
+      - expect: correct
+        answer: |
+          erstes teil startet d bei 20, in der mitte ist die bedingung,
+          und d += 20 am ende zählt hoch
+      # Two of three right.
+      - expect: partial
+        answer: |
+          let d = 20 initializes and d <= 60 checks, the last part draws
+          the circles
+      - expect: incorrect
+        answer: |
+          the three parts run one after the other once, like three normal
+          statements before the loop starts.
+      # Verbose but right — must stay correct.
+      - expect: correct
+        answer: |
+          the for header always has the same order. let d = 20 is STEP 1,
+          the initialization of the loop variable. d <= 60 is STEP 2, the
+          loop condition that gets checked before every round. d += 20 is
+          STEP 4, the update that runs after the body. STEP 3 is the
+          circle in the body.
+
+  - question: convert
+    answers:
+      - expect: correct
+        answer: |
+          for (let y = 50; y < 200; y += 50) {
+              circle(100, y, 10);
+          }
+      # Update kept in the body too — declared partial branch.
+      - expect: partial
+        answer: |
+          for (let y = 50; y < 200; y += 50) {
+              circle(100, y, 10);
+              y += 50;
+          }
+      # Commas instead of semicolons.
+      - expect: partial
+        answer: |
+          for (let y = 50, y < 200, y += 50) {
+              circle(100, y, 10);
+          }
+      # Missing end-of-statement semicolon — course rule makes this partial.
+      - expect: partial
+        answer: |
+          for (let y = 50; y < 200; y += 50) {
+              circle(100, y, 10)
+          }
+      # Slots in the wrong order.
+      - expect: incorrect
+        answer: |
+          for (let y = 50; y += 50; y < 200) {
+              circle(100, y, 10);
+          }
+      - expect: incorrect
+        answer: |
+          let y = 50;
+          while (y < 200) {
+              circle(100, y, 10);
+              y += 50;
+          }
+
+  - question: for-scoping
+    answers:
+      - expect: correct
+        answer: |
+          the i from a for header only exists inside its loop, after the
+          closing brace it's gone. so the two i's never exist at the same
+          time.
+      - expect: correct
+        answer: |
+          jede for-schleife hat ihr eigenes i, das nach der schleife
+          wieder verschwindet. deshalb gibt es keinen konflikt.
+      # The what without the where/why.
+      - expect: partial
+        answer: |
+          in for loops you are allowed to declare the same name twice
+      - expect: partial
+        answer: |
+          the two variables are separate
+      - expect: incorrect
+        answer: |
+          typescript sees the second let and just ignores it because i
+          already exists.
+      - expect: incorrect
+        answer: |
+          both loops use the same i, the second loop continues where the
+          first stopped.
+
+  - question: double-update
+    answers:
+      - expect: correct
+        answer: |
+          only every second line shows up, because i grows twice per
+          round, so the step is 50 instead of 25
+      - expect: correct
+        answer: |
+          es fehlt jede zweite linie. i wird im body UND im header erhöht,
+          also springt es in doppelten schritten.
+      # Picture without reason.
+      - expect: partial
+        answer: |
+          there are bigger gaps between the lines
+      # Reason without picture.
+      - expect: partial
+        answer: |
+          the update runs twice per round
+      - expect: incorrect
+        answer: |
+          it's an endless loop because two updates cancel each other out.
+      - expect: incorrect
+        answer: |
+          nothing changes, the header ignores the extra i += GRID in the
+          body.
+
+  - question: for-values
+    answers:
+      - expect: correct
+        answer: |
+          0, 1, 2
+      - expect: correct
+        answer: |
+          n ist 0, dann 1, dann 2. bei 3 ist 3 < 3 falsch.
+      # Boundary wrong, counting visible.
+      - expect: partial
+        answer: |
+          0, 1, 2, 3
+      - expect: partial
+        answer: |
+          1, 2, 3
+      - expect: incorrect
+        answer: |
+          0, 40, 80, those are the x positions n takes.
+      # Confident off-target claim.
+      - expect: incorrect
+        answer: |
+          three times the value 3, because n++ runs before the body.
+
+  - question: nested-for-bug
+    answers:
+      - expect: correct
+        answer: |
+          the let right = MARGIN is in the inner header now, and the
+          header runs every time the inner loop starts, so it resets
+          automatically every outer round
+      - expect: correct
+        answer: |
+          die initialisierung steht im inneren for-header und läuft bei
+          jeder äußeren runde neu. man kann sie gar nicht mehr an die
+          falsche stelle schreiben.
+      # The what without the frequency argument.
+      - expect: partial
+        answer: |
+          the for loop resets the variable by itself
+      - expect: partial
+        answer: |
+          because the initialization is part of the header
+      - expect: incorrect
+        answer: |
+          for loops don't need initialization, the variable starts at 0
+          automatically.
+      - expect: incorrect
+        answer: |
+          nested for loops share one variable, so there is nothing to
+          reset.

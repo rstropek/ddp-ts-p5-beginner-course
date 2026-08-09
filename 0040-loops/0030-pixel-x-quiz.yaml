@@ -1,0 +1,225 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Pixel X and zebra stripes: the loop variable
+# works harder" (0040-loops/0030-pixel-x.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: computing
+# with the loop variable (the mirror expression and why rect's corner
+# anchoring needs the extra GRID), the counting loop style with a computed
+# position, the ++ shortcut, and an if with % 2 parity inside the loop body.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: pixel-x-quiz
+name: "Quiz: Pixel X and zebra stripes"
+
+title: "Check your understanding: pixel X and zebra stripes"
+description: |
+  Six short questions about the chapter *Pixel X and zebra stripes: the
+  loop variable works harder*. Answer in your own words. There are no
+  answer options to pick from, and this quiz is anonymous: it's here for
+  you, so you can see what you already understand and what you should
+  read again. One or two sentences are enough for most answers, and
+  answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="if (i % 2 === 0) { fill(\"lime\"); }"
+      scope="after the pixel X and zebra stripes chapter"
+      knows=(array
+        "drawing commands and styling, including that `rect` measures from its top left corner"
+        "mouse events and the `draw` animation loop"
+        "variables and constants with explicit data types, including global variables"
+        "if/else chains, comparisons, and the modulo operator `%`"
+        "the while loop with its four steps and loop tables on paper"
+        "computing positions from the loop variable, like a mirrored coordinate"
+        "the counting loop style where the position is `i * STRIPE_THICKNESS`"
+        "`i++` as the short form of `i += 1`, only for steps of one"
+        "an if with `i % 2 === 0` inside the loop body for alternating patterns")
+      not_yet=(array
+        "for loops"
+        "nested loops (a loop inside a loop)"
+        "arrays"
+        "`translate`, `push`, and `pop`"
+        "functions with parameters or return values")}}
+
+questions:
+  - id: mirror-position
+    title: "The mirrored square"
+    question: |
+      In the pixel X loop, the canvas height is 425, `GRID` is 25, and
+      this statement draws the lime square:
+
+      ```typescript
+      rect(i, height - GRID - i, GRID, GRID);
+      ```
+
+      In the current round, `i` is 100. At which position is the top
+      left corner of the lime square?
+    evaluation: |
+      Expected: (100, 300). The x coordinate is `i`, and the y
+      coordinate is 425 - 25 - 100 = 300.
+
+      - `correct`   - both coordinates: x = 100 and y = 300 (order
+                      swapped but clearly labeled counts).
+      - `partial`   - y = 300 without the x, or x = 100 with a
+                      slightly miscalculated y that still subtracts
+                      from the height (e.g. 325 from forgetting
+                      GRID).
+      - `incorrect` - anything else, e.g. (100, 100), or y = 525
+                      from adding instead of subtracting.
+
+      Feedback: put the numbers into the expression:
+      425 - 25 - 100. Work it out step by step.
+
+  - id: why-minus-grid
+    title: "The extra GRID"
+    question: |
+      For the mirrored diagonal, the y position is
+      `height - GRID - i` and not simply `height - i`. Why is the
+      extra `- GRID` needed?
+    evaluation: |
+      Expected: `rect` draws from the square's top left corner. With
+      `height - i` the top edge would sit where the bottom edge
+      should be, so the square would hang one cell too low (the first
+      square would even hang off the canvas). Subtracting GRID moves
+      the top edge one square height up.
+
+      - `correct`   - refers to rect drawing from the top left
+                      corner / the square would sit one square too
+                      low or off the canvas without it ("you have to
+                      subtract the square's size because rect starts
+                      at the top" counts).
+      - `partial`   - says the square would be in the wrong place or
+                      off the canvas without connecting it to rect's
+                      corner anchoring.
+      - `incorrect` - anything else, e.g. GRID is subtracted to
+                      create the margin at the edge, or because the
+                      canvas is 425 instead of 400.
+
+      Feedback: where on the square are the coordinates you pass to
+      rect: its center, or its top left corner?
+
+  - id: stripe-positions
+    title: "Counting stripes"
+    question: |
+      A program contains this loop, with `SIZE` = 200 and
+      `STRIPE_THICKNESS` = 50:
+
+      ```typescript
+      let i = 0;
+      while (i * STRIPE_THICKNESS < SIZE) {
+          rect(0, i * STRIPE_THICKNESS, width, STRIPE_THICKNESS);
+          i++;
+      }
+      ```
+
+      How many stripes does the loop draw, and at which y positions
+      do they start?
+    evaluation: |
+      Expected: four stripes, starting at y = 0, 50, 100, and 150.
+      At i = 4 the check 4 * 50 < 200 is false, so the loop stops.
+
+      - `correct`   - four stripes AND the positions 0, 50, 100, 150
+                      (a loop table with these rows counts).
+      - `partial`   - the count four without positions, or the
+                      positions without the count, or five stripes
+                      with 0, 50, 100, 150, 200 (boundary missed)
+                      but everything else right.
+      - `incorrect` - anything else, e.g. 50 stripes, or positions
+                      1, 2, 3, 4 because i is the position.
+
+      Feedback: make a loop table: for i = 0, 1, 2, 3, 4, compute
+      i * 50 and check the condition.
+
+  - id: stripe-color
+    title: "Which color?"
+    question: |
+      The zebra loop decides its color like this:
+
+      ```typescript
+      if (i % 2 === 0) {
+          fill("lime");
+      } else {
+          fill("yellow");
+      }
+      ```
+
+      Which color does the stripe with `i = 5` get, and why?
+    evaluation: |
+      Expected: yellow. 5 % 2 is 1, not 0, so the condition is false
+      and the else branch runs. 5 is odd, and odd stripes are yellow.
+
+      - `correct`   - yellow AND the reason: 5 is odd / 5 % 2 is 1 /
+                      the condition is false ("every second stripe is
+                      yellow and 5 is odd" counts).
+      - `partial`   - yellow without a reason, or the right parity
+                      reasoning with the colors swapped at the end.
+      - `incorrect` - anything else, e.g. lime because 5 % 2 is 0,
+                      or "it depends on the previous stripe".
+
+      Feedback: compute 5 % 2, the remainder of 5 divided by 2. Is
+      it 0?
+
+  - id: increment
+    title: "The ++ shortcut"
+    question: |
+      The zebra loop ends its body with `i++;`. What does this
+      statement do, and for which step sizes is `++` usable?
+    evaluation: |
+      Expected: it increases `i` by exactly 1, the same as
+      `i += 1;`. It works only for steps of one; for any other step
+      size you write `+=` (like `i += GRID`).
+
+      - `correct`   - adds 1 / same as i += 1 AND says it is only
+                      for steps of one ("for bigger steps you need
+                      +=" counts).
+      - `partial`   - only one half: says it adds 1 without the
+                      step-size limit, or names the limit without
+                      saying what ++ does.
+      - `incorrect` - anything else, e.g. ++ doubles the variable,
+                      or ++ can take any step like i++25.
+
+      Feedback: ++ has no place for a number. How would you write a
+      step of 25?
+
+  - id: two-styles
+    title: "Two loop styles"
+    question: |
+      In the pixel X, the loop variable is used directly as a
+      coordinate: `rect(i, i, ...)`. In the zebra stripes, `i` counts
+      0, 1, 2, 3 instead. How does the zebra loop turn the count into
+      a position on the canvas?
+    evaluation: |
+      Expected: it multiplies the count by the stripe thickness:
+      stripe number i starts at y = i * STRIPE_THICKNESS. The
+      variable counts rounds, and the position is computed from it.
+
+      - `correct`   - names the multiplication i * STRIPE_THICKNESS
+                      (or "the number times 50" / "count times the
+                      thickness") as the position.
+      - `partial`   - says the position is computed or calculated
+                      from i without saying how.
+      - `incorrect` - anything else, e.g. the loop adds 50 to i each
+                      round, or rect finds the position by itself.
+
+      Feedback: look at the y argument of the zebra's rect call:
+      what arithmetic happens to i there?

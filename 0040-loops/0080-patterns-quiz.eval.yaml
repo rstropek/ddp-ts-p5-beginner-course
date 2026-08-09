@@ -1,0 +1,175 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0080-patterns-quiz.yaml ("Patterns").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: patterns-quiz-eval
+target: ./0080-patterns-quiz.yaml
+
+questions:
+  - question: push-pop-job
+    answers:
+      - expect: correct
+        answer: |
+          push saves where the row starts, and pop goes back there after
+          the row, so the next row starts under the first circle again
+      - expect: correct
+        answer: |
+          push merkt sich den zeilenanfang. nach der inneren schleife ist
+          der ursprung ganz rechts, pop holt ihn zurück, und erst dann
+          geht es eine zeile nach unten.
+      # Generic save/restore without the row connection.
+      - expect: partial
+        answer: |
+          push saves the origin and pop restores it
+      # Effect without mechanism.
+      - expect: partial
+        answer: |
+          they make sure the rows are under each other
+      - expect: incorrect
+        answer: |
+          pop deletes the circles of the row so the next row can be drawn
+          fresh.
+      - expect: incorrect
+        answer: |
+          push and pop draw the first and last circle of the row.
+
+  - question: missing-pop
+    answers:
+      - expect: correct
+        answer: |
+          every row starts where the last one ended, so the pattern makes
+          a staircase to the right and runs off the canvas. nothing brings
+          the origin back to the left.
+      - expect: correct
+        answer: |
+          die zeilen wandern nach rechts weg (treppeneffekt), weil der
+          ursprung nach der zeile nie zurückgeholt wird. man sieht fast
+          nur die erste zeile.
+      # Broken without reason.
+      - expect: partial
+        answer: |
+          the pattern is all shifted and most of it is missing
+      # Reason without picture.
+      - expect: partial
+        answer: |
+          the origin never goes back to the start of the row
+      - expect: incorrect
+        answer: |
+          nothing changes, pop is optional as long as you translate down.
+      - expect: incorrect
+        answer: |
+          all the circles land on the same spot in the middle.
+
+  - question: row-translate
+    answers:
+      - expect: correct
+        answer: |
+          all rows would be on top of each other, because pop always goes
+          back to the same spot and nothing moves the origin down
+      - expect: correct
+        answer: |
+          man sieht nur eine zeile. pop stellt immer denselben ursprung
+          wieder her und nichts schiebt ihn nach unten.
+      # Picture without reason.
+      - expect: partial
+        answer: |
+          you would only see one row of circles
+      # Reason without picture.
+      - expect: partial
+        answer: |
+          the origin never moves down between the rows
+      # The counter update y += ... is a separate statement, so the loop
+      # still ends — "infinite loop" is decisively wrong.
+      - expect: incorrect
+        answer: |
+          the loop would never stop because y stays 0 forever.
+      - expect: incorrect
+        answer: |
+          the pattern would move diagonally because only the inner
+          translate is left.
+
+  - question: local-triangle
+    answers:
+      - expect: correct
+        answer: |
+          25 to the right and 43 up from the origin, the tip of the
+          triangle
+      - expect: correct
+        answer: |
+          25 rechts und 43 über dem ursprung, weil negatives y nach oben
+          geht
+      # One direction only.
+      - expect: partial
+        answer: |
+          it's above the origin
+      # Names the tip without decoding.
+      - expect: partial
+        answer: |
+          that's the tip of the triangle
+      - expect: incorrect
+        answer: |
+          25 right and 43 below the origin, y always grows down.
+      - expect: incorrect
+        answer: |
+          negative coordinates are off the canvas, so this corner is
+          invisible.
+
+  - question: counter-role
+    answers:
+      - expect: correct
+        answer: |
+          they just count how far the loop has come so the condition knows
+          when to stop. the position comes from the translates.
+      - expect: correct
+        answer: |
+          x und y sind nur zähler für die abbruchbedingung. die echte
+          position steckt im ursprung, den translate verschiebt.
+      # Counter role without the contrast.
+      - expect: partial
+        answer: |
+          they control how often the loops run
+      - expect: incorrect
+        answer: |
+          x and y secretly set the position of the circle, p5.js reads
+          them automatically.
+      - expect: incorrect
+        answer: |
+          they are useless leftovers, you could delete them and nothing
+          would change.
+      # Verbose but right — must stay correct.
+      - expect: correct
+        answer: |
+          so this is like in the diagonal exercise: the drawing never uses
+          x or y, the circle is always at (0,0) and the origin wanders via
+          translate. but the loops still need to know when a row is done
+          and when the canvas is full, and that's what x and y count. they
+          are odometers, not coordinates, even though their values happen
+          to match the distance walked.
+
+  - question: negative-start
+    answers:
+      - expect: correct
+        answer: |
+          the first triangle hangs half over the left edge, so the edges
+          show cut triangles and the pattern looks like it continues
+          outside the canvas
+      - expect: correct
+        answer: |
+          das erste dreieck beginnt einen halben seitenlänge links
+          außerhalb, man sieht nur die rechte hälfte. dadurch wirkt das
+          muster wie eine endlose tapete.
+      # Shift observation without the edge effect.
+      - expect: partial
+        answer: |
+          the whole pattern is shifted half a triangle to the left
+      # Legality without the effect.
+      - expect: partial
+        answer: |
+          a loop can start at any number, also negative ones
+      - expect: incorrect
+        answer: |
+          a negative start makes the loop count backward, from -25 down.
+      - expect: incorrect
+        answer: |
+          the first round is skipped because the condition fails for
+          negative x.

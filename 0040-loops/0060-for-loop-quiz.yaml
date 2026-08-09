@@ -1,0 +1,251 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The for loop: four steps on one line"
+# (0040-loops/0060-for-loop.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: mapping the
+# while loop's steps into the for header, converting a while loop, header
+# scoping of the loop variable, the double-update mistake, predicting a for
+# loop's values, and why nested for loops prevent the re-initialization bug.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: for-loop-quiz
+name: "Quiz: The for loop"
+
+title: "Check your understanding: the for loop"
+description: |
+  Six short questions about the chapter *The for loop: four steps on one
+  line*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="for (let i = GRID; i < SIZE; i += GRID) { ... }"
+      scope="after the for-loop chapter"
+      knows=(array
+        "drawing commands and styling"
+        "variables and constants with explicit data types"
+        "if/else chains, comparisons, `switch`, and the modulo operator `%`"
+        "the while loop with its four steps, loop tables, and nested while loops"
+        "`i++` as the short form of `i += 1`"
+        "the for loop: initialize, condition, and update packed into the header"
+        "that a `let` in a for header belongs only to that loop"
+        "that nested for loops re-initialize the inner variable automatically"
+        "the rule of thumb: for loops for counting, while loops for everything else")
+      not_yet=(array
+        "arrays"
+        "`translate`, `push`, and `pop`"
+        "functions with parameters or return values"
+        "`break` or `continue` inside loops"
+        "the comma operator or several variables in one for header")}}
+
+questions:
+  - id: for-parts
+    title: "Name the parts"
+    question: |
+      Look at this for loop:
+
+      ```typescript
+      for (let d = 20; d <= 60; d += 20) {
+          circle(200, 200, d);
+      }
+      ```
+
+      The header holds three of the four loop steps. Which part of
+      the header initializes, which part checks, and which part
+      updates?
+    evaluation: |
+      Expected: `let d = 20` initializes the loop variable,
+      `d <= 60` is the condition that is checked before every round,
+      and `d += 20` is the update that runs after the body.
+
+      - `correct`   - all three slots assigned correctly (any
+                      wording: "first part starts d at 20, middle
+                      part is the check, last part adds 20").
+      - `partial`   - two of the three assigned correctly, or all
+                      three named but the check and update swapped
+                      in their timing.
+      - `incorrect` - anything else, e.g. the body initializes, or
+                      the three slots run top to bottom once.
+
+      Feedback: the header order is always the same: initialize;
+      check; update. Read the three slots left to right.
+
+  - id: convert
+    title: "Convert one loop"
+    question: |
+      Convert this while loop into a for loop that draws exactly the
+      same picture:
+
+      ```typescript
+      let y = 50;
+      while (y < 200) {
+          circle(100, y, 10);
+          y += 50;
+      }
+      ```
+    evaluation: |
+      Expected code (formatting may differ):
+
+      ```
+      for (let y = 50; y < 200; y += 50) {
+          circle(100, y, 10);
+      }
+      ```
+
+      - `correct`   - a for header with `let y = 50`, `y < 200`, and
+                      `y += 50` in this order, the circle call alone
+                      in the body, semicolons between the slots and
+                      after the statement.
+      - `partial`   - the right pieces with one flaw: the update
+                      left in the body as well, commas instead of
+                      semicolons in the header, `let` missing in the
+                      header, or missing end-of-statement semicolons.
+      - `incorrect` - anything else, e.g. a while loop again, or a
+                      header with the condition and update swapped
+                      (`for (let y = 50; y += 50; y < 200)`).
+
+      Feedback: three slots in the header, two semicolons: start;
+      check; step. The body keeps only the circle.
+
+  - id: for-scoping
+    title: "Two headers, two lets"
+    question: |
+      With while loops, writing `let i` a second time for the second
+      loop caused a red squiggle. These two loops compile without
+      any error:
+
+      ```typescript
+      for (let i = 25; i < 400; i += 25) {
+          line(i, 0, i, 400);
+      }
+
+      for (let i = 25; i < 400; i += 25) {
+          line(0, i, 400, i);
+      }
+      ```
+
+      Why is the double `let i` allowed here?
+    evaluation: |
+      Expected: a variable declared in a for header exists only
+      inside that loop; it disappears after the loop's closing
+      brace. The two `i` variables never exist at the same time, so
+      the names don't clash.
+
+      - `correct`   - the header variable belongs only to its loop /
+                      stops existing after the loop ("each loop has
+                      its own i" counts).
+      - `partial`   - says for loops allow it or the variables are
+                      separate, without where the variable lives or
+                      why they don't clash.
+      - `incorrect` - anything else, e.g. TypeScript ignores the
+                      second let, or for loops share one hidden i.
+
+      Feedback: where does a variable declared with let inside a for
+      header live, and when does it disappear?
+
+  - id: double-update
+    title: "The half-empty grid"
+    question: |
+      A classmate converted the vertical grid lines but kept the old
+      update line in the body:
+
+      ```typescript
+      for (let i = GRID; i < SIZE; i += GRID) {
+          line(i, 0, i, SIZE);
+          i += GRID;
+      }
+      ```
+
+      What does the drawing look like now, and why?
+    evaluation: |
+      Expected: only every second line appears. `i` is now increased
+      twice per round (once in the body, once in the header), so it
+      jumps two grid steps at a time and skips every other position.
+
+      - `correct`   - every second line / half the lines, AND the
+                      reason: the update runs twice, the step is
+                      doubled ("i jumps by 50 instead of 25" counts).
+      - `partial`   - fewer lines or bigger gaps without the
+                      double-update reason, or names the double
+                      update without what the picture shows.
+      - `incorrect` - anything else, e.g. an infinite loop, a red
+                      squiggle, or the same picture as before.
+
+      Feedback: count what happens to i in ONE round: how much does
+      it grow between two line calls?
+
+  - id: for-values
+    title: "Predict the values"
+    question: |
+      Which values does `n` take in the rounds of this loop?
+
+      ```typescript
+      for (let n = 0; n < 3; n++) {
+          text(n, 50 + n * 40, 100);
+      }
+      ```
+    evaluation: |
+      Expected: 0, 1, and 2. Three rounds; at n = 3 the check
+      `3 < 3` is false and the loop ends, so 3 is never used.
+
+      - `correct`   - the values 0, 1, 2 (mentioning that 3 ends the
+                      loop is a bonus, not required).
+      - `partial`   - 0, 1, 2, 3, or 1, 2, 3 (one boundary wrong,
+                      counting logic otherwise visible).
+      - `incorrect` - anything else, e.g. 0 to 40, three times the
+                      value 3, or "it depends on text".
+
+      Feedback: n starts at 0. Before every round the loop checks
+      n < 3. For which values does the check pass?
+
+  - id: nested-for-bug
+    title: "A bug that can't happen"
+    question: |
+      In the mesh chapter, forgetting to re-initialize the inner
+      loop variable left only the first fan on the canvas. After
+      converting the mesh to nested for loops, this mistake can't
+      happen anymore. Why not?
+    evaluation: |
+      Expected: the inner loop's initialization sits in its header,
+      and the header runs every time the inner loop starts, that is
+      once per outer round. The inner variable starts fresh
+      automatically; there is no separate line to forget or to put
+      in the wrong place.
+
+      - `correct`   - the initialization is part of the inner for
+                      header and runs again for every outer round /
+                      the inner variable starts fresh automatically
+                      ("the let is inside the loop now, you can't
+                      put it outside" counts).
+      - `partial`   - says for loops reset the variable or the
+                      header handles it, without connecting it to
+                      once-per-outer-round.
+      - `incorrect` - anything else, e.g. for loops don't need
+                      initialization, or nested for loops share one
+                      variable.
+
+      Feedback: how often does the inner loop's header run when the
+      outer loop has seven rounds?

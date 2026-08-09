@@ -1,0 +1,171 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0030-pixel-x-quiz.yaml ("Pixel X and zebra stripes").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: pixel-x-quiz-eval
+target: ./0030-pixel-x-quiz.yaml
+
+questions:
+  - question: mirror-position
+    answers:
+      - expect: correct
+        answer: |
+          (100, 300)
+      - expect: correct
+        answer: |
+          x = 100, y = 425 - 25 - 100 = 300
+      - expect: correct
+        answer: |
+          bei x 100 und y 300
+      # Forgot the GRID in the subtraction — declared partial branch.
+      - expect: partial
+        answer: |
+          (100, 325)
+      # Only the y coordinate.
+      - expect: partial
+        answer: |
+          the square is at height 300
+      # Uses i for both coordinates — the yellow diagonal's position.
+      - expect: incorrect
+        answer: |
+          (100, 100), both coordinates are i.
+
+  - question: why-minus-grid
+    answers:
+      - expect: correct
+        answer: |
+          because rect draws from the top left corner. without - GRID the
+          square would sit one square too low.
+      - expect: correct
+        answer: |
+          rect zeichnet vom linken oberen eck aus. ohne - GRID würde das
+          quadrat eine zelle zu tief hängen, das erste sogar unter dem
+          canvas.
+      # Everyday paraphrase of corner anchoring.
+      - expect: correct
+        answer: |
+          the x and y you give rect are the top of the square, not the
+          bottom, so you have to go up one square size when you mirror
+      # Wrong-place observation without the anchoring reason.
+      - expect: partial
+        answer: |
+          without it the square would be in the wrong place, partly off
+          the canvas
+      # Classic misconception: reads GRID as the margin.
+      - expect: incorrect
+        answer: |
+          the - GRID makes the margin, so the X keeps one empty cell of
+          distance from the edge.
+      - expect: incorrect
+        answer: |
+          because the canvas is 425 and not 400, the extra 25 corrects the
+          canvas size.
+
+  - question: stripe-positions
+    answers:
+      - expect: correct
+        answer: |
+          4 stripes, at y = 0, 50, 100, 150
+      - expect: correct
+        answer: |
+          vier streifen: 0, 50, 100 und 150. bei i = 4 ist 200 < 200
+          falsch, also stopp.
+      # Loop-table style answer.
+      - expect: correct
+        answer: |
+          i=0 -> 0, i=1 -> 50, i=2 -> 100, i=3 -> 150, then 4*50=200 is
+          not < 200. so 4 stripes.
+      # Count only.
+      - expect: partial
+        answer: |
+          it draws 4 stripes
+      # Boundary missed.
+      - expect: partial
+        answer: |
+          five stripes at 0, 50, 100, 150 and 200
+      # Treats i itself as the position.
+      - expect: incorrect
+        answer: |
+          the stripes start at y = 0, 1, 2 and 3, the loop counts pixels.
+
+  - question: stripe-color
+    answers:
+      - expect: correct
+        answer: |
+          yellow, because 5 % 2 is 1 so the else runs
+      - expect: correct
+        answer: |
+          gelb, 5 ist ungerade
+      # Everyday parity wording.
+      - expect: correct
+        answer: |
+          yellow. every second stripe is yellow and stripe 5 is an odd one.
+      # Value without a reason.
+      - expect: partial
+        answer: |
+          yellow
+      # Right parity computation, colors swapped in the conclusion.
+      - expect: partial
+        answer: |
+          5 % 2 = 1, the condition is false, so it gets lime
+      - expect: incorrect
+        answer: |
+          lime, because 5 % 2 = 0.
+
+  - question: increment
+    answers:
+      - expect: correct
+        answer: |
+          i++ adds 1 to i, same as i += 1. it only works for steps of 1,
+          for other steps you use +=
+      - expect: correct
+        answer: |
+          es erhöht i um genau 1 (wie i += 1). für andere schrittweiten
+          nimmt man +=, z.b. i += 25.
+      # One half: meaning without the limit.
+      - expect: partial
+        answer: |
+          it makes i one bigger
+      # One half: the limit without the meaning.
+      - expect: partial
+        answer: |
+          you can only use it when the step is 1
+      - expect: incorrect
+        answer: |
+          ++ doubles the variable, i becomes 2 times as big.
+      # Confident wrong syntax claim.
+      - expect: incorrect
+        answer: |
+          you can give ++ any step, for example i++25 counts up in steps
+          of 25.
+
+  - question: two-styles
+    answers:
+      - expect: correct
+        answer: |
+          it multiplies i by the stripe thickness: i * STRIPE_THICKNESS is
+          the y position
+      - expect: correct
+        answer: |
+          die position wird ausgerechnet: streifen nummer i beginnt bei
+          i * STRIPE_THICKNESS, also nummer mal dicke.
+      # Everyday wording of the multiplication.
+      - expect: correct
+        answer: |
+          stripe number times 50, that gives where the stripe starts
+      # Names computation without the how.
+      - expect: partial
+        answer: |
+          the position gets calculated from i in the rect call
+      - expect: incorrect
+        answer: |
+          the loop adds 50 to i every round, so i is already the position.
+      # Verbose padded answer with the right core — must stay correct.
+      - expect: correct
+        answer: |
+          in the zebra the variable is just a counter, 0 1 2 3 and so on,
+          like counting the stripes with your finger. the actual pixel
+          position comes from multiplying: i * STRIPE_THICKNESS. with 50
+          thickness stripe 3 starts at 150. in the pixel x you don't need
+          that because i already jumps in steps of 25 and is the coordinate
+          itself.

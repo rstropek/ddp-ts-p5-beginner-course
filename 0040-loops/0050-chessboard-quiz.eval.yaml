@@ -1,0 +1,170 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0050-chessboard-quiz.yaml ("Chessboard").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: chessboard-quiz-eval
+target: ./0050-chessboard-quiz.yaml
+
+questions:
+  - question: board-parity
+    answers:
+      - expect: correct
+        answer: |
+          brown, because 3 + 4 = 7 is odd
+      - expect: correct
+        answer: |
+          braun. 7 % 2 ist 1, also läuft der else-zweig.
+      # Value without reasoning.
+      - expect: partial
+        answer: |
+          brown
+      # Right computation, swapped conclusion.
+      - expect: partial
+        answer: |
+          3 + 4 = 7, 7 % 2 = 1, so the condition is false and it gets
+          lightyellow
+      - expect: incorrect
+        answer: |
+          lightyellow, because 7 % 2 = 0.
+      # Neighbor-dependence misconception.
+      - expect: incorrect
+        answer: |
+          you can't tell from row and col alone, it depends on which color
+          the square before it got.
+
+  - question: index-to-rowcol
+    answers:
+      - expect: correct
+        answer: |
+          row = 5, col = 2
+      - expect: correct
+        answer: |
+          reihe 5, spalte 2 (5 volle achter sind 40, rest 2)
+      # One value right, one missing.
+      - expect: partial
+        answer: |
+          the row is 5
+      # One right, one wrong.
+      - expect: partial
+        answer: |
+          row 5 and col 6
+      # Rounded up instead of floor: the col half is right, so this lands
+      # on the rubric's one-value-right partial branch.
+      - expect: partial
+        answer: |
+          row 6, col 2, because 42 / 8 = 5.25 rounds to 6.
+      # Both values wrong must stay incorrect.
+      - expect: incorrect
+        answer: |
+          row 42, col 8, you just read them off the numbers in the code.
+      # Verbose but right — must stay correct.
+      - expect: correct
+        answer: |
+          ok so 42 divided by 8 is 5.25 and floor cuts off the decimals so
+          row is 5. for the column: 5 times 8 is 40, and 42 minus 40 leaves
+          2, so 42 % 8 = 2. that means square 42 is in row 5, column 2,
+          which is the sixth row and third column if you count from one,
+          like in the table in the book.
+
+  - question: row-col-formulas
+    answers:
+      - expect: correct
+        answer: |
+          every row has 8 squares, so dividing by 8 tells you how many
+          full rows come before square i. floor cuts off the rest.
+      - expect: correct
+        answer: |
+          weil pro reihe 8 felder sind. floor(i / 8) zählt die vollen
+          achterreihen unter dem feld, das ist die reihennummer.
+      # Digit-extraction analogy counts per rubric.
+      - expect: correct
+        answer: |
+          it's the same trick as getting digits out of a number with floor
+          and %, just with 8 instead of 10
+      # The what without the why.
+      - expect: partial
+        answer: |
+          dividing i by 8 gives you the row number
+      - expect: incorrect
+        answer: |
+          floor rounds i to the nearest multiple of 8, and that multiple
+          is the row.
+      - expect: incorrect
+        answer: |
+          8 is the number of rows, so i / 8 spreads the squares evenly
+          over them.
+
+  - question: switch-letter
+    answers:
+      - expect: correct
+        answer: |
+          "c", because case 3 matches when i is 3
+      - expect: correct
+        answer: |
+          c. der computer springt zu case 3, weist c zu und break beendet
+          den switch.
+      # Value without mechanism.
+      - expect: partial
+        answer: |
+          it holds c
+      # Mechanism right, letter wrong.
+      - expect: partial
+        answer: |
+          the case that matches i runs, so file gets "d"
+      - expect: incorrect
+        answer: |
+          it stays "", the switch only runs once before the loop starts.
+      - expect: incorrect
+        answer: |
+          "a", the switch always starts with the first case and runs them
+          all.
+
+  - question: grid-position
+    answers:
+      - expect: correct
+        answer: |
+          200
+      - expect: correct
+        answer: |
+          50 + 3 * 50 = 200
+      # Margin term dropped, calculation shown.
+      - expect: partial
+        answer: |
+          3 * 50 = 150
+      - expect: incorrect
+        answer: |
+          150, the first SQUARE_SIZE only counts for row 0, not for the
+          columns.
+      # Order-of-operations error.
+      - expect: incorrect
+        answer: |
+          (50 + 3) * 50 = 2650
+      - expect: correct
+        answer: |
+          x = 200 pixel (50 rand + 150)
+
+  - question: board-inset
+    answers:
+      - expect: correct
+        answer: |
+          it makes the margin, so the letters and numbers have space
+          between the board and the edge
+      - expect: correct
+        answer: |
+          damit das brett ein feld vom rand wegrückt und platz für die
+          beschriftung (a-h und 1-8) bleibt.
+      # Shift observation without the purpose.
+      - expect: partial
+        answer: |
+          the board doesn't start at 0, it starts at 50
+      - expect: partial
+        answer: |
+          it moves the whole board one square to the right and down
+      - expect: incorrect
+        answer: |
+          it makes each square 50 pixels bigger.
+      # Confident wrong reasoning about indexing.
+      - expect: incorrect
+        answer: |
+          because col starts counting at 1, you have to add one
+          SQUARE_SIZE back to get the real position.
