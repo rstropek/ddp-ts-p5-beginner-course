@@ -288,8 +288,8 @@ fragments:
         gets a block in curly braces, even for a single statement
       - all six comparison operators < > <= >= === and !== — course rule:
         always compare with === and !==, never mention or use == and !=
-      - boolean as the result of a comparison (no boolean-typed variables
-        have appeared yet)
+      - boolean as the result of a comparison, and storing one in a typed
+        constant (const isInVertical: boolean = mouseY >= TOP && ...)
       - declaring a variable without a value (let message: string;) and
         assigning it before it is read
       - random(min, max) — lower bound included, upper bound excluded,
@@ -302,7 +302,12 @@ fragments:
       - the five compound assignment operators += -= *= /= %= (only on let
         variables); flipping a direction with *= -1
       - the OR operator || and the AND operator &&, including short-circuit
-        evaluation
+        evaluation; combining && and || in one condition with parentheses
+        sealing each && group (the rock-paper-scissors winner check)
+      - comparing strings with === and !== (character for character,
+        capitalization matters); the empty string "" as a "nothing yet"
+        state value that guards event functions; emoji as ordinary
+        characters inside strings, drawn with text
       - textSize, textStyle(BOLD), and the two-argument
         textAlign(CENTER, CENTER)
       - number systems by hand and in code: decimal place values, binary

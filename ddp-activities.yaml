@@ -111,6 +111,9 @@ activities:
     number-systems:
       file: 0030-conditions/0060-number-systems-quiz.yaml
       note: "Creative Coding book: Number systems in code (0030-conditions/0060) — GitHub-hosted"
+    rock-paper-scissors:
+      file: 0030-conditions/0070-rock-paper-scissors-quiz.yaml
+      note: "Creative Coding book: Rock, paper, scissors (0030-conditions/0070) — GitHub-hosted"
     binary-hex-conversions:
       file: 0030-conditions/0050-binary-hex-conversions-quiz.yaml
       note: "Creative Coding book: Binary and hexadecimal conversions (0030-conditions/0050) — GitHub-hosted"

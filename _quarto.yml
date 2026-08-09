@@ -55,6 +55,7 @@ book:
         - 0030-conditions/0040-bouncing-ball.qmd
         - 0030-conditions/0050-binary-hex-conversions.qmd
         - 0030-conditions/0060-number-systems.qmd
+        - 0030-conditions/0070-rock-paper-scissors.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"
@@ -78,6 +79,12 @@ novedu-base-url: "https://novedu.at"
 # by `novedu-cli codes sync ddp-activities.yaml`; both are committed (README).
 metadata-files:
   - ddp-activities.lock.yaml
+
+# Project-wide Pandoc/Lua filters. emoji-pdf.lua replaces emoji with plain
+# words in PDF output only — the PDF fonts have no emoji glyphs and xelatex
+# would drop them silently (turning `"🪨"` into `""` in printed listings).
+filters:
+  - emoji-pdf.lua
 
 # --- Output formats --------------------------------------------------------
 format:

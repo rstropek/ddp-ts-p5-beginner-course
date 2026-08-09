@@ -1,0 +1,204 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden-answer regression cases for the rock-paper-scissors chapter quiz
+# (0030-conditions/0070-rock-paper-scissors.qmd). Teacher-only test data —
+# never publish as an activity, never mint a code.
+
+id: rock-paper-scissors-quiz-eval
+target: ./0070-rock-paper-scissors-quiz.yaml
+
+questions:
+  - question: string-compare-case
+    answers:
+      - expect: correct
+        answer: |
+          no, because "Rock" starts with a capital R and "rock" doesn't.
+          === looks at every character.
+      # German correct answer: the bilingual policy must hold.
+      - expect: correct
+        answer: |
+          nein, groß R und klein r sind verschiedene zeichen, darum ist
+          der vergleich false und der text kommt nicht
+      # Verbose padded answer with an irrelevant p5.js fact — must stay
+      # correct, not more, not less.
+      - expect: correct
+        answer: |
+          I think it does not appear. In TypeScript the === operator
+          compares the two strings character by character, and since
+          "Rock" has an uppercase R but "rock" has a lowercase r, they
+          are not equal. By the way, p5.js draws text with the text
+          function which takes x and y coordinates.
+      # Right verdict, no reason — the rubric's declared partial branch.
+      - expect: partial
+        answer: |
+          no it doesnt show up
+      # Classic misconception: same word, capitalization ignored.
+      - expect: incorrect
+        answer: |
+          yes, both words are rock so the condition is true
+
+  - question: boolean-in-const
+    answers:
+      - expect: correct
+        answer: |
+          true or false. its stored so the three boxes can all use the
+          same check instead of writing it 3 times
+      # Everyday paraphrase of the reuse reason ("same height").
+      - expect: correct
+        answer: |
+          it holds a boolean. all three icons are at the same height so
+          you only check the y position once and use it for every box
+      - expect: correct
+        answer: |
+          true oder false. alle drei kästchen sind gleich hoch, darum
+          rechnet man das nur einmal aus und verwendet es dreimal
+      # Values half only — one of the two declared partial branches.
+      - expect: partial
+        answer: |
+          it can be true or false
+      # Reuse half only — the other partial branch.
+      - expect: partial
+        answer: |
+          so you dont have to repeat the same comparison for every box
+      # Confident type confusion: a boolean constant does not hold a number.
+      - expect: incorrect
+        answer: |
+          it holds the mouse y position, so a number between 75 and 175
+
+  - question: disappearing-frame
+    answers:
+      - expect: correct
+        answer: |
+          the yellow frame never goes away when you move the mouse out.
+          the else painted the frame black, which is the background
+          color, so that was basically the eraser
+      # Symptom plus mechanism in everyday words, no "background color".
+      - expect: correct
+        answer: |
+          once its yellow it stays yellow, because nothing draws over it
+          in black anymore and black on black is what made it invisible
+      # Symptom only — declared partial branch.
+      - expect: partial
+        answer: |
+          the frame stays yellow all the time
+      # Mechanism only, no visible symptom — the other partial branch.
+      - expect: partial
+        answer: |
+          the black rectangle is the eraser, black on black is invisible
+      # Confident but decisively wrong prediction.
+      - expect: incorrect
+        answer: |
+          then no frame appears at all because the if never becomes true
+      # Classic beginner belief that else is mandatory syntax.
+      - expect: incorrect
+        answer: |
+          the program crashes, an if always needs an else
+
+  - question: empty-string-state
+    answers:
+      - expect: correct
+        answer: |
+          it means the player hasnt picked anything yet. mouseMoved only
+          runs its code inside if (selected === "") so after you click a
+          symbol the hover stops
+      - expect: correct
+        answer: |
+          der leere string heißt, der spieler hat noch nichts gewählt.
+          mouseMoved macht das hover nur solange selected leer ist, nach
+          dem klick steht ein symbol drin und die bedingung ist false
+      # Meaning half only — declared partial branch.
+      - expect: partial
+        answer: |
+          its like a placeholder that says nothing was chosen yet
+      # Guard half only — the other partial branch.
+      - expect: partial
+        answer: |
+          mouseMoved checks at the top if selected is empty before it
+          draws the frames
+      # Classic type confusion: "" is not zero.
+      - expect: incorrect
+        answer: |
+          an empty string is the same as zero, so selected starts at 0
+
+  - question: click-into-nothing
+    answers:
+      - expect: correct
+        answer: |
+          the computer would still pick something and it would say
+          computer wins even though you didnt choose anything
+      - expect: correct
+        answer: |
+          the game would end right away: you would see the computers
+          symbol and a result without ever having picked a symbol
+      - expect: correct
+        answer: |
+          der computer würfelt trotzdem und unten steht computer wins,
+          obwohl man gar kein symbol angeklickt hat
+      # Vague "goes wrong" without the visible consequence — declared
+      # partial branch.
+      - expect: partial
+        answer: |
+          the click would count even though you clicked next to the icons
+      # Confident crash claim.
+      - expect: incorrect
+        answer: |
+          the program would crash because selected is empty and you cant
+          compare an empty string
+      # Describes the behavior WITH the check — decisively wrong here.
+      - expect: incorrect
+        answer: |
+          nothing happens, the click just gets ignored because it missed
+          the boxes
+
+  - question: and-or-together
+    answers:
+      - expect: correct
+        answer: |
+          true. paper vs rock is the second pair and both parts of it
+          are true, and for || one true pair is enough
+      - expect: correct
+        answer: |
+          yes its true, because of the middle line, paper beats rock
+      - expect: correct
+        answer: |
+          stimmt, die zweite klammer ist wahr, weil selected papier ist
+          und computer stein, und bei || reicht eine wahre klammer
+      # Bare verdict, no reason — declared partial branch.
+      - expect: partial
+        answer: |
+          true
+      # Correct operator explanation but no verdict for this round — the
+      # other partial branch.
+      - expect: partial
+        answer: |
+          each && pair is only true if both sides are true, and the ||
+          connects the pairs so only one of them has to be true
+      # Misconception: || misread as needing all pairs.
+      - expect: incorrect
+        answer: |
+          false, because the first and the third pair are false
+
+  - question: one-line-tie
+    answers:
+      - expect: correct
+        answer: |
+          selected === computer. it doesnt care which symbol it is, it
+          just checks if both variables have the same thing in them
+      - expect: correct
+        answer: |
+          if (selected === computer). man vergleicht die beiden variablen
+          direkt, wenn beide dasselbe symbol enthalten ist es wahr, egal
+          welches
+      # Code only, no why — declared partial branch.
+      - expect: partial
+        answer: |
+          selected === computer
+      # Description only, no code — the other partial branch.
+      - expect: partial
+        answer: |
+          you just compare the players choice directly with the
+          computers choice
+      # Confident false rule about ===.
+      - expect: incorrect
+        answer: |
+          you cant compare two variables with ===, one side always has
+          to be a fixed value like "🪨"

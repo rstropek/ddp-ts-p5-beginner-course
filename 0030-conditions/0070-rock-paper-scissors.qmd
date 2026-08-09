@@ -1,0 +1,397 @@
+---
+title: "Rock, paper, scissors: your first game"
+---
+
+![A finished round: the player picked paper, the computer rolled scissors, and the program announces the winner.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/rps.png){width=360}
+
+*Schere, Stein, Papier*: you've almost certainly played it in the
+schoolyard. Two players choose a symbol at the same time, and three
+simple rules decide who wins. In this chapter the game becomes a
+program, and your opponent is the computer: you pick rock, paper, or
+scissors with the mouse, the computer picks by chance, and the program
+announces the winner. It's the biggest program of this part, and
+everything you've built so far plays a role in it: event functions,
+global variables, random numbers, and conditions in every shape you
+know. You'll build the game in two stages, and for fast finishers
+there's a famous five-symbol variant waiting at the end.
+
+## AI tutor {#sec-tutor-rps}
+
+A game is harder to debug than a drawing, because much of what it knows
+sits invisibly in variables instead of on the canvas. When your game
+misbehaves, tell the AI tutor what you clicked, what the program showed,
+and what you expected instead. The tutor knows this chapter and both
+stages of the exercise.
+
+{{< tutor tutor-conditions >}}
+
+## A plan from the designer {#sec-rps-design}
+
+Here is how one round of the finished game plays out:
+
+1. The program shows three symbols next to the label "Human:".
+2. While the mouse rests on a symbol, a yellow frame appears around it.
+   When the mouse leaves, the frame disappears.
+3. The player clicks one symbol. That choice is final.
+4. The computer immediately shows its own, randomly chosen symbol next
+   to the label "Computer:".
+5. The program prints the result at the bottom: the player won, the
+   computer won, or it's a tie.
+
+In a software team, a designer would hand you a picture like the one
+below, and your job as the programmer is to match it as closely as you
+can. Every red measurement is a number your code will need:
+
+![The UI design of the game. The red lines give every position and size
+in pixels.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/rps-layout.png){width=400}
+
+You could type those numbers straight into your drawing calls, but
+numbers sprinkled through code with no explanation are hard to read.
+Programmers call them **magic numbers**, and the cure is to give each
+one a name. The playground starter for this chapter does exactly that:
+
+```typescript
+const TEXT_LEFT: number = 30;
+const STONE_LEFT: number = 50;
+const PAPER_LEFT: number = 175;
+const SCISSORS_LEFT: number = 300;
+const ICON_WIDTH: number = 100;
+const ICON_TOP: number = 75;
+const ICON_HEIGHT: number = 100;
+```
+
+Constants and their two naming styles are old friends from the snapping
+chapter (@sec-const-naming): the names are written in ALL_CAPS because
+these are global configuration constants, settings for the whole
+program, meant to be found and tweaked easily. Read them against the
+design picture:
+each one is a red measurement with a name. One naming detail so you
+don't stumble: the starter says *stone* where this chapter says *rock*;
+they mean the same symbol.
+
+## Emoji live in strings {#sec-rps-emoji}
+
+The three symbols on the canvas are emoji, the same little pictures you
+know from chats. For your program, an emoji is nothing special: it's a
+character, and characters live in strings. A string can hold an emoji
+alone, and `text` draws it like any other text. The bigger the text
+size, the bigger the picture:
+
+```typescript
+textSize(75);
+text("🪨", 50, 150);
+```
+
+::: {.content-visible when-format="pdf"}
+::: {.callout-note}
+## Emoji on printed paper
+The printed book can't show emoji, so the code listings and tables in
+this chapter print the three symbols as the plain words rock, paper,
+and scissors. On screen, in the playground and in the web version of
+this book, you'll see the real symbols instead. The logic of the game
+is exactly the same either way.
+:::
+:::
+
+::: {.callout-tip}
+## Typing an emoji
+On Windows, the key combination Windows + period (`.`) opens an emoji
+picker right in the playground editor. On a Mac it's Cmd + Ctrl +
+Space. And copying an emoji from the exercise description and pasting
+it into your code works everywhere.
+:::
+
+Strings can also do something you've so far only done with numbers:
+they can be compared. In the dice chapter (@sec-equality) you compared
+numbers with `===` and `!==`. The same two operators work on strings,
+and they are just as exact: two strings are equal when they match
+character for character. So `"🪨" === "🪨"` is `true`, but
+`"rock" === "Rock"` is `false`, because `r` and `R` are different
+characters. Asking "did the player pick the rock?" will be one string
+comparison.
+
+## The hover effect {#sec-rps-hover}
+
+The yellow frame that follows the mouse is the first thing the game
+needs, and the right function slot for it is one of your oldest: p5.js
+calls `mouseMoved` on every movement of the mouse across the canvas.
+Inside it, the program must answer: is the mouse over a symbol right
+now?
+
+That's a box test, and you wrote one in the binary guesser
+(@sec-binary-guesser): the mouse is inside a box when the horizontal
+position is in the box's x range *and* the vertical position is in its
+y range, two questions joined by `&&`. The design gives all three
+symbols the same vertical band, from `ICON_TOP` down `ICON_HEIGHT`
+pixels, so the vertical half of the question has the same answer for
+all three boxes. Answer it once and keep the result:
+
+```typescript
+const isInVertical: boolean = mouseY >= ICON_TOP && mouseY < ICON_TOP + ICON_HEIGHT;
+```
+
+Look closely at that line, because it shows something new. Until now, a
+boolean appeared only for a blink: born inside an `if` condition,
+checked, and gone. But a boolean is a value like any number or string,
+and a value can be stored. The constant `isInVertical` holds `true` or
+`false`, its type annotation is `boolean`, and the three box tests can
+all use it instead of asking the same vertical question three times.
+
+The second new idea is how the frame disappears again. A condition
+alone can put the yellow frame on, but when the mouse slides off a
+symbol, something must take the frame off. The trick: always draw the
+frame, and let the condition choose only the pen color. Yellow when the
+mouse is inside; black, the background color, when it isn't. A black
+frame on a black canvas is invisible, so drawing it erases the
+highlight:
+
+```typescript
+noFill();
+strokeWeight(3);
+if (isInVertical && mouseX >= STONE_LEFT && mouseX < STONE_LEFT + ICON_WIDTH) {
+    stroke("yellow");
+} else {
+    stroke("black");
+}
+rect(STONE_LEFT, ICON_TOP, ICON_WIDTH, ICON_HEIGHT);
+```
+
+The `rect` call sits *after* the `if`/`else`, so the frame is drawn on
+every mouse move, always in the right color. And the `noFill()` at the
+top matters: without it, the rectangle would be filled and paint over
+the emoji it's supposed to frame. Paper and scissors each get the same
+block with their own left edge.
+
+## Your exercise, part 1: the three options {#sec-rps-part-1}
+
+Build the first stage: the three symbols and the hover effect. The
+computer's choice and the winner come in part 2.
+
+1. **Paper first.** Work out the edges of the three boxes from the
+   design picture and the constants. The first row is filled in as a
+   model:
+
+    | Symbol | Left edge | Right edge | Top | Bottom |
+    |:---|:---:|:---:|:---:|:---:|
+    | 🪨 | 50 | 150 | 75 | 175 |
+    | 📃 |   |   |   |   |
+    | ✂️ |   |   |   |   |
+
+    These twelve numbers are what your `&&` conditions will compare
+    `mouseX` and `mouseY` against. A mistake here shows up later as a
+    box that ignores the mouse, so check each right edge: it's the left
+    edge plus `ICON_WIDTH`.
+2. **Read the starter code.** The canvas, the label "Human:", and the
+   constants are already there. One chore while you read: the starter
+   declares its constants without data types, so add the `: number`
+   annotations, like every declaration in this course.
+3. **Draw the three symbols** with `text` at text size 75, using the
+   `_LEFT` constants for x and the baseline 150 for y.
+4. **Build the hover effect** in `mouseMoved`: the `isInVertical`
+   constant, then one `if`/`else` plus one `rect` per symbol.
+5. **Test with your table.** Glide the mouse slowly across all three
+   symbols and watch the frame follow. Then check the gaps: between the
+   boxes, for example at x values from 150 to 175, no frame may light
+   up.
+
+One warning before you start: the second part of this exercise contains
+a sample solution for this part. Don't look at part 2 until your part 1
+works.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/rps-part-1.yaml title="Rock, paper, scissors: part 1" >}}
+
+## A game remembers its state {#sec-rps-state}
+
+Between the click and the end of a round, the game has to remember
+things: which symbol the player picked, and which one the computer
+rolled. Values that must survive from one event to the next belong in
+global variables, the ones from the color worm (@sec-global-variables).
+The game needs two, and both hold strings:
+
+```typescript
+let selected: string = "";
+let computer: string = "";
+```
+
+Those quotes with nothing between them are the **empty string**: a
+string with zero characters. It's a perfectly normal value, and here it
+plays the role of "nothing yet". As long as `selected` holds the empty
+string, the player hasn't chosen; the moment a click stores `"🪨"` in
+it, the choice is made. Programmers say these variables hold the
+program's **state**: everything the program has to remember about where
+it currently stands.
+
+The state also decides which events still matter, because the rules of
+the game say a choice is final:
+
+- The hover effect must work only *before* the player has chosen.
+  So the whole body of `mouseMoved` moves inside
+  `if (selected === "") { ... }`.
+- A click must count only while the game is still running. So the body
+  of `mouseClicked` sits inside `if (computer === "") { ... }`.
+
+An event function that first asks "am I still allowed to do anything?"
+is a pattern you'll meet in every game you ever write.
+
+## The computer's choice {#sec-rps-computer}
+
+The computer picks one of three symbols, with equal chances. Rolling a
+fair whole number is the dice recipe (@sec-random): `floor(random(0, 3))`
+gives 0, 1, or 2. But the roll is a *number*, and the game works with
+symbol *strings*, so the roll must be translated. A number-to-symbol
+translation with exact cases is an `if`/`else if` chain, the same move
+as the hex letters (@sec-hex):
+
+```typescript
+const computerSymbolId: number = floor(random(0, 3));
+if (computerSymbolId === 0) {
+    computer = "🪨";
+} else if (computerSymbolId === 1) {
+    computer = "📃";
+} else if (computerSymbolId === 2) {
+    computer = "✂️";
+}
+```
+
+After the chain, `computer` holds the computer's symbol, ready to be
+drawn next to the label "Computer:" and compared against the player's
+choice.
+
+## Who wins? {#sec-rps-winner}
+
+Three rules decide the game, and every arrow in the picture below means
+"beats": rock crushes scissors, scissors cut paper, and paper covers
+rock.
+
+![Who beats whom: each symbol beats exactly one other symbol and loses
+to exactly one.](images/rps-beats.svg){width=440}
+
+Count the possibilities before writing any code. The player has three
+choices, the computer has three, so a round has 3 times 3, or nine
+combinations. In three of them both picked the same symbol: a tie. In
+three others the player's symbol beats the computer's: the player wins.
+The remaining three go to the computer.
+
+The tie is one comparison, and an elegant one: `selected === computer`
+compares the two variables *with each other*, and one line covers all
+three tie combinations at once.
+
+The player's three winning combinations each need two things to be true
+at the same time, the player's symbol *and* the computer's symbol, so
+each one is an `&&` pair. And the player wins if the first pair is true
+*or* the second *or* the third, which is exactly what `||` says
+(@sec-bounce). For the first time, both operators meet in one
+condition:
+
+```typescript
+let winner: string = "";
+if (selected === computer) {
+    winner = "It's a tie!";
+} else if (
+    (selected === "🪨" && computer === "✂️") ||
+    (selected === "📃" && computer === "🪨") ||
+    (selected === "✂️" && computer === "📃")
+) {
+    winner = "You win!";
+} else {
+    winner = "Computer wins!";
+}
+```
+
+Two details in that listing deserve a close look:
+
+- **The parentheses around each `&&` pair are not decoration.** They
+  seal each winning combination into one closed question, so any reader
+  sees immediately which comparisons belong together. Whenever `&&`
+  and `||` meet in one condition, put parentheses around the groups.
+- **The condition spans several lines.** TypeScript doesn't mind line
+  breaks inside parentheses, and a long condition becomes readable when
+  every `||` starts a new line.
+
+And the final `else`? That's the "everything else" branch you know from
+the dice chapter: nine combinations, minus three ties, minus three
+player wins, leaves exactly the three combinations where the computer
+wins. No condition needed.
+
+## Your exercise, part 2: the whole game {#sec-rps-part-2}
+
+Now finish the game: the click, the computer's roll, and the winner.
+
+1. **Compare first.** The starter code of part 2 is a sample solution
+   for part 1. Before you write anything, compare it with your own
+   part 1: where did you decide differently? Keep whichever version
+   you like better, but carry over your data type annotations.
+2. **Play computer on the winner logic.** Copy the table and fill it
+   in using the listing from @sec-rps-winner: which branch is the
+   first to be true, and what does the program print? The first row is
+   filled in as a model.
+
+    | `selected` | `computer` | First true branch | Message |
+    |:---:|:---:|:---|:---|
+    | 🪨 | ✂️ | first `&&` pair of the `else if` | You win! |
+    | 📃 | 📃 |   |   |
+    | ✂️ | 🪨 |   |   |
+    | 📃 | 🪨 |   |   |
+    | ✂️ | 📃 |   |   |
+
+3. **Recognize the click.** Add the two global state variables. In
+   `mouseClicked`, reuse the box test from the hover effect to find out
+   which symbol was clicked, and store that symbol in `selected`. A
+   click that hits no symbol must leave the game unchanged, so
+   everything that follows, the roll and the result, runs only when
+   `selected !== ""`. Test it: clicking the empty canvas may do
+   nothing.
+4. **Make the choice final.** Guard the two event functions with the
+   state, as described in @sec-rps-state: hover only while
+   `selected === ""`, clicks only while `computer === ""`.
+5. **Roll the computer's symbol** with the chain from
+   @sec-rps-computer and draw it as the design shows: the label
+   "Computer:" at text size 30, the symbol at text size 75.
+6. **Announce the winner** with the logic from @sec-rps-winner, at
+   text size 50 near the bottom edge.
+7. **Test all nine combinations.** Chance won't show you all four
+   messages quickly, so force the roll like you forced the dice:
+   replace `floor(random(0, 3))` with 0, 1, or 2 for a moment and play
+   against a computer whose move you know. Check your play-computer
+   table row by row. Then restore the roll and hand the game to a
+   classmate: watching another person use your program is the oldest
+   and best test in software.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/rps-part-2.yaml title="Rock, paper, scissors: part 2" >}}
+
+## For fast finishers: rock, paper, scissors, lizard, Spock {#sec-rps-lizard-spock}
+
+Maybe you know the series *The Big Bang Theory*, where Sheldon Cooper
+plays a five-symbol variant of the game:
+[watch him explain it](https://www.youtube.com/watch?v=_PUEoDYpUyQ)
+([German version](https://youtu.be/4I3d9gKx_e4?t=20)). The rules:
+
+- rock crushes scissors, and rock crushes lizard
+- paper covers rock, and paper disproves Spock
+- scissors cut paper, and scissors decapitate lizard
+- lizard eats paper, and lizard poisons Spock
+- Spock smashes scissors, and Spock vaporizes rock
+
+Every symbol beats two others and loses to two others.
+
+If the game left you wanting more, rebuild it with five symbols. There
+is no walkthrough and no sample solution for this stage, on purpose:
+this time you are the designer. Plan on paper before you code, the way
+this course always does, and let these questions guide you: which emoji
+will you use for lizard and Spock? Where do five boxes sit, when the
+current canvas comfortably fits three? How many combinations does a
+round have now, and how many of them make the player win? The starter
+code is the finished three-symbol game, so everything you change, you
+understand.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/rps-part-3.yaml title="Rock, paper, scissors, lizard, Spock" >}}
+
+## Check your understanding {#sec-quiz-rps}
+
+When your game has won (or graciously lost) its first round against a
+classmate, take the short quiz below. You answer seven questions about
+this chapter in your own words, and an AI reads your answers and tells
+you what you already understand and what you should read again. The
+quiz is anonymous, and answering in German is fine too.
+
+{{< quiz rock-paper-scissors title="Rock, paper, scissors" >}}

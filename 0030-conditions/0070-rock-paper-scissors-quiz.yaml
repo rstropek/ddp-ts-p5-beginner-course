@@ -1,0 +1,274 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Rock, paper, scissors: your first game"
+# (0030-conditions/0070-rock-paper-scissors.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: comparing
+# strings with ===, a boolean stored in a typed constant, erasing by drawing
+# in the background color, the empty string as "nothing yet" state, guarding
+# events with state, and && combined with || in one condition.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: rock-paper-scissors-quiz
+name: "Quiz: Rock, paper, scissors"
+
+title: "Check your understanding: rock, paper, scissors"
+description: |
+  Seven short questions about the chapter *Rock, paper, scissors: your
+  first game*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One or
+  two sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="if (selected === computer) { ... }"
+      scope="after the rock-paper-scissors chapter"
+      knows=(array
+        "drawing commands"
+        "mouse events"
+        "variables and constants with explicit data types, including global variables"
+        "comparisons with `===` and `!==` on numbers and on strings"
+        "the if/else if/else chain with braces around every block"
+        "nested if statements"
+        "`random`, `floor`, and `pow`"
+        "the `draw` animation loop"
+        "the boolean operators `||` and `&&`, also combined in one condition with parentheses"
+        "a boolean value stored in a typed constant"
+        "emoji as characters inside strings"
+        "the empty string as a \"nothing yet\" value")
+      not_yet=(array
+        "arrays"
+        "for/while loops"
+        "functions with parameters or return values"
+        "the `!` operator and `switch`"
+        "string methods")}}
+
+questions:
+  - id: string-compare-case
+    title: "Comparing strings"
+    question: |
+      A program contains this code:
+
+      ```typescript
+      let answer: string = "Rock";
+
+      if (answer === "rock") {
+          text("Correct!", 100, 100);
+      }
+      ```
+
+      Does "Correct!" appear on the canvas? Explain briefly.
+    evaluation: |
+      Expected: no. `===` compares strings character for character, and
+      the capital `R` in `"Rock"` is a different character than the small
+      `r` in `"rock"`, so the condition is false.
+
+      - `correct`   - no AND the reason: capitalization / `R` vs `r` /
+                      character-for-character comparison ("Groß- und
+                      Kleinschreibung" counts).
+      - `partial`   - no, but without a reason or with a wrong reason.
+      - `incorrect` - anything else, e.g. yes because both say the same
+                      word.
+
+      Feedback: `===` compares character for character; name the two
+      characters that differ.
+
+  - id: boolean-in-const
+    title: "A stored comparison"
+    question: |
+      The hover code starts with this line:
+
+      ```typescript
+      const isInVertical: boolean = mouseY >= 75 && mouseY < 175;
+      ```
+
+      What values can `isInVertical` hold, and why does the program store
+      the result instead of writing the comparison three times?
+    evaluation: |
+      Expected: `true` or `false` (a boolean). All three symbol boxes
+      share the same vertical band, so the program computes the answer
+      once and reuses it in the three box tests.
+
+      - `correct`   - names true/false (or: a boolean) AND the reuse idea
+                      ("all three boxes need the same check", "so you
+                      don't repeat it" count).
+      - `partial`   - only one of the two halves: the values or the
+                      reuse reason.
+      - `incorrect` - anything else, e.g. it holds a number or the mouse
+                      position.
+
+      Feedback: a comparison produces a value too — the two-value type is
+      called boolean.
+
+  - id: disappearing-frame
+    title: "The frame that stays"
+    question: |
+      In `mouseMoved`, this code draws the frame around the rock symbol:
+
+      ```typescript
+      if (isInVertical && mouseX >= 50 && mouseX < 150) {
+          stroke("yellow");
+      } else {
+          stroke("black");
+      }
+      rect(50, 75, 100, 100);
+      ```
+
+      A classmate deletes the `else` branch. What goes wrong on the
+      screen, and why?
+    evaluation: |
+      Expected: once the frame has turned yellow, it never disappears
+      again. The `else` drew the frame in black, the background color,
+      and black on black is invisible: that drawing was the eraser.
+
+      - `correct`   - the yellow frame stays / the highlight never turns
+                      off AND the reason: nothing paints it in the
+                      background color (black) anymore ("black frame is
+                      invisible" counts).
+      - `partial`   - names the visible symptom (frame stays yellow)
+                      without the erasing reason, or explains the
+                      black-erases trick without the symptom.
+      - `incorrect` - anything else, e.g. no frame appears at all, or
+                      the program stops working.
+
+      Feedback: black on black is invisible — drawing the frame in black
+      is what erased it.
+
+  - id: empty-string-state
+    title: "The empty string's job"
+    question: |
+      The game starts with this declaration:
+
+      ```typescript
+      let selected: string = "";
+      ```
+
+      What does the empty string stand for in the game, and how does
+      `mouseMoved` use it to switch the hover effect off after the
+      player has chosen?
+    evaluation: |
+      Expected: `""` means "the player hasn't chosen yet". The whole body
+      of `mouseMoved` runs only inside `if (selected === "")`, so once a
+      click stores a symbol in `selected`, the hover code no longer runs.
+
+      - `correct`   - "" = no choice yet AND the guard: mouseMoved only
+                      acts while `selected` is still empty ("the if at
+                      the top stops it after a click" counts).
+      - `partial`   - only one of the two halves: the meaning of "" or
+                      the guard in `mouseMoved`.
+      - `incorrect` - anything else, e.g. "" is an error, or it means
+                      the number zero.
+
+      Feedback: two halves: what "" stands for, and the if condition
+      wrapped around the hover code.
+
+  - id: click-into-nothing
+    title: "A click into nothing"
+    question: |
+      In `mouseClicked`, after the three box tests, the rest of the round
+      runs only inside this check:
+
+      ```typescript
+      if (selected !== "") {
+      ```
+
+      What would happen without this check when the player clicks on the
+      empty canvas, next to the symbols?
+    evaluation: |
+      Expected: the round would run anyway: the computer would roll and
+      show its symbol and a result (in that case "Computer wins!") would
+      appear, even though the player never picked a symbol.
+
+      - `correct`   - the game continues although nothing was chosen:
+                      computer choice appears and/or a winner is
+                      announced (either consequence counts).
+      - `partial`   - says the click would wrongly count or something
+                      would go wrong, without describing what the player
+                      sees.
+      - `incorrect` - anything else, e.g. the program crashes, or
+                      nothing changes because the click missed.
+
+      Feedback: play the click through: `selected` stays empty, but which
+      lines after the box tests would still run?
+
+  - id: and-or-together
+    title: "Three sealed questions"
+    question: |
+      The winner check contains this condition:
+
+      ```typescript
+      (selected === "🪨" && computer === "✂️") ||
+      (selected === "📃" && computer === "🪨") ||
+      (selected === "✂️" && computer === "📃")
+      ```
+
+      The player picked paper 📃 and the computer rolled rock 🪨. Is the
+      whole condition true, and which part decides it?
+    evaluation: |
+      Expected: true. The second pair is true because both of its
+      comparisons hold (paper covers rock), and `||` needs only one true
+      pair.
+
+      - `correct`   - true AND points to the second / paper-and-rock pair
+                      (naming "paper beats rock" or "one true pair is
+                      enough for ||" counts).
+      - `partial`   - true without a reason, or a right explanation of
+                      how && and || work together but no verdict on this
+                      round.
+      - `incorrect` - anything else, e.g. false because the other two
+                      pairs are false.
+
+      Feedback: test each && pair with paper and rock, then remember that
+      || is satisfied by one true pair.
+
+  - id: one-line-tie
+    title: "The one-line tie"
+    question: |
+      A classmate detects a tie like this:
+
+      ```typescript
+      (selected === "🪨" && computer === "🪨") ||
+      (selected === "📃" && computer === "📃") ||
+      (selected === "✂️" && computer === "✂️")
+      ```
+
+      The chapter does the same job in one single comparison. Which one,
+      and why does it work for all three symbols?
+    evaluation: |
+      Expected: `selected === computer`. It compares the two variables
+      with each other instead of with a fixed symbol, so it is true
+      whenever both hold the same string, whichever symbol that is.
+
+      - `correct`   - gives `selected === computer` (either order) AND
+                      says it is true whenever both are equal / the same,
+                      no matter which symbol.
+      - `partial`   - names the comparison without the why, or describes
+                      "compare the player's choice directly with the
+                      computer's" without writing the code.
+      - `incorrect` - anything else, e.g. a version that still names the
+                      symbols, or claims === cannot compare two
+                      variables.
+
+      Feedback: compare the player's variable directly with the
+      computer's variable — no symbol needs to be named.
