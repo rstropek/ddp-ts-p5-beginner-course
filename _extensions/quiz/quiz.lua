@@ -65,6 +65,7 @@ local PRINT_LINK_HEADER = [[
 \ifdefined\ddplinkrow\else
   \usepackage{iftex}
   \usepackage{qrcode}   % draws QR codes in pure TeX — no external tool needed
+  \usepackage{needspace} % keeps a compact link card away from a page boundary
   \newsavebox{\ddpqrbox}
   \newlength{\ddpqrsize}\setlength{\ddpqrsize}{3cm}
   % A monospace face for printed addresses. Inconsolata's zero is slashed, so a
@@ -170,6 +171,21 @@ local function print_link_block(url, level)
   }))
 end
 
+-- Quarto renders callouts as breakable tcolorboxes in PDF output. A compact
+-- QR card that lands exactly at the bottom of a page can leave XeLaTeX's color
+-- state unbalanced after the page break, which makes later body text invisible.
+-- Reserve a little more room than the tallest link card needs so the complete
+-- card moves to the next page instead of touching or crossing the boundary.
+local function keep_print_card_together(callout)
+  if quarto.doc.is_format("pdf") then
+    return pandoc.Blocks({
+      pandoc.RawBlock("latex", "\\Needspace{5.5cm}"),
+      callout,
+    })
+  end
+  return callout
+end
+
 -- The label of a callout's call-to-action link. The ▶ character has no glyph in
 -- the PDF's text font and would silently vanish there, so the PDF gets LaTeX's
 -- own triangle instead.
@@ -259,11 +275,11 @@ local function quiz(args, kwargs, meta)
   local content = { cta }
   content[#content + 1] = print_link_block(url, "M")
 
-  return quarto.Callout({
+  return keep_print_card_together(quarto.Callout({
     type = "note",
     title = "Quiz: " .. title,
     content = content,
-  })
+  }))
 end
 
 return { ["quiz"] = quiz }

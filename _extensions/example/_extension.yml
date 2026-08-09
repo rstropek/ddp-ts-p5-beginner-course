@@ -9,6 +9,7 @@ contributes:
   shortcodes:
     - example.lua      # provides both `example` and `playground` shortcodes
 
-# PDF output needs the LaTeX packages `qrcode` (the printed QR code) and
-# `inconsolata` (the font the printed address is set in). TinyTeX installs both
+# PDF output needs the LaTeX packages `qrcode` (the printed QR code),
+# `inconsolata` (the font the printed address is set in), and `needspace`
+# (keeps the complete card away from a page boundary). TinyTeX installs them
 # on the first render; a full TeX Live already has them.
