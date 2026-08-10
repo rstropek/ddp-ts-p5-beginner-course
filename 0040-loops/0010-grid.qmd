@@ -115,9 +115,9 @@ than one grid step, the correct number of lines is none.
 variable; programmers have used it for generations, and everyone
 reads `i` as "the loop is counting here". For a loop variable with a
 clear meaning, a speaking name like `x` or `diameter` is just as
-good. What stays forbidden are meaningless names for everything else:
-the naming rules from the Variables part (@sec-const-naming) still
-apply.
+good. What stays forbidden are meaningless names like `temp`,
+`helper`, `thing`, or `stuff` for everything else: the naming rules
+from the Variables part (@sec-const-naming) still apply.
 :::
 
 ## Play computer: the loop table {#sec-loop-table}
