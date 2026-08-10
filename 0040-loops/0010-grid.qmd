@@ -182,7 +182,9 @@ happens, close the tab, open the playground again, and read your
 loop in four-step order: is the variable initialized? Can the
 condition ever become `false`? Does the update actually move the
 variable toward the end? And save before you run the repaired loop,
-in case the second try freezes too.
+in case the second try freezes too. Try to produce an endless loop
+on purpose in the playground and see what happens. It will prepare
+you for a mistake that you will make sooner or later.
 :::
 
 ## Two loops, one variable {#sec-second-loop}
@@ -207,6 +209,13 @@ while (i < SIZE) {
 `let i` happens once; after that, the variable belongs to the whole
 function and every loop in it may use it. Resetting the loop variable
 before the loop is just step 1 in different clothes.
+
+Reusing `i` works here because the two loops run one after the
+other. When a program really needs two counter variables at the same
+time, programmers traditionally call the second one `j`, simply the
+next letter of the alphabet. Everyone reads `i` and `j` as a pair of
+counters, just like everyone reads `i` alone as "the loop is
+counting here".
 
 ## Your exercise: Grid {#sec-grid-exercise}
 
