@@ -24,6 +24,24 @@ and what you got.
 
 {{< tutor tutor-loops >}}
 
+One danger is worth knowing before you write your very first loop. A
+loop repeats until its condition says stop, and it is surprisingly
+easy to write a loop whose condition never says stop. Such a loop is
+called an **endless loop** (programmers also say *infinite loop*),
+and everyone who learns loops produces one sooner or later. The
+playground cannot rescue you from it: the browser tab freezes, the
+buttons stop reacting, and the only way out is to close the tab and
+open the playground again. Everything you typed since your last save
+is gone at that moment.
+
+::: {.callout-important}
+## Save before you run a loop
+The playground can save your work locally in the browser or in
+GitHub. Save often, and always save right before you run code with a
+loop you are not completely sure about. Saving takes a second; typing
+a lost program in again takes a lot longer.
+:::
+
 ## Thirty statements, one idea {#sec-why-loops}
 
 Here is the honest, loop-free way to draw the vertical lines of the
@@ -151,18 +169,20 @@ while (i < SIZE) {
 
 Play computer: `i` is 25, the check says `true`, a line is drawn, and
 `i` is... still 25. Check `true`, line, still 25. The condition can
-never become `false`, so the loop never ends. Programmers call this
-an **infinite loop**, and it is the classic loop mistake.
+never become `false`, so the loop never ends. This is the endless
+loop from the start of the chapter (@sec-tutor-grid), and now you can
+see exactly how one happens: the classic cause is a forgotten update.
 
 ::: {.callout-warning}
 ## The frozen tab
-An infinite loop shows no error message and no red squiggle: the code
+An endless loop shows no error message and no red squiggle: the code
 is legal, it just never finishes. The browser tab simply freezes,
 the drawing stays blank, and clicking does nothing. When that
 happens, close the tab, open the playground again, and read your
 loop in four-step order: is the variable initialized? Can the
 condition ever become `false`? Does the update actually move the
-variable toward the end?
+variable toward the end? And save before you run the repaired loop,
+in case the second try freezes too.
 :::
 
 ## Two loops, one variable {#sec-second-loop}
