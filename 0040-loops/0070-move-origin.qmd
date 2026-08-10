@@ -5,15 +5,15 @@ title: "Moving the origin: translate, push, and pop"
 ![A diagonal of yellow circles from the top left to the bottom right corner. Every circle is drawn with the same command, circle(0, 0, 50); only the origin moves between them.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/move-origin.png){width=400}
 
 Way back in the practice projects of part 1, the soccer field came
-with a recipe: a few lines with `push`, `translate`, and `scale`
+with a recipe, a few lines with `push`, `translate`, and `scale`
 that you copied without questions, magic words with a promise that
 the details would come later. Later is now. In this chapter the
-magic words become tools you understand: `translate` moves the
+magic words become tools you understand. `translate` moves the
 origin of the coordinate system, and `push` and `pop` save and
-restore it. Combined with loops, they unlock a new way of drawing:
+restore it. Combined with loops, they open a new way of drawing:
 instead of computing every position, you draw in one place and move
-the paper under the pen. Both exercises are discovery scripts: you
-uncomment code line by line, predict, and watch.
+the paper under the pen. Both exercises are discovery scripts, in
+which you uncomment code line by line, predict, and watch.
 
 ## AI tutor {#sec-tutor-move-origin}
 
@@ -42,10 +42,10 @@ and appears at the center of what used to be (100, 100). The command
 did not move the circle; it moved the ruler the circle is measured
 with.
 
-![translate moves the origin: after translate(100, 100), the point (0, 0) sits 100 pixels right and down from the corner, and circle(0, 0, 50) draws there.](images/translate-origin.svg){width=340}
+![translate moves the origin: after translate(100, 100), the point (0, 0) sits 100 pixels right and down from the corner, and circle(0, 0, 50) is centered exactly on that new origin.](images/translate-origin.svg){width=340}
 
-Three facts complete the picture, and the discovery script shows
-you each one:
+Three facts complete the picture, and the first exercise will let
+you discover each one:
 
 - **translate is relative.** A second `translate(100, 100)` moves
   the origin another 100 right and down, measured from where it
@@ -58,10 +58,12 @@ you each one:
 
 ## Drawing without coordinates {#sec-cumulative}
 
-Now combine `translate` with a loop. Task 2 of the exercise draws
-the diagonal of circles from the goal picture, and the rule of the
-game is: every circle is drawn with `circle(0, 0, CIRCLE_DIAMETER)`,
-no other coordinates allowed.
+Now combine `translate` with a loop. The goal picture at the top of
+the chapter shows a diagonal of circles, and the rule of the game
+is that every circle is drawn with the very same command,
+`circle(0, 0, CIRCLE_DIAMETER)`, no other coordinates allowed.
+`SIZE` is the canvas size and `CIRCLE_DIAMETER` the diameter of one
+circle, both constants:
 
 ```typescript
 circle(0, 0, CIRCLE_DIAMETER);
@@ -87,9 +89,9 @@ you'll see why.
 
 ## A note before you wander: push and pop {#sec-push-pop}
 
-Translating is a one-way street: after five translates, how do you
+Translating is a one-way street. After five translates, how do you
 get back? `resetMatrix` goes all the way back to the corner, but
-usually you want something gentler: "remember this spot, let me
+usually you want something gentler, a "remember this spot, let me
 wander, then bring me back". That is exactly what `push` and `pop`
 do:
 
@@ -98,7 +100,7 @@ do:
   friends).
 - `pop()` takes the most recent note and restores everything on it.
 
-The discovery script walks this timeline; here it is as a table:
+One concrete timeline shows the note-taking at work:
 
 | statement | origin afterwards |
 |--------------------|-------------------|
@@ -109,7 +111,7 @@ The discovery script walks this timeline; here it is as a table:
 | `pop();` | (100, 100) again, restored from the note |
 | `translate(0, 100);` | (100, 200) |
 
-: The push and pop timeline of the discovery script. {#tbl-push-pop}
+: A push and pop timeline, with the origin after every statement. {#tbl-push-pop}
 
 The wandering between `push` and `pop` leaves no trace: after the
 `pop`, the program continues as if the detour never happened. And
@@ -138,14 +140,13 @@ the `push`, then fill the middle.
    uncomment, run, and compare. Work through all the blocks,
    including the negative translate and the `resetMatrix` at the
    end.
-2. **Task 2: paper first.** Sketch the diagonal: circles of
-   diameter 50, the first centered at the corner (0, 0), each
-   next one 50 right and 50 down.
-3. **Write the loop.** One circle at (0, 0) before the loop, then a
-   for loop whose body is exactly two statements: the translate and
-   the circle, as in the section above (@sec-cumulative). No
-   computed coordinates allowed.
-4. **Experiment.** Change the translate to `(CIRCLE_DIAMETER, 0)`
+2. **Task 2: write the loop.** The goal is a diagonal of circles:
+   diameter 50, the first centered at the corner (0, 0), each next
+   one 50 right and 50 down. One circle at (0, 0) before the loop,
+   then a for loop whose body is exactly two statements: the
+   translate and the circle, as in the section above
+   (@sec-cumulative). No computed coordinates allowed.
+3. **Experiment.** Change the translate to `(CIRCLE_DIAMETER, 0)`
    for a horizontal chain, then try a negative y for an upward
    staircase from the bottom (you'll need a translate before the
    loop to start at the bottom left).

@@ -4,9 +4,9 @@ title: "The while loop: teaching the computer to repeat"
 
 ![A gray grid on a black canvas: 15 vertical and 15 horizontal lines. Each set of lines comes out of a loop that is only four lines of code long.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/grid.png){width=400}
 
-Look at the drawing above and count what it takes: 15 vertical lines
-and 15 horizontal lines, 30 `line` statements that differ in exactly
-one number. You could type them all. You typed six `circle` calls for
+Look at the drawing above and count what it takes. It needs 15
+vertical and 15 horizontal lines, 30 `line` statements that differ
+in exactly one number. You could type them all. You typed six `circle` calls for
 the dice faces, and it already felt like work. This part of the book
 gives you the tool that makes such typing unnecessary: the **loop**, a
 way to tell the computer "do this again, with the next number, until I
@@ -18,9 +18,9 @@ fingers paying for it.
 ## AI tutor {#sec-tutor-grid}
 
 Loops are new territory, and the first loop that runs away or draws
-nothing can be confusing. The tutor of this part knows the while loop
-and its four steps. Show it your loop and tell it what you expected
-and what you got.
+nothing can be confusing. The tutor of this part knows everything
+about the while loop. Show it your loop and tell it what you
+expected and what you got.
 
 {{< tutor tutor-loops >}}
 
@@ -56,9 +56,9 @@ line(75, 0, 75, 400);
 
 Every statement is the same except for one number, and that number
 grows by 25 each time. Reading it out loud sounds like a robot:
-"line at 25, line at 50, line at 75". And the worst part comes later:
-if you want a finer grid with a line every 20 pixels, you have to
-rewrite every single statement.
+"line at 25, line at 50, line at 75". And the worst part comes
+later. If you want a finer grid with a line every 20 pixels, you
+have to rewrite every single statement.
 
 What you'd rather tell the computer is the *idea* behind the column:
 "start at 25; as long as you haven't reached the right edge, draw a
@@ -103,7 +103,7 @@ skips past the closing brace and the program continues.
 
 ![The while loop as a cycle: initialize once, then check the condition, do the work, and update, around and around until the check says false.](images/while-four-steps.svg){width=420}
 
-One detail of the picture deserves a second look: the check comes
+One detail of the picture deserves a second look. The check comes
 *before* the work, every time. When the condition is `false` at the
 very first check, the body never runs at all. A while loop can run
 zero times, and sometimes that is exactly right: on a canvas smaller
@@ -116,8 +116,9 @@ variable; programmers have used it for generations, and everyone
 reads `i` as "the loop is counting here". For a loop variable with a
 clear meaning, a speaking name like `x` or `diameter` is just as
 good. What stays forbidden are meaningless names like `temp`,
-`helper`, `thing`, or `stuff` for everything else: the naming rules
-from the Variables part (@sec-const-naming) still apply.
+`helper`, `thing`, or `stuff` for everything else, because the
+naming rules from the Variables part (@sec-const-naming) still
+apply.
 :::
 
 ## Play computer: the loop table {#sec-loop-table}
@@ -152,7 +153,10 @@ Before you run a loop you just wrote, trace it in a loop table with
 small numbers, like the table above. The table costs two minutes and
 shows you the first value, the last value, and the number of rounds.
 Most loop bugs, wrong start, wrong condition, forgotten update, are
-visible on paper before the browser ever sees the code.
+visible on paper before the browser ever sees the code. The
+following chapters won't repeat this instruction every time; the
+technique is yours now, and it helps with every loop in this part
+and beyond.
 :::
 
 ## The loop that never stops {#sec-infinite-loop}
@@ -170,8 +174,9 @@ while (i < SIZE) {
 Play computer: `i` is 25, the check says `true`, a line is drawn, and
 `i` is... still 25. Check `true`, line, still 25. The condition can
 never become `false`, so the loop never ends. This is the endless
-loop from the start of the chapter (@sec-tutor-grid), and now you can
-see exactly how one happens: the classic cause is a forgotten update.
+loop from the start of the chapter (@sec-tutor-grid), and now you
+can see exactly how one happens. The classic cause is a forgotten
+update.
 
 ::: {.callout-warning}
 ## The frozen tab
@@ -190,8 +195,8 @@ you for a mistake that you will make sooner or later.
 ## Two loops, one variable {#sec-second-loop}
 
 The grid needs a second set of lines, and the horizontal loop is the
-mirror image of the vertical one. Only the `line` arguments change:
-a horizontal line at height `i` runs from the left edge to the right
+mirror image of the vertical one. Only the `line` arguments change.
+A horizontal line at height `i` runs from the left edge to the right
 edge, so start and end swap their roles: `line(0, i, SIZE, i)`.
 
 The second loop can reuse the variable of the first one. But careful:
@@ -223,16 +228,13 @@ Now build the grid yourself. The starter code contains the finished
 vertical-line loop, with the four steps marked as comments. Your job
 is the horizontal lines.
 
-1. **Paper first.** Sketch the canvas on graph paper: 400 by 400,
-   one line every 25 pixels. Mark where the first vertical line sits
-   and count how many lines fit. You should arrive at 15.
-2. **Read the starter code.** Find the four steps of the vertical
+1. **Read the starter code.** Find the four steps of the vertical
    loop and match them to the comments. Say the loop out loud:
    "start at 25, while the edge isn't reached, draw and move on."
-3. **Write the horizontal loop.** Reset `i` with an assignment, keep
+2. **Write the horizontal loop.** Reset `i` with an assignment, keep
    the condition and the update, and swap the `line` arguments as
    shown above (@sec-second-loop). Run after every few keystrokes.
-4. **Change the constants.** Set `GRID` to 50, then to 20, then put
+3. **Change the constants.** Set `GRID` to 50, then to 20, then put
    `SIZE` to 300. The grid must adapt by itself every time; that is
    the point of writing loops with constants instead of 30 statements
    with numbers in them.
@@ -243,8 +245,8 @@ is the horizontal lines.
 
 ![The grid again, now with a yellow staircase growing from the left and a red staircase shrinking toward the right. The two staircases meet on the diagonal.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/step-lines.png){width=400}
 
-The second exercise starts where the grid ends: both grid loops are
-already in the starter code. On top of the grid you draw colored
+The second exercise starts where the grid ends, with both grid
+loops already in the starter code. On top of the grid you draw colored
 lines, one per row, and their lengths change from row to row. That is
 the new idea of this exercise: the loop variable can do more than one
 job. `i` is the height of the row, and at the same time it decides
@@ -257,10 +259,10 @@ the red line continues from `x = i` to `x = SIZE - GRID`.
 
 1. **Read the given code.** The two grid loops are your own solution.
    Below them, the starter sets `strokeWeight(2)` and
-   `stroke("yellow")` once, before your loop: settings placed before
+   `stroke("yellow")` once, before your loop. Settings placed before
    a loop apply to every round, so all yellow lines get the same look
    without repeating the command inside the body.
-2. **Paper first.** Make a loop table for the yellow loop with
+2. **Make a loop table** for the yellow loop with
    `SIZE = 100` and `GRID = 25`, with one extra column: where does
    the yellow line start, where does it end? The first row's line is
    tiny (from 25 to 25), and that is fine.

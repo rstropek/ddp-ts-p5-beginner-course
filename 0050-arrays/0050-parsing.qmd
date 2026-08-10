@@ -6,8 +6,8 @@ title: "Parsing: numbers hidden in a string"
 
 The string `"50,50 50,100 100,50 100,100"` describes four circles,
 and any person can read it. A program can too, but it has to work
-for it: a string is just a row of characters, and `"5"` next to
-`"0"` is not yet the number 50. Extracting information out of a
+for it, because a string is just a row of characters, and `"5"`
+next to `"0"` is not yet the number 50. Extracting information out of a
 string is called **parsing**, and it is everyday programmer work:
 files, web addresses, and chat messages all arrive as strings. In
 this chapter you write your first parser, with the tools you
@@ -47,15 +47,17 @@ Now to the parser. The plan sounds like something a person would
 do: walk through the string character by character, and sort every
 character into one of three cases.
 
-- A **digit** belongs to the number currently being spelled out:
+- A **digit** belongs to the number currently being spelled out;
   remember it.
-- A **comma** says: the x coordinate is complete.
-- A **space** says: the y coordinate is complete, and with x and y
-  known, a circle can be drawn.
+- A **comma** says that the x coordinate is complete.
+- A **space** says that the y coordinate is complete, and with x
+  and y known, a circle can be drawn.
 
 "Remember it" is a job for an accumulator string, called a
 **buffer**: it collects digits until a separator arrives, then it
-is converted and emptied for the next number.
+is converted and emptied for the next number. The input string
+itself waits in a constant named `circles`, holding exactly the
+goal picture's `"50,50 50,100 100,50 100,100"`.
 
 ```typescript
 let x = 0;
@@ -83,7 +85,7 @@ for (let ix = 0; ix < circles.length; ix++) {
 The loop is the letter loop from the criss-cross chapter; new is
 what the body does with each character. The `switch` compares the
 character against `","` and `" "`, and its `default` branch
-catches everything else, which here means: the digits. Trace the
+catches everything else, which here means the digits. Trace the
 start of `"50,50 ..."` by hand: `"5"` and `"0"` fall into
 `default`, so the buffer grows to `"50"`. The comma converts it
 into `x = 50` and empties the buffer. Two more digits, then the
@@ -91,8 +93,8 @@ space completes `y = 50`, and the first circle appears.
 
 ## The leftover after the loop {#sec-flush}
 
-Run the loop on the full string and count the circles: three, not
-four. The last pair `"100,100"` has no space after it; the string
+Play computer with the loop on the full string and count the
+circles it draws: three, not four. The last pair `"100,100"` has no space after it; the string
 simply ends. The comma still sets `x = 100`, the digits of the y
 coordinate fill the buffer, and then the loop is over. Nothing ever
 told the program "the last number is complete".
@@ -122,8 +124,8 @@ loop ends.
    them, `parseInt`, and draw one circle. This warms up the
    indexing.
 3. **The loop.** Replace the hand extraction with the collecting
-   loop and the after-loop flush. Run: four circles, like the goal
-   picture.
+   loop and the after-loop flush. Run it; four circles should
+   appear, like the goal picture.
 4. **Stress test.** Change the string: five circles, coordinates
    with one and with three digits. Your parser must not care,
    because the buffer collects any number of digits.
@@ -141,7 +143,9 @@ The second exercise feeds your parser a new string, seven points
 that outline a hexagon, and changes the job: don't draw a circle
 per point, connect the points with lines. A line needs *two*
 points, the current one and the one before it, so the parser must
-remember the previous point across rounds:
+remember the previous point across rounds. The following snippet
+does that, and it contains one operator you have not met yet, the
+`!`; its explanation comes right below the code:
 
 ```typescript
 if (!isFirstPoint) {
@@ -157,7 +161,7 @@ This replaces the `circle` call in the space case: (x2, y2) is the
 point just parsed, (x1, y1) the one from the previous round, and
 after drawing, the current point slides into the "previous" role.
 
-The very first point is special: it has no predecessor, so there is
+The very first point is special; it has no predecessor, so there is
 nothing to connect it to yet. A boolean variable `isFirstPoint`,
 starting as `true`, guards the `line` call, and here you meet one
 last new operator: `!`, spoken "not", flips a boolean around.
@@ -166,11 +170,11 @@ drawn for every point except the first. Until now the course wrote
 comparisons like `isFirstPoint === false`; from this chapter on,
 the short `!` form is allowed and preferred.
 
-One more choice is worth noticing: this solution uses
-`if / else if / else` instead of `switch`. Both fit; comparing a
-character against a few fixed values is exactly what both were made
-for. Pick the one you find easier to read, but be able to read
-both.
+One more choice is worth noticing when you later read the sample
+solution: it sorts the characters with `if / else if / else`
+instead of `switch`. Both fit; comparing a character against a few
+fixed values is exactly what both were made for. Pick the one you
+find easier to read, but be able to read both.
 
 ## Your exercise, part 2: Parse Coordinates 2 {#sec-parse-lines-exercise}
 
@@ -185,7 +189,7 @@ both.
    x1, y1, x2, y2 hold afterwards, and what happens after the loop?
 3. **Convert your parser.** Start from your circle parser: the
    comma case now fills `x2`, the space case draws the guarded
-   line and shuffles current into previous. Don't forget the flush:
+   line and shuffles current into previous. Don't forget the flush;
    the last line is drawn after the loop.
 4. **Your own shape.** Write a point string for a triangle or a
    star, first on graph paper, then in the constant. The parser

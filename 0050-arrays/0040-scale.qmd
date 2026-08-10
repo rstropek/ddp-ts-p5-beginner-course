@@ -5,13 +5,14 @@ title: "Scale: bigger and smaller"
 ![Three circles drawn by the exact same call, circle(50, 50, 50): blue at scale 1, red at scale 2, green at scale 4. Scaling grows the circles, and it moves them too.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/scaled-circles-output.png){width=400}
 
 This short chapter takes a break from strings and arrays, on
-purpose: the exercises after it need one more drawing tool. Back in
-the practice projects of part 1, the soccer field recipe contained
-three magic words: `push`, `translate`, and `scale`. The Loops part
-explained the first two. `scale` is the last one, and after this
-chapter the recipe holds no secrets: `scale` makes everything you
-draw bigger or smaller by a factor, and, as the goal picture shows,
-it does something to positions that surprises almost everyone.
+purpose, because the exercises after it need one more drawing tool.
+Back in the practice projects of part 1, the soccer field recipe
+contained three magic words: `push`, `translate`, and `scale`. The
+Loops part explained the first two. `scale` is the last one, and
+after this chapter the recipe holds no secrets. `scale` makes
+everything you draw bigger or smaller by a factor, and, as the goal
+picture shows, it does something to positions that surprises almost
+everyone.
 
 ## AI tutor {#sec-tutor-scale}
 
@@ -42,11 +43,12 @@ twice as far from the origin.
 ![Scaling multiplies coordinates: the point (50, 50) lands where (100, 100) used to be, twice as far from the origin. Only the origin itself stays put.](images/scale-fixed-point.svg){width=420}
 
 Even the stroke is multiplied: a `strokeWeight(3)` line drawn under
-`scale(2)` comes out 6 pixels wide. The sample code compensates by
-setting `strokeWeight(3 / 2)` after `scale(2)`: one and a half
-pixels, doubled by the scaling, gives the 3 pixels the eye expects.
-Factors below 1 work as well: `scale(0.5)` shrinks everything to
-half size, and decimals like `scale(2.5)` are fine.
+`scale(2)` comes out 6 pixels wide. The cure is compensation. Set
+`strokeWeight(3 / 2)` instead, and the scaling doubles the one and
+a half pixels back to the 3 the eye expects; the exercise code
+below plays this trick for every scaled circle. Factors below 1
+work as well; `scale(0.5)` shrinks everything to half size, and
+decimals like `scale(2.5)` are fine.
 
 ## Your exercise: Scaled Circles {#sec-scaled-circles-exercise}
 
@@ -115,7 +117,7 @@ A circle whose center is (0, 0) sits on the fixed point: `scale`
 multiplies its diameter, but its center, 0 away from the origin in
 both directions, stays put. Translate once, draw everything at the
 origin, and scaling changes only the size. That is precisely how
-the part 1 soccer field recipe worked: `translate` placed the
+the part 1 soccer field recipe worked; `translate` placed the
 field, and `scale` blew up meters into pixels around it.
 
 ## Your exercise, part 2: Scaled Circles (Centered) {#sec-scaled-centered-exercise}
@@ -126,10 +128,11 @@ green.
 
 ![The centered version: the same three scaled circles, now sharing one center, drawn at the origin after a single translate.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/scaled-circles-centered.png){width=400}
 
-1. **Paper first.** The biggest circle has diameter 50 times 4,
-   which is 200 pixels. Mark a center on your sketch of the 400 by
-   400 canvas so the whole ring fits; the sample uses (150, 150),
-   but any spot at least 100 pixels from every edge works.
+1. **Pick the center.** The biggest circle has diameter 50 times 4,
+   which is 200 pixels, so the shared center must stay at least 100
+   pixels away from every edge of the 400 by 400 canvas. The goal
+   picture uses (150, 150), but any spot with that safety margin
+   works.
 2. **One translate for all.** Move the origin to your center once,
    at the top, before the blue circle. This translate stays outside
    every `push`/`pop` pair on purpose: all three circles should

@@ -5,9 +5,9 @@ title: "Silos: the array runs the show"
 ![The silo dashboard: six silos show their fill levels as bars, green when fine, red when critical, with an add and a remove button above each. Everything on this canvas, even the number of silos, comes out of one array.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/silos.png){width=440}
 
 The last chapter of this part is a real little application. A
-factory wants a dashboard for its silos: show every fill level,
-warn in red when one runs critical, and let the operator add or
-remove material with buttons. Every idea of the part reports for
+factory wants a dashboard for its silos. It should show every fill
+level, warn in red when one runs critical, and let the operator add
+or remove material with buttons. Every idea of the part reports for
 duty: the fill levels arrive as a string and are parsed into an
 array, the array decides how many silos exist, the mouse *changes*
 the array, and the canvas repaints whatever the array says, frame
@@ -17,7 +17,7 @@ interactive data application.
 ## AI tutor {#sec-tutor-silos}
 
 This is the largest program of the course so far, and large
-programs fail in small places: one wrong constant in a hit test,
+programs fail in small places: one wrong constant in a comparison,
 one forgotten flush in the parser. Build it task by task, and when
 something misbehaves, tell the tutor which task you are on and what
 the canvas shows.
@@ -28,7 +28,7 @@ the canvas shows.
 
 The fill levels arrive as configuration text:
 `const INITIAL_FILL = "3,7,8,3,10,2";`. You wrote a parser like
-this in the parsing chapter, with one difference: back then, every
+this in the parsing chapter, with one difference; back then, every
 parsed value was drawn immediately and thrown away. Now the values
 must be *kept*, and where do parsed values live? In an array:
 
@@ -47,9 +47,9 @@ for (let i = 0; i < INITIAL_FILL.length; i++) {
 silos.push(num);   // the flush: the last value has no comma
 ```
 
-The digits grow the number differently this time: no buffer
+The digits grow the number differently this time, with no buffer
 string, but arithmetic. `num * 10 + digit` shifts the number one
-decimal place left and drops the new digit in. For `"10"`: first
+decimal place left and drops the new digit in. For `"10"`, first
 `0 * 10 + 1 = 1`, then `1 * 10 + 0 = 10`. Recognize it? It is
 digit extraction from the number systems chapter, run backwards:
 `% 10` and `floor` took numbers apart, `* 10 +` puts them back
@@ -59,7 +59,8 @@ parsing chapter, in push form.
 ## The array runs the program {#sec-array-state}
 
 After setup, `silos` is `[3, 7, 8, 3, 10, 2]`, and from that
-moment the array is in charge of everything:
+moment the array is in charge of everything in the program you are
+about to build:
 
 - **How many silos?** `silos.length`. Every loop in the program
   runs to that bound, so adding one number to `INITIAL_FILL`
@@ -75,7 +76,7 @@ moment the array is in charge of everything:
 
 The drawing itself follows the bubbles mantra: `draw` wipes the
 canvas and repaints every silo from the array, sixty times a
-second. Nobody redraws "the changed silo": the click changes the
+second. Nobody redraws "the changed silo"; the click changes the
 *data*, and the next frame shows the new truth automatically.
 This split, events write the state and draw paints the state, is
 how real user interfaces work, from this dashboard up to the apps
@@ -104,12 +105,12 @@ for (let i = 0; i < silos.length; i++) {
 }
 ```
 
-The formula is the grid formula from the Loops part: index times
+The formula is the grid formula from the Loops part, index times
 (width plus gap), plus the leading gap. Arrays like these, computed
 from other data instead of written by hand, are called derived:
 `silos` is the real data, `silosX`, `upX`, and `downX` are its
 shadow. Computing them once in setup instead of every frame keeps
-`draw` simple: wherever a silo or button is drawn or clicked, the
+`draw` simple; wherever a silo or button is drawn or clicked, the
 position is a lookup, not a calculation. The add button sits at the
 silo's left edge, so `upX` stores the same values as `silosX`; the
 remove button leans on the right edge.
@@ -136,24 +137,25 @@ The first four conditions box the mouse in: right of the left
 edge, left of the right edge, below the top, above the bottom. All
 four true means the mouse is inside the button of silo `i`. This
 **hit test** is the standard recipe for every rectangular button
-you will ever build. The fifth condition is the guard rail: a full
+you will ever build. The fifth condition is the guard rail; a full
 silo ignores its add button, so the level never leaves 0 to
 `SILO_MAX`.
 
 The same test runs in two places: in `mouseClicked`, inside a loop
 over all silos, to change the array, and in `draw`, to paint the
 hover highlight (the triangle turns red while the mouse sits over
-its button). And one last new tool: after a hit, `return;` ends
-`mouseClicked` on the spot. One click means one button; once it is
-found and handled, there is nothing left to check, and the bare
-`return` says exactly that.
+its button). The last new tool of the part is the bare `return;`,
+which ends `mouseClicked` on the spot after a hit. One click means
+one button; once it is found and handled, there is nothing left to
+check, and the `return` says exactly that.
 
 ::: {.callout-note}
 ## The mouse ignores translate
-`draw` translates to each silo before drawing it, but `mouseX` and
-`mouseY` always measure from the canvas corner, untouched by any
-translate. That is why the hit tests compare against the stored
-canvas positions `upX[i]` and `BUTTON_TOP`, not against (0, 0).
+If your `draw` translates to each silo before drawing it, remember
+that `mouseX` and `mouseY` always measure from the canvas corner,
+untouched by any translate. Hit tests must therefore compare
+against the stored canvas positions `upX[i]` and `BUTTON_TOP`, not
+against (0, 0).
 Mixing the two coordinate worlds is the classic hit-test bug:
 translate moves the pen, never the mouse.
 :::
@@ -167,16 +169,17 @@ order, and run after every one.
    in setup (@sec-parse-into-array), and show each value with
    `text` in `draw`, spaced with the grid formula. Numbers on the
    canvas prove the parser works before any drawing begins.
-2. **Task 2: the silos.** Paper first: sketch one silo with the
-   constants labeled: `SILOS_TOP`, `SILO_WIDTH`, `SILO_HEIGHT`,
-   and the bar growing from the bottom. Then draw the outline (two
+2. **Task 2: the silos.** Sketch one silo first, with the
+   constants labeled (`SILOS_TOP`, `SILO_WIDTH`, `SILO_HEIGHT`)
+   and the bar growing from the bottom; a labeled sketch turns the
+   drawing code into simple reading. Then draw the outline (two
    sides and the floor), the fill bar with its height computed
    from `silos[i]`, the red-or-green color, and the centered
    number below.
 3. **Task 3: the buttons.** Two yellow squares above each silo,
    with black triangles: pointing down into the silo on add,
    pointing up and away on remove. Push and pop around each
-   button, like every block in this program.
+   button, as around every other drawing block.
 4. **Task 4: the clicks.** The hit-test loops in `mouseClicked`
    (@sec-hit-testing), with the guard rails for 0 and `SILO_MAX`
    and the `return` after a hit. Click yourself through all silos:

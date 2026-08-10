@@ -2,9 +2,9 @@
 title: "Your first array"
 ---
 
-![An array of strings: one variable that holds a whole row of values. Every element has an index, and the counting starts at 0, exactly like in a string.](images/array-of-strings.svg){width=420}
+![An array of strings: one variable that holds a whole row of values. Every value in the row has an index, and the counting starts at 0, exactly like in a string.](images/array-of-strings.svg){width=420}
 
-Word Swirrel can still only play one word: whoever read the code
+Word Swirrel can still only play one word; whoever read the code
 knows the answer forever. Level 3 fixes that with the idea this
 whole part is named after. An **array** is a variable that holds a
 whole list of values: twenty words, and the program picks one at
@@ -34,17 +34,17 @@ const WORDS: string[] = [
 ];
 ```
 
-Read it in three parts. The type annotation `string[]` says: this
-variable holds an *array of strings*, a row of values where each
-one is a string. The square brackets on the right are the **array
-literal**: the elements, separated by commas, between `[` and `]`.
-Writing each element on its own line is not required, but for long
-lists it keeps the code readable, and you may leave a comma after
-the last element too. The name is in ALL_CAPS because the word list
-is configuration, like `SIZE` and `GRID` were: the naming rules
-don't change.
+Read it in three parts. The type annotation `string[]` says that
+this variable holds an *array of strings*, a row of values where
+each one is a string. The square brackets on the right are the
+**array literal**: the elements, separated by commas, between `[`
+and `]`. Writing each element on its own line is not required, but
+for long lists it keeps the code readable, and you may leave a
+comma after the last element too. The name is in ALL_CAPS because
+the word list is configuration, like `SIZE` and `GRID` were, so the
+naming rules don't change.
 
-The picture at the top of the chapter shows how to think about it:
+The picture at the top of the chapter shows how to think about it,
 a row of boxes, each box numbered, counting from 0. That should
 feel familiar, because a string is exactly the same picture with
 characters in the boxes. The last chapter's sentence "a string is a
@@ -88,8 +88,9 @@ function setup() {
 You have seen this shape once before, with `let message: string;`
 in the Conditions part: declare with a type, assign before you
 read. A `const` cannot do this split, because a `const` must get
-its value at the declaration; that is why the level 3 starter
-changed the keyword to `let`.
+its value at the declaration. Level 3 therefore switches the
+keyword to `let`, and you will find that change already made when
+you open the exercise.
 
 ::: {.callout-warning}
 ## The trap: declaring it inside setup
@@ -120,10 +121,10 @@ level 3:
 3. **Run it a few times.** A different word should scatter on every
    start. Guess a few yourself; with 20 words, even you won't
    always know the answer.
-4. **Experiment.** Add your own words, short and long: the letter
+4. **Experiment.** Add your own words, short and long; the letter
    loop follows `wordToGuess.length`, so nothing else needs to
-   change. Then shrink `WORDS` to a single word and run twice: with
-   one element, `random` has no choice.
+   change. Then shrink `WORDS` to a single word and run twice,
+   because with one element, `random` has no choice.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/word-swirrel-2.yaml title="Word Swirrel (Level 3)" >}}
 

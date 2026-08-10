@@ -1,0 +1,159 @@
+---
+title: "Reading MDN: a string method of your own"
+---
+
+At the end of part 1 you learned a p5.js command that nobody taught
+you, straight from the official p5.js reference. That reference has a
+border, and in this part you crossed it without noticing. Commands
+like `circle` and `translate` come from p5.js, so the p5.js reference
+describes them. But `word.length`, `word[i]`, and `substring` are not
+p5.js at all; they belong to JavaScript, the language itself, and the
+language has its own documentation. It is called **MDN**, and reading
+it is the skill this chapter trains. You will get to know the site,
+and then repeat the research exercise you already know: pick one
+string method nobody taught you, learn it from its documentation
+page, build an example, and describe it in your own words.
+
+## AI tutor {#sec-tutor-reading-mdn}
+
+Like in the research exercise of part 1, two AIs play different
+roles here. The AI tutor of this part answers questions about the
+course material, as in every chapter. The exercise itself sends you
+to a general AI on the internet on purpose, because handling
+material nobody prepared for you is what the exercise trains.
+
+{{< tutor tutor-arrays >}}
+
+## MDN, the documentation of the web {#sec-mdn}
+
+[MDN Web Docs](https://developer.mozilla.org/), short for Mozilla
+Developer Network, is the standard reference for the languages of
+the web: JavaScript, HTML, and CSS. It is run by Mozilla, the makers
+of the Firefox browser, and practically every professional web
+developer has it open in a tab. When they wonder what a method does,
+they search for "mdn" plus its name, land on the matching page, and
+read.
+
+Your entry point is the
+[String reference page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String).
+The sidebar on the left lists everything a string can do, with all
+the string methods collected under *Instance methods*; three of
+them, `length`, `substring`, and the square-bracket access, are old
+friends by now. And in the upper right corner of every MDN page sits
+a search box. Type a method name like "repeat" into it and you jump
+straight to its page, no matter where on the site you are.
+
+There is a trick for getting to know an unfamiliar documentation
+site: first look up something you already understand, and check the
+page against your own knowledge. So before you research anything
+new, open the page for
+[substring](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/substring)
+and walk through it with the next section as your guide.
+
+## The anatomy of an MDN page {#sec-mdn-anatomy}
+
+Every method page on MDN follows the same pattern, so once you can
+read the `substring` page, you can read them all:
+
+- **Try it** sits right at the top: a small editor with a working
+  example and its output below. You can change the code and run it
+  again, directly on the page, which makes it perfect for quick
+  experiments. The examples print their results with
+  `console.log(...)`, a command that writes a line of text into the
+  output area under the code.
+- **Syntax** shows each allowed way to call the method on its own
+  line. For `substring` you see both `substring(indexStart)` and
+  `substring(indexStart, indexEnd)`, which is MDN's way of saying
+  that the end index is optional. Below that, **Parameters**
+  explains every name from the syntax line (optional ones are
+  marked *Optional*), and **Return value** says what the method
+  hands back.
+- **Description** holds the fine print, the details that the short
+  syntax cannot express. For `substring`, this is where MDN tells
+  you what happens when the start index is larger than the end
+  index. Do you know the answer? If not, look it up right now; the
+  chapter about Word Swirrel skipped that detail.
+- **Examples** collects longer, copyable examples with
+  explanations.
+
+Further down follow sections like *Specifications* and *Browser
+compatibility*. They matter to professionals who must support old
+browsers; you can skip them.
+
+Now do the check. The return value of `substring` is described as a
+new string containing the specified part of the given string. That
+matches what you learned: `substring` copies, it never changes the
+string it is called on. When a documentation page confirms what you
+already know, you are reading it correctly.
+
+## MDN examples are not playground programs {#sec-mdn-adapting}
+
+The warning from part 1 applies here too, in a new costume. MDN
+examples are written in JavaScript and print their results with
+`console.log`, but your playground programs are TypeScript and draw
+on a canvas. So don't paste examples; read them, understand the
+idea, and rebuild it in the structure you know. Store the method's
+result in a typed variable, then show it with `text(...)`. And when
+a page mentions something you have never seen (several string
+methods accept so-called *regular expressions*, a pattern language
+for text that comes much later), don't push through; pick a
+different method instead.
+
+## Choose your method {#sec-choose-method}
+
+Pick **one method** from the *Instance methods* list of the String
+reference. The firm rules match part 1, with one addition:
+
+- Choose a method you haven't used in this course yet, so
+  `substring` is off the table. So is `charAt`, because it does
+  exactly what the square brackets already do for you.
+- The page must make sense without regular expressions. If the
+  syntax section talks about patterns or `RegExp`, choose
+  something else.
+- Leave `split` and `join` for later; the course picks them up in
+  a future part.
+
+That still leaves plenty of good candidates. `toUpperCase` and
+`toLowerCase`, `repeat`, `includes`, `startsWith` and `endsWith`,
+`indexOf`, `trim`, `padStart` and `padEnd` are all within your
+reach, and `slice` is a close relative of `substring` with one
+surprising extra ability. Pick whatever makes you curious.
+
+## Your exercise: learn it, build it, describe it {#sec-mdn-exercise}
+
+The task has the same three parts as in part 1, so this time you
+write a page of your class's own string reference:
+
+1. **Learn the method from its MDN page.** Read *Try it*, *Syntax*,
+   and *Parameters*, then experiment in the Try it box the way you
+   learned with `arc`: change one value at a time, run, and watch
+   the output. Keep going until you can predict the result before
+   you press run.
+2. **Build your own example.** Write a small playground program
+   that shows your method at work on the canvas: the input string
+   and the result, both drawn with `text`. If you want to shine,
+   combine the method with what this part taught you, for example
+   an array of words and a loop that applies the method to every
+   element. TypeScript, typed variables, formatted before you hand
+   it in.
+3. **Describe the method in writing.** Half a page for a classmate
+   who has never seen it: what it does, what each parameter means,
+   and one thing that surprised you while experimenting.
+
+Your teacher will tell you how to hand in your program and your
+text. Expect a short presentation in class again: everyone picks a
+different method, so after the presentations your class owns a
+little string reference of its own, and you wrote one page of it.
+
+## AI is allowed, understanding is required {#sec-mdn-ai}
+
+You may use an AI for every part of this exercise, and the rules
+are the ones from the research exercise in part 1. Use a general AI
+on the internet, not the tutor from this book, because meeting
+answers nobody tailored to this course is part of the research.
+Paste your own working code into the prompt, so the AI answers in
+the language and structure your playground expects, and say that
+you are a beginner whose code shows everything you have learned.
+And the old test still decides what stays: a line of code or a
+sentence in your text that you cannot explain in front of the class
+gets replaced, or you ask until you can.

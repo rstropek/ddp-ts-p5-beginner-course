@@ -2,9 +2,9 @@
 title: "The for loop: four steps on one line"
 ---
 
-![The while loop and the for loop side by side: the initialize, check, and update parts of the while loop move into the header of the for loop; only the work stays in the body.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/while-to-for.png){width=620}
+![The while loop and the for loop side by side: the initialize, check, and update parts of the while loop move into the parentheses of the for loop; only the work stays in the body.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/while-to-for.png){width=620}
 
-Count your while loops: the grid, the staircases, the rays, the X,
+Count your while loops. The grid, the staircases, the rays, the X,
 the zebra, the mesh, the chessboard. Every single one had the same
 skeleton, initialize above the loop, check in the parentheses,
 update at the bottom of the body, and by now your fingers type it
@@ -134,11 +134,11 @@ slot.
 ## Your exercise: While to For {#sec-while-to-for-exercise}
 
 The starter code is the finished grid, with the horizontal lines
-already converted: the for loop carries the same STEP arrows as the
-picture at the top of this chapter.
+already converted to a for loop.
 
-1. **Read the given for loop** and match each header slot to the
-   STEP comments, until the mapping feels obvious.
+1. **Read the given for loop.** It carries the same STEP comments as
+   the picture at the top of this chapter; match each header slot to
+   its comment until the mapping feels obvious.
 2. **Convert the vertical-line loop.** Move the three while parts
    into a for header, delete the old `let i` line and the update
    line, and run. The grid must look exactly as before.
@@ -150,9 +150,10 @@ picture at the top of this chapter.
 
 ## Your exercise, part 2: convert your own programs {#sec-convert-exercise}
 
-Task 2 of the same exercise sends you back: pick **at least three**
-of your earlier loop exercises and convert your while solutions to
-for loops. Choose so that every kind of loop shows up once:
+Task 2 of the same exercise sends you back to your own work. Pick
+**at least three** of your earlier loop exercises and convert your
+while solutions to for loops. Choose so that every kind of loop
+shows up once:
 
 1. **A measuring loop:** Pixel X or Step Lines, where the variable
    is a coordinate.

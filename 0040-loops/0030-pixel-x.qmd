@@ -25,15 +25,18 @@ visible in the table.
 
 ## Computing with the loop variable {#sec-mirror}
 
-Start with the first diagonal of the X. A square sits at every
-position where x and y are equal, so one `rect` with the loop
-variable in both slots draws the whole diagonal:
+Start with the first diagonal of the X. The canvas is 425 pixels,
+each square 25, and the X keeps one empty cell on every side, so
+the squares sit at 25, 50, and so on up to 375. On the first
+diagonal a square sits at every position where x and y are equal,
+so one `rect` with the loop variable in both slots draws the whole
+diagonal:
 
 ```typescript
 rect(i, i, GRID, GRID);
 ```
 
-The second diagonal is the mirror image: when the yellow square is
+The second diagonal is the mirror image. When the yellow square is
 near the top, the lime square is near the bottom. Mirroring a
 position means subtracting it from the canvas height, roughly
 `height - i`. But remember how `rect` measures: its first two
@@ -54,11 +57,12 @@ compute with.
 ::: {.callout-tip}
 ## Test expressions at the edges
 Before you trust an expression like `height - GRID - i`, feed it the
-first and the last value of the loop on paper. First round,
-`i = 25`, height 425: the lime square lands at y = 375, one cell
-above the bottom edge. Last round, `i = 375`: y = 25, one cell below
-the top edge. Both ends look right, so the middle will be right too.
-Two small calculations catch most mirror mistakes.
+first and the last value of the loop. In the first round, with
+`i = 25` and height 425, the lime square lands at y = 375, one cell
+above the bottom edge. In the last round, with `i = 375`, it lands
+at y = 25, one cell below the top edge. Both ends look right, so the
+middle will be right too. Two small calculations catch most mirror
+mistakes.
 :::
 
 ## Your exercise: Pixel X {#sec-pixel-x-exercise}
@@ -67,13 +71,13 @@ The canvas is 425 pixels, the squares are 25, and the X keeps a
 margin of one empty cell on every side. The starter code contains
 only the canvas setup and `noStroke()`.
 
-1. **Paper first.** The canvas is 17 cells of 25 pixels. Sketch it,
-   shade the diagonal squares, and read off: the first square sits at
-   (25, 25), the last at (375, 375). Your loop runs from `GRID` while
-   `i < SIZE - GRID`, both margins included in the plan.
+1. **Plan the loop.** The canvas is 17 cells of 25 pixels, and the
+   margin eats the first and the last cell: the first square sits at
+   (25, 25), the last at (375, 375). So your loop runs from `GRID`
+   while `i < SIZE - GRID`.
 2. **Draw the yellow diagonal alone.** Four steps, one `rect(i, i,
    GRID, GRID)` in the body, `fill("yellow")` before it. Run.
-3. **Derive the lime expression on paper**, as in the section above,
+3. **Derive the lime expression**, as in the section above,
    then add `fill("lime")` and the mirrored `rect` to the same loop
    body. Like the rays, the body switches colors every round: fill,
    yellow square, fill, lime square.
@@ -87,7 +91,7 @@ only the canvas setup and `noStroke()`.
 
 ![Eight horizontal stripes filling the canvas, alternating lime and yellow from top to bottom.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/zebra-stripes.png){width=400}
 
-All your loops so far measured pixels: `i` was an x or y coordinate,
+All your loops so far measured pixels; `i` was an x or y coordinate,
 and the update jumped one grid step. For the zebra stripes, a second
 style is more natural: let the variable simply count the stripes,
 0, 1, 2, 3, and compute the position from the count when you need
@@ -138,20 +142,52 @@ The canvas is 400 pixels, each stripe 50 thick, and the rule of the
 exercise is strict: your output must match the goal picture exactly,
 and you may use only a **single** while loop.
 
-1. **Paper first.** 400 divided by 50 is eight stripes. Look closely
-   at the goal picture: which color is the top stripe? Number the
-   stripes 0 to 7 and write each one's color next to it.
-2. **Make a loop table** with four columns: `i`, the stripe's y
+1. **Make a loop table** with four columns: `i`, the stripe's y
    position `i * STRIPE_THICKNESS`, the value of `i % 2`, and the
-   color.
-3. **Write the loop**: the counting skeleton from above, the `if`
+   color. 400 divided by 50 is eight stripes, so `i` counts 0 to 7,
+   and the goal picture tells you which color stripe 0 must get.
+2. **Write the loop**: the counting skeleton from above, the `if`
    deciding the fill, then one `rect` for stripe number `i`. It
    spans the full canvas width and is `STRIPE_THICKNESS` tall.
-4. **Change the constants.** `STRIPE_THICKNESS = 25` must give 16
+3. **Change the constants.** `STRIPE_THICKNESS = 25` must give 16
    thinner stripes, `STRIPE_THICKNESS = 100` four fat ones, with the
    colors still alternating from the same starting color.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/zebra-stripes.yaml title="Zebra Stripes" >}}
+
+## Make it smarter: draw only half the stripes {#sec-zebra-smarter}
+
+Look at your finished zebra once more. The loop draws eight stripes,
+and four of them are the same color. Here is a thought worth pausing
+on: if the whole canvas were lime *before* the loop starts, the lime
+stripes would already be there. One `background("lime")` paints the
+canvas, and the loop only has to add the yellow stripes on top.
+
+That changes the loop, and for the better. It no longer needs to
+visit every stripe; it can jump straight from one yellow stripe to
+the next: start at stripe 1 and count in steps of two, `i += 2`. And
+the `if` in your loop body loses its job, because a loop that only
+visits yellow stripes has no decision left to make; the whole `if`
+and `else` can go. Same picture, half the rounds, and one branch less.
+
+Try it. Rewrite your zebra program into this form: paint the canvas
+lime, remove the `if`, let the loop count in twos. Check that the
+picture stays exactly the same, also after you change
+`STRIPE_THICKNESS`.
+
+::: {.callout-note}
+## First obvious, then smarter
+This rewrite shows how a lot of real programming works. First you
+write the obvious version, the one that follows the task word for
+word. Eight stripes, so draw eight stripes. Then you look at the
+working code and ask whether it could be simpler. The obvious
+version is not wasted work; it is the step that lets you *see* the
+shortcut. And simpler code is more than pretty, because fewer lines
+and fewer decisions mean fewer places for a bug to hide. You met
+this rhythm once before, when an AI shrank the dice's 21 `circle`
+statements down to a handful (@sec-dice-advanced), and you will
+meet it again and again. First make it work, then make it simpler.
+:::
 
 ## Check your understanding {#sec-quiz-pixel-x}
 

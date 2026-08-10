@@ -5,8 +5,8 @@ title: "Letters criss-cross: rotate"
 ![Word Swirrel, level 2: the letters of the secret word scattered across the canvas, each one at a random position, in a random size, a random color, and tilted at a random angle.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/word-swirrel-1.png){width=440}
 
 In the first Word Swirrel, the scrambled word sat in the middle of
-the canvas as one block of text. Level 2 makes it look the part:
-every letter gets its own place, its own size, its own color, and
+the canvas as one block of text. Level 2 makes it look the part.
+Every letter gets its own place, its own size, its own color, and
 its own tilt. Two ideas carry the whole chapter. First, a for loop
 that visits a string one character at a time; you will write this
 exact loop shape for the rest of the course. Second, a new
@@ -38,8 +38,8 @@ for (let i = 0; i < wordToGuess.length; i++) {
 Read the header with the indexes in mind: `i` starts at 0, the first
 index. The loop runs while `i < wordToGuess.length`, and stops
 exactly when `i` reaches the length, which is one past the last
-index. For `"apple"` (length 5), `i` takes the values 0, 1, 2, 3, 4:
-every index once, none twice, no `undefined`. The `<` does the
+index. For `"apple"` (length 5), `i` takes the values 0, 1, 2, 3,
+and 4, every index once, none twice, no `undefined`. The `<` does the
 off-by-one thinking for you; with `<=` the loop would run once too
 often and read past the end.
 
@@ -49,11 +49,12 @@ indexes, and the coming array chapters use it on every page.
 
 ## rotate: turning the paper {#sec-rotate}
 
-You know `translate`: it moves the origin, and everything drawn
+You know `translate`; it moves the origin, and everything drawn
 afterwards moves with it. `rotate` is its sibling: it turns the
 whole coordinate system, and everything drawn afterwards is tilted.
-The angle is in degrees, clockwise, thanks to `angleMode(DEGREES)`
-in setup, the same setting you used for `arc` in part 1.
+The angle is in degrees, clockwise, as long as `angleMode(DEGREES)`
+stands in `setup`, the same setting you used for `arc` in part 1.
+Every program in this chapter sets it.
 
 The catch: `rotate` turns the paper **around the current origin**,
 the point (0, 0). A shape close to the origin tilts almost in place;
@@ -118,35 +119,32 @@ A few details are worth a second look:
 - **Negative angles are allowed.** `random(-90, 90)` tilts letters
   up to a quarter turn in either direction; a negative angle turns
   counterclockwise.
-- **The color is HSB.** `colorMode(HSB)` is set in setup, so
+- **The color is HSB.** With `colorMode(HSB)` in `setup`,
   `fill(textColor, 100, 100)` with a hue from 0 to 360 gives full
   saturation and brightness, like in the colored rays.
 - **MARGIN keeps letters visible.** The random position stays
   `MARGIN` pixels away from every edge, so even a big rotated letter
   is not cut off.
 
-One more thing has changed since level 1: the `guess` function comes
-finished in the starter code. You built it yourself last chapter;
-this time it is simply there, and your work happens in `setup`.
+One more thing will greet you when you open level 2: the `guess`
+function comes finished in the starter code. You built it yourself
+last chapter; this time it is simply there, and your work happens in
+`setup`.
 
 ## Your exercise: Word Swirrel (Level 2) {#sec-criss-cross-exercise}
 
-1. **Paper first.** Sketch the canvas (500 by 300) on graph paper
-   and mark the margin band of 50 pixels. Pick two spots inside and
-   draw a tilted letter at each, one leaning left, one leaning
-   right. Which angle sign is which?
-2. **The loop without rotation.** Write the for loop with the
+1. **The loop without rotation.** Write the for loop with the
    random position, size, and color, but leave `rotate` out:
    translate, then draw the letter at (0, 0). Run it; the letters
    scatter, still standing upright.
-3. **Add the tilt.** Put `rotate(angle)` between `translate` and
+2. **Add the tilt.** Put `rotate(angle)` between `translate` and
    `text`, run, and compare with the goal picture. If a letter
    seems to vanish, check the order of your three steps
    (@sec-rotate).
-4. **Break it on purpose.** Comment out `push()` and `pop()` and
+3. **Break it on purpose.** Comment out `push()` and `pop()` and
    predict the picture before you run. The transformations pile up,
    and the letters wander away. Put them back.
-5. **Run it a few times.** Every run scatters differently, because
+4. **Run it a few times.** Every run scatters differently, because
    `setup` runs once per start and asks `random` for fresh values
    each time. Play the game with a classmate: they guess, you
    check.

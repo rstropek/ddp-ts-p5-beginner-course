@@ -2,9 +2,9 @@
 title: "Parallel arrays: the starting eleven"
 ---
 
-![The finished dashboard for the TV station: a to-scale soccer field with the starting lineup on a semi-transparent plate. Numbers orange and right-aligned, names yellow and left-aligned, all read from arrays. In your version, the real shirt numbers from the playerNumbers array appear instead of 1 to 11.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/soccer-field.png){width=460}
+![The finished dashboard for the TV station: a to-scale soccer field with the starting lineup on a semi-transparent plate. Numbers orange and right-aligned, names yellow and left-aligned, all read from arrays. The screenshot shows the row numbers 1 to 11; your version will show the players' real shirt numbers instead.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/soccer-field.png){width=460}
 
-A local TV station hires you: before the match, they want to show
+A local TV station hires you. Before the match, they want to show
 the starting lineup on a drawn soccer field. This is the first real
 job for arrays. Eleven players means eleven numbers, eleven first
 names, eleven last names, and nobody wants 33 variables. Three
@@ -32,7 +32,7 @@ const firstNames: string[] = ["Thibaut", "Lucas", "Antonio", /* ... */];
 const lastNames: string[] = ["Courtois", "Vázquez", "Rüdiger", /* ... */];
 ```
 
-`number[]` is the second array type promised earlier: a row of
+`number[]` is the second array type promised earlier, a row of
 numbers, here the shirt numbers. And reading an element works
 exactly like reading a character of a string, with square brackets
 and a zero-based index: `firstNames[1]` is `"Lucas"`,
@@ -71,11 +71,12 @@ together; that is a parallel-array read. Third, the y position
 zebra stripes computed their y from the loop variable: index 0
 draws at 12, index 1 at 17, each player 5 units lower.
 
-The numbers work the same way in a second loop, with
-`textAlign(RIGHT)` so the digits line up like a table, orange fill
-and bold `textStyle(BOLD)`, and `text(playerNumbers[i], 30, 12 + i * 5)`.
-Two loops, same row formula, and the columns meet neatly at the
-gap between x = 30 and x = 33.
+The numbers will work the same way in a second loop that you write
+in the exercise, with `textAlign(RIGHT)` so the digits line up like
+a table, orange fill and bold `textStyle(BOLD)`, and
+`text(playerNumbers[i], 30, 12 + i * 5)`. Two loops, same row
+formula, and the columns will meet neatly at the gap between x = 30
+and x = 33.
 
 ## Meters as pixels {#sec-meters-pixels}
 
@@ -96,10 +97,10 @@ reads like an open book: `scale(SCALE)` multiplies everything drawn
 afterwards by 5, so one "meter" becomes 5 pixels; `translate`
 shifts the field by the margin, *in meters*, because the translate
 happens after the scale. From then on, every measurement from the
-real world goes into the code unchanged: the penalty box is 16.5
+real world goes into the code unchanged; the penalty box is 16.5
 deep because it really is 16.5 meters deep. Even
-`strokeWeight(0.5)` speaks meters: the lines are half a meter
-wide, like real field markings. The canvas size does the same
+`strokeWeight(0.5)` speaks meters, with lines half a meter wide,
+like real field markings. The canvas size does the same
 computation in reverse, so the window always fits the field plus
 its margins.
 
@@ -111,8 +112,8 @@ toolbox:
 - **The penalty arc without arc math.** The curve at the penalty
   box is officially a circle of radius 9.15 meters around the
   penalty spot, but only the part outside the box is drawn. The
-  sample solution draws the *full* circle, then paints the penalty
-  area over it with an opaque green rectangle: only the arc
+  trick is to draw the *full* circle and then paint the penalty
+  area over it with an opaque green rectangle, so only the arc
   survives. Painting over is a legal move; you have known that
   since the very first chapter.
 - **See-through color.** The name plate is
@@ -129,15 +130,15 @@ circles, and points measured off the official diagram.
 
 ## Your exercise: Soccer Field {#sec-soccer-field-exercise}
 
-1. **Paper first, with real units.** Look up the field measurements
-   linked in the exercise (goal area 5.5 by 18.32, penalty area
-   16.5 by 40.32, center circle radius 9.15). Sketch the field on
-   graph paper in meters, and label each part with its numbers.
-   Your sketch is the field; the code just reads it aloud.
+1. **Real units first.** Look up the field measurements linked in
+   the exercise (goal area 5.5 by 18.32, penalty area 16.5 by
+   40.32, center circle radius 9.15) and keep the official diagram
+   with its numbers next to you while you code. The code just reads
+   that diagram aloud.
 2. **Task 1: the field.** The starter draws the outer rectangle;
    you add the center line, center circle, goal and penalty areas,
    penalty spots, penalty arcs (full circle, then paint over), and
-   the corner arcs. Change `SCALE` to 2 and 3 between runs: the
+   the corner arcs. Change `SCALE` to 2 and 3 between runs; the
    whole field must follow.
 3. **Task 2: the lineup.** Two loops over the arrays, numbers
    right-aligned in orange and bold, names left-aligned in yellow

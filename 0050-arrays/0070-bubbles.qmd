@@ -4,12 +4,12 @@ title: "Arrays that grow and shrink"
 
 ![The bubbles program after a few seconds: colored circles of random sizes cover the canvas, and a new one appears every half second or two. Every bubble lives in four parallel arrays; the canvas only shows what the arrays remember.](images/bubbles-goal.png){width=400}
 
-The soccer arrays were fixed: eleven players at the start, eleven at
+The soccer arrays were fixed, eleven players at the start, eleven at
 the end. This chapter cuts arrays loose. The bubbles program starts
-with *empty* arrays and grows them while it runs: every second or
+with *empty* arrays and grows them while it runs; every second or
 two, `push` appends a new bubble. Then the follow-up exercise
-teaches the opposite move: `splice` removes a bubble whose time is
-up. Along the way you meet `millis`, the program's clock, and the
+teaches the opposite move, `splice`, which removes a bubble whose
+time is up. Along the way you meet `millis`, the program's clock, and the
 biggest idea of the chapter, the one that carries every animated
 program from now on: the arrays are the program's memory, and the
 canvas is just a picture of them, repainted sixty times a second.
@@ -19,7 +19,7 @@ canvas is just a picture of them, repainted sixty times a second.
 Growing and shrinking arrays are the first data that changes while
 you watch. If your bubbles change color mid-flight or vanish in the
 wrong order, something knocked your arrays out of step; describe to
-the tutor what you see and paste your push or splice lines.
+the tutor what you see and paste the lines that change your arrays.
 
 {{< tutor tutor-arrays >}}
 
@@ -63,7 +63,8 @@ unless you plan to replace the whole array.
 A bubble has a position, a size, and a color, so the program keeps
 four parallel arrays: `circlesCenterX`, `circlesCenterY`,
 `circlesDiameter`, `circlesFill`. Creating one bubble means one
-push into *each* of them:
+push into *each* of them; the size comes first, drawn up to a
+constant `maxDiameter`:
 
 ```typescript
 const d = random(10, maxDiameter);
@@ -102,15 +103,17 @@ if (millis() >= nextCircle) {
 ```
 
 `nextCircle` holds the time at which the next bubble is due. Every
-frame, `draw` checks the clock against the deadline. Not due yet:
-do nothing. Due: create the bubble and set a new deadline half a
-second to two seconds into the future. The wall clock keeps
+frame, `draw` checks the clock against the deadline. As long as the
+bubble is not due, nothing happens. Once it is due, the code
+creates the bubble and sets a new deadline half a second to two
+seconds into the future. The wall clock keeps
 running; the program just compares against it. You will use this
 deadline pattern for every "every so often" behavior from now on.
 
 ## The arrays are the truth {#sec-arrays-are-truth}
 
-Here is the whole `draw`, and its shape matters more than any line:
+Here is `draw`, with the push details folded into a comment,
+because its shape matters more than any line:
 
 ```typescript
 function draw() {
@@ -134,17 +137,18 @@ bubbles don't live on the canvas; they live in the arrays. The loop
 redraws every stored bubble from scratch each frame, so the picture
 looks constant even though it is repainted constantly.
 
-Compare that with the colored rays back in the Loops part: there,
+Compare that with the colored rays back in the Loops part, where
 the canvas itself was the memory; the program never repainted the
 background and the rays piled up. Both styles work, but the array
 style is stronger: the program can *change* its memory, and the
-picture follows. The next section does exactly that.
+picture follows. That is exactly what the second half of this
+chapter does, when bubbles start to burst.
 
 ## Your exercise: Bubbles {#sec-bubbles-exercise}
 
-The exercise is a type-in of the program above; the code is in the
-exercise description as a picture, so your fingers type every
-bracket themselves.
+The exercise is a type-in of the bubbles program; the complete code
+is in the exercise description as a picture, so your fingers type
+every bracket themselves.
 
 1. **Type it in, in three sittings.** First the five global
    declarations and the palette array, then the deadline `if` in
@@ -198,7 +202,7 @@ Look at the loop header: it runs **backwards**, from the last index
 down to 0. That is not a stylistic whim. When `splice` removes
 index 2, the old index 3 *becomes* index 2. A forward loop would
 step on to index 3 next and never look at the element that just
-slid into position 2: it skips a bubble, every time it removes one.
+slid into position 2. It skips a bubble, every time it removes one.
 Walking backwards, the sliding happens only in the part of the
 array the loop has already visited, and nothing is skipped.
 
@@ -224,7 +228,7 @@ bursting.
    element: which elements does it actually visit? Then walk it
    backwards. Now you know why the header looks the way it does.
 3. **The removal loop.** Write the backwards loop with the five
-   splice calls and run it: bubbles now appear, live for a few
+   splice calls and run it; bubbles now appear, live for a few
    seconds, and pop. The canvas stays alive instead of filling up.
 4. **Experiment.** Give bubbles ten seconds to live, then half a
    second. Then break it on purpose: turn the loop forwards, run

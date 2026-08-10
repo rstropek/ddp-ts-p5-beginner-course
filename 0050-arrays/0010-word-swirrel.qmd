@@ -4,23 +4,23 @@ title: "Strings have parts: Word Swirrel"
 
 ![The Word Swirrel game: the letters of a secret word, scrambled into a new order, wait on a black canvas. Above the canvas, a text box and a Guess button ask: which word can you form?](images/word-swirrel-goal.png){width=440}
 
-So far, every variable in your programs has held exactly one thing:
+So far, every variable in your programs has held exactly one thing,
 one number, one color, one string. This part of the book changes
 that. You will learn about **arrays**, variables that hold a whole
 list of things: eleven player names, a hundred bubbles, all the fill
 levels of a factory. Before the first array appears, you start with
-something you have used since part 2 without ever looking inside:
-the string. A string is itself a list, a row of characters, and in
-this chapter you take one apart and put it back together in a new
-order. The result is a little game: Word Swirrel scrambles a secret
-word, and the player has to guess what it was.
+something you have used since part 2 without ever looking inside.
+The string is itself a list, a row of characters, and in this
+chapter you take one apart and put it back together in a new order.
+The result is a little game. Word Swirrel scrambles a secret word,
+and the player has to guess what it was.
 
 ## AI tutor {#sec-tutor-word-swirrel}
 
-Indexes are new in this chapter, and the fact that counting starts
-at 0 trips up everyone once. If a letter comes out that you did not
-expect, or `undefined` shows up on your canvas, tell the tutor what
-you wrote and what appeared.
+Picking a string apart character by character is new territory, and
+everyone stumbles over the counting once. If a letter comes out that
+you did not expect, or the word "undefined" shows up on your canvas,
+tell the tutor what you wrote and what appeared.
 
 {{< tutor tutor-arrays >}}
 
@@ -51,10 +51,11 @@ character at position i".
 
 ::: {.callout-note}
 ## Why does counting start at 0?
-The index answers the question "how many characters come before this
-one?" Before the first character there are zero, so its index is 0.
-Programmers count like this everywhere, and from now on you will
-too: the fifth character of a string has the index 4.
+The index answers the question "how many characters do I have to
+jump over to reach the one I want?" To reach the first character you
+jump over none, so its index is 0; to reach the fifth you jump over
+four, so its index is 4. Programmers count like this everywhere, and
+from now on you will too.
 :::
 
 ::: {.callout-warning}
@@ -63,7 +64,7 @@ too: the fifth character of a string has the index 4.
 program keeps running and gives you the value `undefined`, which
 then shows up as the text "undefined" on your canvas or breaks a
 comparison much later. When a strange `undefined` appears, check
-your indexes first: the largest valid one is `word.length - 1`.
+your indexes first; the largest valid one is `word.length - 1`.
 :::
 
 ## Growing a string piece by piece {#sec-string-grow}
@@ -87,7 +88,7 @@ colored rays worked the same way, only with numbers.
 
 ::: {.callout-important}
 ## Course rule update: + is now allowed for strings
-In the Variables part, the course rule said: strings grow only
+In the Variables part, the course rule said that strings grow only
 through template strings, never with `+`. That rule protected you
 while types were new, because `+` between a number and a string can
 produce surprises like `"1" + 1` being `"11"`. You know types well
@@ -132,9 +133,11 @@ the variable, as in the line above.
 ## The scramble recipe {#sec-scramble-recipe}
 
 Now the pieces click together into the heart of Word Swirrel. The
-idea is drawing letters out of a bag: pick a random letter of the
-word, append it to the scrambled result, remove it from the bag, and
-repeat until the bag is empty.
+secret word waits at the top of the program, in a constant the
+player never sees on screen, `const wordToGuess = "apple";`. The
+idea of the scramble is drawing letters out of a bag: pick a random
+letter of the word, append it to the scrambled result, remove it
+from the bag, and repeat until the bag is empty.
 
 ```typescript
 let wordToScramble = wordToGuess;
@@ -150,10 +153,14 @@ while (wordToScramble.length > 0) {
 
 Check the loop against the four steps from the Loops part. The loop
 variable is unusual: it is the string `wordToScramble` itself.
-Initialize: it starts as a copy of the secret word. Check: as long
-as characters are left. Do the work: move one random character over.
-Update: the substring line makes the bag one character shorter, so
-`length` sinks by one each round and the loop is guaranteed to end.
+
+1. **Initialize.** The bag starts as a copy of the secret word.
+2. **Check.** The loop keeps going as long as characters are left.
+3. **Do the work.** One random character moves over to
+   `scrambledWord`.
+4. **Update.** The substring line makes the bag one character
+   shorter, so `length` sinks by one each round and the loop is
+   guaranteed to end.
 
 Here is one possible run with the word `"tea"`. `random` decides the
 indexes, so your run will differ:
@@ -169,8 +176,8 @@ indexes, so your run will differ:
 One small novelty hides in the `random` call: with a single
 argument, `random(n)` is short for `random(0, n)`. The bag holds
 `wordToScramble.length` characters, so
-`floor(random(wordToScramble.length))` is a random valid index:
-the dice recipe from the Conditions part, with the upper bound
+`floor(random(wordToScramble.length))` is a random valid index,
+the dice recipe from the Conditions part with the upper bound
 taken from the data instead of written as a number.
 
 ## A function you fill in: guess {#sec-guess-function}
@@ -188,14 +195,16 @@ function guess(textInput: string) {
 }
 ```
 
-This works like `mouseClicked`: you do not call `guess` yourself,
+This works like `mouseClicked`; you do not call `guess` yourself,
 the playground calls it for you when the button is clicked. New is
 the part between the parentheses: `textInput` is a **parameter**, a
 variable that the playground fills with the typed text before your
 code runs. Inside the braces you use `textInput` like any string
-variable. Writing your own functions with parameters comes in a
-later part of the book; here the signature is given, and your job is
-only the body:
+variable. Treat this as a cliffhanger, left open on purpose. What a
+function really is, what the line with the parentheses means, and
+how you write functions of your own is a big enough story that a
+later part of this book is dedicated to it. Until then, signatures
+like this one are always given, and your job is only the body:
 
 ```typescript
 if (textInput === wordToGuess) {
@@ -218,11 +227,11 @@ appear on two lines.
 This exercise is a type-in: the code is given, and your job is to
 type it, run it, and understand every line.
 
-1. **Type in the program.** Use the listings above: the scramble
-   loop goes into `setup`, after it draw `scrambledWord` centered on
-   the canvas with `text`, and the comparison goes into `guess`.
-   Type, don't paste: your fingers learn the index and substring
-   syntax now, before the array chapters need it.
+1. **Type in the program.** Use the listings above. The scramble
+   loop goes into `setup`; after it, draw `scrambledWord` centered
+   on the canvas with `text`, and the comparison goes into `guess`.
+   Type, don't paste, because your fingers learn the index and
+   substring syntax now, before the array chapters need it.
 2. **Play computer.** Take the word `"ape"` and scramble it on
    paper like in the table above (@tbl-scramble-run), choosing the
    random indexes yourself. Write down `wordToScramble`,

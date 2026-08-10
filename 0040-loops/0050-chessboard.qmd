@@ -28,8 +28,9 @@ checkered" is a great opening sentence.
 The board is a grid of cells, and for grids of cells the counting
 style of loop (@sec-counter) is the natural choice: an outer loop
 counts the rows 0 to 7, an inner loop counts the columns 0 to 7.
-Square positions are computed from the counts, like the zebra
-stripes, only in two directions:
+The size of one square gets a constant, `SQUARE_SIZE`, worth 50
+pixels here. Positions are then computed from the counts, like the
+zebra stripes, only in two directions:
 
 ```typescript
 x = SQUARE_SIZE + col * SQUARE_SIZE
@@ -37,16 +38,17 @@ y = SQUARE_SIZE + row * SQUARE_SIZE
 ```
 
 The extra `SQUARE_SIZE` at the front shifts the whole board one
-square in from the edge: the canvas is 500 pixels, the board is 400,
-and the remaining border leaves room for the letters and numbers.
+square in from the edge. On the 500 pixel canvas the board covers
+400, and the remaining border leaves room for the letters and
+numbers.
 Row 0, column 0 is the top left square at (50, 50); row 7, column 7
 is the bottom right square at (400, 400).
 
 ## Coloring by parity {#sec-board-parity}
 
-Which squares are brown? Walk along a row: the colors alternate with
-every step, so the column's parity decides. Walk down a column: they
-alternate again, so the row's parity matters too. The neat trick is
+Which squares are brown? Walk along a row and the colors alternate
+with every step, so the column's parity decides. Walk down a column
+and they alternate again, so the row's parity matters too. The neat trick is
 to add the two counts. Moving one square in any direction changes
 `row + col` by exactly one, so the sum flips between even and odd
 just like the colors flip:
@@ -72,7 +74,9 @@ a file letter at the bottom.
 The numbers are positions to compute. Chess counts its ranks from
 the bottom, so rank 1 sits next to the *lowest* row. Rank `i` sits
 `i` squares above the bottom margin, centered in the margin column;
-work the expression out on paper before you type it.
+work the expression out before you type it, and test it with
+`i = 1` and `i = 8` like you tested the mirror expression of the
+pixel X.
 
 The letters are a translation: 1 becomes "a", 2 becomes "b", and so
 on, one exact case per value. That is the `switch` statement's home
@@ -103,7 +107,8 @@ once, before the loop; they apply to every marking.
 
 ## Advanced: one loop for the whole board {#sec-one-loop}
 
-Now the clever part, step 3 of the exercise. Number the squares 0 to
+Now the clever part that the chapter's introduction promised, for
+the ambitious. Number the squares 0 to
 63, row by row: squares 0 to 7 form the top row, 8 to 15 the next,
 and so on. Can one loop over `i` from 0 to 63 recover the row and
 column from the number alone? You did exactly this in the number
@@ -118,7 +123,7 @@ const col = i % 8;
 
 `floor(i / 8)` counts how many *complete* rows of eight fit below
 `i`, and `i % 8` is what's left over: the position inside the row.
-Check it with a small table on paper:
+Check it with a small table:
 
 | `i` | `floor(i / 8)` | `i % 8` | square |
 |-----|----------------|---------|-----------------|
@@ -130,28 +135,26 @@ Check it with a small table on paper:
 
 : Recovering row and column from the square number. {#tbl-square-numbers}
 
-One warning before you compare with the playground's sample
-solution: it rounds with `Math.floor`. You know the chore from the
-switch chapter (@sec-simple-dice-exercise): this course always uses
-the p5.js helper `floor`, which does the same job.
+One warning for later, when you compare your work with the
+playground's sample solution. That solution rounds with
+`Math.floor`. You know the chore from the switch chapter
+(@sec-simple-dice-exercise): this course always uses the p5.js
+helper `floor`, which does the same job.
 
 ## Your exercise: Chessboard {#sec-chessboard-exercise}
 
 The starter code contains only the canvas, the two constants, and
 `noStroke()`. Build the board in the exercise's three steps.
 
-1. **Paper first.** Sketch the canvas: 10 by 10 cells of 50 pixels,
-   the board filling the middle 8 by 8. Shade a few squares to
-   check the parity rule, and mark where rank 1 and the letter a
-   belong.
-2. **Step 1: the squares.** Nested counting loops over `row` and
+1. **Step 1: the squares.** Nested counting loops over `row` and
    `col`, the parity `if`, one `rect` per square. Run and compare
    corners with the goal picture.
-3. **Step 2: the markings.** The 1-to-8 loop with the rank number
+2. **Step 2: the markings.** The 1-to-8 loop with the rank number
    and the switch-translated letter, text settings before the loop.
    Getting the rank numbers to count from the bottom is the fiddly
-   part; your paper sketch has the answer.
-4. **Step 3 (advanced): one loop.** Replace the nested square loops
+   part; the margin section above (@sec-board-markings) shows how
+   to find the expression.
+3. **Step 3 (advanced): one loop.** Replace the nested square loops
    with a single loop over the square numbers 0 to 63, and compute
    `row` and `col` with `floor` and `%` as shown above
    (@sec-one-loop). The picture must not change at all.

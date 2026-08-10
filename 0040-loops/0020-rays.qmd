@@ -10,7 +10,7 @@ title: "Rays: loops meet the mouse"
 ![Sixty rays follow the mouse: lines run from anchor points on all four canvas edges to wherever the mouse is right now. In the playground, the picture moves with the mouse.](images/rays-frame.png){width=400}
 :::
 
-The grid from the last chapter is calm: two loops run once inside
+The grid from the last chapter is calm. Two loops run once inside
 `setup`, the picture is done, nothing moves. This chapter wakes the
 loops up. You put a while loop inside an event function, and suddenly
 60 lines redraw themselves every time the mouse moves, like threads
@@ -23,18 +23,20 @@ changes is where it lives and what happens around it.
 ## AI tutor {#sec-tutor-rays}
 
 Two programs meet in this chapter: a loop and an event. If your rays
-don't show up, smear across the canvas, or all have the same color
-when they shouldn't, tell the tutor which of the two exercises you
-are in and show it your loop.
+don't show up, smear across the canvas, or wear the wrong colors,
+tell the tutor which of the chapter's two exercises you are in and
+show it your loop.
 
 {{< tutor tutor-loops >}}
 
 ## A loop inside an event {#sec-loop-in-event}
 
 So far, loops ran once, in `setup`. But a loop is a statement like
-any other: it may live in any function. Put it into `mouseMoved`
-(@sec-mouse-moved) and it runs again on every mouse move, drawing
-its whole picture fresh each time:
+any other: it may live in any function. When a loop lives in
+`mouseMoved` (@sec-mouse-moved), it runs again on every mouse move,
+drawing its whole picture fresh each time. That is exactly how the
+rays work. Here is the plan of such a program, with the loop itself
+still missing:
 
 ```typescript
 function mouseMoved() {
@@ -53,11 +55,11 @@ old lines.
 
 ## One variable, four lines {#sec-four-lines}
 
-Where do the rays start? Look at the goal picture: the starting
+Where do the rays start? Look at the goal picture. The starting
 points sit evenly spaced along all four edges, one grid step apart,
 with a margin of 25 pixels. Those are the same positions your grid
-loop visited. The new idea: in each round, the loop variable `i`
-marks four points at once, one per edge:
+loop visited. The new idea is that in each round, the loop variable
+`i` marks four points at once, one per edge:
 
 - `(MARGIN, i)` on the left edge, and `(width - MARGIN, i)` on the
   right edge: `i` is the *height* of the point.
@@ -66,7 +68,7 @@ marks four points at once, one per edge:
 
 Every ray ends at the same point: `(mouseX, mouseY)`. So one round
 of the loop draws four lines, and the body sets two colors while it
-works: yellow before the left-and-right pair, lime before the
+works, yellow before the left-and-right pair and lime before the
 top-and-bottom pair. In the grid, the color was set once before the
 loop, because every line looked the same. Here two colors take turns
 inside every round, so the `stroke` calls move into the body.
@@ -76,24 +78,28 @@ The grid stopped with `i < SIZE`, keeping the last line off the
 border. The rays want anchor points *on* the last position,
 `SIZE - MARGIN`, so the loop runs while `i <= SIZE - MARGIN`. Whether
 `<` or `<=` is right is not a grammar question; it is a design
-decision, and your loop table shows you which one you need: write
+decision, and your loop table shows you which one you need. Write
 down the last value you want, and check which comparison still lets
 it through.
 
 ## Your exercise: Rays {#sec-rays-exercise}
 
-1. **Paper first.** Sketch the canvas and mark the anchor points on
-   one edge: margin 25, one point every 25 pixels, the last one at
-   375. Count them; you should get 15 per edge.
-2. **Make a loop table** for `SIZE = 100` and `MARGIN = 25`, with the
+1. **Make a loop table** for `SIZE = 100` and `MARGIN = 25`, with the
    condition `i <= SIZE - MARGIN`. Which values does `i` take, and
-   how many rounds is that?
-3. **Start with one edge.** Write the loop with a single statement:
+   how many rounds is that? Does the last anchor position,
+   `SIZE - MARGIN`, get through?
+2. **Read the starter code.** It is the plan from the beginning of
+   the chapter (@sec-loop-in-event), ready to go: the constants
+   `SIZE` and `MARGIN` are declared, and `mouseMoved` already
+   repaints the background and sets the stroke weight. A comment
+   marks the spot where your loop belongs.
+3. **Start with one edge.** Set `stroke("yellow")` before the loop
+   for now, and write the loop with a single statement:
    `line(MARGIN, i, mouseX, mouseY);`. Run it and move the mouse.
    One fan of yellow rays from the left edge, nothing else.
-4. **Add the other three edges**, one `line` per run, and set the
-   colors: yellow before the left-and-right pair, lime before the
-   top-and-bottom pair.
+4. **Add the other three edges**, one `line` statement per edge, and
+   move the colors into the loop body: yellow before the
+   left-and-right pair, lime before the top-and-bottom pair.
 5. **Change the constants.** `MARGIN = 50`, then `SIZE = 300`. The
    fans must follow by themselves.
 
@@ -142,7 +148,7 @@ rayColor = (rayColor + 0.25) % 360;
 
 Read the right side inside out: take the current hue, add a quarter
 step, and then `% 360`. The modulo operator is an old friend from
-digit extraction (@sec-modulo), and here it does its second job:
+digit extraction (@sec-modulo), and here it does its second job,
 wrapping. As long as the sum stays below 360, `% 360` changes
 nothing. The moment it reaches 360, the remainder snaps back to 0,
 which is exactly right, because 360 and 0 are the same point on the
@@ -154,12 +160,13 @@ points, summing prices, or turning a color wheel.
 ::: {.callout-note}
 ## Why do the rays make a rainbow?
 The update line sits *inside* the loop, so the hue moves a quarter
-step from one ray to the next: within a single frame, neighboring
+step from one ray to the next. Within a single frame, neighboring
 rays differ slightly in color, which gives the fan its soft
-gradient. Move the update *after* the loop and every ray in one
-frame gets the same color; the fan then changes color as a whole,
-one hue per frame. Both are valid designs. The exercise builds the
-first one, and trying the second for a moment is a great experiment.
+gradient. If the update ran *after* the loop instead, every ray in
+one frame would get the same color, and the fan would change color
+as a whole, one hue per frame. Both are valid designs. The exercise
+builds the first one, and trying the second for a moment is a great
+experiment.
 :::
 
 ## Your exercise, part 2: Colored Rays {#sec-colored-rays-exercise}
