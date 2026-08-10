@@ -23,6 +23,21 @@ or RAG layer splits them into chunks.
   "that", or "it" whose referent sits under another heading. A normal pronoun inside
   the same paragraph is fine; the rule is about references that break when a chunk is
   read alone.
+- **Respect linear reading; introduce before you use.** Students read a chapter top
+  to bottom, once, and they meet an exercise's starter code only when an exercise
+  step tells them to open it. Never ask the reader to look at, change, or judge code
+  that is not in front of them at that point, and never lean on a term or idea the
+  chapter only introduces further down. Teach the concept first, as its own idea;
+  the exercise steps then point back to it ("the plan from the section above"). If a
+  section cannot be written without something that comes later, reorder the sections
+  instead of reaching forward.
+- **Ration colons.** The "setup: payoff" sentence is a machine-writing habit; people
+  reach for it far less often. Use a colon in prose only when it genuinely announces
+  something (a definition, an exact value, a punchline the sentence built toward),
+  and never more than one such sentence per paragraph. Where a colon merely glues an
+  explanation to a claim, write two sentences or connect them with "because", "so",
+  or "for example". Colons that introduce a code block or a list are fine and don't
+  count toward the limit.
 
 ## Voice and tone
 
