@@ -22,6 +22,14 @@ fragments:
   # prepends the rendered `instructions:` to both system prompts). Keep it
   # audience-neutral and chapter-agnostic: no "students don't know X yet"
   # claims — those belong in each chapter's discussion.instructions.
+  #
+  # The single-quotes bullet is load-bearing, not style: the SCCH provider's
+  # guided JSON decoding treats a raw `"` inside the feedback string as its
+  # terminator, so feedback like `"lightblue"` inside inline code gets silently
+  # cut off mid-sentence (novedu issue #115; measured there — 28/66 gradings
+  # truncated without the line, 0/69 with it). The app detects and retries a
+  # truncated feedback, but steering the grader away from the trigger belongs
+  # here, next to the other course rules. Don't drop it.
   - id: quiz_context
     content: |
       The students are beginners in a creative-coding course (TypeScript with
@@ -46,6 +54,8 @@ fragments:
         feedback goes on to say what is missing.
       - Short answers are fine: a concise answer scores equal to or better
         than a long one at the same correctness. Never reward length.
+      - In your feedback, write TypeScript string literals with single quotes
+        inside inline code (write `'lightblue'`, never `"lightblue"`).
       - When unsure between two verdicts, choose the lower one (partial
         rather than correct).
       - Course rule: every code statement ends with a semicolon. TypeScript
