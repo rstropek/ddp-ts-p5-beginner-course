@@ -118,8 +118,9 @@ questions:
                       and the array length, or the whole array
                       shuffled.
 
-      Feedback: ask what type wordToGuess has, and whether a number
-      could be scrambled into letters.
+      Feedback: state that random(WORDS) returns an ELEMENT of the
+      array — one of the words, a string — and only then invite them to
+      check whether a number could be scrambled into letters.
 
   - id: let-not-const
     title: "Why let now?"
@@ -148,8 +149,10 @@ questions:
                       random(WORDS) in one line would be legal; the
                       problem is only the assignment coming later).
 
-      Feedback: ask what value the program could possibly write at
-      the declaration line, before setup has run.
+      Feedback: state that the value is only known once setup runs
+      and that a const cannot be assigned after its declaration line,
+      then invite them to picture what the program could possibly write
+      at the declaration line.
 
   - id: global-trap
     title: "Cannot find name"

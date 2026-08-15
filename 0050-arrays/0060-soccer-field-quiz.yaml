@@ -103,7 +103,9 @@ questions:
                       declared next to each other, or the names are
                       matched by comparing the strings.
 
-      Feedback: ask what happens to player 1 if someone sorts
+      Feedback: state that the shared index is what connects the two
+      arrays, so they only match while both stay in the same order, then
+      invite them to picture what happens to player 1 if someone sorts
       lastNames alphabetically and touches nothing else.
 
   - id: index-vs-element
@@ -175,7 +177,9 @@ questions:
       Expected: scale(SCALE) (with SCALE = 5). It multiplies
       everything drawn afterwards by 5, so one meter becomes 5
       pixels and the 100-meter field becomes 500 pixels wide. The
-      code can keep speaking meters.
+      code can keep speaking meters. Always write the call WITH its
+      argument — scale(SCALE) or scale(5); a bare scale() is not the
+      answer and scales nothing.
 
       - `correct`   - names scale (scale(SCALE) / scale(5)) AND
                       says it multiplies the drawn units into

@@ -115,7 +115,9 @@ questions:
       Expected: indexes start at 0, so a string with length n uses
       the indexes 0 to n - 1. `word[word.length]` points one past the
       end, where nothing is stored; the last character is at
-      `word[word.length - 1]`.
+      `word[word.length - 1]`. Reading past the end is not an error and
+      not a space: the result is `undefined`. Never call it either in
+      your feedback.
 
       - `correct`   - names the fix length - 1 AND the reason: zero-
                       based counting / the index goes one past the
@@ -180,8 +182,10 @@ questions:
                       their own", or "random eventually returns 0 and
                       that ends it".
 
-      Feedback: ask what wordToScramble looks like after one round:
-      longer, shorter, or the same, and why.
+      Feedback: state that the string loses one letter every round
+      until its length is 0 and the condition becomes false, then invite
+      them to trace whether wordToScramble is longer, shorter or the same
+      after one round.
 
   - id: guess-function
     title: "Who calls guess?"

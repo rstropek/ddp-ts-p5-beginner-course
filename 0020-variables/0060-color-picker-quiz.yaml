@@ -171,7 +171,9 @@ questions:
     evaluation: |
       Expected: in the paint on the canvas itself. Nothing ever repaints
       the bottom half except the next click, so the color simply stays
-      visible on the canvas.
+      visible on the canvas. The program itself stores nothing: there is
+      no variable holding the color, so never say the program or the code
+      "remembers" it, the canvas does.
 
       - `correct`   - the canvas / the paint stores it AND why that works
                       (nothing repaints the bottom half until the next
@@ -182,8 +184,8 @@ questions:
                       hidden variable, or in the constants of mouseClicked
                       (those are forgotten when the run ends).
 
-      Feedback: this works because the program remembers exactly one
-      thing, and that thing is literally a color — the next chapter shows
+      Feedback: this works because exactly one thing has to be kept and
+      that thing is literally paint on the canvas. The next chapter shows
       where paint alone stops being enough.
 
   - id: draw-order-bug

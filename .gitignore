@@ -11,3 +11,6 @@
 *.log
 *.out
 *.toc
+
+# Evaluation results
+/eval-result*/

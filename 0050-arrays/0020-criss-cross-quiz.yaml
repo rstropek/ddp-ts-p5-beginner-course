@@ -63,7 +63,9 @@ questions:
     evaluation: |
       Expected: indexes go from 0 to length - 1. With `<` the loop
       stops after the last index; with `<=` it would run one extra
-      round and read past the end (word[length] is undefined).
+      round and read past the end (word[length] is undefined). Reading
+      past the end does NOT raise an error and does not stop the
+      program; never tell the student that it does.
 
       - `correct`   - connects `<` to the last index being
                       length - 1 / says `<=` would run one round too
@@ -125,8 +127,10 @@ questions:
                       shape's own center automatically, or around
                       the mouse.
 
-      Feedback: ask where the origin is right before rotate runs,
-      once with and once without the translate.
+      Feedback: state that rotate turns around the origin (0, 0) and
+      that translate moves the origin onto the letter, so it tilts in
+      place, then invite them to picture the origin once with and once
+      without the translate.
 
   - id: missing-push-pop
     title: "Letters wander off"
@@ -201,6 +205,7 @@ questions:
                       background, or the browser moves the letters
                       when the page loads.
 
-      Feedback: ask when setup runs, and what
-      random(MARGIN, WIDTH - MARGIN) returns the second time the
-      program is started.
+      Feedback: state that setup runs again on every start, so
+      random(MARGIN, WIDTH - MARGIN) returns new values each time, then
+      invite them to work out what it gives the second time the program
+      is started.

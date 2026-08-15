@@ -71,8 +71,9 @@ questions:
       - `incorrect` - anything else, e.g. they are the same, or
                       parseInt rounds a number down like floor.
 
-      Feedback: ask what "42" + 1 should even mean if "42" is text,
-      and which function makes it calculable first.
+      Feedback: state that "42" is text and that parseInt turns it
+      into the number 42 so it can be calculated with, then invite them
+      to think about what "42" + 1 would otherwise mean.
 
   - id: buffer-trace
     title: "Trace the buffer"

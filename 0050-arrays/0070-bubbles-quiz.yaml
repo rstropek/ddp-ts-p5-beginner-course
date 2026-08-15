@@ -72,8 +72,9 @@ questions:
                       replaces, or an error because the array is
                       const.
 
-      Feedback: ask what push does to the END of the array, one
-      call at a time.
+      Feedback: state that the array holds 5 and 9 — 5 at index 0, 9
+      at index 1 — so a.length is 2, then walk them through what push
+      appends at the END, one call at a time.
 
   - id: const-mutate
     title: "Pushing into a const"
@@ -153,8 +154,9 @@ questions:
                       program for that time, or it sets how long a
                       bubble lives.
 
-      Feedback: ask what millis() returns, and what the sum then
-      represents on that clock.
+      Feedback: state that the line sets the moment the next bubble
+      appears, a random 0.5-2 s ahead on the millis() clock, then invite
+      them to work out what the sum represents on that clock.
 
   - id: redraw-truth
     title: "Wiped every frame"

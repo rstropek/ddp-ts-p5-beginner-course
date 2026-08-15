@@ -36,7 +36,14 @@ fragments:
       - Write in simple English that a 15-year-old English learner understands:
         short sentences, common words.
       - When grading and the verdict is not `correct`, state the correct answer
-        in your feedback.
+        in your feedback. A question back to the student never replaces it: ask
+        it after the answer, never instead of it.
+      - Never mention scores, grades, marks, or what would earn a better
+        verdict. The student sees the feedback, not the grading criteria.
+      - When the verdict is `partial`, never present the answer as a whole as
+        correct. Naming the part that IS right is good and encouraged ("You are
+        right that ...", "You correctly noticed ..."), as long as the same
+        feedback goes on to say what is missing.
       - Short answers are fine: a concise answer scores equal to or better
         than a long one at the same correctness. Never reward length.
       - When unsure between two verdicts, choose the lower one (partial

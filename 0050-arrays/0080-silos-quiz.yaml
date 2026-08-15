@@ -95,8 +95,9 @@ questions:
       - `incorrect` - anything else, e.g. all silos go up by 1, a
                       new element is appended, or i increases.
 
-      Feedback: ask what silos looks like before and after the line
-      when silos is [3, 7] and i is 1.
+      Feedback: state that only the element at index i goes up by 1
+      while the other silos and the length stay unchanged, then walk
+      them through silos as [3, 7] with i as 1.
 
   - id: data-driven
     title: "The seventh silo"
@@ -154,8 +155,9 @@ questions:
                       calculations, or arrays are only writable in
                       setup.
 
-      Feedback: ask when the x position of silo 3 could ever
-      change while the program runs.
+      Feedback: state that the positions are fixed, so computing them
+      once and looking them up everywhere is enough, then invite them to
+      ask when the x position of silo 3 could ever change.
 
   - id: hit-test
     title: "Read the hit test"

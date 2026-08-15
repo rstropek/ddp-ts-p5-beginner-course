@@ -101,8 +101,9 @@ questions:
                       be halved after push, or 1.5 makes the line
                       smoother.
 
-      Feedback: ask what a 3-pixel stroke looks like under
-      scale(2), and what value, times 2, gives 3.
+      Feedback: state that the scaling doubles the stroke too, so
+      3 / 2 ends up looking like 3 pixels, then invite them to check what
+      value, times 2, gives 3.
 
   - id: fixed-point
     title: "The point that stays"

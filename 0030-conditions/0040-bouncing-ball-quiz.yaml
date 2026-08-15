@@ -203,5 +203,6 @@ questions:
       - `incorrect` - anything else, e.g. claims || only takes two
                       comparisons.
 
-      Feedback: ask per wall: which of the two directions must turn
-      around here?
+      Feedback: state that each wall pair must flip only its own
+      direction variable, and that one merged condition would flip both,
+      then go wall by wall asking which direction turns around there.
