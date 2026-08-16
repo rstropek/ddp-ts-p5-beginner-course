@@ -1,0 +1,180 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0110-train-station-quiz.yaml ("Trains from strings").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: train-station-quiz-eval
+target: ./0110-train-station-quiz.yaml
+
+questions:
+  - question: return-array
+    answers:
+      - expect: correct
+        answer: |
+          you get an array with all the wagon pictures of that train. with
+          p5.Image it would only be one single picture
+      - expect: correct
+        answer: |
+          ein ganzes array voller bilder, also alle waggons des zugs. ohne
+          die klammern wäre es nur ein einziges bild.
+      # Content named, the one-versus-many contrast missing.
+      - expect: partial
+        answer: |
+          the images of the wagons in the right order
+      # Contrast named without saying what is inside the array.
+      - expect: partial
+        answer: |
+          the two brackets mean it is a list and not just one thing
+      - expect: incorrect
+        answer: |
+          you get the train string cut into the abbreviations, so an array
+          of strings like TLB and TCW.
+      # Confident and wrong: brackets read as the parameter type.
+      - expect: incorrect
+        answer: |
+          the p5.Image[] in front of the body says that the function takes
+          an array of images as its input.
+
+  - question: search-not-found
+    answers:
+      - expect: correct
+        answer: |
+          the loop goes through everything and never matches, so it reaches
+          the last line and returns -1. -1 works because there is no array
+          position -1, so you can't mix it up with a real index
+      - expect: correct
+        answer: |
+          die schleife läuft ganz durch ohne treffer, dann kommt return -1.
+          das geht, weil eine echte position nie negativ ist.
+      # Value without the "loop ran through" mechanism.
+      - expect: partial
+        answer: |
+          it returns -1
+      # Convention without the never-a-real-index reason.
+      - expect: partial
+        answer: |
+          the loop finds nothing so the function says -1, which means not
+          found
+      - expect: incorrect
+        answer: |
+          it returns 0 because the search starts at the first position.
+      # Confident misconception from other languages.
+      - expect: incorrect
+        answer: |
+          -1 is the last element of the array, so the function gives back
+          the last wagon when nothing matches.
+
+  - question: missing-flush
+    answers:
+      - expect: correct
+        answer: |
+          a wagon is only pushed when a comma comes. after the last comma
+          TCW is collected in the buffer but the string ends, so it never
+          gets pushed
+      - expect: correct
+        answer: |
+          nach dem letzten komma steht TCW noch im puffer, und weil kein
+          komma mehr kommt, wird es nie ins array geschoben. deshalb fehlt
+          der letzte waggon.
+      # Symptom restated without the buffer/comma mechanism.
+      - expect: partial
+        answer: |
+          because TCW is missing, only TLB is drawn
+      # Buffer mentioned, the missing push not connected.
+      - expect: partial
+        answer: |
+          the last abbreviation stays in the variable wagon
+      - expect: incorrect
+        answer: |
+          the loop stops one character too early, so the last letter is
+          never read.
+      - expect: incorrect
+        answer: |
+          reverse throws away the last element of the array, that's why one
+          wagon disappears.
+
+  - question: why-reverse
+    answers:
+      - expect: correct
+        answer: |
+          the wagons are drawn from right to left, so the one drawn last
+          ends up in front. the locomotive is first in the string so it has
+          to be moved to the end of the array
+      - expect: correct
+        answer: |
+          weil von rechts nach links gezeichnet wird. die lok steht im text
+          vorne, muss aber zuletzt gezeichnet werden, damit sie vorne am zug
+          ist.
+      # Goal without the drawing-order reason.
+      - expect: partial
+        answer: |
+          so that the locomotive is at the front of the train
+      # Order without what it means for the locomotive.
+      - expect: partial
+        answer: |
+          because the drawing goes from right to left
+      - expect: incorrect
+        answer: |
+          reverse sorts the wagons so that the same types stand together.
+      # Fluent, plausible, and wrong about what reverse is for.
+      - expect: incorrect
+        answer: |
+          the string is read from the back to the front by the parser, so
+          reverse puts the wagons back into the order of the original text.
+
+  - question: two-dimensional
+    answers:
+      - expect: correct
+        answer: |
+          trains[2] is the third train, so a whole array of wagon images,
+          and trains[2][0] is one single image, the first wagon of it
+      - expect: correct
+        answer: |
+          trains[2] ist der ganze dritte zug (ein array von bildern),
+          trains[2][0] ist ein einzelnes bild daraus.
+      # Only one of the two explained.
+      - expect: partial
+        answer: |
+          trains[2][0] is one wagon image
+      # Off-by-one on the track number, structure otherwise right.
+      - expect: partial
+        answer: |
+          trains[2] is the second train and trains[2][0] is its first image
+      - expect: incorrect
+        answer: |
+          trains[2] is one image and trains[2][0] is the first character of
+          its name.
+      - expect: incorrect
+        answer: |
+          the first number picks the wagon and the second one picks the
+          track it stands on.
+
+  - question: loop-choice
+    answers:
+      - expect: correct
+        answer: |
+          because the search has to give back the position where it found
+          the abbreviation, and for...of never tells you the index
+      - expect: correct
+        answer: |
+          getWagonIndex braucht die stelle im array, weil es genau die
+          zurückgibt. bei for...of bekommt man nur das element, keine
+          nummer.
+      # Property of for...of without the search's need.
+      - expect: partial
+        answer: |
+          for...of has no counter variable
+      # The return value named without connecting it to the loop choice.
+      - expect: partial
+        answer: |
+          because the function returns a number
+      - expect: incorrect
+        answer: |
+          for...of only works with numbers, and abbreviations is an array of
+          strings.
+      # Verbose and confidently wrong about return inside for...of.
+      - expect: incorrect
+        answer: |
+          you cannot use return inside a for...of loop, it would only leave
+          the loop and not the function, so a search has to be written with
+          a classic for loop and a counter that you increase yourself every
+          round.

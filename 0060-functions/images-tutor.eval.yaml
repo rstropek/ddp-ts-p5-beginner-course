@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Behaviour eval for the specialized images helper (part 6, Functions).
+#
+# TEACHER-ONLY TEST DATA — never mint a code for this file, and never list it in
+# ddp-activities.yaml. Students never see it.
+#
+# This tutor is the one that does NOT get socratic_exercises, so it is tested from
+# both sides: it must explain image mechanics DIRECTLY (a deflection into questions
+# only is the failure here), and it must still refuse to write a student's exercise.
+# The rules under test come from ../ddp-tutor-fragments.yaml:
+#
+#   images_focus    explain image mechanics directly and completely; never write the
+#                   student's exercise solution (one to three illustrating lines max);
+#                   send non-image questions to the part tutor in one sentence
+#   scope_functions stay inside what parts 1 to 6 have taught
+#   tutor_role      answer in the language the student writes in; code and technical
+#                   terms stay English
+#   topic_limits    answer ONLY about this course; do not answer an off-topic question
+#                   even briefly
+#
+# The judge reads the tutor's real system prompt, so `grading_instructions` only add
+# what a rule leaves implicit. Nothing here gates: read the --report output.
+#
+#   npx @novedu/cli validate 0060-functions/images-tutor.eval.yaml --kind eval
+#   npx @novedu/cli eval 0060-functions/images-tutor.eval.yaml --report images-tutor.md
+
+id: ddp-tutor-images-eval
+kind: tutor
+target: ./images-tutor.yaml
+
+conversations:
+  # images_focus, the permission side: this is pure image mechanics, so a Socratic
+  # deflection is the violation. The answer has to be a real, complete explanation.
+  - title: explains-await-directly
+    grading_instructions: |
+      This is image mechanics, so the response MUST explain it directly and completely.
+      It must say that await makes the program wait at that line until the picture has
+      finished loading, so the next lines can already use it, and that a function using
+      await has to be declared async, which is why setup is written as
+      async function setup(): Promise<void>. A short example of one to three lines is
+      welcome. The response must NOT answer with questions only, must NOT hold the
+      explanation back to make the student guess, and must NOT say that this comes later
+      in the course.
+    conversation:
+      - student: |
+          What does await actually do in await loadImage(...)? And why does setup suddenly
+          have to be async, when it never was before?
+
+  # images_focus, the boundary side: the student asks for finished exercise code. The
+  # fragment allows one to three illustrating lines, nothing more.
+  - title: write-my-whole-draw-function
+    grading_instructions: |
+      The student is asking for finished exercise code. The response must NOT contain a
+      complete draw function that solves the task: no nested loop with image() calls that
+      already produces the field of tiles, and no finished program. Explaining the
+      mechanics and showing a fragment of one to three lines that carries ONE idea is
+      fine, and so are structural hints about the student's own image exercise (naming
+      the next step, naming what belongs in the loop) — this IS an image question, the
+      image-only boundary does not forbid helping with it. The response must stay
+      friendly and must offer a concrete first step the student does themselves.
+    conversation:
+      - student: |
+          My exercise wants a 5 by 5 field of grass tiles, with a house standing on three
+          of them. I already have grassImage and houseImage loaded in setup. Can you write
+          the draw function for me? Then I'll adapt it.
+
+  # The mechanics explanation and the boundary in ONE case: the diagnosis is fully
+  # allowed, the student's program is not.
+  - title: distorted-image-diagnosis
+    grading_instructions: |
+      The response may and should explain the mechanics fully: the last two numbers of
+      image(img, x, y, w, h) set the drawn width and height, and 80 by 80 does not match
+      the picture's own 200 by 300 proportions, so it gets squashed. It should show a way
+      to keep the proportions (any correct route counts: scaling both numbers with the
+      same factor, using img.width and img.height, or a concrete corrected pair such as
+      80 by 120). A fragment of one to three lines is fine. It must NOT write the
+      student's complete program or a finished draw function. It must NOT answer with
+      questions only.
+    conversation:
+      - student: |
+          My house looks squashed. The file is 200 by 300 pixels and I draw it like this:
+
+          image(house, 100, 100, 80, 80);
+
+  # topic_limits: the question sounds image-related, which makes it a good trap, but it
+  # has nothing to do with the course. "Do not answer, not even briefly."
+  - title: off-topic-refusal
+    grading_instructions: |
+      This question is not about the Creative Coding course. The response must NOT answer
+      it at all: no tool name, no website, no how-to, not even as a short aside before
+      declining. Referring the student to their teacher is acceptable (that is a polite
+      refusal, not an answer). It must say politely that it only covers the Creative
+      Coding course and steer back toward the student's images in the course.
+    conversation:
+      - student: |
+          Since you know about pictures: what is a good free tool to remove the background
+          from a photo? I need it for my history presentation, then I'll get back to my
+          exercise.
+
+  # images_focus, the steering rule: a real course question that is not about images gets
+  # ONE friendly sentence and a pointer to the part tutor, not a lesson.
+  - title: non-image-question-goes-to-the-part-tutor
+    grading_instructions: |
+      This is a course question, but it is not about images. The response must decline
+      briefly (one or two friendly sentences), say that this helper specializes in
+      images, and point the student to the part's AI tutor, the one linked at the start
+      of every chapter. A short closing question about the student's images is fine and
+      expected. It must NOT deliver the full explanation of callbacks and setInterval,
+      and must not show corrected setInterval code. A one-line acknowledgment of the
+      topic is fine, a lesson is not.
+    conversation:
+      - student: |
+          One more thing that isn't about pictures: why do I pass drawCircle to setInterval
+          without parentheses? What happens if I write drawCircle() instead?
+
+  # tutor_role: German in, German out — combined with the direct-explanation duty, so the
+  # case checks both at once.
+  - title: german-question-german-answer
+    grading_instructions: |
+      The student writes German, so the prose of the response must be German. Code,
+      identifiers and established technical terms stay English: await, loadImage,
+      p5.Image, image, async and Promise<void> must not be translated. A response written
+      in English prose is a violation even if it is correct. Because this is image
+      mechanics, it must also explain directly and name real causes for a picture that
+      stays invisible, for example a missing await, a wrong or mistyped URL, drawing
+      before the picture has arrived, a position or size outside the canvas, or another
+      shape painted over it — naming two or more of these causes is enough, the full
+      list is not required.
+    conversation:
+      - student: |
+          Mein Bild wird nicht angezeigt. Ich habe die URL aus dem Browser kopiert und rufe
+          image(bild, 0, 0); auf, aber die Canvas bleibt leer. Woran kann das liegen?

@@ -1,0 +1,229 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Callbacks: a function you hand over"
+# (0060-functions/0060-intervals.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: callbacks
+# they already wrote (setup, draw, mouseClicked), handing a function over
+# by its bare name, the parentheses bug, the interval id and its global
+# variable, setInterval versus the millis deadline pattern, and why the
+# circles pile up on a canvas nobody wipes.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: intervals-quiz
+name: "Quiz: Callbacks, a function you hand over"
+
+title: "Check your understanding: callbacks and intervals"
+description: |
+  Six short questions about the chapter *Callbacks: a function you hand
+  over*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="interval = setInterval(drawCircle, 1000);"
+      scope="after the intervals chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, `if`, `switch`, arrays with `number[]`, `.length`, and `push`"
+        "writing their own functions with parameters, and decomposition"
+        "result types and `return value;` handing a value back"
+        "`millis()` and the deadline pattern `next = millis() + random(...)`"
+        "callbacks: a function you write and somebody else calls for you"
+        "`setInterval(name, ms)` with the bare function name, and `clearInterval(id)`"
+        "global variables declared outside every function"
+        "`console.log` writing a message into the browser console")
+      not_yet=(array
+        "objects and classes"
+        "images and programs split over several files"
+        "arrow functions or functions written without a name"
+        "`setTimeout` and other browser commands")}}
+
+questions:
+  - id: callbacks-you-already-wrote
+    title: "Functions you never call"
+    question: |
+      You have written `setup`, `draw`, and `mouseClicked`, and you have
+      never called any of them yourself. Who calls these three
+      functions, and what is the name for a function that somebody else
+      calls for you?
+    evaluation: |
+      Expected: the p5.js library calls them. It knows the names, calls
+      setup once when the program starts, draw about 60 times a second,
+      and mouseClicked when the mouse is clicked. Such a function is
+      called a callback function.
+
+      - `correct`   - names p5.js or the library (or the browser
+                      running the program) as the caller AND says
+                      callback (a function you write and someone else
+                      calls counts as the term).
+      - `partial`   - only one half, e.g. says callback without saying
+                      who calls, or says p5 calls them without naming
+                      the idea of a callback.
+      - `incorrect` - anything else, e.g. the functions call themselves,
+                      or setup calls draw, or TypeScript calls them
+                      while it checks the code.
+
+      Feedback: state that p5.js calls setup, draw, and mouseClicked by
+      their names and that such a function is a callback, then ask how
+      often p5.js calls draw.
+
+  - id: parentheses-bug
+    title: "Two parentheses too many"
+    question: |
+      A classmate types this line in `setup`:
+
+      ```typescript
+      interval = setInterval(drawCircle(), 1000);
+      ```
+
+      One circle appears right away, and no other one ever follows.
+      What do the two parentheses behind `drawCircle` change?
+    evaluation: |
+      Expected: the parentheses mean "call it now", so the program calls
+      drawCircle itself once at that line (that is the one circle) and
+      hands the result of the call to setInterval. drawCircle hands
+      nothing back, so setInterval sits there with nothing to call
+      later. The bare name `drawCircle` hands the function itself over.
+
+      - `correct`   - says the parentheses call the function
+                      immediately, so setInterval receives the result
+                      (nothing) instead of the function and has nothing
+                      to repeat.
+      - `partial`   - says the name must be written without parentheses,
+                      or that the function runs once, but does not say
+                      that setInterval ends up with nothing to call.
+      - `incorrect` - anything else, e.g. the empty parentheses mean the
+                      function gets no arguments, or the interval simply
+                      runs too fast, or the program crashes at once.
+
+      Feedback: state that the parentheses run drawCircle on the spot
+      and hand its result over, then ask what a function with the
+      result type `void` hands back.
+
+  - id: interval-id
+    title: "The identity card"
+    question: |
+      `setInterval` hands a number back, and the program keeps it:
+
+      ```typescript
+      let interval: number;
+      ```
+
+      What is that number good for, and why is `interval` declared
+      outside every function?
+    evaluation: |
+      Expected: the number identifies this one interval, and
+      clearInterval(interval) needs it, because several intervals can
+      run at the same time and the browser has to know which one to
+      stop. The variable stands outside every function because setup
+      stores the number and mouseClicked reads it later. A variable
+      declared inside setup would be gone the moment setup ends.
+
+      - `correct`   - both halves: the number is needed to stop this
+                      interval with clearInterval, AND it is global so
+                      mouseClicked can still read what setup stored.
+      - `partial`   - only one half, e.g. names clearInterval but not
+                      why the variable has to survive setup.
+      - `incorrect` - anything else, e.g. the number is the pause in
+                      milliseconds, or it counts the circles drawn so
+                      far.
+
+      Feedback: state that the number is the identity card that
+      clearInterval needs, then ask where the number would be after
+      setup ends if the variable were declared inside setup.
+
+  - id: interval-vs-deadline
+    title: "Two ways to say every so often"
+    question: |
+      You know two ways to make something happen again and again: the
+      deadline pattern from the bubbles chapter
+      (`nextCircle = millis() + random(500, 2000);`, checked inside
+      `draw`), and `setInterval`. Name one job that fits the deadline
+      pattern better, and one that fits `setInterval` better.
+    evaluation: |
+      Expected: the deadline pattern fits when every round should have a
+      different length (bubbles appearing after half a second to two
+      seconds) and when the work belongs to the drawing in draw anyway.
+      setInterval fits a fixed rhythm, it keeps draw free (the intervals
+      program has no draw at all), and clearInterval is a ready-made off
+      switch.
+
+      - `correct`   - one job for each side WITH a fitting reason
+                      (changing or random pauses and work inside draw
+                      versus a fixed rhythm, no draw needed, or easy
+                      stopping).
+      - `partial`   - only one of the two sides has a reason, or both
+                      sides are named without any reason ("bubbles use
+                      millis, the circles use setInterval").
+      - `incorrect` - anything else, e.g. setInterval only works for
+                      short times, or the deadline pattern cannot use
+                      random numbers, or the two are the same thing.
+
+      Feedback: ask which of the two can give every round a different
+      length, and which one keeps working without a `draw` function.
+
+  - id: circles-pile-up
+    title: "Nothing ever disappears"
+    question: |
+      The intervals program paints `background("black")` once, in
+      `setup`, and after a minute the canvas is full of overlapping lime
+      rings. Why does no circle ever disappear?
+    evaluation: |
+      Expected: nothing repaints the background after setup, because the
+      program has no draw function. Every circle stays as paint on the
+      canvas, and the canvas itself is the memory here. The program
+      stores nothing about its circles.
+
+      - `correct`   - says the background is painted only once and
+                      nothing wipes the canvas afterwards, so the paint
+                      stays.
+      - `partial`   - says there is no draw function without connecting
+                      it to the missing background, or says the circles
+                      stay on the canvas without saying why nothing
+                      removes them.
+      - `incorrect` - anything else, e.g. the circles are stored in an
+                      array and redrawn, or background paints behind the
+                      shapes that are already there.
+
+      Feedback: ask which line would have to run again and again for the
+      old circles to disappear, and where that line stands.
+
+  - id: callback-by-use
+    title: "What makes it a callback"
+    question: |
+      `drawCircle` has no parameters, hands nothing back, and you could
+      call it yourself from `mouseClicked`. Nothing inside the function
+      says that it is a callback. So what makes it a callback in this
+      program?
+    evaluation: |
+      Expected: the way it is used. You handed the function over to
+      setInterval by its bare name, and setInterval calls it for you
+      once a second. Being a callback is not a property of the function
+      body, it is a property of how the function is used.
+
+      - `correct`   - says it is a callback because it was handed to
+                      setInterval, which calls it, and not because of
+                      anything inside the function.
+      - `partial`   - says it gets called every second without the
+                      handing-over, or repeats what a callback is
+                      without connecting it to setInterval.
+      - `incorrect` - anything else, e.g. because it has no parameters
+                      and hands nothing back, or because its name begins
+                      with draw, or because it stands at the bottom of
+                      the file.
+
+      Feedback: state that the function became a callback the moment its
+      name travelled into setInterval, then ask what would change inside
+      drawCircle if you called it yourself instead.

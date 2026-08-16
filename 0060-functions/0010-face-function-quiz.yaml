@@ -1,0 +1,240 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Your own commands: functions"
+# (0060-functions/0010-face-function.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: defining
+# versus calling a function, parameter versus argument, the jump into the
+# body and the return to the line after the call, the complete signature
+# with `: void`, a definition that nobody calls, and why one parameter
+# beats two nearly identical functions.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: face-function-quiz
+name: "Quiz: Your own commands"
+
+title: "Check your understanding: your own commands"
+description: |
+  Six short questions about the chapter *Your own commands: functions*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="smile(true);"
+      scope="after the face function chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "variables with types, `if`/`else`, booleans, and the `not` operator `!`"
+        "loops, `translate`, `push`/`pop`, `rotate`, and `scale`"
+        "arrays, element access, `.length`, and parallel arrays"
+        "defining a function of their own with `function name(...): void`"
+        "parameters in the definition and arguments in the call"
+        "that a call jumps into the body and comes back to the next line"
+        "the course rule that every parameter and every result gets a type"
+        "a variable declared outside all functions, so every function sees it")
+      not_yet=(array
+        "functions that hand a value back with `return`"
+        "handing a function to another function as an argument"
+        "splitting a program over several files"
+        "objects and classes")}}
+
+questions:
+  - id: definition-vs-call
+    title: "Two lines, two jobs"
+    question: |
+      A program contains these lines in two different places:
+
+      ```typescript
+      function smile(happy: boolean): void {
+          // drawing code
+      }
+      ```
+
+      ```typescript
+      smile(true);
+      ```
+
+      What is the job of the first line, and what is the job of the
+      second one?
+    evaluation: |
+      Expected: the first is the definition. It teaches the computer
+      the new command and writes down the recipe; on its own it draws
+      nothing. The second is the call. It runs the body now.
+
+      - `correct`   - both jobs, in the right pairing: definition
+                      describes or teaches the command, call runs it
+                      ("erklären" and "ausführen" count, as does
+                      "writes the recipe" and "uses it").
+      - `partial`   - names one line correctly and leaves the other
+                      vague or unnamed, or says both are about `smile`
+                      without saying which one runs the body.
+      - `incorrect` - anything else, in particular swapping the two
+                      (calling the first line the call), or saying the
+                      definition already draws a face.
+
+      Feedback: state that the first line defines the command and the
+      second one runs it, then ask which of the two lines makes a face
+      appear on the canvas.
+
+  - id: parameter-vs-argument
+    title: "Parameter or argument"
+    question: |
+      In the definition `function smile(happy: boolean): void` and in
+      the call `smile(true);`, one of the two words `happy` and `true`
+      is the parameter and the other one is the argument. Which is
+      which, and what is the difference between them?
+    evaluation: |
+      Expected: `happy` is the parameter, the variable written in the
+      definition that has no value of its own. `true` is the argument,
+      the value the caller hands over for this one run and that fills
+      the parameter.
+
+      - `correct`   - both names assigned correctly AND the difference
+                      stated: parameter stands in the definition and
+                      waits for a value, argument is the actual value
+                      in the call.
+      - `partial`   - both names assigned correctly but the difference
+                      not explained, or the difference explained
+                      correctly while only one of the two words is
+                      named.
+      - `incorrect` - anything else, especially swapping the two words
+                      (`true` called the parameter).
+
+      Feedback: state that `happy` is the parameter and `true` is the
+      argument, then point out which of the two is written in the
+      definition.
+
+  - id: jump-and-return
+    title: "Where the computer goes"
+    question: |
+      `setup` contains these three lines, and `smile` is defined
+      somewhere else in the same file:
+
+      ```typescript
+      createCanvas(500, 500);
+      smile(true);
+      circle(50, 50, 20);
+      ```
+
+      What does the computer do when it reaches `smile(true);`, and
+      which line runs after the face is finished?
+    evaluation: |
+      Expected: it remembers where it was, jumps into the body of
+      `smile`, runs those statements from top to bottom, and then comes
+      back to the line right after the call. So `circle(50, 50, 20);`
+      runs next.
+
+      - `correct`   - the jump into the body AND the return to
+                      `circle(50, 50, 20);` ("goes into the function
+                      and comes back" counts).
+      - `partial`   - says the function runs but does not say where the
+                      program continues afterwards, or names `circle`
+                      as the next line without the jump into the body.
+      - `incorrect` - anything else, for example that the program stops
+                      there, that `circle` never runs, or that the rest
+                      of `setup` runs before the face is drawn.
+
+      Feedback: state that the computer runs the body of `smile` and
+      then continues with `circle(50, 50, 20);`, then ask them to
+      follow the same path with a finger on paper.
+
+  - id: void-signature
+    title: "Reading `: void`"
+    question: |
+      Here is the first line of a function:
+
+      ```typescript
+      function drawStar(size: number): void {
+      ```
+
+      What does `: void` at the end tell you about this function? And
+      what does the course rule about a complete signature ask you to
+      write in every function you define?
+    evaluation: |
+      Expected: `: void` means the function gives nothing back. It
+      draws and is then done. The course rule: every function names a
+      type for each parameter and a type for the result, so a
+      signature is never left half typed.
+
+      - `correct`   - `void` explained as nothing given back or no
+                      result ("gibt nichts zurück" counts) AND the rule
+                      that parameters and the result both get a type.
+      - `partial`   - one of the two halves, for example `void`
+                      explained correctly with no word about the rule.
+      - `incorrect` - anything else, for example that `void` means the
+                      function has no parameters, that it means the
+                      function is empty, or that it draws nothing.
+
+      Feedback: state that `: void` means the function hands no value
+      back, then point at `size: number` as the other half of the
+      complete signature.
+
+  - id: never-called
+    title: "The empty canvas"
+    question: |
+      A classmate writes a `smile` function with all the drawing code
+      correctly inside it. Their `setup` contains only
+      `createCanvas(500, 500);`. They run the program and the canvas
+      stays empty. What is missing, and why does the definition alone
+      draw nothing?
+    evaluation: |
+      Expected: nobody calls `smile`, so a line like `smile(true);`
+      inside `setup` is missing. A definition only teaches the command;
+      the statements in the body run when somebody calls the function,
+      and never before.
+
+      - `correct`   - names the missing call AND says a definition on
+                      its own never runs ("er ruft die funktion nie
+                      auf" counts, as does adding `smile(true);` to
+                      `setup`).
+      - `partial`   - says the call is missing without explaining why a
+                      definition draws nothing, or explains that
+                      definitions do not run while suggesting a
+                      different fix.
+      - `incorrect` - anything else, for example that the function must
+                      stand above `setup`, that the drawing code is
+                      wrong, or that `createCanvas` overwrites the
+                      face.
+
+      Feedback: state that the program never calls `smile` and that a
+      definition alone runs nothing, then ask which single line in
+      `setup` would make a face appear.
+
+  - id: why-parameter
+    title: "One function or two"
+    question: |
+      Instead of one `smile(happy: boolean)` function you could write
+      two functions, `drawHappyFace` and `drawSadFace`, with almost the
+      same body. Why is the version with the parameter the better one?
+    evaluation: |
+      Expected: the drawing code exists only once, so one function does
+      both jobs and the caller picks the face with a single value. With
+      two functions every change, for example to the eyes, has to be
+      made twice and the two bodies drift apart.
+
+      - `correct`   - names the single body reused for both faces OR
+                      the change-it-once benefit, in either wording
+                      ("man muss es nur einmal ändern" counts).
+      - `partial`   - says only that it is shorter or that there is
+                      less code, without the idea that the same body
+                      serves both faces or has to be changed in one
+                      place.
+      - `incorrect` - anything else, for example that two functions
+                      would not work at all, or that a parameter makes
+                      the program run faster.
+
+      Feedback: state that one body serves both faces so a change to
+      the eyes is made once, then ask what they would have to do with
+      two functions after changing the eyes.

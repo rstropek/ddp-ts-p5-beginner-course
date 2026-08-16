@@ -1,0 +1,179 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="536" height="432" class="svgbob">
+  <style>.svgbob line, .svgbob path, .svgbob circle, .svgbob rect, .svgbob polygon {
+  stroke: black;
+  stroke-width: 2;
+  stroke-opacity: 1;
+  fill-opacity: 1;
+  stroke-linecap: round;
+  stroke-linejoin: miter;
+}
+
+.svgbob text {
+  white-space: pre;
+  fill: black;
+  font-family: Iosevka Fixed, monospace;
+  font-size: 14px;
+}
+
+.svgbob rect.backdrop {
+  stroke: none;
+  fill: white;
+}
+
+.svgbob .broken {
+  stroke-dasharray: 8;
+}
+
+.svgbob .filled {
+  fill: black;
+}
+
+.svgbob .bg_filled {
+  fill: white;
+  stroke-width: 1;
+}
+
+.svgbob .nofill {
+  fill: white;
+}
+
+.svgbob .end_marked_arrow {
+  marker-end: url(#arrow);
+}
+
+.svgbob .start_marked_arrow {
+  marker-start: url(#arrow);
+}
+
+.svgbob .end_marked_diamond {
+  marker-end: url(#diamond);
+}
+
+.svgbob .start_marked_diamond {
+  marker-start: url(#diamond);
+}
+
+.svgbob .end_marked_circle {
+  marker-end: url(#circle);
+}
+
+.svgbob .start_marked_circle {
+  marker-start: url(#circle);
+}
+
+.svgbob .end_marked_open_circle {
+  marker-end: url(#open_circle);
+}
+
+.svgbob .start_marked_open_circle {
+  marker-start: url(#open_circle);
+}
+
+.svgbob .end_marked_big_open_circle {
+  marker-end: url(#big_open_circle);
+}
+
+.svgbob .start_marked_big_open_circle {
+  marker-start: url(#big_open_circle);
+}
+
+</style>
+  <defs>
+    <marker id="arrow" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,0 0,4 4,2 0,0"></polygon>
+    </marker>
+    <marker id="diamond" viewBox="-2 -2 8 8" refX="4" refY="2" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <polygon points="0,2 2,0 4,2 2,4 0,2"></polygon>
+    </marker>
+    <marker id="circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="filled"></circle>
+    </marker>
+    <marker id="open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="2" class="bg_filled"></circle>
+    </marker>
+    <marker id="big_open_circle" viewBox="0 0 8 8" refX="4" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <circle cx="4" cy="4" r="3" class="bg_filled"></circle>
+    </marker>
+  </defs>
+  <rect class="backdrop" x="0" y="0" width="536" height="432"></rect>
+  <text x="2" y="12" >Function</text>
+  <text x="74" y="12" >definition</text>
+  <polygon points="0,196 8,196 4,208" class="filled"></polygon>
+  <text x="370" y="44" >the</text>
+  <text x="402" y="44" >keyword</text>
+  <text x="466" y="44" >function</text>
+  <polygon points="88,196 96,196 92,208" class="filled"></polygon>
+  <text x="370" y="76" >the</text>
+  <text x="402" y="76" >name</text>
+  <text x="442" y="76" >you</text>
+  <text x="474" y="76" >invent</text>
+  <polygon points="136,196 144,196 140,208" class="filled"></polygon>
+  <text x="370" y="108" >the</text>
+  <text x="402" y="108" >parameter</text>
+  <text x="482" y="108" >name</text>
+  <polygon points="200,196 208,196 204,208" class="filled"></polygon>
+  <text x="370" y="140" >the</text>
+  <text x="402" y="140" >parameter</text>
+  <text x="482" y="140" >type</text>
+  <polygon points="264,196 272,196 268,208" class="filled"></polygon>
+  <text x="370" y="172" >the</text>
+  <text x="402" y="172" >return</text>
+  <text x="458" y="172" >type</text>
+  <text x="442" y="236" >the</text>
+  <text x="474" y="236" >body</text>
+  <text x="2" y="300" >Function</text>
+  <text x="74" y="300" >call</text>
+  <polygon points="16,388 24,388 20,400" class="filled"></polygon>
+  <text x="162" y="332" >the</text>
+  <text x="194" y="332" >name</text>
+  <text x="234" y="332" >from</text>
+  <text x="274" y="332" >the</text>
+  <text x="306" y="332" >definition</text>
+  <polygon points="56,388 64,388 60,400" class="filled"></polygon>
+  <text x="162" y="364" >the</text>
+  <text x="194" y="364" >argument</text>
+  <text x="266" y="364" >you</text>
+  <text x="298" y="364" >pass</text>
+  <text x="338" y="364" >in</text>
+  <text x="162" y="412" >this</text>
+  <text x="202" y="412" >line</text>
+  <text x="242" y="412" >runs</text>
+  <text x="282" y="412" >the</text>
+  <text x="314" y="412" >function</text>
+  <text x="2" y="220" >function smile(happy: boolean): void {</text>
+  <text x="34" y="236" >// your drawing code goes here</text>
+  <text x="2" y="252" >}</text>
+  <text x="2" y="412" >smile(true);</text>
+  <g>
+    <line x1="4" y1="40" x2="360" y2="40" class="solid"></line>
+    <line x1="4" y1="40" x2="4" y2="196" class="solid"></line>
+  </g>
+  <g>
+    <line x1="92" y1="72" x2="360" y2="72" class="solid"></line>
+    <line x1="92" y1="72" x2="92" y2="196" class="solid"></line>
+  </g>
+  <g>
+    <line x1="140" y1="104" x2="360" y2="104" class="solid"></line>
+    <line x1="140" y1="104" x2="140" y2="196" class="solid"></line>
+  </g>
+  <g>
+    <line x1="204" y1="136" x2="360" y2="136" class="solid"></line>
+    <line x1="204" y1="136" x2="204" y2="196" class="solid"></line>
+  </g>
+  <g>
+    <line x1="268" y1="168" x2="360" y2="168" class="solid"></line>
+    <line x1="268" y1="168" x2="268" y2="196" class="solid"></line>
+  </g>
+  <g>
+    <line x1="404" y1="208" x2="404" y2="256" class="solid"></line>
+    <line x1="404" y1="232" x2="432" y2="232" class="solid"></line>
+  </g>
+  <g>
+    <line x1="20" y1="328" x2="152" y2="328" class="solid"></line>
+    <line x1="20" y1="328" x2="20" y2="388" class="solid"></line>
+  </g>
+  <g>
+    <line x1="60" y1="360" x2="152" y2="360" class="solid"></line>
+    <line x1="60" y1="360" x2="60" y2="388" class="solid"></line>
+  </g>
+</svg>

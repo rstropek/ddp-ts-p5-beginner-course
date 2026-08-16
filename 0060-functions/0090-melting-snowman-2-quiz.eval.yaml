@@ -1,0 +1,179 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0090-melting-snowman-2-quiz.yaml ("Finish the game").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: melting-snowman-2-quiz-eval
+target: ./0090-melting-snowman-2-quiz.yaml
+
+questions:
+  - question: logic-vs-drawing
+    answers:
+      - expect: correct
+        answer: |
+          guessKey gets strings and gives a string back, so you can write down
+          what you put in, follow the lines and compare the result. drawSnowman
+          only makes a picture, there you can only look at the canvas.
+      - expect: correct
+        answer: |
+          bei guessKey kann man das ergebnis auf papier ausrechnen und mit dem
+          rückgabewert vergleichen. beim schneemann sieht man nur das bild.
+      # Notices the return value but not why that helps.
+      - expect: partial
+        answer: |
+          because guessKey returns something and drawSnowman returns void
+      # Half the comparison: nothing about the drawing function.
+      - expect: partial
+        answer: |
+          you can follow guessKey line by line with a word and see what comes
+          out
+      - expect: incorrect
+        answer: |
+          drawSnowman is much longer and has too many shapes to follow on paper,
+          guessKey is short enough.
+      - expect: incorrect
+        answer: |
+          guessKey can be checked on paper because it has no loop in it, and
+          drawSnowman has loops for the buttons and the mouth.
+
+  - question: initial-status-space
+    answers:
+      - expect: correct
+        answer: |
+          ____ ___
+      - expect: correct
+        answer: |
+          vier unterstriche, dann ein leerzeichen, dann drei unterstriche
+      # Wrong count of underscores.
+      - expect: partial
+        answer: |
+          ___ ___
+      # The space becomes an underscore.
+      - expect: partial
+        answer: |
+          ________
+      # The space is dropped completely, so the string gets shorter.
+      - expect: partial
+        answer: |
+          _______
+      - expect: incorrect
+        answer: |
+          _ _, one underscore for each word in the sentence.
+      - expect: incorrect
+        answer: |
+          cold day, the function only copies the word and the underscores come
+          later.
+
+  - question: wrong-guess-signal
+    answers:
+      - expect: correct
+        answer: |
+          if the letter is not in the word the returned string is exactly the
+          same as the old one, and index.ts compares them. if they are equal it
+          counts a wrong guess.
+      - expect: correct
+        answer: |
+          wenn sich nichts geändert hat, ist der zurückgegebene string gleich
+          wie vorher. genau das prüft index.ts und zählt dann wrongGuesses hoch.
+      # The unchanged string, but nothing about who checks it.
+      - expect: partial
+        answer: |
+          because nothing in the string changes when the letter is not there
+      # The comparison without what an equal string means.
+      - expect: partial
+        answer: |
+          index.ts compares the old status with the new one with ===
+      - expect: incorrect
+        answer: |
+          guessKey returns an empty string when the letter is not in the word,
+          and index.ts checks for that.
+      # Confident and technical, but the responsibility is in the wrong place.
+      - expect: incorrect
+        answer: |
+          guessKey counts the wrong guesses itself and writes them into the
+          global variable wrongGuesses, index.ts only reads it.
+
+  - question: lowercase-compare
+    answers:
+      - expect: correct
+        answer: |
+          w and W are not the same character, so === would be false and the
+          first letter would stay hidden forever. with toLowerCase both sides
+          are small and the capital does not matter anymore.
+      - expect: correct
+        answer: |
+          weil 'w' und 'W' für den vergleich verschiedene zeichen sind. mit
+          toLowerCase() sind beide seiten klein und der buchstabe wird gefunden.
+      # Talks about capitals but never says the comparison would fail.
+      - expect: partial
+        answer: |
+          so that everything is in small letters
+      - expect: partial
+        answer: |
+          because the word starts with a capital letter and the player types a
+          small one
+      - expect: incorrect
+        answer: |
+          toLowerCase makes wordToGuess small so the word itself is stored in
+          small letters from then on.
+      - expect: incorrect
+        answer: |
+          it is not really needed, === ignores capital letters in TypeScript
+          anyway, it is just cleaner.
+
+  - question: reveal-original
+    answers:
+      - expect: correct
+        answer: |
+          it puts the typed letter into the status, so you get winterwald with a
+          small w. the win check compares the status with Winterwald and those
+          two strings are never equal.
+      - expect: correct
+        answer: |
+          da landet der kleine buchstabe im status statt dem originalzeichen.
+          currentWordStatus === wordToGuess wird dann nie true, also kann man
+          nicht gewinnen. richtig wäre wordToGuess[i].
+      # Sees the lost capital, misses the win comparison.
+      - expect: partial
+        answer: |
+          the W is shown as a small w, so the word on the screen looks wrong
+      # Names the fix without any reason.
+      - expect: partial
+        answer: |
+          you have to write wordToGuess[i] there instead of key
+      - expect: incorrect
+        answer: |
+          key is empty inside guessKey, that is why the string never becomes
+          the word.
+      - expect: incorrect
+        answer: |
+          the letters land in the wrong positions because key is added at the
+          end of the string every time.
+
+  - question: await-font
+    answers:
+      - expect: correct
+        answer: |
+          await waits until the font has finished loading before the next lines
+          run. without it the program would already draw text while the font is
+          still coming from the internet.
+      - expect: correct
+        answer: |
+          await heisst warte hier bis es da ist. erst dann läuft die nächste
+          zeile, sonst wäre die schrift beim zeichnen noch nicht geladen.
+      # The waiting, no reason.
+      - expect: partial
+        answer: |
+          it waits for loadFont to be finished
+      # Only the async and return type part, nothing about waiting.
+      - expect: partial
+        answer: |
+          because setup is async its return type is Promise<void> instead of
+          void
+      - expect: incorrect
+        answer: |
+          await makes the download faster because the browser gets the font with
+          priority.
+      - expect: incorrect
+        answer: |
+          it repeats loadFont until the font finally arrives, like a loop that
+          keeps trying.

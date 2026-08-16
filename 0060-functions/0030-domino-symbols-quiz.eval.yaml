@@ -1,0 +1,182 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0030-domino-symbols-quiz.yaml
+# ("Switch and the symbols domino").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: domino-symbols-quiz-eval
+target: ./0030-domino-symbols-quiz.yaml
+
+questions:
+  - question: missing-break
+    answers:
+      - expect: correct
+        answer: |
+          the triangle and the star are drawn on top of each other,
+          because without break the computer just keeps going into case 4
+          without checking it
+      - expect: correct
+        answer: |
+          ohne break läuft es einfach in den nächsten fall weiter, also
+          sieht man das dreieck und den stern übereinander.
+      # Mechanism named, canvas result missing.
+      - expect: partial
+        answer: |
+          case 4 runs as well
+      # Symptom seen, no reason given.
+      - expect: partial
+        answer: |
+          two symbols are drawn over each other on the same half
+      - expect: incorrect
+        answer: |
+          nothing is drawn for 3, the case is skipped because it is not
+          finished properly.
+      # Fluent and confident, but the wrong amount of fall-through.
+      - expect: incorrect
+        answer: |
+          the switch loses track after the broken case and draws all six
+          symbols one after the other on the same spot.
+
+  - question: why-no-default
+    answers:
+      - expect: correct
+        answer: |
+          default runs when no case matched. here the roll is always 1 to
+          6 and each of those has its own case, so there is nothing left
+          over
+      - expect: correct
+        answer: |
+          default kommt dran, wenn kein case passt. der wurf liefert nur
+          zahlen von 1 bis 6 und für jede gibt es einen fall.
+      # Only what default does.
+      - expect: partial
+        answer: |
+          default is the case that runs when nothing else fits
+      # Only the reason, default itself never explained.
+      - expect: partial
+        answer: |
+          because every number from 1 to 6 already has its own case
+      - expect: incorrect
+        answer: |
+          default always runs at the end of the switch after the matching
+          case.
+      - expect: incorrect
+        answer: |
+          default is checked first and then the cases below it.
+
+  - question: rectmode-reset
+    answers:
+      - expect: correct
+        answer: |
+          rectMode(CENTER) stays on afterwards, so the next rect takes its
+          x and y as the center. the black tile drawn with rect(0, 0, ...)
+          would sit around the corner point and land half outside
+      - expect: correct
+        answer: |
+          die einstellung bleibt aktiv, auch nach dem case. dann zeichnet
+          das nächste rect von der mitte aus und die schwarze fläche
+          rutscht an die falsche stelle.
+      # Correct, but padded with facts the question did not ask about.
+      - expect: correct
+        answer: |
+          rectMode is one of those drawing settings like stroke or fill
+          that p5 keeps until you change them again, the same way
+          strokeWeight stays. so if you never switch back to CORNER, every
+          rect after that case reads its first two numbers as the center
+          point, and the black tile of the domino ends up in the wrong
+          place.
+      # Setting noticed, no consequence named.
+      - expect: partial
+        answer: |
+          then rectMode is still on CENTER
+      # Consequence without the surviving setting.
+      - expect: partial
+        answer: |
+          a rectangle later in the program is in the wrong position
+      - expect: incorrect
+        answer: |
+          the square of case 1 itself comes out at the wrong place.
+      - expect: incorrect
+        answer: |
+          the program stops with an error because rectMode was never
+          closed.
+
+  - question: constants-inside
+    answers:
+      - expect: correct
+        answer: |
+          if only one function needs a value it goes inside that function.
+          diceSize is used by drawDomino and drawSymbol, so it has to be
+          at the top
+      # Terse but both halves present.
+      - expect: correct
+        answer: |
+          shared by several functions -> top of the file, used by one
+          only -> inside it
+      - expect: correct
+        answer: |
+          werte, die nur eine funktion braucht, gehören in die funktion.
+          nur gemeinsame werte stehen ganz oben.
+      # One half only.
+      - expect: partial
+        answer: |
+          diceSize is at the top because drawDomino needs it too
+      # Other half only.
+      - expect: partial
+        answer: |
+          centerX and size are only used in drawSymbol
+      - expect: incorrect
+        answer: |
+          constants always belong at the top of the file, that is the
+          rule.
+      - expect: incorrect
+        answer: |
+          a const inside a function would be forgotten after the first
+          call, so only small values may go there.
+
+  - question: same-skeleton
+    answers:
+      - expect: correct
+        answer: |
+          the structure does not depend on what is drawn. drawDomino only
+          knows that a tile has two halves, so you can hang a new body on
+          the same skeleton
+      - expect: correct
+        answer: |
+          das gerüst bleibt gleich, nur der inhalt der hälften ändert
+          sich. drawDomino ist egal, ob dort punkte oder sterne stehen.
+      # Only the observation, no insight about structure.
+      - expect: partial
+        answer: |
+          a lot of the code is the same so you can copy it
+      - expect: incorrect
+        answer: |
+          it means both programs are really the same program with two
+          names.
+      # Fluent but the opposite conclusion.
+      - expect: incorrect
+        answer: |
+          it shows that drawDomino has to be rewritten for every new kind
+          of symbol, which is why there are two versions of it.
+
+  - question: force-one-symbol
+    answers:
+      - expect: correct
+        answer: |
+          with a fixed number you decide which case runs, so you see the
+          case you just wrote right away
+      - expect: correct
+        answer: |
+          weil man dann selbst bestimmt, welcher fall drankommt. sonst
+          muss man so lange starten, bis der zufall die richtige zahl
+          liefert.
+      # Vague ease claim without the control over which case runs.
+      - expect: partial
+        answer: |
+          it is easier and faster to test that way
+      - expect: incorrect
+        answer: |
+          because random does not work together with switch.
+      - expect: incorrect
+        answer: |
+          a const is faster than a random number, so the program starts
+          quicker while you work.

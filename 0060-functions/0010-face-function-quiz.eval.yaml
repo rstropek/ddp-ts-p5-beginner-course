@@ -1,0 +1,194 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0010-face-function-quiz.yaml ("Your own commands").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: face-function-quiz-eval
+target: ./0010-face-function-quiz.yaml
+
+questions:
+  - question: definition-vs-call
+    answers:
+      - expect: correct
+        answer: |
+          the first line defines the function, it just tells the computer
+          what smile does. the second line calls it, so the face is drawn
+      # Terse paraphrase without the technical words.
+      - expect: correct
+        answer: |
+          first one teaches the command, second one runs it
+      - expect: correct
+        answer: |
+          oben steht die definition, das ist nur das rezept. unten wird
+          die funktion aufgerufen und erst dann wird gezeichnet.
+      # One line named, the other left vague.
+      - expect: partial
+        answer: |
+          the second line is the call
+      # Both lines noticed, but nobody says which one runs the body.
+      - expect: partial
+        answer: |
+          both lines belong to the smile function and use the same name
+      # Swapped definition and call, stated confidently.
+      - expect: incorrect
+        answer: |
+          the first line is the call of smile and the second line defines
+          what smile does.
+      - expect: incorrect
+        answer: |
+          the first line already draws a face, the second one draws a
+          second face with the same code.
+
+  - question: parameter-vs-argument
+    answers:
+      - expect: correct
+        answer: |
+          happy is the parameter, it stands in the definition and has no
+          value yet. true is the argument, the value you give when you
+          call it
+      - expect: correct
+        answer: |
+          happy ist der parameter in der definition, true ist das
+          argument beim aufruf. der aufrufer entscheidet also, was in
+          happy landet.
+      # Both names right, difference never explained.
+      - expect: partial
+        answer: |
+          happy is the parameter and true is the argument
+      # Difference understood, only one of the two words named.
+      - expect: partial
+        answer: |
+          the argument is the value you hand over when you call the
+          function
+      # Swapped, in confident wording.
+      - expect: incorrect
+        answer: |
+          true is the parameter because it is the thing that gets passed,
+          and happy is the argument in the definition.
+      - expect: incorrect
+        answer: |
+          they are the same thing, argument is just the english word for
+          parameter.
+
+  - question: jump-and-return
+    answers:
+      - expect: correct
+        answer: |
+          it jumps into the body of smile, runs everything there, and then
+          comes back and runs circle(50, 50, 20)
+      - expect: correct
+        answer: |
+          der computer merkt sich die stelle, springt in die funktion,
+          zeichnet das gesicht und macht dann bei circle(50, 50, 20)
+          weiter.
+      # Correct but padded with facts the question did not ask for.
+      - expect: correct
+        answer: |
+          smile is a function that was defined somewhere else in the file,
+          the order in the file does not matter at all, and true is a
+          boolean argument for the parameter happy. when the computer
+          reaches the call it remembers the place, goes into the body,
+          runs all the drawing statements from top to bottom, and then
+          returns to the next line, which is circle(50, 50, 20).
+      # Function runs, but no word about where the program continues.
+      - expect: partial
+        answer: |
+          the smile function runs and draws a happy face
+      # Next line named without the jump into the body.
+      - expect: partial
+        answer: |
+          after that circle(50, 50, 20) is the next line
+      - expect: incorrect
+        answer: |
+          the rest of setup runs first and the face is drawn at the very
+          end of the program.
+      - expect: incorrect
+        answer: |
+          the program stops at the call, circle never runs.
+
+  - question: void-signature
+    answers:
+      - expect: correct
+        answer: |
+          void means the function gives nothing back, it only draws. the
+          rule says every parameter needs a type and the result needs one
+          too
+      - expect: correct
+        answer: |
+          void heisst, dass nichts zurückkommt. in diesem kurs bekommt
+          jeder parameter einen typ und das ergebnis auch.
+      # Only the void half.
+      - expect: partial
+        answer: |
+          it means the function returns nothing
+      # Only the rule half.
+      - expect: partial
+        answer: |
+          every function has to say the types, like size: number
+      # Fluent, technical, and decisively wrong about what void says.
+      - expect: incorrect
+        answer: |
+          the void at the end of the signature says that the function has
+          no parameters, that is why setup is written as setup(): void.
+      - expect: incorrect
+        answer: |
+          void means the function body is still empty and has to be
+          filled in later.
+
+  - question: never-called
+    answers:
+      - expect: correct
+        answer: |
+          nobody calls smile. a definition is only the recipe, it runs
+          when you call it, so setup needs smile(true);
+      - expect: correct
+        answer: |
+          die funktion wird nie aufgerufen. definieren allein zeichnet
+          nichts, in setup fehlt smile(true);
+      # Missing call spotted, but no reason why a definition draws nothing.
+      - expect: partial
+        answer: |
+          the call is missing
+      # Right idea about definitions, wrong fix.
+      - expect: partial
+        answer: |
+          a definition does not run by itself, they should put the drawing
+          code directly into setup instead
+      - expect: incorrect
+        answer: |
+          the smile function has to stand above setup in the file,
+          otherwise setup cannot see it.
+      - expect: incorrect
+        answer: |
+          createCanvas paints over the face because it runs after the
+          function.
+
+  - question: why-parameter
+    answers:
+      - expect: correct
+        answer: |
+          you write the drawing code only once and the parameter decides
+          which face comes out
+      - expect: correct
+        answer: |
+          weil man die augen nur an einer stelle ändern muss. mit zwei
+          funktionen müsste man alles doppelt ändern.
+      # Length claim only, no reuse or single-place-to-change idea.
+      - expect: partial
+        answer: |
+          it is shorter and there is less code
+      # Correct, but padded with chapter facts that were not asked for.
+      - expect: correct
+        answer: |
+          the smile function uses if (happy) twice, once for the fill color
+          and once for the mouth arc, and it also has push, translate and
+          scale around the drawing. the important part is that the whole
+          body exists only one time, so both faces come out of the same
+          code and one change to the eyes reaches both of them.
+      - expect: incorrect
+        answer: |
+          two separate functions would not work, typescript does not allow
+          two functions that draw the same shapes.
+      - expect: incorrect
+        answer: |
+          a parameter makes the program faster because the computer only
+          loads one function.

@@ -1,0 +1,219 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Finish the game: logic functions"
+# (0060-functions/0090-melting-snowman-2.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: logic
+# functions against drawing functions, the initial word status string, the
+# unchanged return value as the signal for a wrong guess, toLowerCase for the
+# comparison while the original character is revealed, and await in setup.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: melting-snowman-2-quiz
+name: "Quiz: Finish the game, logic functions"
+
+title: "Check your understanding: finish the game with logic functions"
+description: |
+  Six short questions about the chapter *Finish the game: logic
+  functions*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="currentWordStatus = guessKey(key, wordToGuess, currentWordStatus);"
+      scope="after the second Melting Snowman chapter of the Functions part"
+      knows=(array
+        "drawing commands, loops, conditions, `switch`, arrays, and strings with indexes"
+        "their own functions with parameters, return values, and `: void`"
+        "a program split over several files that share one global scope"
+        "`noLoop()`, `redraw()`, the `keyPressed` callback, and the variable `key`"
+        "logic functions that take strings and return strings, checkable on paper"
+        "building a string with the accumulator pattern"
+        "`toLowerCase()`, which returns a copy in small letters"
+        "comparing whole strings with `===`"
+        "`await` read as: wait here until it has arrived, in an `async` function")
+      not_yet=(array
+        "how promises work behind `await`"
+        "`loadImage` and drawing pictures from a file"
+        "objects and classes"
+        "arrays of arrays")}}
+
+questions:
+  - id: logic-vs-drawing
+    title: "Two kinds of function"
+    question: |
+      `guessKey` returns a string, and `drawSnowman` returns nothing and
+      paints on the canvas. Why can you check `guessKey` on paper, but not
+      `drawSnowman`?
+    evaluation: |
+      Expected: guessKey is a logic function. You pass values in, follow
+      the code line by line, and compare the returned string with what you
+      expected, without running the program. drawSnowman only produces
+      pixels, so the only way to judge it is to look at the picture.
+
+      - `correct`   - says a logic function takes values and returns a
+                      value you can work out and compare by hand, while a
+                      drawing function only makes a picture you have to
+                      look at.
+      - `partial`   - says guessKey returns something and drawSnowman does
+                      not, without the checking-by-hand idea, or says it
+                      can be checked on paper without saying why the
+                      drawing function cannot.
+      - `incorrect` - anything else, e.g. drawSnowman is too long to
+                      follow, or guessKey is easier because it has fewer
+                      parameters.
+
+      Feedback: what do you compare your paper result with in each case,
+      a value or a picture?
+
+  - id: initial-status-space
+    title: "The first status string"
+    question: |
+      `getInitialCurrentWord` builds the first value of
+      `currentWordStatus`: an underscore for every letter, and a space
+      where the word has a space. What exactly does it return for the word
+      `"cold day"`?
+    evaluation: |
+      Expected: "____ ___" — four underscores, one space, three
+      underscores. The result is exactly as long as the word (8
+      characters).
+
+      - `correct`   - four underscores, a space, three underscores, in that
+                      order (drawn, written out in words, or as the exact
+                      string).
+      - `partial`   - the right idea but a wrong count of underscores, or
+                      an underscore in place of the space, or the space
+                      dropped so the two parts run together.
+      - `incorrect` - anything else, e.g. one underscore per word, or the
+                      word itself.
+
+      Feedback: state the exact result '____ ___' and count with the
+      student: cold has four letters, then the space, then day with three.
+
+  - id: wrong-guess-signal
+    title: "How a wrong guess is noticed"
+    question: |
+      `guessKey` returns only a string and never says whether the guess
+      was good or bad. How does `index.ts` still know that a guess was
+      wrong?
+    evaluation: |
+      Expected: when the letter is not in the word, guessKey returns a
+      string identical to the status that went in. The caller compares the
+      old status with the returned one, and when they are equal nothing was
+      revealed, so wrongGuesses goes up by one.
+
+      - `correct`   - says the returned string is unchanged for a wrong
+                      guess and that the caller compares old and new to
+                      notice it.
+      - `partial`   - says nothing changes on the screen or in the string,
+                      without the comparison in the caller, or describes
+                      the comparison without saying what an unchanged
+                      string means.
+      - `incorrect` - anything else, e.g. guessKey returns an empty string,
+                      it returns false, or it counts the wrong guesses
+                      itself.
+
+      Feedback: point at the line `if (currentWordStatus ===
+      newCurrentWordStatus)` and ask what it means when those two strings
+      are the same.
+
+  - id: lowercase-compare
+    title: "Small letters for the comparison"
+    question: |
+      The word to guess is `"Winterwald"` with a capital W, and the player
+      presses the w key. Why does `guessKey` compare
+      `key.toLowerCase()` with `wordToGuess[i].toLowerCase()` instead of
+      comparing the two characters directly?
+    evaluation: |
+      Expected: 'w' and 'W' are different characters, so === would say
+      false and the first letter could never be revealed. toLowerCase()
+      returns a copy of the string in small letters, so both sides are
+      compared in the same form and the guess works whatever the shift key
+      did. The original word is not changed by the call.
+
+      - `correct`   - says a small letter and a capital letter are not
+                      equal for ===, so without toLowerCase the letter
+                      would never be found; lowercasing both sides makes
+                      the comparison ignore capitals.
+      - `partial`   - says it is about capital letters or that it makes
+                      everything small, without the point that the
+                      comparison would otherwise fail.
+      - `incorrect` - anything else, e.g. toLowerCase changes wordToGuess
+                      itself, or TypeScript compares letters without
+                      caring about capitals anyway.
+
+      Feedback: ask what `'w' === 'W'` gives, and what both sides look like
+      after toLowerCase().
+
+  - id: reveal-original
+    title: "Which character goes in"
+    question: |
+      Inside the loop of `guessKey`, a classmate wrote this when the
+      comparison matched:
+
+      ```typescript
+      newCurrentWordStatus += key;
+      ```
+
+      The letters do appear on the screen, but the word `"Winterwald"` can
+      never be won. Why not?
+    evaluation: |
+      Expected: key holds what the player typed, a small w, so the status
+      ends up as "winterwald". The win is tested with currentWordStatus ===
+      wordToGuess, and "winterwald" is not equal to "Winterwald", so the
+      test never becomes true. The line has to add wordToGuess[i], the
+      original character.
+
+      - `correct`   - says the typed character is stored instead of the
+                      original one, so the capital W is lost and the
+                      comparison with wordToGuess never matches.
+      - `partial`   - says the capital letter is missing or the status
+                      looks wrong, without connecting it to the win
+                      comparison, or names the fix without the reason.
+      - `incorrect` - anything else, e.g. the letters land in the wrong
+                      position, or key is empty at that moment.
+
+      Feedback: write the finished status and the secret word under each
+      other and compare them character by character.
+
+  - id: await-font
+    title: "Waiting for the font"
+    question: |
+      `setup` starts with this line:
+
+      ```typescript
+      font = await loadFont("https://.../SyneMono-Regular.ttf");
+      ```
+
+      What does `await` do here, and why does the program need it?
+    evaluation: |
+      Expected: await means wait here until it has arrived. The line pauses
+      until loadFont has finished, so the font is in the variable before
+      any later line runs. Without it the program would try to draw text
+      with a font that is still on its way. A function with await is marked
+      async.
+
+      - `correct`   - says the line waits until the font has finished
+                      loading before the next lines run, AND that drawing
+                      needs the font to be there ("otherwise it is not
+                      loaded yet" counts).
+      - `partial`   - says it waits, without saying why the following lines
+                      need the finished font, or only explains async and
+                      Promise<void> without the waiting.
+      - `incorrect` - anything else, e.g. await makes the download faster,
+                      it repeats the loading until it works, or it pauses
+                      the whole program forever.
+
+      Feedback: the font comes from the internet, so it is not there
+      instantly. What would text drawn one line later use?

@@ -1,0 +1,171 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0130-crossword-quiz.yaml ("Design your own functions").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: crossword-quiz-eval
+target: ./0130-crossword-quiz.yaml
+
+questions:
+  - question: jobs-to-functions
+    answers:
+      - expect: correct
+        answer: |
+          every sentence becomes its own function, and the name comes from
+          the job, like splitInput for taking the data apart
+      - expect: correct
+        answer: |
+          aus jedem satz wird eine eigene funktion, und der name sagt genau
+          das, was der satz beschreibt.
+      # Branch 1: functions per sentence, naming rule missing.
+      - expect: partial
+        answer: |
+          you write three functions for it
+      # Branch 2: naming rule only, one-job-one-function missing.
+      - expect: partial
+        answer: |
+          the names should describe what the code does
+      - expect: incorrect
+        answer: |
+          you put the sentences as comments into draw so you can see where
+          each block starts.
+      - expect: incorrect
+        answer: |
+          the names don't matter, f1 f2 f3 is fine as long as draw calls them
+          in the right order.
+
+  - question: one-big-function
+    answers:
+      - expect: correct
+        answer: |
+          if something is wrong you have to search the whole function, with
+          named functions you know where to look
+      # Terse correct paraphrase: one concrete consequence, no polish.
+      - expect: correct
+        answer: |
+          du kannst nicht einen job nach dem anderen testen, alles hängt
+          zusammen
+      # Verbose padding around a valid consequence must not change the verdict.
+      - expect: correct
+        answer: |
+          well the program works and p5 calls draw 60 times per second which
+          is really fast, and the canvas is 1000 by 1000 pixels which is quite
+          big, but the real problem is that when the hints are in the wrong
+          place you have to read every single line of that function to find
+          the part that draws them, because nothing tells you where that part
+          begins.
+      # Style complaint without a consequence.
+      - expect: partial
+        answer: |
+          it's just ugly and way too long
+      - expect: incorrect
+        answer: |
+          one big function makes the program slower because the browser reads
+          more code at once.
+      - expect: incorrect
+        answer: |
+          nothing really, the picture is correct so the code is fine.
+
+  - question: two-splits
+    answers:
+      - expect: correct
+        answer: |
+          words has the 3 lines, and parts has krebs, 0 and Schalentier
+      - expect: correct
+        answer: |
+          in words stehen die drei zeilen, in parts die drei felder der ersten
+          zeile: name, startposition und hinweis.
+      # Only the first array described.
+      - expect: partial
+        answer: |
+          words holds the three animal lines
+      # Only the second array described.
+      - expect: partial
+        answer: |
+          parts is krebs, 0, Schalentier
+      # Fluent but decisively wrong: split does not change the original string.
+      - expect: incorrect
+        answer: |
+          the first split removes the line breaks so crossword is one long line
+          now, and the second one then cuts that line at the commas.
+      - expect: incorrect
+        answer: |
+          split cuts the text into single letters, so words is k, r, e, b, s
+          and so on.
+
+  - question: column-formula
+    answers:
+      - expect: correct
+        answer: |
+          s is in column 0 and the a in column 4
+      - expect: correct
+        answer: |
+          4 + (-4) + 0 = 0 für das s, und 4 + (-4) + 4 = 4 für das a, also in
+          der gelben spalte.
+      # Only one of the two numbers.
+      - expect: partial
+        answer: |
+          the a lands in column 4
+      # Right numbers, swapped letters.
+      - expect: partial
+        answer: |
+          s is in column 4 and a is in column 0
+      # Minus sign dropped.
+      - expect: incorrect
+        answer: |
+          s is column 8 and a is column 12
+      - expect: incorrect
+        answer: |
+          both are in column 4, that's why the word is shifted.
+
+  - question: includes-predict
+    answers:
+      - expect: correct
+        answer: |
+          true and false. the first one looks inside the text, the second one
+          looks if that element is in the array
+      - expect: correct
+        answer: |
+          erstes true, zweites false. bei einem string sucht includes einen
+          textteil, bei einem array ein element.
+      # Both results right, difference not named.
+      - expect: partial
+        answer: |
+          true and false
+      # Difference named, one result wrong.
+      - expect: partial
+        answer: |
+          the first checks the text krebs, the second checks the elements of
+          the array, so both are true
+      - expect: incorrect
+        answer: |
+          both are false, includes only finds whole words and not single
+          letters.
+      - expect: incorrect
+        answer: |
+          the second line is an error, includes belongs to strings and not to
+          arrays.
+
+  - question: win-check
+    answers:
+      - expect: correct
+        answer: |
+          when every letter of klapperschlange was guessed. if one is still
+          missing the answer is false
+      - expect: correct
+        answer: |
+          alle buchstaben des lösungsworts müssen geraten sein. fehlt auch nur
+          einer, kommt false zurück.
+      # All-letters part only.
+      - expect: partial
+        answer: |
+          all letters of the solution word have to be guessed
+      # One-missing-letter part only, solution word not named.
+      - expect: partial
+        answer: |
+          as soon as one letter is still missing it gives back false
+      - expect: incorrect
+        answer: |
+          when the player has guessed every letter of all 15 animal names.
+      - expect: incorrect
+        answer: |
+          when the wrong guesses stay under 10, then you win the round.

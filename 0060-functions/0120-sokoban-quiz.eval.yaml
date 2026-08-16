@@ -1,0 +1,183 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0120-sokoban-quiz.yaml ("The earned shortcut: split").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: sokoban-quiz-eval
+target: ./0120-sokoban-quiz.yaml
+
+questions:
+  - question: split-rule-update
+    answers:
+      - expect: correct
+        answer: |
+          split is allowed now for simple separators. we had to do the
+          character loop by hand first so that we know what split really
+          does, now it hides nothing from us
+      - expect: correct
+        answer: |
+          ab jetzt darf man split für einfache trennzeichen nehmen. vorher
+          mussten wir die schleife selber schreiben, damit wir verstehen,
+          was split eigentlich macht.
+      # Permission without the reason.
+      - expect: partial
+        answer: |
+          from now on we can use split instead of the loop
+      # Reason without saying what is allowed now.
+      - expect: partial
+        answer: |
+          because you should first understand how parsing works before you
+          get a shortcut
+      - expect: incorrect
+        answer: |
+          split had a bug in the older exercises, now it works properly so
+          we may use it.
+      # Fluent and confident, but the rule is inverted.
+      - expect: incorrect
+        answer: |
+          the character loop is forbidden from this chapter on, every
+          parsing job has to be written with split now, because doing it by
+          hand is seen as bad style in real code.
+
+  - question: split-rows-and-chars
+    answers:
+      - expect: correct
+        answer: |
+          rows is ["Xb", "X."] and cells is ["X", "b"]
+      - expect: correct
+        answer: |
+          rows hat die zwei zeilen Xb und X. drinnen, cells die einzelnen
+          zeichen X und b. das trennzeichen selber fällt weg.
+      # Rows right, second cut misunderstood.
+      - expect: partial
+        answer: |
+          rows is ["Xb", "X."], cells is ["Xb"] because there is nothing to
+          cut at
+      # Cells right, line break left inside the pieces.
+      - expect: partial
+        answer: |
+          rows is ["Xb\n", "X."] and cells is ["X", "b"]
+      - expect: incorrect
+        answer: |
+          rows holds all four characters X, b, X and . and cells holds the
+          first one.
+      # Confident but wrong: split('') read as "do nothing".
+      - expect: incorrect
+        answer: |
+          rows is the whole string in one piece and cells is the same string
+          again, because an empty separator cuts nowhere.
+
+  - question: grid-indexing
+    answers:
+      - expect: correct
+        answer: |
+          level[2][3] is b, so there is a box on that square
+      - expect: correct
+        answer: |
+          das ist ein b, also eine kiste. dritte zeile, vierte spalte, weil
+          man bei 0 anfängt.
+      # Right square in words, wrong character read out of it.
+      - expect: partial
+        answer: |
+          third row and fourth column, so it is an X, a wall
+      # Character right, meaning on the map missing.
+      - expect: partial
+        answer: |
+          it is b
+      # Counting rows from 1 and columns from 1: the classic off-by-one.
+      - expect: incorrect
+        answer: |
+          row 3 column 3 counted from one, so it is a space, the floor you
+          can walk on.
+      - expect: incorrect
+        answer: |
+          the first number is the column and the second the row, so it is
+          the character in the fourth row and third column, a space.
+
+  - question: max-width
+    answers:
+      - expect: correct
+        answer: |
+          the rows are not all the same length, and the canvas width comes
+          from maxWidth, so with the first row a wider row further down
+          would be cut off
+      - expect: correct
+        answer: |
+          weil die zeilen unterschiedlich lang sein können. der canvas wird
+          aus maxWidth berechnet, sonst wäre er zu schmal für die längste
+          zeile.
+      # Observation without the canvas consequence.
+      - expect: partial
+        answer: |
+          because the rows can have different lengths
+      # Consequence without saying why the first row is not enough.
+      - expect: partial
+        answer: |
+          otherwise the canvas would be too small
+      - expect: incorrect
+        answer: |
+          maxWidth counts how many rows the level has, and you need that for
+          the height.
+      - expect: incorrect
+        answer: |
+          the level gets wider while you play, so the code has to check the
+          width again and again.
+
+  - question: switch-default
+    answers:
+      - expect: correct
+        answer: |
+          they both land in default, so they get images[1], the floor. the
+          player is drawn as floor and you can't see him
+      - expect: correct
+        answer: |
+          beide fallen in den default zweig, weil es für sie keinen case
+          gibt. sie bekommen das bodenbild.
+      # Result without the default rule.
+      - expect: partial
+        answer: |
+          they get the floor picture
+      # Rule without the resulting picture.
+      - expect: partial
+        answer: |
+          default catches everything that has no case of its own
+      - expect: incorrect
+        answer: |
+          nothing is drawn there, the square stays white like the _
+          squares.
+      # Fluent and wrong: an unknown symbol is claimed to be an error.
+      - expect: incorrect
+        answer: |
+          a switch without a matching case throws an error, so the program
+          stops as soon as it reaches the player character.
+
+  - question: origin-walk
+    answers:
+      - expect: correct
+        answer: |
+          after every cell translate moves the origin one cell to the
+          right, so the next tile at 0,0 lands next to it. push saves the
+          spot at the beginning of the row and pop brings it back, then the
+          row moves one cell down
+      - expect: correct
+        answer: |
+          nicht das bild wandert, sondern der nullpunkt. nach jeder zelle
+          ein translate nach rechts, und push/pop bringt den nullpunkt am
+          zeilenende wieder an den linken rand zurück.
+      # Moving origin without the row reset.
+      - expect: partial
+        answer: |
+          the origin is moved with translate after every tile
+      # push/pop without the per-cell movement.
+      - expect: partial
+        answer: |
+          push and pop save and restore the position so the next row starts
+          on the left again
+      - expect: incorrect
+        answer: |
+          p5 puts the images in a grid by itself because they all have the
+          same cellSize.
+      # push/pop confused with array push and pop.
+      - expect: incorrect
+        answer: |
+          push adds the tile to the images array and pop takes it out again
+          when the row is finished.

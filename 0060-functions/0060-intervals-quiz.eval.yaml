@@ -1,0 +1,189 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0060-intervals-quiz.yaml
+# ("Callbacks: a function you hand over").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: intervals-quiz-eval
+target: ./0060-intervals-quiz.yaml
+
+questions:
+  - question: callbacks-you-already-wrote
+    answers:
+      - expect: correct
+        answer: |
+          p5 calls them, setup once at the start and draw 60 times a
+          second. a function that someone else calls for you is a
+          callback
+      - expect: correct
+        answer: |
+          die p5.js bibliothek ruft sie über den namen auf. so eine
+          funktion heißt callback.
+      # Term without the caller.
+      - expect: partial
+        answer: |
+          they are callback functions
+      # Caller without the term or the idea behind it.
+      - expect: partial
+        answer: |
+          p5.js runs them automatically
+      - expect: incorrect
+        answer: |
+          setup calls draw, and draw calls mouseClicked when you click
+      # Fluent but decisively wrong: compiler instead of library.
+      - expect: incorrect
+        answer: |
+          typescript calls them while it translates the code, that is why
+          they must always have these exact names in the file
+
+  - question: parentheses-bug
+    answers:
+      - expect: correct
+        answer: |
+          the parentheses call drawCircle right away, so setInterval gets
+          the result of that call, which is nothing. then it has nothing
+          left to call every second
+      - expect: correct
+        answer: |
+          klammern heißt sofort aufrufen. deshalb kommt der eine kreis,
+          und setInterval bekommt nur das ergebnis, also nichts, und kann
+          nichts wiederholen.
+      # Rule known, mechanism missing.
+      - expect: partial
+        answer: |
+          you have to write the name without the brackets
+      # Immediate call seen, but not what setInterval ends up with.
+      - expect: partial
+        answer: |
+          the function is executed once immediately instead of later
+      - expect: incorrect
+        answer: |
+          the empty brackets mean drawCircle gets no arguments, so it
+          draws a circle with no size
+      - expect: incorrect
+        answer: |
+          the interval runs way too fast now, all circles come in the same
+          moment
+
+  - question: interval-id
+    answers:
+      - expect: correct
+        answer: |
+          it is the id of the interval and clearInterval needs it to stop
+          the right one. it has to be global because setup saves it and
+          mouseClicked reads it later
+      - expect: correct
+        answer: |
+          die nummer ist der ausweis vom interval, damit clearInterval
+          weiß welches gestoppt wird. wenn die variable in setup stünde,
+          wäre sie nach setup weg.
+      # Purpose only.
+      - expect: partial
+        answer: |
+          you need it for clearInterval
+      # Lifetime only.
+      - expect: partial
+        answer: |
+          because a variable inside setup does not exist anymore after
+          setup is finished
+      - expect: incorrect
+        answer: |
+          the number is the 1000, so the interval knows how long the pause
+          is
+      - expect: incorrect
+        answer: |
+          it counts how many circles have been drawn so far
+
+  - question: interval-vs-deadline
+    answers:
+      - expect: correct
+        answer: |
+          the deadline pattern is better when the pause should be
+          different every time, like the bubbles that come after 0.5 to 2
+          seconds and are drawn in draw anyway. setInterval is better for
+          a fixed rhythm like one circle per second, and you can stop it
+          with clearInterval
+      - expect: correct
+        answer: |
+          zufällige abstände gehen mit millis besser, weil man jedes mal
+          neu würfeln kann. ein fixer takt gehört zu setInterval, das
+          programm braucht dann nicht mal ein draw.
+      # Only one side carries a reason.
+      - expect: partial
+        answer: |
+          setInterval is good when something should happen every second
+          because the browser does the counting for you
+      # Both named, no reason at all.
+      - expect: partial
+        answer: |
+          the bubbles use millis and the circles here use setInterval
+      - expect: incorrect
+        answer: |
+          setInterval only works for very short pauses, for anything over
+          a second you need millis
+      - expect: incorrect
+        answer: |
+          they are the same thing, setInterval is just the shorter way to
+          write the millis check
+
+  - question: circles-pile-up
+    answers:
+      - expect: correct
+        answer: |
+          background runs only once in setup and nothing paints over it
+          again, so every circle just stays on the canvas
+      - expect: correct
+        answer: |
+          es gibt kein draw, also wird der hintergrund nie neu gemalt. was
+          einmal gemalt ist, bleibt am canvas.
+      # Verbose padded correct: real chapter facts plus the actual reason.
+      - expect: correct
+        answer: |
+          the canvas is 300 by 300, the stroke is lime and noFill is set,
+          and drawCircle picks a random position with random(width) which
+          gives a decimal, and rounding does not matter for a position.
+          the reason the circles stay is that background is only in setup
+          and nothing repaints it later, so the paint stays there
+      # Observation without the wipe connection.
+      - expect: partial
+        answer: |
+          the program has no draw function
+      # Restates the effect, not the cause.
+      - expect: partial
+        answer: |
+          because the circles stay on the canvas forever
+      - expect: incorrect
+        answer: |
+          all circles are saved in an array and drawn again every frame
+      - expect: incorrect
+        answer: |
+          background is drawn behind the circles, so it can never cover
+          them
+
+  - question: callback-by-use
+    answers:
+      - expect: correct
+        answer: |
+          because you gave it to setInterval and setInterval calls it for
+          you. it is not something in the function itself, it is how it is
+          used
+      - expect: correct
+        answer: |
+          der name ist an setInterval übergeben worden, und das ruft die
+          funktion jede sekunde auf. callback ist es nur wegen der
+          verwendung.
+      # Effect without the handing over.
+      - expect: partial
+        answer: |
+          because it runs every second on its own
+      # Definition repeated, no link to setInterval.
+      - expect: partial
+        answer: |
+          a callback is a function that somebody else calls for you
+      - expect: incorrect
+        answer: |
+          because it has no parameters and returns void, that is what a
+          callback looks like
+      - expect: incorrect
+        answer: |
+          because its name starts with draw, so p5 finds it and calls it
+          like setup and draw

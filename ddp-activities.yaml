@@ -41,6 +41,12 @@ activities:
     tutor-arrays:
       file: 0050-arrays/arrays-tutor.yaml
       note: "Creative Coding book: AI tutor for part 5, Arrays — GitHub-hosted"
+    tutor-functions:
+      file: 0060-functions/functions-tutor.yaml
+      note: "Creative Coding book: AI tutor for part 6, Functions — GitHub-hosted"
+    tutor-images:
+      file: 0060-functions/images-tutor.yaml
+      note: "Creative Coding book: specialized image helper for exercises with images (from 0060-functions/0100 on) — GitHub-hosted"
 
     # Exercise AIs: the code-generating counterparts for the book's
     # designated AI exercises (the part tutors stay strictly hint-only).
@@ -176,3 +182,46 @@ activities:
     silos:
       file: 0050-arrays/0080-silos-quiz.yaml
       note: "Creative Coding book: Silos (0050-arrays/0080) — GitHub-hosted"
+
+    face-function:
+      file: 0060-functions/0010-face-function-quiz.yaml
+      note: "Creative Coding book: Your own commands (0060-functions/0010) — GitHub-hosted"
+    domino:
+      file: 0060-functions/0020-domino-quiz.yaml
+      note: "Creative Coding book: Refactoring, dice to domino (0060-functions/0020) — GitHub-hosted"
+    domino-symbols:
+      file: 0060-functions/0030-domino-symbols-quiz.yaml
+      note: "Creative Coding book: Switch again, domino of symbols (0060-functions/0030) — GitHub-hosted"
+    temperature-chart:
+      file: 0060-functions/0040-temperature-chart-quiz.yaml
+      note: "Creative Coding book: Decomposition, temperature chart (0060-functions/0040) — GitHub-hosted"
+    return-values:
+      file: 0060-functions/0050-return-values-quiz.yaml
+      note: "Creative Coding book: Return values (0060-functions/0050) — GitHub-hosted"
+    intervals:
+      file: 0060-functions/0060-intervals-quiz.yaml
+      note: "Creative Coding book: Callbacks and intervals (0060-functions/0060) — GitHub-hosted"
+    bubble-buster:
+      file: 0060-functions/0070-bubble-buster-quiz.yaml
+      note: "Creative Coding book: Bubble Buster (0060-functions/0070) — GitHub-hosted"
+    melting-snowman-1:
+      file: 0060-functions/0080-melting-snowman-1-quiz.yaml
+      note: "Creative Coding book: Many files, one program (0060-functions/0080) — GitHub-hosted"
+    melting-snowman-2:
+      file: 0060-functions/0090-melting-snowman-2-quiz.yaml
+      note: "Creative Coding book: Finish the game, logic functions (0060-functions/0090) — GitHub-hosted"
+    orthographic:
+      file: 0060-functions/0100-orthographic-quiz.yaml
+      note: "Creative Coding book: Images and orthographic worlds (0060-functions/0100) — GitHub-hosted"
+    train-station:
+      file: 0060-functions/0110-train-station-quiz.yaml
+      note: "Creative Coding book: Trains from strings (0060-functions/0110) — GitHub-hosted"
+    sokoban:
+      file: 0060-functions/0120-sokoban-quiz.yaml
+      note: "Creative Coding book: The earned shortcut, split (0060-functions/0120) — GitHub-hosted"
+    crossword:
+      file: 0060-functions/0130-crossword-quiz.yaml
+      note: "Creative Coding book: Design your own functions, Crossword (0060-functions/0130) — GitHub-hosted"
+    target-game:
+      file: 0060-functions/0140-target-game-quiz.yaml
+      note: "Creative Coding book: Drag and drop, Target Game (0060-functions/0140) — GitHub-hosted"

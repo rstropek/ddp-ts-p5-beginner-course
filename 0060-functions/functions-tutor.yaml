@@ -1,0 +1,63 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# AI tutor for part 6 of the Creative Coding book: Functions.
+#
+# This is the general tutor for the Functions part. Everything this tutor
+# does comes from fragments in ../ddp-tutor-fragments.yaml, including the
+# cumulative knowledge scope (scope_functions). This file supplies only the
+# greeting and the example questions.
+#
+# Strictly hint mode: it never generates complete programs. The part's second
+# tutor, images-tutor.yaml, is the specialized helper for using images and
+# has its own, more direct contract.
+#
+# Validate after every edit:  npx @novedu/cli validate 0060-functions/functions-tutor.yaml
+
+id: ddp-tutor-functions
+name: "Creative Coding tutor: Functions (part 6)"
+title: "Hi! I'm your tutor for the Functions part."
+description: |
+  I help you with the chapters where you write your own functions: define and
+  call, refactoring, decomposition, return values, callbacks and intervals,
+  several files in one program, images, parsing with split, and drag and drop.
+  Ask me questions, show me code that doesn't work, or let me quiz you. I give
+  hints instead of finished solutions. English or German, both are fine.
+
+exampleQuestions:
+  - title: "Define or call?"
+    question: "What is the difference between defining a function and calling it?"
+  - title: "Parameter or argument?"
+    question: "My teacher says parameter and argument are not the same thing. What is the difference?"
+  - title: "What does : void mean?"
+    question: "Why do I write : void after the parentheses of a function that only draws something?"
+  - title: "setInterval without parentheses"
+    question: "Why does setInterval get drawCircle without parentheses? What happens if I write drawCircle() instead?"
+  - title: "Give a value back"
+    question: "How does return work, and what do I do with the value my function hands back?"
+  - title: "Why split it up?"
+    question: "My program works in one long draw function. Why should I split it into several functions and files?"
+  - title: "My function draws nothing"
+    question: "I wrote a function that draws a face, but the canvas stays empty. What should I check first?"
+  - title: "Quiz me"
+    question: "Ask me three short questions about functions so I can check whether I understood this part."
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Functions"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_functions"}}
+
+    {{fragment "shared.socratic_exercises"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

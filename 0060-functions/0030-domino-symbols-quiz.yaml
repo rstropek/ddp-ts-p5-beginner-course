@@ -1,0 +1,223 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Switch again: a domino of symbols"
+# (0060-functions/0030-domino-symbols.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the
+# switch recap with break and default, drawing settings that survive a
+# case unless they are put back, constants that belong inside the one
+# function that uses them, the same skeleton with a different body, and
+# forcing a fixed value while building the cases.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: domino-symbols-quiz
+name: "Quiz: Switch and the symbols domino"
+
+title: "Check your understanding: switch and the symbols domino"
+description: |
+  Six short questions about the chapter *Switch again: a domino of
+  symbols*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="drawSymbol(symbol1);"
+      scope="after the symbols domino chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, `if`/`else`, and random numbers"
+        "the `switch` statement with `case`, `break`, and `default`"
+        "loops, `translate`, `push`/`pop`, and `scale`"
+        "defining their own function with parameters and `: void`"
+        "refactoring, extracting a function, and the unchanged picture as the test"
+        "a per-call value becoming a parameter and a shared value becoming a constant at the top of the file"
+        "a constant that only one function uses living inside that function"
+        "`rectMode(CENTER)` and `rectMode(CORNER)`, `textAlign`, and `textSize`"
+        "that `drawDomino` works the same whether the halves show dice faces or symbols")
+      not_yet=(array
+        "functions that hand a value back with `return`"
+        "handing a function to another function as an argument"
+        "splitting a program over several files"
+        "objects and classes")}}
+
+questions:
+  - id: missing-break
+    title: "The forgotten break"
+    question: |
+      In the symbol switch, a classmate forgets the `break` at the end
+      of case 3, the triangle. Everything else is correct. What do
+      they see on the canvas when the roll picks 3, and why?
+    evaluation: |
+      Expected: they see the triangle and the star of case 4 drawn on
+      top of each other. Without `break` the computer runs straight
+      into the statements of the next case without checking whether
+      that case matches.
+
+      - `correct`   - two symbols on one half, the triangle plus the
+                      symbol of case 4, AND the reason that the next
+                      case runs without being checked ("es läuft
+                      einfach weiter" counts).
+      - `partial`   - says the next case also runs without naming what
+                      shows up on the canvas, or says two symbols
+                      overlap without the reason.
+      - `incorrect` - anything else, for example that nothing is drawn
+                      at all, that the program reports an error, or
+                      that all six symbols are drawn.
+
+      Feedback: state that the triangle and the star land on the same
+      spot because the computer falls into case 4, then ask what
+      `break` would have done at that point.
+
+  - id: why-no-default
+    title: "No default here"
+    question: |
+      The switch in this chapter has no `default` case. When would a
+      `default` run at all, and why does this switch get along without
+      one?
+    evaluation: |
+      Expected: `default` runs when no `case` matched. Here the value
+      is a roll from 1 to 6 and every one of those six numbers has its
+      own case, so nothing can be left over.
+
+      - `correct`   - `default` explained as the case for a value that
+                      matched nothing AND the reason that all six
+                      possible values already have a case.
+      - `partial`   - only what `default` does, with no word about why
+                      it is not needed here, or only "every number has
+                      a case" without saying what `default` would do.
+      - `incorrect` - anything else, for example that `default` always
+                      runs, that it runs first, or that `default` is
+                      forbidden inside a function.
+
+      Feedback: state that `default` catches values no case matched and
+      that the roll only ever produces 1 to 6, then ask which number
+      would be left without a case.
+
+  - id: rectmode-reset
+    title: "The setting that stays"
+    question: |
+      Case 1 draws the square like this:
+
+      ```typescript
+      rectMode(CENTER);
+      rect(centerX, centerY, size, size);
+      rectMode(CORNER);
+      ```
+
+      What goes wrong later in the program if the last line is left
+      out?
+    evaluation: |
+      Expected: `rectMode(CENTER)` stays switched on after the case, so
+      every later `rect` reads its first two numbers as the center
+      instead of the top left corner. The black tile of the domino,
+      drawn with `rect(0, 0, ...)`, would then sit around the point (0,
+      0) and end up in the wrong place.
+
+      - `correct`   - says the setting stays in effect for everything
+                      drawn afterwards AND names a wrong result for a
+                      later `rect` (drawn from its center, tile in the
+                      wrong place, half off the canvas).
+      - `partial`   - says the setting is still on without naming any
+                      consequence, or says a later rectangle looks
+                      wrong without saying that the mode survived the
+                      case.
+      - `incorrect` - anything else, for example that the square of
+                      case 1 itself comes out wrong, that only the next
+                      case is affected, or that the program stops with
+                      an error.
+
+      Feedback: state that `rectMode(CENTER)` keeps working after the
+      case, so the black tile drawn with `rect(0, 0, ...)` would be
+      centered on the corner, then ask where that tile would end up.
+
+  - id: constants-inside
+    title: "Where a constant belongs"
+    question: |
+      `drawSymbol` declares `centerX`, `centerY`, and `size` inside
+      its own body, while `diceSize` lives at the top of the file
+      above all functions. What decides where a constant belongs?
+    evaluation: |
+      Expected: a value that only one function uses belongs inside
+      that function. A value that several functions share, like
+      `diceSize`, belongs at the top of the file where everything can
+      read it.
+
+      - `correct`   - both halves of the rule: used by one function
+                      means inside it, shared by several means at the
+                      top ("nur eine funktion braucht es" counts).
+      - `partial`   - one half only, for example that `diceSize` is at
+                      the top because `drawDomino` and `drawSymbol`
+                      both need it, without the rule for the other
+                      three.
+      - `incorrect` - anything else, for example that constants always
+                      belong at the top, or that only numbers used in
+                      `setup` may stand at the top of the file.
+
+      Feedback: state the rule in one sentence and then ask which
+      functions besides `drawSymbol` would need `size`.
+
+  - id: same-skeleton
+    title: "The same skeleton"
+    question: |
+      Put the `drawDomino` of the dice chapter next to the
+      `drawDomino` of this chapter. Only two lines differ, and in both
+      of them just a name changed from `drawDice` to `drawSymbol`.
+      What does that tell you about how programs are built?
+    evaluation: |
+      Expected: the structure of a program does not depend on what its
+      functions paint. `drawDomino` only knows that a tile has two
+      halves and that something is drawn in each of them, so the same
+      skeleton takes a new body, and you can reuse it whenever two
+      programs feel similar.
+
+      - `correct`   - says the structure stays the same while the
+                      content changes, or that `drawDomino` does not
+                      care what is drawn in the halves ("das gerüst
+                      bleibt" counts).
+      - `partial`   - only notices that a lot of code is the same or
+                      that copying saves time, without the idea that
+                      the structure is independent of the content.
+      - `incorrect` - anything else, for example that the two programs
+                      are the same program, or that `drawDomino` has to
+                      be rewritten for every new symbol.
+
+      Feedback: state that `drawDomino` never knows what a dice face or
+      a star is, only that a tile has two halves, then ask what a third
+      version, with letters in the halves, would need.
+
+  - id: force-one-symbol
+    title: "Testing one case"
+    question: |
+      While you build the six cases, the chapter tells you to replace
+      the random roll with `const symbol: number = 1;` and to force the
+      matching number before every run. Why is that better than
+      testing with the random roll?
+    evaluation: |
+      Expected: with a fixed number you decide which case runs, so you
+      can look at exactly the case you just wrote. With the roll you
+      would have to run the program again and again and hope for the
+      right number, and a mistake in one case could stay hidden.
+
+      - `correct`   - names the control over which case runs, with any
+                      concrete consequence: you see the new case at
+                      once, you do not have to run until the number
+                      comes up.
+      - `partial`   - says it is easier or faster to test without
+                      saying that you choose which case runs.
+      - `incorrect` - anything else, for example that `random` breaks
+                      the switch, or that a `const` runs faster than a
+                      random number.
+
+      Feedback: state that a fixed value lets you look at exactly the
+      case you just typed, then ask how many runs it might take for a
+      random roll to show case 6.

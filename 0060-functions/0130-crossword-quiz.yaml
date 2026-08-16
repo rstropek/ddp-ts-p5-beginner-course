@@ -1,0 +1,233 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Design your own functions: Crossword"
+# (0060-functions/0130-crossword.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the design
+# method (jobs in plain sentences, one function per job, name after the job,
+# build one at a time), why one giant function hurts even when it runs, the
+# two levels of split, the column formula, includes on strings and arrays,
+# and the win check.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: crossword-quiz
+name: "Quiz: Design your own functions"
+
+title: "Check your understanding: design your own functions"
+description: |
+  Six short questions about the chapter *Design your own functions:
+  Crossword*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in German
+  is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="if (animals[i].includes(key)) { return true; }"
+      scope="after the crossword chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse and key events, and the `draw` animation loop"
+        "variables, conditions, loops, and strings with indexes and `length`"
+        "arrays, `push`, `splice`, and parallel arrays that stay in step"
+        "`translate`, `push`/`pop`, and drawing a shape at the origin"
+        "writing functions with parameters, with `void` or a return value, and `boolean` answers"
+        "callbacks handed over by name to `setInterval` and `clearInterval`"
+        "`for...of` over arrays and over the characters of a string"
+        "`split` for cutting a string into an array, and `parseInt` for turning text into a number"
+        "`includes` on a string and on an array"
+        "the design method: jobs as plain sentences, one function per job, names from the jobs, one function at a time")
+      not_yet=(array
+        "drag and drop with `mousePressed`, `mouseDragged`, and `mouseReleased`"
+        "objects, classes, and arrays of arrays"
+        "arrow functions"
+        "array methods beyond `push`, `splice`, `length`, and `includes`")}}
+
+questions:
+  - id: jobs-to-functions
+    title: "From sentences to functions"
+    question: |
+      Before writing any code, you write down what the crossword
+      program does, one plain sentence per job:
+
+      - take the crossword data apart
+      - paint the yellow solution column
+      - draw the cells, the letters, and the hints
+
+      What do you do with these three sentences in the next step, and
+      where do the function names come from?
+    evaluation: |
+      Expected: every sentence becomes one function of its own (one
+      job, one function), and each function is named after its job, so
+      the name says what the function does.
+
+      - `correct`   - both halves: one function per sentence AND the
+                      name comes from the job the sentence describes.
+      - `partial`   - only one half, for example "you write three
+                      functions" without the naming rule, or "the name
+                      should say what it does" without one function
+                      per sentence.
+      - `incorrect` - anything else, for example the sentences become
+                      comments inside one long `draw`, or names like
+                      f1, f2, f3 are fine.
+
+      Feedback: read one sentence out loud, for example "paint the
+      yellow solution column" - which function name does that sentence
+      hand you?
+
+  - id: one-big-function
+    title: "Everything in one function"
+    question: |
+      A classmate hands in a crossword where all the code sits inside
+      `draw`. The program runs and the picture is correct. Name one
+      concrete problem this still creates for whoever works on that
+      code next.
+    evaluation: |
+      Expected: nothing in one long body says which part does which
+      job, so a bug means searching the whole function, you cannot
+      build and check one job at a time, and repeated code cannot be
+      reused. One of these, said concretely, is enough.
+
+      - `correct`   - names at least one concrete consequence, for
+                      example searching the whole body for a bug, not
+                      being able to check one job at a time, not
+                      seeing the jobs without reading every line, or
+                      no reuse of repeated code.
+      - `partial`   - only calls it messy, long, unreadable, or bad
+                      style, with no consequence named.
+      - `incorrect` - anything else, for example the program runs
+                      slower, it would not run at all, or there is no
+                      problem because the picture is right.
+
+      Feedback: say what happens when the yellow column sits in the
+      wrong place - where does the search for that mistake start in
+      one long `draw`, and where in six named functions?
+
+  - id: two-splits
+    title: "Two levels of split"
+    question: |
+      The crossword data is one long string, here shortened to three
+      lines:
+
+      ```typescript
+      const crossword: string = `krebs,0,Schalentier
+      elefant,-1,Größtes Landtier
+      schlange,-4,Lautloser Jäger`;
+
+      const words: string[] = crossword.split('\n');
+      const parts: string[] = words[0].split(',');
+      ```
+
+      What is in `words`, and what is in `parts`?
+    evaluation: |
+      Expected: words holds the three lines as three strings, one per
+      animal. parts holds the three fields of the first line, 'krebs',
+      '0', and 'Schalentier', which are the name, the start position,
+      and the hint.
+
+      - `correct`   - both: words holds the lines (three of them here)
+                      AND parts holds the three fields of the first
+                      line; naming them name, start position, and hint
+                      counts instead of quoting the values.
+      - `partial`   - one of the two arrays described right and the
+                      other wrong or missing.
+      - `incorrect` - anything else, for example words holding single
+                      letters, words holding the first line and parts
+                      the second, or split changing the `crossword`
+                      string itself.
+
+      Feedback: name the separator each call cuts at, the line break
+      and the comma, and say that the middle field arrives as the text
+      '0', which is why `parseInt` follows.
+
+  - id: column-formula
+    title: "Which column?"
+    question: |
+      Every animal name is shifted so that its letter of the solution
+      word lands in column 4. Letter `j` of animal `i` sits in column
+      `4 + startPos[i] + j`.
+
+      For `schlange` the start position is -4. In which column does
+      the first letter `s` sit (`j` is 0), and in which column does
+      the `a` sit (`j` is 4)?
+    evaluation: |
+      Expected: the s sits in column 0, because 4 + (-4) + 0 is 0. The
+      a sits in column 4, because 4 + (-4) + 4 is 4, the yellow
+      solution column.
+
+      - `correct`   - both numbers: 0 for the s and 4 for the a.
+      - `partial`   - one of the two numbers right, or both numbers
+                      right but swapped between the letters.
+      - `incorrect` - anything else, for example 8 and 12 (the minus
+                      dropped), or every letter landing in column 4.
+
+      Feedback: put the numbers into `4 + startPos[i] + j` one at a
+      time and keep the minus sign of -4 while adding.
+
+  - id: includes-predict
+    title: "includes twice"
+    question: |
+      Two lines from the guessing logic:
+
+      ```typescript
+      const guessedCharacters: string[] = ['e', 'r'];
+
+      'krebs'.includes('e')
+      guessedCharacters.includes('k')
+      ```
+
+      What is the result of each line, true or false? Say in one
+      sentence what the difference between the two `includes` calls
+      is.
+    evaluation: |
+      Expected: the first line is true, the second is false. On a
+      string, includes asks whether the text contains that piece of
+      text. On an array, it asks whether one of the elements is that
+      value, and 'k' has not been guessed yet.
+
+      - `correct`   - both results right (true, then false) AND the
+                      string-versus-array difference named in any
+                      wording ("looks inside the text" versus "looks
+                      through the elements" counts).
+      - `partial`   - both results right without the difference, or
+                      the difference right with one wrong result.
+      - `incorrect` - anything else, for example both results wrong,
+                      or the claim that includes works on strings only
+                      and the second line is an error.
+
+      Feedback: give both results, true and false, and say that
+      `'krebs'` is searched as text while `guessedCharacters` is
+      searched element by element.
+
+  - id: win-check
+    title: "When has the player won?"
+    question: |
+      `hasWon` answers whether the game is over. Describe in words,
+      not in code, which condition must be true for the player to have
+      won. What is the answer while one single letter of the solution
+      word is still missing?
+    evaluation: |
+      Expected: the player has won when every letter of the solution
+      word 'klapperschlange' is in guessedCharacters. One missing
+      letter is enough for hasWon to answer false.
+
+      - `correct`   - both: every letter of the solution word has been
+                      guessed AND one missing letter still means false.
+      - `partial`   - only the all-letters-guessed part, or only the
+                      one-missing-letter-is-enough part without naming
+                      the solution word as the thing that is checked.
+      - `incorrect` - anything else, for example every letter of all
+                      15 animal names must be guessed, or the game is
+                      won while the wrong guesses stay under a limit.
+
+      Feedback: the check walks the letters of 'klapperschlange' and
+      asks for each one whether it was guessed; say what the answer
+      must be while one of them is still missing.

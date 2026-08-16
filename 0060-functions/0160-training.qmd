@@ -1,0 +1,129 @@
+---
+title: "Training: functions and arrays"
+---
+
+This chapter has no picture to draw. It is a training session, five
+small functions that take something in and hand something back, and
+a program that tells you straight away whether each one is right.
+Musicians practice scales, and this is the programming version of
+that. The functions are short on purpose, so all your attention goes
+to the two skills this part is built on, writing a clean signature
+and getting the logic inside it correct.
+
+## AI tutor {#sec-tutor-training}
+
+The exercise in this chapter tells you exactly which function is
+failing, so bring that information along when you ask. Name the
+function, say what the check expected and what your version
+returned, and the tutor can point you at the line that is wrong
+without handing you the solution.
+
+{{< tutor tutor-functions >}}
+
+## The program checks itself {#sec-training-self-check}
+
+The training exercise comes with a `setup` that is already written,
+and that `setup` is a test bench. It calls each of your functions
+with inputs whose correct answers are known, compares what came back
+against those answers, and paints one line per check on the canvas.
+A check that passes shows a green ✅, a check that fails shows a red
+❌ next to the value your function actually returned.
+
+Checks written as code and run by the program itself are called
+**automated tests**, and professional programmers write them for
+exactly this reason, because a machine repeats 100 checks in a
+second without ever getting bored or sloppy.
+
+Notice that the checks in `setup` call functions that are written
+further down in the same file. That is allowed. Inside one file, the
+order of your function definitions does not matter, so you can put
+the test bench first and the work below it.
+
+::: {.callout-note}
+## Given code: read it, don't copy it
+The `setup` of this exercise uses two tools from later courses. One
+is `?:`, a compact way of choosing between two values in a single
+expression, which is how the ✅ and ❌ get picked. The other is
+`indexOf`, a ready-made search in an array, which one of the checks
+uses to look through your result. Read over them, get a rough sense
+of what they do, and leave them alone. You write only the functions
+below `setup`, and none of them needs either tool.
+:::
+
+## Work one function at a time {#sec-training-one-at-a-time}
+
+Every function in the file starts with a placeholder line that
+returns a fixed, wrong value, so the whole program runs from the
+first second. That is a good starting point, because the canvas
+stays readable no matter how much is still missing.
+
+Work from top to bottom. Replace the placeholder in the first
+function, run the program, and look at the two lines that belong to
+it. Green means done, so move on. Red means you found a bug now,
+while your head is still inside that one function and the other four
+have not distracted you. Never write three functions and run once.
+
+Read the doc comment above each function before you touch it. It is
+the specification, and it states what each parameter holds, what the
+return value must be, and what should happen in the awkward cases,
+for example when the input string is empty. Two of the checks feed
+in an empty string on purpose.
+
+## What the five functions do {#sec-training-five-functions}
+
+The five functions come in a deliberate order, from a plain loop to
+a function that builds an array.
+
+- **`getSum`** takes a string of numbers separated by commas, such
+  as `"1,2,30,4,5"`, and returns their sum. Turning that text into
+  numbers is the parsing job from the Arrays part, with the
+  collecting loop from @sec-buffer and the leftover number that has
+  to be handled after the loop ends (@sec-flush). Since the Sokoban
+  chapter you also own `split`, so either road is open, but whatever
+  you pick has to survive the empty string, which must give 0.
+- **`getIndexOf`** takes the same kind of string plus a number, and
+  returns the position **in the string** where that number starts.
+  For `"1,2,30,4,5"` and the number 30 the answer is 4, because the
+  characters of `"30"` begin at index 4 of the text. When the number
+  does not occur at all, the answer is -1.
+- **`findIndexInArray`** takes an array of numbers and a number, and
+  returns the position **in the array**, so for `[1, 2, 30, 4, 5]`
+  and the number 30 the answer is 2. Compare that with `getIndexOf`
+  above, same question, different counting, and reading the
+  specification carefully is the only way to see it. Write the
+  search yourself with a loop, as you did in the train station
+  chapter.
+- **`decodeCard`** takes a two-character card code and returns a
+  readable description, so `"S5"` becomes `"5 of Spades"` and
+  `"HJ"` becomes `"Jack of Hearts"`. The first character is the
+  suit (the doc comment spells it `suite`), the second is the rank,
+  and the comment lists every letter and what it stands for. A pair
+  of `switch` statements fits this job better than a stack of `if`s.
+- **`findAllEvenNumbers`** takes a string of numbers separated by
+  commas and returns an array holding the even ones. It combines
+  everything before it, because the walk through the string is the
+  one from `getSum` and the result is built with `push`. When no
+  even number shows up, the function returns an empty array, not
+  nothing.
+
+## Your exercise: functions and arrays training {#sec-training-exercise}
+
+1. **Open the exercise and run it once** before you change anything.
+   Most of the 11 checks show a red ❌, and a few show a green
+   ✅ by accident, because a placeholder happens to return the value
+   that one check expects. A check that a placeholder passes proves
+   nothing, so do not count those yet.
+2. **Implement `getSum`**, run, and look at its two lines. Keep
+   going only when both are green.
+3. **Implement `getIndexOf`, then `findIndexInArray`**, running
+   after each one. If the two of them return the same number for 30,
+   read their doc comments again.
+4. **Implement `decodeCard`**, run, and check the exact wording of
+   the result. `"5 of Spades"` passes, `"5 of spades"` does not,
+   because the comparison in the check is exact.
+5. **Implement `findAllEvenNumbers`**, run, and confirm the last
+   three checks. All 11 green means you are done.
+6. **Format your code** and read your five signatures once more.
+   Every parameter typed, every return type written out.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/function-array-training.yaml title="Functions and Arrays Training" >}}

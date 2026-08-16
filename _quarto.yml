@@ -78,6 +78,25 @@ book:
         - 0050-arrays/0070-bubbles.qmd
         - 0050-arrays/0080-silos.qmd
         - 0050-arrays/0090-reading-mdn.qmd
+    - part: "Functions"
+      chapters:
+        - 0060-functions/0010-face-function.qmd
+        - 0060-functions/0020-domino.qmd
+        - 0060-functions/0030-domino-symbols.qmd
+        - 0060-functions/0040-temperature-chart.qmd
+        - 0060-functions/0050-return-values.qmd
+        - 0060-functions/0060-intervals.qmd
+        - 0060-functions/0070-bubble-buster.qmd
+        - 0060-functions/0080-melting-snowman-1.qmd
+        - 0060-functions/0090-melting-snowman-2.qmd
+        - 0060-functions/0100-orthographic.qmd
+        - 0060-functions/0110-train-station.qmd
+        - 0060-functions/0120-sokoban.qmd
+        - 0060-functions/0130-crossword.qmd
+        - 0060-functions/0140-target-game.qmd
+        - 0060-functions/0150-ratio-visualizer.qmd
+        - 0060-functions/0160-training.qmd
+        - 0060-functions/0170-poker-cards.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

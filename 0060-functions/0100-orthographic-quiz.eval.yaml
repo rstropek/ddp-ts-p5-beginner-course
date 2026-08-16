@@ -1,0 +1,184 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0100-orthographic-quiz.yaml ("Images and orthographic worlds").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: orthographic-quiz-eval
+target: ./0100-orthographic-quiz.yaml
+
+questions:
+  - question: tiles-repeat
+    answers:
+      - expect: correct
+        answer: |
+          in perspective the front of the segment is wider than the back, so
+          if you put two next to each other the rails don't meet. in
+          orthographic both ends are the same width so the copies fit
+          exactly
+      - expect: correct
+        answer: |
+          bei der perspektive ist das nahe ende breiter als das ferne, da
+          passt die nächste kachel nicht dazu. orthografisch bleibt alles
+          gleich groß, also passt jede kopie.
+      # Perspective half only: the size difference is named, the joint is not.
+      - expect: partial
+        answer: |
+          because in perspective things that are far away look smaller
+      # Orthographic half only: no reason why perspective fails.
+      - expect: partial
+        answer: |
+          the orthographic tile is made so that the copies fit together
+      # Fluent and confident, but the decisive fact (different end widths)
+      # is replaced by an invented one.
+      - expect: incorrect
+        answer: |
+          the orthographic image is rendered smaller and with a transparent
+          background, that is why the tiles can sit next to each other
+          without a gap
+      - expect: incorrect
+        answer: |
+          you can use the perspective one too, you just have to shift every
+          copy a bit further to fix the joint.
+
+  - question: missing-await
+    answers:
+      - expect: correct
+        answer: |
+          without await the program does not stop and wait, so the lines
+          after it run while the picture is still loading and there is
+          nothing to draw yet
+      - expect: correct
+        answer: |
+          das programm wartet nicht, es zeichnet schon bevor das bild da
+          ist. deshalb bleibt der canvas leer.
+      # Names the missing keyword but not what goes wrong because of it.
+      - expect: partial
+        answer: |
+          he forgot the await
+      # Blames loading speed instead of the ordering problem.
+      - expect: partial
+        answer: |
+          the image takes too long to load from the internet
+      - expect: incorrect
+        answer: |
+          loadImage without await never loads anything, the picture is never
+          fetched at all.
+      # Common confusion: async alone is thought to do the waiting.
+      - expect: incorrect
+        answer: |
+          setup is async, so it waits anyway. the url must have a typo in
+          it.
+
+  - question: promise-void
+    answers:
+      - expect: correct
+        answer: |
+          it means the function is done later, not right away, and when it
+          is done it gives nothing back
+      - expect: correct
+        answer: |
+          promise heisst sie ist erst später fertig, void heisst sie liefert
+          keinen wert zurück
+      # Only the void half.
+      - expect: partial
+        answer: |
+          it returns nothing
+      # Only the later half.
+      - expect: partial
+        answer: |
+          it's async so it waits for the image before it goes on
+      - expect: incorrect
+        answer: |
+          it means setup gives back the loaded picture once it has arrived.
+      # Verbose, fluent, and wrong about what Promise means.
+      - expect: incorrect
+        answer: |
+          the return type Promise<void> is a promise from typescript to the
+          programmer that the function will not crash while it is loading
+          things from the internet. void is added because setup is a p5
+          function that we never call ourselves, so the promise is empty and
+          only there for safety.
+
+  - question: image-distortion
+    answers:
+      - expect: correct
+        answer: |
+          the picture looks stretched because the height is drawn twice as
+          big as it really is. half size would be 200 and 100
+      - expect: correct
+        answer: |
+          es wird in die höhe gezogen, weil 400 statt 200 hoch. für die
+          hälfte 200 und 100.
+      # Distortion seen, numbers not given.
+      - expect: partial
+        answer: |
+          it looks squashed, the picture is not in the right shape anymore
+      # Numbers right, no statement about the drawn picture.
+      - expect: partial
+        answer: |
+          200 and 100
+      # Swapped values: the classic half-size mistake.
+      - expect: partial
+        answer: |
+          the picture is stretched, half size is 100 and 200
+      - expect: incorrect
+        answer: |
+          the bottom half of the picture is empty because the file is only
+          200 pixels tall.
+      - expect: incorrect
+        answer: |
+          nothing happens, p5 keeps the proportions of the picture by
+          itself.
+
+  - question: image-knows-size
+    answers:
+      - expect: correct
+        answer: |
+          they are the real size of the loaded file, so if you pass them the
+          picture is drawn exactly as big as it is, without stretching
+      - expect: correct
+        answer: |
+          jedes p5.Image kennt seine eigene größe. mit railroad.width und
+          railroad.height wird es in originalgröße gezeichnet.
+      # Definition without the natural-size effect.
+      - expect: partial
+        answer: |
+          the width and the height of the picture
+      # Effect without the source of the numbers.
+      - expect: partial
+        answer: |
+          so the picture is not distorted
+      - expect: incorrect
+        answer: |
+          they give the size of the canvas the picture is drawn on.
+      - expect: incorrect
+        answer: |
+          they are the x and y position where the picture is placed.
+
+  - question: draw-order
+    answers:
+      - expect: correct
+        answer: |
+          what you draw later is on top, and the segments to the left and
+          down are nearer to us, so they have to be drawn after the ones
+          behind them
+      - expect: correct
+        answer: |
+          das spätere bild überdeckt das frühere. die nahen kacheln links
+          unten müssen deshalb zuletzt kommen.
+      # Overlap rule without the near/far mapping.
+      - expect: partial
+        answer: |
+          the picture you draw later covers the one before it
+      # Near-on-top without the drawing-order reason.
+      - expect: partial
+        answer: |
+          the segment in the front has to be on top of the one in the back
+      - expect: incorrect
+        answer: |
+          p5 sorts the images by distance automatically, the order in the
+          code is just for us to read.
+      # Fluent but decisively wrong: earlier is claimed to win.
+      - expect: incorrect
+        answer: |
+          the first image drawn stays on top of everything else, so the
+          farthest segment has to be drawn last to stay visible.

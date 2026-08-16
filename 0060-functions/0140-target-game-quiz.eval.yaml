@@ -1,0 +1,176 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0140-target-game-quiz.yaml ("Drag and drop").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: target-game-quiz-eval
+target: ./0140-target-game-quiz.yaml
+
+questions:
+  - question: drag-state-why
+    answers:
+      - expect: correct
+        answer: |
+          mouseDragged doesn't know where the mouse was pressed down.
+          mousePressed checked that and saved it in isDragging, so the later
+          event can read it
+      - expect: correct
+        answer: |
+          die drei maus-funktionen wissen nichts voneinander. mousePressed
+          merkt sich in isDragging, dass der kreis erwischt wurde, und
+          mouseDragged liest das dann.
+      # Consequence only, no remembered-decision idea.
+      - expect: partial
+        answer: |
+          without it the circle would move even if you didn't click on it
+      # Vague "state" wording, no fact and no source event.
+      - expect: partial
+        answer: |
+          isDragging saves the state of the program
+      - expect: incorrect
+        answer: |
+          mouseDragged cannot read mouseX and mouseY, that's why you need the
+          boolean.
+      # Fluent and confident, but the p5 behavior is invented.
+      - expect: incorrect
+        answer: |
+          p5 calls mouseDragged only when the pointer is over a shape, the
+          boolean is just extra safety.
+
+  - question: release-resets-flag
+    answers:
+      - expect: correct
+        answer: |
+          isDragging stays true after the first grab, so on the next press the
+          circle jumps to the mouse and follows it even though you never
+          grabbed it
+      - expect: correct
+        answer: |
+          isDragging bleibt für immer true, deshalb springt der kreis beim
+          nächsten drücken sofort zur maus, obwohl man ihn gar nicht erwischt
+          hat.
+      # Variable only, no visible effect.
+      - expect: partial
+        answer: |
+          the variable is never set back to false
+      # Symptom only, no reason.
+      - expect: partial
+        answer: |
+          the circle jumps to the mouse pointer somewhere far away
+      - expect: incorrect
+        answer: |
+          you can never grab the circle again because the old drag is still
+          running.
+      # True-sounding p5 fact, wrong conclusion: the flag survives to the next press.
+      - expect: incorrect
+        answer: |
+          nothing changes, mouseDragged only runs while a button is held down
+          anyway.
+
+  - question: grab-vs-drop-test
+    answers:
+      - expect: correct
+        answer: |
+          the first one asks about one point, the mouse. the second one asks
+          about a whole circle, so you add its radius for the point that
+          sticks out farthest
+      - expect: correct
+        answer: |
+          beim ablegen muss der ganze kreis rein, also muss der abstand plus
+          sein eigener radius noch unter dem zielradius bleiben.
+      # Names the two shapes, no reason for the added radius.
+      - expect: partial
+        answer: |
+          because the second one is a circle inside a circle
+      # Only the point test explained.
+      - expect: partial
+        answer: |
+          the mouse is inside when the distance is smaller than the radius
+      - expect: incorrect
+        answer: |
+          the extra radius is a bit of tolerance so scoring is easier.
+      # Fluent technical prose with one decisive error about what distance measures.
+      - expect: incorrect
+        answer: |
+          you add CIRCLE_RADIUS because distance measures from the edge of the
+          filled circle and not from its center.
+
+  - question: radius-diameter
+    answers:
+      - expect: correct
+        answer: |
+          circle wants the diameter, so it has to be CIRCLE_RADIUS * 2
+      - expect: correct
+        answer: |
+          der dritte wert ist der durchmesser, also 100 statt 50
+      # Fix without the diameter idea.
+      - expect: partial
+        answer: |
+          you have to double the number
+      # Diameter named, value missing.
+      - expect: partial
+        answer: |
+          the third argument of circle is a diameter and not a radius
+      # Fixes the picture but breaks every distance test.
+      - expect: incorrect
+        answer: |
+          just set CIRCLE_RADIUS to 100, then the size fits.
+      - expect: incorrect
+        answer: |
+          the random position is wrong, that's why the circle is drawn too
+          small.
+
+  - question: setinterval-by-name
+    answers:
+      - expect: correct
+        answer: |
+          without () you hand the function itself over so setInterval can call
+          it every second. with () it runs once right away and setInterval
+          gets nothing to call, so the time never goes down
+      - expect: correct
+        answer: |
+          der name ohne klammern ist die funktion selbst, die setInterval
+          später aufruft. mit klammern wird sie sofort einmal ausgeführt und
+          es tickt nichts mehr.
+      # Second half only.
+      - expect: partial
+        answer: |
+          with () it would be called immediately
+      # First half only.
+      - expect: partial
+        answer: |
+          the bare name is the function itself, that's what setInterval stores
+      - expect: incorrect
+        answer: |
+          parentheses are only needed when a function has parameters, so both
+          lines do the same thing.
+      - expect: incorrect
+        answer: |
+          with countDown() setInterval would call the function 1000 times.
+
+  - question: fully-visible-random
+    answers:
+      - expect: correct
+        answer: |
+          the circle can hang over the edge and gets cut off. it has to be
+          random(CIRCLE_RADIUS, width - CIRCLE_RADIUS)
+      - expect: correct
+        answer: |
+          ein teil vom kreis wäre außerhalb der leinwand. der mittelpunkt muss
+          einen radius abstand vom rand halten, also von CIRCLE_RADIUS bis
+          width - CIRCLE_RADIUS.
+      # Symptom only.
+      - expect: partial
+        answer: |
+          a part of the circle would be outside the canvas
+      # Range only, no symptom.
+      - expect: partial
+        answer: |
+          random(CIRCLE_RADIUS, width - CIRCLE_RADIUS)
+      - expect: incorrect
+        answer: |
+          nothing bad, p5 keeps the shapes inside the canvas by itself.
+      # Both ends of the range are still wrong.
+      - expect: incorrect
+        answer: |
+          use random(0, width - CIRCLE_RADIUS * 2), then the circle always
+          fits.

@@ -1,0 +1,175 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0020-domino-quiz.yaml ("Refactoring with functions").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: domino-quiz-eval
+target: ./0020-domino-quiz.yaml
+
+questions:
+  - question: refactoring-meaning
+    answers:
+      - expect: correct
+        answer: |
+          you only change how the code is built, the program still draws
+          exactly the same thing. so if the picture changes after a step
+          you know you broke something
+      - expect: correct
+        answer: |
+          nur die struktur ändert sich, das bild bleibt gleich. deswegen
+          sieht man sofort, wenn beim umbauen etwas kaputt gegangen ist.
+      # Structure half only.
+      - expect: partial
+        answer: |
+          you make the code nicer to read and split it into functions
+      # Same-result half without the test idea.
+      - expect: partial
+        answer: |
+          the picture stays the same after refactoring
+      - expect: incorrect
+        answer: |
+          refactoring means fixing the bugs in a program that does not
+          work yet.
+      # Fluent and confident, but the wrong goal.
+      - expect: incorrect
+        answer: |
+          refactoring is the step where you add the new features, in this
+          case the second dice half, and make the program faster while
+          you are at it.
+
+  - question: parameter-or-constant
+    answers:
+      - expect: correct
+        answer: |
+          dice becomes the parameter because every call needs a different
+          number. diceSize and dicePointDiameter are the same everywhere
+          so they go to the top as constants
+      - expect: correct
+        answer: |
+          dice ist der parameter, weil sich der wert bei jedem aufruf
+          ändert. die anderen zwei sind überall gleich und stehen oben im
+          file.
+      # Split right, rule never stated.
+      - expect: partial
+        answer: |
+          dice is the parameter, the other two go to the top
+      # Rule right, values sorted wrongly.
+      - expect: partial
+        answer: |
+          values that change every call are parameters, so diceSize and
+          dice are both parameters of drawDice
+      - expect: incorrect
+        answer: |
+          all three have to be parameters, otherwise drawDice cannot see
+          them.
+      - expect: incorrect
+        answer: |
+          a function can never read a constant from the top of the file,
+          so every value must be handed over.
+
+  - question: values-flow
+    answers:
+      - expect: correct
+        answer: |
+          setup rolls it and gives it to drawDomino as an argument,
+          drawDomino gives it on to drawDice, and there the ifs use it to
+          pick the dots
+      # Terse but complete chain.
+      - expect: correct
+        answer: |
+          setup -> drawDomino -> drawDice, always as an argument
+      - expect: correct
+        answer: |
+          in setup wird gewürfelt, der wert geht als argument an
+          drawDomino und von dort weiter an drawDice, wo die punkte
+          gezeichnet werden.
+      # Only the first step of the chain.
+      - expect: partial
+        answer: |
+          setup hands the number to drawDomino
+      # Only the second step of the chain, the roll in setup is skipped.
+      - expect: partial
+        answer: |
+          drawDomino hands the value on to drawDice, which draws the dots
+      - expect: incorrect
+        answer: |
+          drawDice looks into setup and takes the value of dice1 from
+          there itself.
+      - expect: incorrect
+        answer: |
+          the number is stored in the parameter name dice1, that is why
+          drawDomino and setup must use the same name.
+
+  - question: roll-in-setup
+    answers:
+      - expect: correct
+        answer: |
+          then you could not test it with fixed numbers anymore, drawDice
+          would always draw a random face instead of the one you want
+      - expect: correct
+        answer: |
+          der aufrufer könnte die augenzahl nicht mehr bestimmen. man
+          könnte also nicht mehr mit 3 und 5 testen.
+      # Abstract benefit words without a concrete loss.
+      - expect: partial
+        answer: |
+          the function would be less flexible and harder to reuse
+      - expect: incorrect
+        answer: |
+          random does not work inside a function, it only works in setup.
+      # Sounds knowledgeable, wrong consequence.
+      - expect: incorrect
+        answer: |
+          both halves of the domino would always show the same number,
+          because the function rolls once and keeps the value.
+
+  - question: translate-halves
+    answers:
+      - expect: correct
+        answer: |
+          translate moves the origin one face width to the right, and the
+          fixed numbers in drawDice count from the origin, so they land in
+          the right half now
+      - expect: correct
+        answer: |
+          der nullpunkt wandert um diceSize nach rechts, deshalb zeichnen
+          die gleichen zahlen jetzt in der rechten hälfte.
+      # Movement noticed, origin connection missing.
+      - expect: partial
+        answer: |
+          because translate moves everything to the right
+      # Origin idea without the translate.
+      - expect: partial
+        answer: |
+          drawDice always draws relative to the origin
+      - expect: incorrect
+        answer: |
+          drawDice sees that it got dice2 this time, so it knows it is the
+          second half and draws further right.
+      - expect: incorrect
+        answer: |
+          translate takes the dots that are already painted and moves them
+          over to the right side.
+
+  - question: loop-argument
+    answers:
+      - expect: correct
+        answer: |
+          first round 1:2, last round 5:6
+      - expect: correct
+        answer: |
+          in der ersten runde ist i gleich 1, also 1 und 2. in der letzten
+          ist i gleich 5, also 5 und 6.
+      # One value right, the other one wrong.
+      - expect: partial
+        answer: |
+          the first is 1:2 and the last one is 5:5
+      # Only i named, the second argument forgotten.
+      - expect: partial
+        answer: |
+          i is 1 in the first round and 5 in the last round
+      - expect: incorrect
+        answer: |
+          first 1:1 and last 5:5, because i is used for both numbers.
+      - expect: incorrect
+        answer: |
+          all five rounds draw the same piece, only the position changes.

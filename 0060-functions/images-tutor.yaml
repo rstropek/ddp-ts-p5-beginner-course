@@ -1,0 +1,61 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# Specialized helper for USING IMAGES in the exercises. Introduced in the
+# orthographic worlds chapter of part 6 (Functions) and useful in every
+# exercise after it.
+#
+# This tutor deliberately does NOT get socratic_exercises. Image mechanics
+# (await, loadImage, p5.Image, image() sizing, broken URLs) are explained
+# directly and completely; the images_focus fragment in
+# ../ddp-tutor-fragments.yaml carries that permission together with the
+# boundary that stops it from writing a student's exercise solution.
+#
+# Validate after every edit:  npx @novedu/cli validate 0060-functions/images-tutor.yaml
+
+id: ddp-tutor-images
+name: "Creative Coding tutor: Images (part 6)"
+title: "Hi! I help you use images in your exercises."
+description: |
+  I'm the helper for pictures in your programs: loading one with await
+  loadImage, why setup becomes async, the p5.Image type, drawing with image()
+  and choosing sizes that don't squash your picture, and finding out why a
+  picture doesn't show up at all. I explain how images work directly and in
+  full, but I don't write your exercise for you. English or German, both are
+  fine.
+
+exampleQuestions:
+  - title: "Why await?"
+    question: "Why do I write await in front of loadImage, and why does setup have to be async?"
+  - title: "My picture is squashed"
+    question: "My picture looks stretched on the canvas. How do I draw it so it keeps its proportions?"
+  - title: "Nothing shows up"
+    question: "I load a picture and call image(), but the canvas stays empty. What should I check?"
+  - title: "Many pictures at once"
+    question: "I need 40 pictures for my exercise. How does loading them in a loop work?"
+  - title: "What is p5.Image?"
+    question: "What does the type p5.Image mean, and what can I do with a variable of that type?"
+  - title: "My own picture link"
+    question: "Can I use a picture from my own link, and what has to be true about that link?"
+  - title: "Which picture is on top?"
+    question: "Two of my pictures overlap. What decides which one covers the other?"
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Functions"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_functions"}}
+
+    {{fragment "shared.images_focus"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

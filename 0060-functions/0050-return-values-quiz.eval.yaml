@@ -1,0 +1,180 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0050-return-values-quiz.yaml
+# ("Functions that answer: return values").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: return-values-quiz-eval
+target: ./0050-return-values-quiz.yaml
+
+questions:
+  - question: void-vs-result-type
+    answers:
+      - expect: correct
+        answer: |
+          void means the function gives nothing back, it just draws.
+          number means it hands a number back to the code that called it
+      - expect: correct
+        answer: |
+          bei void kommt nichts zurück, bei number bekommt man eine zahl
+          zurück
+      # Only the number head explained.
+      - expect: partial
+        answer: |
+          getRandomInt gives back a number
+      # Both named as "types" without saying what comes back.
+      - expect: partial
+        answer: |
+          it is the type of the function, void or number
+      # Confuses result type with parameters.
+      - expect: incorrect
+        answer: |
+          void means the function has no parameters and number means all
+          the parameters are numbers
+      # Fluent but decisively wrong.
+      - expect: incorrect
+        answer: |
+          void means the function can be called from anywhere in the
+          program, while number means it may only be used inside a
+          calculation
+
+  - question: return-ends-function
+    answers:
+      - expect: correct
+        answer: |
+          return ends the function right away, so the circle line under
+          it never runs. you have to draw the circle before the return
+      - expect: correct
+        answer: |
+          nach dem return läuft nichts mehr, die zeile mit circle ist tot.
+          man muss circle vor das return schreiben.
+      # Symptom seen, reason not named.
+      - expect: partial
+        answer: |
+          the last line is never executed, so put it further up
+      # Reason named, no fix.
+      - expect: partial
+        answer: |
+          because return jumps out of the function immediately
+      - expect: incorrect
+        answer: |
+          a function can either draw or return a value, not both, so you
+          have to make it void
+      - expect: incorrect
+        answer: |
+          the circle is there but you cannot see it, because noFill is
+          still set from setup
+
+  - question: half-open-bounds
+    answers:
+      - expect: correct
+        answer: |
+          1, 2, 3, 4, 5 or 6. never 7, because random stays below 7 and
+          floor cuts the rest away
+      - expect: correct
+        answer: |
+          wie bei einem würfel, 1 bis 6
+      # Classic off-by-one at the upper bound.
+      - expect: partial
+        answer: |
+          whole numbers from 1 to 7
+      # Upper bound handled, lower bound wrongly dropped as well.
+      - expect: partial
+        answer: |
+          2 to 6, because both ends are cut off
+      - expect: incorrect
+        answer: |
+          any decimal number between 1 and 7, like 3.42
+      - expect: incorrect
+        answer: |
+          0 to 7, floor rounds to the nearest whole number
+
+  - question: named-recipe
+    answers:
+      - expect: correct
+        answer: |
+          the recipe is written once, so if you change how it rounds all
+          three calls change with it
+      - expect: correct
+        answer: |
+          der name sagt sofort was passiert. getRandomInt(10, 50) versteht
+          man beim lesen, floor(random(10, 50)) muss man erst denken.
+      # Verbose padded correct: true chapter facts around one real reason.
+      - expect: correct
+        answer: |
+          in the program mouseClicked picks centerX, centerY and the
+          diameter, and the circle is drawn with a lime outline on a black
+          background, and nothing repaints the background so the circles
+          pile up. the point of the function is that the calculation only
+          exists in one spot, so changing it changes every call
+      # Slogan without a concrete gain.
+      - expect: partial
+        answer: |
+          so you don't repeat yourself
+      - expect: partial
+        answer: |
+          it is just cleaner code with functions
+      - expect: incorrect
+        answer: |
+          the numbers get more random when they come out of a function
+      - expect: incorrect
+        answer: |
+          because a single line is too short for mouseClicked, functions
+          make the program run faster
+
+  - question: doc-comment-payoff
+    answers:
+      - expect: correct
+        answer: |
+          the head only says they are numbers, it cannot say that max is
+          never reached. and the editor shows the comment in a little box
+          when you hover over the call
+      - expect: correct
+        answer: |
+          dass min dabei ist und max nicht, steht nur im kommentar, die
+          typen können das nicht sagen. beim tippen zeigt der editor den
+          text als tooltip an.
+      # Documentation half only.
+      - expect: partial
+        answer: |
+          it explains what min and max mean, the types only say number
+      # Tooltip half only.
+      - expect: partial
+        answer: |
+          you see the text when you point at the function with the mouse
+      - expect: incorrect
+        answer: |
+          the comment makes max exclusive, without it the function would
+          also return max
+      - expect: incorrect
+        answer: |
+          the text is printed on the canvas when the program starts
+
+  - question: call-is-a-value
+    answers:
+      - expect: correct
+        answer: |
+          centerX holds a normal number, whatever getRandomInt gave back,
+          maybe 143. the call is replaced by its answer, so it can stand
+          anywhere a number can stand
+      - expect: correct
+        answer: |
+          centerX ist eine ganz normale zahl. der rückgabewert kommt genau
+          dort an, wo der aufruf steht, deshalb darf dort ein aufruf
+          stehen.
+      # Value named, replacement idea missing.
+      - expect: partial
+        answer: |
+          a random number between 0 and the canvas width
+      # Return trip explained, but not what centerX holds.
+      - expect: partial
+        answer: |
+          the function runs and the answer travels back to the line that
+          called it
+      - expect: incorrect
+        answer: |
+          centerX holds the function getRandomInt, and circle calls it
+          later when it needs the position
+      - expect: incorrect
+        answer: |
+          centerX holds nothing yet, the call only runs when the circle
+          is drawn

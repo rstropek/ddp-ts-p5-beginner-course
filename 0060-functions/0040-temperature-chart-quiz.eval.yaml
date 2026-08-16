@@ -1,0 +1,187 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0040-temperature-chart-quiz.yaml
+# ("Decomposition: four functions, one chart").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: temperature-chart-quiz-eval
+target: ./0040-temperature-chart-quiz.yaml
+
+questions:
+  - question: decomposition-vs-refactoring
+    answers:
+      - expect: correct
+        answer: |
+          you split the picture into jobs and name them on paper first,
+          then you code one job after the other
+      # Terse correct: the two required elements and nothing else.
+      - expect: correct
+        answer: |
+          plan the four functions on paper before writing any code
+      # Splitting named, but the "before coding" half is missing.
+      - expect: partial
+        answer: |
+          you write four functions, one for the axes, one for the scale,
+          one for the months and one for the bars
+      # Planning named, but not the split into named jobs.
+      - expect: partial
+        answer: |
+          you make a plan first instead of just starting
+      # Classic misconception: describes refactoring again.
+      - expect: incorrect
+        answer: |
+          you write the whole chart in setup first and then move the
+          parts that repeat into functions
+      - expect: incorrect
+        answer: |
+          you have to write the functions in the same order in which
+          setup calls them later
+
+  - question: why-one-parameter
+    answers:
+      - expect: correct
+        answer: |
+          the axes, the scale and the month names are always the same, so
+          those functions need nothing from outside. the bars are
+          different for every city, so the array goes in as a parameter
+      - expect: correct
+        answer: |
+          die anderen drei malen immer das gleiche bild. drawTemperatures
+          bekommt die zwölf zahlen rein, damit dieselbe funktion linz oder
+          johannesburg zeichnen kann.
+      # Reuse half only, nothing about the other three.
+      - expect: partial
+        answer: |
+          so you can hand it AVG_TEMP_LINZ or AVG_TEMP_JOHANNESBURG
+      # Other-three half only.
+      - expect: partial
+        answer: |
+          the other three functions do not need any values from outside
+      # Fluent but decisively wrong reason.
+      - expect: incorrect
+        answer: |
+          because it is the biggest function of the four, and big
+          functions need parameters so they stay readable
+      - expect: incorrect
+        answer: |
+          because it is called first in setup, and the first call always
+          gets the data
+
+  - question: draw-order
+    answers:
+      - expect: correct
+        answer: |
+          the yellow bars would be painted over the zero line and the
+          month names, so you could not read them anymore
+      - expect: correct
+        answer: |
+          die balken würden über die achsen und die beschriftung drüber
+          gemalt, weil alles auf das gemalt wird was schon da ist
+      # Verbose but correct: padded with true chapter facts that do not
+      # answer the question. Length must not change the verdict.
+      - expect: correct
+        answer: |
+          the chart is 460 pixels wide and one month owns a column of 30
+          pixels, the zero line is at 225 and every degree is 5 pixels,
+          and the real data for linz and johannesburg is different
+          because johannesburg lies south of the equator. anyway if
+          drawTemperatures runs last the bars end up on top of the axes
+          and cover the month names
+      # Symptom without naming what gets covered.
+      - expect: partial
+        answer: |
+          it would look wrong because the order of the calls matters
+      - expect: incorrect
+        answer: |
+          the axes and labels would not be drawn at all
+      - expect: incorrect
+        answer: |
+          the bars would be in the wrong place, they would start at the
+          top of the canvas
+
+  - question: implement-one-test-one
+    answers:
+      - expect: correct
+        answer: |
+          if the picture is wrong you have four functions that could be
+          the reason and you don't know which one
+      - expect: correct
+        answer: |
+          man weiß nicht mehr, welche der vier funktionen den fehler
+          macht. wenn man einzeln testet, steckt der fehler in der
+          funktion die man gerade geschrieben hat.
+      # Vague difficulty claim without the which-function point.
+      - expect: partial
+        answer: |
+          it is harder to find bugs that way
+      # Only the "see it earlier" benefit.
+      - expect: partial
+        answer: |
+          you see the result of your work much later
+      - expect: incorrect
+        answer: |
+          the program cannot run while some of the functions are still
+          empty, so it would show an error
+      - expect: incorrect
+        answer: |
+          nothing really goes wrong, you just have to write the functions
+          in the same order in which setup calls them
+
+  - question: degrees-to-pixels
+    answers:
+      - expect: correct
+        answer: |
+          y is 125, because 20 * 5 is 100 and 225 - 100 = 125. it is
+          minus because y goes down on the canvas, so a warm month has to
+          be further up
+      - expect: correct
+        answer: |
+          125. y wächst nach unten, deshalb muss man abziehen, damit
+          warme monate über der nulllinie landen
+      # Exact value right, direction reason missing.
+      - expect: partial
+        answer: |
+          225 - 100, so 125
+      # Reason right, value missing.
+      - expect: partial
+        answer: |
+          you subtract because the y axis of the canvas points downwards
+      # Swapped sign: the classic 325.
+      - expect: incorrect
+        answer: |
+          y is 325 because 225 + 20 * 5 = 325
+      # Confuses the bar height with the y position.
+      - expect: incorrect
+        answer: |
+          y is 100, that is how tall the bar for 20 degrees is
+
+  - question: ticks-from-loops
+    answers:
+      - expect: correct
+        answer: |
+          as soon as you change the width of a column you have to retype
+          all twelve numbers, and if you forget one the label sits in the
+          wrong place. with a loop the position comes from the same
+          formula as the bars
+      - expect: correct
+        answer: |
+          weil die zahlen dann nur für dieses eine layout stimmen. ändert
+          man den abstand, muss man alle zwölf von hand ausbessern.
+      # Effort argument only.
+      - expect: partial
+        answer: |
+          a loop is much shorter than twelve text lines
+      # Vague "cleaner code" without the breaking-on-change idea.
+      - expect: partial
+        answer: |
+          hard-coded numbers are bad style, loops are better
+      - expect: incorrect
+        answer: |
+          typed positions would not compile, p5 only accepts positions
+          that come from a variable
+      # The rubric names "a loop runs faster" as the classic misconception.
+      # Phrased as runtime speed so it cannot be read as "faster to type"
+      # (that reading would belong to the partial less-typing branch).
+      - expect: incorrect
+        answer: |
+          the computer runs a loop faster than twelve separate text calls,
+          so the chart appears quicker

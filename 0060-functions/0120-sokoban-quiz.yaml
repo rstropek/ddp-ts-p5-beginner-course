@@ -1,0 +1,227 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "The earned shortcut: split"
+# (0060-functions/0120-sokoban.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the course
+# rule update that allows split, what split does with the separator,
+# split('\n') versus split(''), the string[][] grid with row-then-column
+# indexing, maxWidth for uneven rows, the switch from symbol to image with
+# its default branch, and walking the origin with push/pop.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: sokoban-quiz
+name: "Quiz: The earned shortcut"
+
+title: "Check your understanding: the earned shortcut"
+description: |
+  Six short questions about the chapter *The earned shortcut: split*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="const parts: string[] = line.split(',');"
+      scope="after the Sokoban chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, `switch`, and writing their own functions"
+        "loops, `for...of`, strings with indexes, `translate`, `push`/`pop`, and `scale`"
+        "arrays, element access, `.length`, `push`, and parallel arrays"
+        "parsing a string by hand with a buffer and the push after the loop"
+        "`await loadImage(url)` inside `async function setup(): Promise<void>` and the type `p5.Image`"
+        "two-dimensional arrays like `string[][]` and double indexing"
+        "`split(separator)` returning an array of pieces, and `split` with the empty string"
+        "template strings in backticks that run over several lines, with `\\n` at each line break"
+        "walking the origin with `translate` inside `push`/`pop`")
+      not_yet=(array
+        "`includes` and other search shortcuts"
+        "`indexOf`, `map`, `filter`, and array methods beyond push/splice/reverse/length"
+        "objects and classes")}}
+
+questions:
+  - id: split-rule-update
+    title: "The rule that changed"
+    question: |
+      In the Arrays part you had to cut a string with a character
+      loop and a buffer, and `split` was not allowed. This chapter
+      changes that rule. What is allowed now, and why only now?
+    evaluation: |
+      Expected: split may now be used for simple separators, and you
+      should use it. It was held back until you had written the
+      collecting loop by hand several times, so the shortcut hides
+      nothing from you any more. When the data needs more than
+      cutting at one character, or a task forbids split, the
+      character loop is still the answer.
+
+      - `correct`   - says split is allowed now for simple cutting
+                      AND gives the reason that the students already
+                      built the loop by hand and understand what it
+                      does.
+      - `partial`   - only the new permission without the reason, or
+                      only "so we learn how it works" without saying
+                      what is allowed now.
+      - `incorrect` - anything else, e.g. split was broken before, or
+                      the character loop is now forbidden, or split
+                      is allowed only in exams.
+
+      Feedback: state that split is allowed from this chapter on
+      because the hand-written loop is already understood, then ask
+      what the shortcut would have hidden if it had come first.
+
+  - id: split-rows-and-chars
+    title: "Two kinds of cut"
+    question: |
+      Predict both results.
+
+      ```typescript
+      const small: string = `Xb
+      X.`;
+      const rows: string[] = small.split('\n');
+      const cells: string[] = rows[0].split('');
+      ```
+
+      What does `rows` hold, and what does `cells` hold?
+    evaluation: |
+      Expected: rows is ['Xb', 'X.'], the two lines of the string,
+      because split('\n') cuts at the line break. cells is
+      ['X', 'b'], because split with the empty string cuts between
+      every pair of characters. The separator itself is thrown away.
+
+      - `correct`   - both literal results: two rows 'Xb' and 'X.',
+                      and the two single characters 'X' and 'b'
+                      (quotes and spelling of the array do not
+                      matter).
+      - `partial`   - one of the two right and the other wrong or
+                      missing, for example rows right but cells given
+                      as the whole row, or cells right but rows given
+                      with the line break still inside a piece.
+      - `incorrect` - anything else, e.g. rows holds all four
+                      characters, or split('') returns the string
+                      unchanged, or the results are numbers.
+
+      Feedback: state that rows is ['Xb', 'X.'] and cells is
+      ['X', 'b'], then point out what each of the two separators cuts
+      at.
+
+  - id: grid-indexing
+    title: "Row first, column second"
+    question: |
+      After parsing, `level` is a `string[][]` that holds this map,
+      one row per line and one character per column.
+
+      ```text
+      XXXXX__
+      X   X__
+      X@XbXXX
+      X b ..X
+      XXXXXXX
+      ```
+
+      What is `level[2][3]`, and what stands on that square of the
+      map?
+    evaluation: |
+      Expected: level[2] is the third row X@XbXXX, and index 3 in it
+      is the fourth character, so level[2][3] is 'b'. A box stands on
+      that square. The first index is the row, the second is the
+      column.
+
+      - `correct`   - names the character 'b' AND says it is a box
+                      (Kiste/crate count).
+      - `partial`   - the right square described in words (third row,
+                      fourth column) but the wrong character named,
+                      or 'b' named without saying what it means on
+                      the map.
+      - `incorrect` - anything else, e.g. a character taken from row
+                      3 counted from 1, or from column 2, or the
+                      indexes read as column first.
+
+      Feedback: state that level[2][3] is 'b', a box, then walk them
+      through counting rows and columns from 0.
+
+  - id: max-width
+    title: "Rows of different length"
+    question: |
+      While parsing, the code compares every row against `maxWidth`
+      and keeps the largest value. Why is the length of the first row
+      not enough?
+    evaluation: |
+      Expected: the rows of a level may have different lengths, and
+      the canvas width is maxWidth * cellSize. Taking the first row
+      would make the canvas too narrow whenever a later row is wider,
+      so part of the level would be cut off.
+
+      - `correct`   - says the rows can be of different length AND
+                      that the canvas must fit the widest one.
+      - `partial`   - says rows differ in length without the canvas
+                      consequence, or says the canvas would be too
+                      small without saying that rows differ.
+      - `incorrect` - anything else, e.g. maxWidth counts the rows,
+                      or it is needed because the level grows while
+                      the game runs.
+
+      Feedback: state that the canvas is sized from maxWidth, then
+      ask what happens to a row that is longer than the first one.
+
+  - id: switch-default
+    title: "The default branch"
+    question: |
+      `getBlockImageBySymbol` has cases for `'X'`, `'.'`, `'b'`, and
+      `'B'`. A space and the player character `'@'` have no case of
+      their own. Which picture do those two get, and why?
+    evaluation: |
+      Expected: both fall into the default branch and get images[1],
+      the floor picture, because default catches every symbol that is
+      not listed. So the player is drawn as floor and is invisible in
+      this exercise.
+
+      - `correct`   - says both land in default and are drawn as
+                      floor ("Boden" counts), because no case
+                      matches them.
+      - `partial`   - says they get the floor picture without
+                      mentioning default, or explains default without
+                      saying which picture comes out.
+      - `incorrect` - anything else, e.g. nothing is drawn for them,
+                      or the program stops because the symbol is
+                      unknown, or the player gets its own picture.
+
+      Feedback: state that a symbol with no case of its own runs into
+      default, which returns the floor picture, then ask what that
+      means for seeing the player.
+
+  - id: origin-walk
+    title: "The origin does the walking"
+    question: |
+      Every tile is drawn with `image(img, 0, 0, cellSize, cellSize)`,
+      always at 0, 0. How do the tiles still land in a grid, and what
+      job do `push` and `pop` do at the start and the end of a row?
+    evaluation: |
+      Expected: after each cell, translate(cellSize, 0) moves the
+      origin one cell to the right, so the next tile at 0, 0 lands
+      next to the previous one. push saves the position at the start
+      of a row and pop brings it back, so the next row starts at the
+      left edge again, one translate(0, cellSize) lower.
+
+      - `correct`   - says the origin is moved by translate after
+                      every cell AND that push/pop return to the row
+                      start (the left edge) for the next row.
+      - `partial`   - explains the moving origin without the push/pop
+                      row reset, or explains push/pop without the
+                      per-cell translate.
+      - `incorrect` - anything else, e.g. p5 arranges the tiles in a
+                      grid by itself, or push and pop add and remove
+                      tiles from an array.
+
+      Feedback: state that the origin walks one cell right per round
+      while every tile is drawn at 0, 0, then ask where the origin
+      would sit at the start of the next row without pop.

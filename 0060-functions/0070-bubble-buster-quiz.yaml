@@ -1,0 +1,230 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "A game from functions: Bubble Buster"
+# (0060-functions/0070-bubble-buster.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: one job per
+# function and how the job decides the signature, the Pythagoras hit test with
+# the radius, the early return in draw, noLoop, replacing an interval for the
+# next level, and the backwards removal loop as a recap.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: bubble-buster-quiz
+name: "Quiz: A game from functions (Bubble Buster)"
+
+title: "Check your understanding: a game from functions"
+description: |
+  Six short questions about the chapter *A game from functions: Bubble
+  Buster*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="return distance < circlesDiameter[circleIndex] / 2;"
+      scope="after the Bubble Buster chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, strings with indexes, `translate`, `push`/`pop`, and `rotate`"
+        "arrays, parallel arrays, `push`, `splice`, and walking a loop backwards"
+        "their own functions with parameters, a return type, and `: void`"
+        "return values, `boolean` results, and doc comments"
+        "callbacks handed to `setInterval` and stopped with `clearInterval`"
+        "one job per function, and that the job decides the parameters"
+        "`sqrt` and the Pythagorean theorem for a distance"
+        "a bare `return;` that leaves a `void` function early"
+        "`noLoop()` and `loop()` for switching the `draw` calls off and on")
+      not_yet=(array
+        "splitting a program over several files"
+        "images, `loadImage`, or anything drawn from a picture file"
+        "`async` and `await`"
+        "objects and classes"
+        "arrays of arrays")}}
+
+questions:
+  - id: shape-follows-job
+    title: "Two functions, two shapes"
+    question: |
+      Bubble Buster contains these two functions:
+
+      ```typescript
+      function addRandomCircle(): void
+      function isInside(x: number, y: number, circleIndex: number): boolean
+      ```
+
+      Why does the first one need no parameters and no return value, while
+      the second one needs three parameters and gives an answer back?
+    evaluation: |
+      Expected: the job decides the shape. addRandomCircle needs nothing
+      from the caller and produces no answer, it just adds one bubble to
+      the global arrays, so no parameters and `: void`. isInside answers a
+      question about a point and one bubble, so it needs the point (x, y)
+      and which bubble (circleIndex), and hands back true or false.
+
+      - `correct`   - explains both shapes from their jobs: nothing to
+                      receive and nothing to answer for the first, values
+                      needed plus an answer handed back for the second
+                      ("says yes or no" counts for boolean).
+      - `partial`   - explains only one of the two functions, or only
+                      repeats what the signatures say (no parameters, void,
+                      boolean) without tying it to the job.
+      - `incorrect` - anything else, e.g. addRandomCircle has no parameters
+                      because it is short, or isInside also removes the
+                      bubble it finds.
+
+      Feedback: ask what each function would have to be told before it can
+      start, and what the caller wants to know afterwards.
+
+  - id: radius-not-diameter
+    title: "Half the diameter"
+    question: |
+      A classmate changed the last line of `isInside` to this:
+
+      ```typescript
+      return distance < circlesDiameter[circleIndex];
+      ```
+
+      The game still runs, but the popping feels wrong. What changed for
+      the player?
+    evaluation: |
+      Expected: the distance must be compared with the radius, which is
+      diameter / 2. Without the division the accepted area is twice as
+      wide, so clicks clearly outside a bubble already pop it.
+
+      - `correct`   - says the comparison now uses the diameter instead of
+                      the radius, so the hit area is too big (twice as
+                      wide) and clicks outside the bubble count as hits.
+      - `partial`   - says bubbles pop too easily or from too far away
+                      without naming the radius/diameter mix-up, or names
+                      the mix-up without saying what the player notices.
+      - `incorrect` - anything else, e.g. the area gets smaller, nothing
+                      changes, or the function now always returns true.
+
+      Feedback: from the center of a bubble, how far is it to the edge:
+      the diameter, or half of it?
+
+  - id: early-return-draw
+    title: "The missing return"
+    question: |
+      In `draw`, the game over check looks like this:
+
+      ```typescript
+      if (circlesX.length >= 10) {
+        stopGame();
+        return;
+      }
+      ```
+
+      A classmate deletes the line `return;` and keeps everything else.
+      What does the player see when the game ends, and why?
+    evaluation: |
+      Expected: without the return, the rest of draw still runs in the same
+      call. The bubbles and the points text get painted on top of the game
+      over screen that stopGame just drew, so the final message is covered.
+      Because stopGame also calls noLoop(), that spoiled picture is the one
+      that stays on the canvas.
+
+      - `correct`   - says the rest of draw runs anyway and paints the
+                      bubbles (and/or the score) over the game over
+                      message, so it is hidden or only partly visible.
+      - `partial`   - says the return stops the function or that draw
+                      continues, without saying what covers the game over
+                      screen.
+      - `incorrect` - anything else, e.g. nothing changes, the program
+                      crashes, or draw keeps being called forever because
+                      the return is missing.
+
+      Feedback: name the lines that come after the if in draw, and say what
+      they paint on the canvas that stopGame just filled.
+
+  - id: noloop-purpose
+    title: "Switching draw off"
+    question: |
+      The last line of `stopGame` is `noLoop();`. What does that call
+      change, and why does the game want it at that moment?
+    evaluation: |
+      Expected: noLoop() tells p5.js to stop calling draw, so draw no
+      longer runs about 60 times a second. The game over picture stays on
+      the canvas instead of being wiped and repainted, and the program
+      stops doing work for a game that is already finished. loop() would
+      start the calls again.
+
+      - `correct`   - says draw is no longer called automatically AND gives
+                      the reason: the final screen stays / no pointless
+                      repainting.
+      - `partial`   - says only that draw stops being called, without a
+                      reason, or says the picture freezes without
+                      mentioning the draw calls.
+      - `incorrect` - anything else, e.g. noLoop() closes the program, it
+                      stops the intervals, or it deletes the canvas.
+
+      Feedback: draw starts with background('black'). What would happen to
+      the game over message if draw ran once more?
+
+  - id: replace-interval
+    title: "One timer too many"
+    question: |
+      Every ten seconds `nextLevel` runs:
+
+      ```typescript
+      function nextLevel(): void {
+        clearInterval(circleInterval);
+        waitingTime /= 2;
+        circleInterval = setInterval(addRandomCircle, waitingTime);
+      }
+      ```
+
+      What goes wrong if the first line is missing?
+    evaluation: |
+      Expected: the old timer keeps running next to the new one, so after
+      each level one more timer adds bubbles and the canvas fills far too
+      fast. On top of that, circleInterval only remembers the newest timer,
+      so the older ones can never be stopped again, not even by stopGame.
+
+      - `correct`   - says the old interval keeps running as well, so more
+                      and more timers add bubbles at the same time (the
+                      lost id / cannot be stopped point counts too).
+      - `partial`   - says the game gets too fast or too many bubbles
+                      appear, without saying that the old timer is still
+                      running, or only mentions the lost id.
+      - `incorrect` - anything else, e.g. setInterval replaces the old
+                      timer by itself, or nothing changes because the
+                      variable is overwritten.
+
+      Feedback: setInterval always starts a NEW timer. How many timers are
+      running after two levels if none of them was ever cleared?
+
+  - id: pop-backwards
+    title: "Popping backwards"
+    question: |
+      `mouseClicked` walks the bubbles from `circlesX.length - 1` down to
+      0 and splices out every bubble that was hit. What can go wrong if
+      the same loop runs forwards from 0 with `i++`?
+    evaluation: |
+      Expected: splice shifts all later elements one index to the left.
+      Walking forwards, the bubble that slides into the freed index is
+      never checked, so with two overlapping bubbles under the pointer one
+      of them survives the click. Walking backwards, the shift only touches
+      indexes the loop has already passed.
+
+      - `correct`   - says removing shifts the later bubbles left and a
+                      forward loop then skips the shifted one, so a bubble
+                      that was hit stays on the canvas.
+      - `partial`   - says the indexes get mixed up or elements are skipped
+                      without explaining the shift, or explains the shift
+                      without the skipping consequence.
+      - `incorrect` - anything else, e.g. the program crashes with an index
+                      error, or splice only works from the end.
+
+      Feedback: remove index 1 from [a, b, c, d] on paper. Which element
+      sits at index 1 afterwards, and where does a forward loop look next?

@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0080-melting-snowman-1-quiz.yaml ("Many files, one program").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: melting-snowman-1-quiz-eval
+target: ./0080-melting-snowman-1-quiz.yaml
+
+questions:
+  - question: why-split-files
+    answers:
+      - expect: correct
+        answer: |
+          you find a bug faster because you know which file to open, and two
+          people can work on the game and on the snowman at the same time
+      - expect: correct
+        answer: |
+          man kann die datei mit dem schneemann in einem anderen programm
+          wiederverwenden, und man findet sachen schneller
+      # Only one reason, given twice in different words.
+      - expect: partial
+        answer: |
+          it is more organized and you keep a better overview of your code
+      # A single valid reason.
+      - expect: partial
+        answer: |
+          because you can reuse snowman.ts in another program later
+      - expect: incorrect
+        answer: |
+          the program runs faster and needs less memory when it is split into
+          two files.
+      # Fluent and confident, but a made up rule.
+      - expect: incorrect
+        answer: |
+          TypeScript does not allow more than about 100 lines in one file, so
+          bigger programs have to be split.
+
+  - question: shared-scope
+    answers:
+      - expect: correct
+        answer: |
+          in the playground both files are one program, the computer reads all
+          of them before it starts. so you can just call drawSnowman, there is
+          nothing to write at the top.
+      - expect: correct
+        answer: |
+          nichts, die dateien sind zusammen ein programm. funktionen und globale
+          variablen aus snowman.ts kann man in index.ts einfach verwenden.
+      # Right conclusion, no reason at all.
+      - expect: partial
+        answer: |
+          it works anyway, i tried it
+      # Almost right but still expects some ceremony.
+      - expect: partial
+        answer: |
+          the files belong to the same program, you only have to load snowman.ts
+          somewhere at the beginning
+      - expect: incorrect
+        answer: |
+          the classmate is right, index.ts needs an import line for snowman.ts
+          or the call fails.
+      - expect: incorrect
+        answer: |
+          you have to copy drawSnowman into index.ts as well, otherwise p5 does
+          not find it.
+
+  - question: oneshot-draw
+    answers:
+      - expect: correct
+        answer: |
+          redraw asks for one draw call right now and noLoop switches the
+          automatic calls off. the snowman only changes when a key is pressed,
+          so drawing it 60 times a second would be the same picture again and
+          again.
+      - expect: correct
+        answer: |
+          redraw() zeichnet einmal, noLoop() stoppt die automatischen aufrufe.
+          das bild ändert sich nur bei einem tastendruck, alles andere wäre
+          verschwendete rechenzeit.
+      # Mechanics only, the reason is missing.
+      - expect: partial
+        answer: |
+          redraw draws once and noLoop stops draw from running all the time
+      # Reason only.
+      - expect: partial
+        answer: |
+          because nothing moves in this program, a snowman just stands there
+      # The two lines are swapped.
+      - expect: partial
+        answer: |
+          noLoop draws the picture one time and redraw turns off the repeating
+          calls, so the snowman is painted once
+      - expect: incorrect
+        answer: |
+          noLoop ends the program after setup, and redraw is the last thing that
+          is still allowed to run.
+
+  - question: key-variable
+    answers:
+      - expect: correct
+        answer: |
+          key is the character that was pressed as a string, like a or A with
+          shift. part one does not look at it because there is no word to guess
+          yet, it only counts how often you pressed something.
+      - expect: correct
+        answer: |
+          in key steht das zeichen der taste als string. im ersten teil ist es
+          egal welche taste, jeder tastendruck lässt den schneemann weiter
+          schmelzen.
+      # First half only.
+      - expect: partial
+        answer: |
+          key holds the letter you pressed, as a string
+      # Second half only.
+      - expect: partial
+        answer: |
+          the program only counts the key presses, the letters are not needed
+          yet
+      - expect: incorrect
+        answer: |
+          key is a number, the key code of the button, and you have to convert
+          it to a letter first.
+      - expect: incorrect
+        answer: |
+          key collects all keys the player has pressed so far, so the program
+          can compare them with the word.
+
+  - question: additive-spec
+    answers:
+      - expect: correct
+        answer: |
+          all six buttons are gone and the left half of the mouth
+      - expect: correct
+        answer: |
+          die unteren drei und die oberen drei knöpfe fehlen, dazu die linke
+          hälfte vom mund. die nase ist noch da.
+      # Only the part for exactly 3, the additive idea is missing.
+      - expect: partial
+        answer: |
+          the left half of the mouth
+      # Right list plus one part too many.
+      - expect: partial
+        answer: |
+          the buttons, the left half of the mouth and the nose
+      - expect: incorrect
+        answer: |
+          only the lower three buttons, because every wrong guess replaces the
+          part before it.
+      - expect: incorrect
+        answer: |
+          the upper three buttons and the lower three buttons, the mouth is
+          still complete.
+
+  - question: less-than-comparison
+    answers:
+      - expect: correct
+        answer: |
+          at 4 the nose is gone, but at 5 it is back again because 5 is not
+          equal to 4. the snowman grows back instead of melting, you need < 4.
+      - expect: correct
+        answer: |
+          nur bei genau 4 fehlt die nase, ab 5 ist sie wieder da
+      # Names the fix without saying what the player sees.
+      - expect: partial
+        answer: |
+          you have to write < 4 instead of !== 4
+      # Gets the disappearing right, misses the return.
+      - expect: partial
+        answer: |
+          the nose disappears after the fourth wrong guess, that part works
+      - expect: incorrect
+        answer: |
+          the nose is never drawn at all because the condition is false from the
+          start.
+      # Fluent, confident, and exactly the misconception.
+      - expect: incorrect
+        answer: |
+          !== 4 means everything except 4, so the nose is drawn for 0 to 3 and
+          hidden from 4 on. that is exactly what the specification wants.

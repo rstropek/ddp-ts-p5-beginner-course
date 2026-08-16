@@ -1,0 +1,221 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Images and orthographic worlds"
+# (0060-functions/0100-orthographic.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: loading a
+# picture with await inside an async setup, what Promise<void> says, the
+# p5.Image type and its own size, the five-argument image command with its
+# distortion trap, perspective versus orthographic projection, why only
+# orthographic tiles repeat, and the right-to-left drawing order.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: orthographic-quiz
+name: "Quiz: Images and orthographic worlds"
+
+title: "Check your understanding: images and orthographic worlds"
+description: |
+  Six short questions about the chapter *Images and orthographic worlds*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="image(railroad, 0, 0, railroad.width, railroad.height);"
+      scope="after the orthographic worlds chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, strings with indexes, `translate`, `push`/`pop`, `rotate`, and `scale`"
+        "arrays with `string[]`/`number[]`, element access, `.length`, and `push`"
+        "writing their own functions with parameters, return values, and `void`"
+        "`await loadImage(url)` inside an `async function setup(): Promise<void>`"
+        "the type `p5.Image` and that a loaded picture knows its own `width` and `height`"
+        "`image(img, x, y, w, h)` with the top left corner and the drawn size"
+        "perspective versus orthographic rendering and why tiles repeat"
+        "that whatever is drawn later covers what is already on the canvas")
+      not_yet=(array
+        "`for...of` loops"
+        "arrays of arrays and the type `p5.Image[][]`"
+        "`split` and other string-cutting shortcuts"
+        "objects and classes")}}
+
+questions:
+  - id: tiles-repeat
+    title: "Why the tiles fit"
+    question: |
+      The whole track in this chapter is one single railroad picture,
+      drawn again and again next to itself. Why does that work with
+      the orthographic rendering of the segment, but not with the
+      perspective one?
+    evaluation: |
+      Expected: in perspective the segment is wider at the near end
+      than at the far end, so a copy puts a wide end next to a narrow
+      end and the rails jump at the joint. Orthographic ignores
+      distance, so both ends are equally wide and one copy ends
+      exactly where the next one begins.
+
+      - `correct`   - says the perspective segment has ends of
+                      different sizes so copies do not line up, AND
+                      that the orthographic one has equal ends so
+                      copies fit ("same size front and back",
+                      "parallel lines stay parallel" count).
+      - `partial`   - only one side, for example "in perspective far
+                      things look smaller" without the joint problem,
+                      or "orthographic tiles just fit" without saying
+                      why perspective does not.
+      - `incorrect` - anything else, e.g. the orthographic picture is
+                      simply smaller or has a transparent background,
+                      or shifting the copies would fix the
+                      perspective version.
+
+      Feedback: state that a perspective segment is wider at the near
+      end than at the far end, so its wide end meets a narrow end,
+      then ask them to compare the two ends of one orthographic
+      segment.
+
+  - id: missing-await
+    title: "The forgotten await"
+    question: |
+      A classmate writes `railroad = loadImage(url);` inside `setup`,
+      without `await`. The program starts, no error message appears,
+      and the canvas stays empty. What went wrong?
+    evaluation: |
+      Expected: without await the program does not wait for the
+      picture. The next lines run while the image is still on its way,
+      so railroad holds no usable picture yet and the image command
+      draws nothing. There is no error, just an empty canvas.
+
+      - `correct`   - says the program runs on without waiting, so
+                      the picture has not arrived when it is drawn
+                      ("it draws too early", "das bild ist noch nicht
+                      da" count).
+      - `partial`   - says await is missing or "it must wait" without
+                      saying what happens too early, or blames only
+                      the loading being slow.
+      - `incorrect` - anything else, e.g. loadImage without await
+                      never loads the picture at all, or the URL must
+                      be wrong, or async alone already waits.
+
+      Feedback: state that the lines after loadImage run immediately
+      while the picture is still on its way, then ask what railroad
+      holds at the moment image is called.
+
+  - id: promise-void
+    title: "Reading Promise<void>"
+    question: |
+      `setup` is written as
+      `async function setup(): Promise<void>`. What does the return
+      type `Promise<void>` tell you about this function?
+    evaluation: |
+      Expected: it finishes later, not immediately, because it waits
+      for something inside. And when it finishes it hands back no
+      value, which is what void means.
+
+      - `correct`   - both halves: finishes later / takes time and
+                      returns nothing ("gives back no value",
+                      "liefert nichts zurück" count).
+      - `partial`   - only one half, for example "it returns nothing"
+                      without the later idea, or "it is async so it
+                      waits" without the no-value part.
+      - `incorrect` - anything else, e.g. Promise<void> means the
+                      function returns a picture, or it promises that
+                      the code will not crash.
+
+      Feedback: state that Promise<void> reads as "finishes later,
+      and then returns nothing", then ask which of the two words
+      carries which half.
+
+  - id: image-distortion
+    title: "A squashed picture"
+    question: |
+      The picture `photo` is 400 pixels wide and 200 pixels tall. A
+      classmate draws it with `image(photo, 0, 0, 400, 400);`. What
+      does the canvas show, and which two size numbers would draw the
+      same picture at half its natural size?
+    evaluation: |
+      Expected: the picture appears stretched (pulled tall), because
+      the height was doubled from 200 to 400 while the width stayed.
+      Half size means 200 and 100.
+
+      - `correct`   - says the picture is distorted, stretched, or
+                      squashed vertically AND names 200 and 100
+                      ("200 breit, 100 hoch" counts).
+      - `partial`   - the distortion right but the two numbers wrong
+                      or missing, or 200 and 100 right without saying
+                      the drawn picture looks wrong.
+      - `incorrect` - anything else, e.g. the picture is simply cut
+                      off at 200 pixels, or p5 keeps the proportions
+                      by itself.
+
+      Feedback: state that the picture is stretched tall because only
+      the height was changed, and that half size is 200 by 100, then
+      ask what stays true when both numbers change by the same
+      factor.
+
+  - id: image-knows-size
+    title: "What a p5.Image knows"
+    question: |
+      The variable `railroad` has the type `p5.Image`. What do
+      `railroad.width` and `railroad.height` give you, and why are
+      they handy as the last two arguments of `image`?
+    evaluation: |
+      Expected: they are the real pixel size of the loaded picture
+      file, which every p5.Image knows about itself. Passing exactly
+      those two draws the picture at its natural size, with no
+      stretching or squeezing.
+
+      - `correct`   - says they are the picture's own real size AND
+                      that passing them draws it unchanged / at
+                      natural size.
+      - `partial`   - says they are the width and height of the
+                      picture without the natural-size effect, or
+                      says the picture is drawn undistorted without
+                      saying where the numbers come from.
+      - `incorrect` - anything else, e.g. they are the canvas size,
+                      or they are the position of the picture, or the
+                      student must measure the file and type the
+                      numbers.
+
+      Feedback: state that a loaded p5.Image carries its own file
+      size in width and height, then ask what happens when those two
+      numbers are passed to image unchanged.
+
+  - id: draw-order
+    title: "Right to left"
+    question: |
+      The railroad segments are drawn starting at the top right, and
+      every next segment lands further left and further down. Why does
+      this order matter for the finished picture?
+    evaluation: |
+      Expected: whatever is drawn later covers what is already on the
+      canvas. Further left and further down means nearer to the
+      viewer, so the nearer segment has to be drawn after the one
+      behind it. In the other order the far segments would cover the
+      near ones and the overlap would look wrong.
+
+      - `correct`   - says later drawing covers earlier drawing AND
+                      connects that to near tiles having to come
+                      after far ones ("das vordere muss drüber"
+                      counts).
+      - `partial`   - says the pictures overlap and later ones win,
+                      without the near/far connection, or says the
+                      near tile must be on top without the
+                      draw-order reason.
+      - `incorrect` - anything else, e.g. p5 sorts the pictures by
+                      distance itself, or the order only decides
+                      where the pictures land.
+
+      Feedback: state that the later picture always covers the
+      earlier one, then ask which of two overlapping segments the
+      viewer should see in front.

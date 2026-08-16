@@ -1,0 +1,238 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Refactoring: from dice to domino"
+# (0060-functions/0020-domino.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: what
+# refactoring means and why the unchanged picture is the test, extracting
+# a function, the parameter versus constant split, values flowing down the
+# call chain, a translate between two calls of the same function, and the
+# loop variable used as an argument.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: domino-quiz
+name: "Quiz: Refactoring with functions"
+
+title: "Check your understanding: refactoring with functions"
+description: |
+  Six short questions about the chapter *Refactoring: from dice to
+  domino*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="drawDomino(dice1, dice2);"
+      scope="after the domino chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, `if`/`else`, and random numbers"
+        "loops, `translate`, `push`/`pop`, and `scale`"
+        "arrays, element access, and `.length`"
+        "defining their own function with parameters and `: void`"
+        "parameters in the definition and arguments in the call"
+        "refactoring, and that the unchanged picture is the test"
+        "extracting a block of statements into a named function"
+        "a per-call value becoming a parameter and a shared value becoming a constant at the top of the file"
+        "one own function calling another own function"
+        "a loop variable handed to a function as an argument")
+      not_yet=(array
+        "functions that hand a value back with `return`"
+        "handing a function to another function as an argument"
+        "splitting a program over several files"
+        "objects and classes")}}
+
+questions:
+  - id: refactoring-meaning
+    title: "What refactoring changes"
+    question: |
+      The chapter says you refactor the dice program. What changes
+      when you refactor, and why is the unchanged picture on the
+      canvas a test for your work?
+    evaluation: |
+      Expected: refactoring changes how the code is built and
+      structured, while what the program does stays exactly the same.
+      Because the picture has to look identical, you can run the
+      program after every step and see at once whether you broke
+      something.
+
+      - `correct`   - structure changes AND behaviour or picture stays
+                      the same, plus the picture used as a check
+                      ("gleich aussehen" counts, as does "no new
+                      features, just tidier code").
+      - `partial`   - only the structure half ("you make the code
+                      nicer to read") without the same-result idea, or
+                      the same-result idea without saying why that
+                      makes a test.
+      - `incorrect` - anything else, for example that refactoring
+                      fixes bugs, adds features, or makes the program
+                      run faster.
+
+      Feedback: state that refactoring only changes the structure while
+      the picture stays identical, then ask what they would know if the
+      dice suddenly looked different after a step.
+
+  - id: parameter-or-constant
+    title: "Parameter or constant"
+    question: |
+      When the dot code moves out of `setup` into `drawDice`, the
+      moved code still needs `dice`, `diceSize`, and
+      `dicePointDiameter`. One of them becomes a parameter of
+      `drawDice` and the other two move to the top of the file as
+      constants. Which is which, and what is the rule behind that
+      split?
+    evaluation: |
+      Expected: `dice` becomes the parameter, because it is different
+      for every call. `diceSize` and `dicePointDiameter` become
+      constants at the top, because they are the same everywhere in the
+      program. Rule: a value that changes from call to call is a
+      parameter, a value that is the same everywhere is a constant.
+
+      - `correct`   - the split named correctly AND the rule in any
+                      wording ("changes each time" versus "always the
+                      same" counts).
+      - `partial`   - the split named correctly without the rule, or
+                      the rule stated correctly while the three values
+                      are sorted the wrong way or not sorted at all.
+      - `incorrect` - anything else, especially making `diceSize` a
+                      parameter as well, or claiming a function cannot
+                      read a constant from the top of the file.
+
+      Feedback: state that `dice` is the parameter and the other two
+      are constants at the top, then ask which of the three values is
+      different for the left and the right half of a domino.
+
+  - id: values-flow
+    title: "The way a number travels"
+    question: |
+      `setup` rolls a number and calls `drawDomino(dice1, dice2);`,
+      and `drawDomino` calls `drawDice`. Describe the way the first
+      rolled number travels until the dots are actually drawn.
+    evaluation: |
+      Expected: `setup` rolls the number and hands it to `drawDomino`
+      as an argument. `drawDomino` hands the same value on to
+      `drawDice` as an argument. Inside `drawDice` the `if` blocks use
+      it to decide which dots appear. Values flow down the chain of
+      calls.
+
+      - `correct`   - the whole chain in order, setup to `drawDomino`
+                      to `drawDice`, with the value handed over as an
+                      argument at each step.
+      - `partial`   - one step of the chain named, for example setup
+                      hands it to `drawDomino` and nothing more, or the
+                      chain named in the wrong order.
+      - `incorrect` - anything else, for example that `drawDice`
+                      fetches the number from `setup` by itself, or
+                      that the value travels back up to `setup`.
+
+      Feedback: state the chain setup to `drawDomino` to `drawDice`,
+      then ask them to point at the two lines where the value is handed
+      over.
+
+  - id: roll-in-setup
+    title: "Who rolls the dice"
+    question: |
+      You could save two lines by rolling the random number inside
+      `drawDice` instead of in `setup`. The chapter says not to. What
+      would you lose if `drawDice` rolled its own number?
+    evaluation: |
+      Expected: a function that gets its number handed to it can draw
+      any face you ask for, including a fixed 3 for testing. A function
+      that rolls its own number can only ever draw a random face, so
+      you cannot test it, cannot repeat a picture, and cannot draw a
+      chosen piece.
+
+      - `correct`   - names that the caller could no longer choose the
+                      value, with any concrete consequence: no testing
+                      with fixed numbers, no chosen dice face, only
+                      random results.
+      - `partial`   - says the function would be less flexible or less
+                      reusable without naming what you can no longer
+                      do.
+      - `incorrect` - anything else, for example that `random` does not
+                      work inside a function, or that both dice halves
+                      would always show the same number.
+
+      Feedback: state that the caller could no longer choose the face,
+      so testing with a fixed 3 and 5 becomes impossible, then ask how
+      they would check the left half without that.
+
+  - id: translate-halves
+    title: "The same numbers, the other half"
+    question: |
+      Inside `drawDomino`, `drawDice` is called twice with the very
+      same fixed numbers inside it, and yet the second call lands in
+      the right half of the tile:
+
+      ```typescript
+      drawDice(dice1);
+
+      translate(diceSize, 0);
+      drawDice(dice2);
+      ```
+
+      Why does the second call draw somewhere else?
+    evaluation: |
+      Expected: `translate(diceSize, 0)` moves the origin one face
+      width to the right. The fixed numbers inside `drawDice` are
+      counted from the origin, so the same coordinates now land in the
+      right half. The function itself never knows where it draws.
+
+      - `correct`   - names the moved origin or moved coordinate
+                      system AND that the fixed numbers are measured
+                      from there ("der nullpunkt wandert" counts).
+      - `partial`   - says `translate` moves things to the right
+                      without connecting it to the origin the fixed
+                      numbers are measured from, or says the function
+                      draws relative to the origin without mentioning
+                      the translate.
+      - `incorrect` - anything else, for example that `drawDice` sees
+                      `dice2` and therefore draws further right, or
+                      that `translate` moves the dots that are already
+                      on the canvas.
+
+      Feedback: state that `translate` moves the origin one face width
+      right, so the same numbers land in the other half, then ask where
+      the point (0, 0) sits after that line.
+
+  - id: loop-argument
+    title: "The loop variable as an argument"
+    question: |
+      This loop draws a row of domino pieces:
+
+      ```typescript
+      for (let i = 1; i <= 5; i++) {
+          drawDomino(i, i + 1);
+          translate(diceSize * 2 + gap, 0);
+      }
+      ```
+
+      Which piece is drawn in the first round, and which one in the
+      last round?
+    evaluation: |
+      Expected: in the first round `i` is 1, so the arguments are 1 and
+      2 and the piece is 1:2. In the last round `i` is 5, so the
+      arguments are 5 and 6 and the piece is 5:6.
+
+      - `correct`   - both pieces literally right, 1:2 first and 5:6
+                      last (any notation counts: 1 and 2, 1:2, left 1
+                      right 2).
+      - `partial`   - one of the two pieces right and the other wrong
+                      or missing, or the values named as 1 and 5
+                      without the second number of each piece.
+      - `incorrect` - anything else, for example 1:1 and 5:5, or 0:1
+                      and 4:5, or claiming every round draws the same
+                      piece.
+
+      Feedback: state that the first piece is 1:2 and the last one is
+      5:6, then have them write the values of `i` and `i + 1` for all
+      five rounds on paper.

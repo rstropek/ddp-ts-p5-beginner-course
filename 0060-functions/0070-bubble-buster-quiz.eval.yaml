@@ -1,0 +1,183 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0070-bubble-buster-quiz.yaml ("A game from functions").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: bubble-buster-quiz-eval
+target: ./0070-bubble-buster-quiz.yaml
+
+questions:
+  - question: shape-follows-job
+    answers:
+      - expect: correct
+        answer: |
+          addRandomCircle gets nothing from outside and has no answer, it just
+          pushes a new bubble into the arrays. isInside has to know the point
+          and which circle, and it says yes or no back.
+      # Terse correct paraphrase, no technical vocabulary at all.
+      - expect: correct
+        answer: |
+          the first one needs no info and gives none back, the second needs the
+          click position plus the circle number and answers true or false
+      # Only one of the two functions is explained.
+      - expect: partial
+        answer: |
+          isInside needs x, y and the index because it has to compare the click
+          with that circle, and it gives back true or false
+      # Reads the signature aloud without connecting it to the job.
+      - expect: partial
+        answer: |
+          because the first has void as return type and no parameters, and the
+          second has three parameters and returns boolean
+      - expect: incorrect
+        answer: |
+          addRandomCircle is so short that parameters would not be worth it,
+          isInside is longer so it needs them.
+      # Confident and fluent, but wrong about what isInside does.
+      - expect: incorrect
+        answer: |
+          isInside takes the three values so it can delete the bubble that was
+          hit, and it returns the number of removed bubbles to mouseClicked.
+
+  - question: radius-not-diameter
+    answers:
+      - expect: correct
+        answer: |
+          it compares the distance with the whole diameter now instead of the
+          radius, so the area that counts is twice as big and you pop bubbles
+          even when you click next to them
+      - expect: correct
+        answer: |
+          man vergleicht jetzt mit dem durchmesser statt mit dem radius. der
+          trefferbereich ist doppelt so gross, also platzen blasen auch wenn
+          man daneben klickt.
+      # Symptom only, the radius/diameter mix-up is not named.
+      - expect: partial
+        answer: |
+          the bubbles pop way too easily
+      # Names the mix-up but never says what the player notices.
+      - expect: partial
+        answer: |
+          diameter divided by 2 is the radius, and the line forgets the division
+      - expect: incorrect
+        answer: |
+          the hit area gets smaller, so you have to click exactly in the middle
+          of a bubble.
+      - expect: incorrect
+        answer: |
+          nothing changes for the player, diameter and radius both describe the
+          size of the circle.
+
+  - question: early-return-draw
+    answers:
+      - expect: correct
+        answer: |
+          after stopGame the rest of draw still runs, so the bubbles and the
+          points text are painted over the game over screen and you hardly see
+          the message. noLoop keeps that picture on screen.
+      - expect: correct
+        answer: |
+          die schleife und der punktestand werden trotzdem noch gezeichnet, also
+          liegt alles über der game over meldung
+      # Knows what return does, but not what covers the screen.
+      - expect: partial
+        answer: |
+          without return the function does not stop, it just keeps going
+      # Verbose, padded with true but irrelevant facts, still misses the point.
+      - expect: partial
+        answer: |
+          a bare return means i am done here and it works in a void function
+          because there is no value to hand back. if you delete it the if block
+          only calls stopGame and then draw simply continues with the lines
+          after it, which is not what the author wanted.
+      - expect: incorrect
+        answer: |
+          nothing changes, because noLoop in stopGame already stops draw before
+          the other lines can run.
+      - expect: incorrect
+        answer: |
+          the program crashes because draw must always end with a return
+          statement.
+
+  - question: noloop-purpose
+    answers:
+      - expect: correct
+        answer: |
+          p5 stops calling draw, so the game over picture stays instead of being
+          wiped and drawn again 60 times a second for a game that is over
+      - expect: correct
+        answer: |
+          noLoop() heisst, dass draw nicht mehr automatisch aufgerufen wird. so
+          bleibt das endbild stehen und der computer arbeitet nicht umsonst
+          weiter.
+      # The mechanism without any reason.
+      - expect: partial
+        answer: |
+          it stops draw from being called again
+      # The effect without the draw calls.
+      - expect: partial
+        answer: |
+          the picture freezes at the end
+      - expect: incorrect
+        answer: |
+          it closes the program and the canvas disappears.
+      # Plausible sounding mix-up with the intervals.
+      - expect: incorrect
+        answer: |
+          noLoop stops the two setInterval timers so no new bubbles are created.
+
+  - question: replace-interval
+    answers:
+      - expect: correct
+        answer: |
+          the old timer keeps running and a new one starts on top of it, so
+          after a few levels there are several timers adding bubbles at the same
+          time
+      - expect: correct
+        answer: |
+          you get one more timer every ten seconds because nothing stops the old
+          one, and circleInterval only knows the newest id so the old ones can
+          never be cleared again
+      # Symptom only, the surviving old timer is not named.
+      - expect: partial
+        answer: |
+          the bubbles come much too fast and the game is over immediately
+      # Only the lost id half.
+      - expect: partial
+        answer: |
+          the id of the old interval is gone once the variable is overwritten
+      - expect: incorrect
+        answer: |
+          nothing changes, setInterval replaces the old timer automatically when
+          you store it in the same variable.
+      - expect: incorrect
+        answer: |
+          waitingTime would not be halved anymore, so the game stays at the same
+          speed forever.
+
+  - question: pop-backwards
+    answers:
+      - expect: correct
+        answer: |
+          splice moves everything after the removed bubble one index left, so
+          going forwards the loop jumps over the bubble that slid into that
+          index and one of two overlapping bubbles survives
+      - expect: correct
+        answer: |
+          beim splice rutschen die späteren einträge nach links, und die
+          vorwärtsschleife überspringt genau das element, das nachgerückt ist
+      # Vague index talk without the shift.
+      - expect: partial
+        answer: |
+          going forwards the indexes get mixed up and some bubbles are skipped
+      # Shift explained, consequence missing.
+      - expect: partial
+        answer: |
+          because splice changes the index of every element behind it
+      - expect: incorrect
+        answer: |
+          the program would crash with an index out of range error because the
+          array gets shorter while the loop runs.
+      - expect: incorrect
+        answer: |
+          splice can only remove from the end of an array, so you have to start
+          at the last index.

@@ -1,0 +1,219 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Many files, one program"
+# (0060-functions/0080-melting-snowman-1.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: why a program
+# is split into modules, the playground's shared scope across files, the
+# redraw/noLoop one-shot pattern, the keyPressed callback with the key
+# variable, and reading the doc comment as an additive specification.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: melting-snowman-1-quiz
+name: "Quiz: Many files, one program"
+
+title: "Check your understanding: many files, one program"
+description: |
+  Six short questions about the chapter *Many files, one program*. Answer
+  in your own words. There are no answer options to pick from, and this
+  quiz is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are
+  enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="drawSnowman(numberOfKeypresses);"
+      scope="after the first Melting Snowman chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, `translate`, `push`/`pop`, and `rotate`"
+        "loops, conditions, arrays, and their own functions with parameters"
+        "return values, `: void`, doc comments, and callbacks like `setInterval`"
+        "`noLoop()` and `loop()` from the Bubble Buster chapter"
+        "a program split over two files, `index.ts` and `snowman.ts`"
+        "that in the playground all files of a program share one global scope"
+        "`redraw()` for asking p5.js for exactly one `draw` call"
+        "the `keyPressed` callback and the global variable `key`"
+        "a doc comment read as a specification, with additive left-out parts")
+      not_yet=(array
+        "`import` and `export` in real TypeScript projects"
+        "images, `loadImage`, or anything drawn from a picture file"
+        "`async` and `await`"
+        "objects and classes"
+        "the guessing logic of the game, which comes in the next chapter")}}
+
+questions:
+  - id: why-split-files
+    title: "Two files instead of one"
+    question: |
+      Melting Snowman keeps the game in `index.ts` and the drawing of the
+      snowman in `snowman.ts`. Name two reasons why splitting a program
+      into several files is worth the extra order.
+    evaluation: |
+      Expected: any two of these three. You find things faster, because a
+      snowman bug sends you to snowman.ts instead of a long mixed file.
+      Several people can work at the same time without overwriting each
+      other. A file with one job can be reused in another program.
+
+      - `correct`   - two of the three reasons, in any wording
+                      ("Überblick", "teamwork", "copy it into another
+                      program" all count).
+      - `partial`   - only one of the three reasons, or two wordings of the
+                      same reason (for example order and finding things).
+      - `incorrect` - anything else, e.g. the program runs faster, uses
+                      less memory, or several files are required by
+                      TypeScript.
+
+      Feedback: think about who reads the file later: you when hunting a
+      bug, a partner working at the same time, or your next program.
+
+  - id: shared-scope
+    title: "Calling across files"
+    question: |
+      `index.ts` calls `drawSnowman(...)`, but the function is defined in
+      `snowman.ts`. A classmate says the call cannot work because
+      `index.ts` never mentions `snowman.ts` anywhere. What do you tell
+      them?
+    evaluation: |
+      Expected: in the playground the files of a program are not separate
+      worlds. The computer reads all files as one program, so a function
+      defined in snowman.ts can be called from index.ts with nothing to
+      write at the top. Global variables are shared the same way.
+
+      - `correct`   - says nothing has to be written or imported because
+                      the playground treats all files as one program, so
+                      the function is visible everywhere.
+      - `partial`   - says the call works but gives no reason, or says the
+                      files somehow belong together without the one-program
+                      idea, or claims something small still has to be
+                      written.
+      - `incorrect` - anything else, e.g. the classmate is right and an
+                      import line is missing, or snowman.ts must be loaded
+                      inside setup.
+
+      Feedback: the two files are one program written on several sheets of
+      paper. Which sheets does the computer read before it starts?
+
+  - id: oneshot-draw
+    title: "Drawing once"
+    question: |
+      The `setup` of Melting Snowman ends with these two lines:
+
+      ```typescript
+      redraw();
+      noLoop();
+      ```
+
+      What does this pair do, and why does the snowman program not need
+      `draw` running 60 times a second?
+    evaluation: |
+      Expected: redraw() asks p5.js for exactly one call of draw, right
+      now, and noLoop() switches the automatic calls off. Nothing in the
+      picture changes unless the player presses a key, so repainting 60
+      times a second would produce the same image over and over and waste
+      power.
+
+      - `correct`   - both halves: one call now plus no automatic calls
+                      afterwards, AND the reason that the picture only
+                      changes on a key press.
+      - `partial`   - explains only what the two lines do, or gives only
+                      the reason, or mixes up which line does which.
+      - `incorrect` - anything else, e.g. noLoop() ends the program, or
+                      redraw() must be called because draw may never run
+                      by itself.
+
+      Feedback: name the one thing in this program that can change the
+      picture, and say how often that happens.
+
+  - id: key-variable
+    title: "What the key press brings"
+    question: |
+      p5.js calls `keyPressed` once for every key the player presses.
+      What does the global variable `key` hold inside that function, and
+      why does this first part of Melting Snowman not look at it?
+    evaluation: |
+      Expected: key holds the character that was pressed, as a string, for
+      example 'a' for the A key and 'A' with shift held. Part one has no
+      guessing logic yet, it only counts the presses, so every key melts
+      the snowman a bit further no matter which one it was.
+
+      - `correct`   - says key is the pressed character as a string AND
+                      that part one only counts presses because the letters
+                      do not matter yet.
+      - `partial`   - only one of the two, for example the character
+                      without the counting, or the counting without saying
+                      what key contains.
+      - `incorrect` - anything else, e.g. key is a number code, key holds
+                      all keys pressed so far, or the program does compare
+                      the letter with the word already.
+
+      Feedback: the A key and shift plus A give two different values in
+      key. Which two?
+
+  - id: additive-spec
+    title: "Three wrong guesses"
+    question: |
+      The doc comment above `drawSnowman` says the left out parts are
+      additive:
+
+      ```
+       * 1 wrong: Lower three buttons
+       * 2 wrong: Upper three buttons
+       * 3 wrong: Left half of mouth
+       * 4 wrong: Nose
+      ```
+
+      Which parts of the snowman are missing after exactly three wrong
+      guesses?
+    evaluation: |
+      Expected: all six buttons (lower three and upper three) and the left
+      half of the mouth. The nose is still there, because it belongs to 4.
+
+      - `correct`   - names all six buttons AND the left half of the mouth
+                      ("all buttons" counts for the six).
+      - `partial`   - names only the left half of the mouth (the additive
+                      idea is missing), or names the buttons and the mouth
+                      half but adds the nose as well.
+      - `incorrect` - anything else, e.g. only the two button groups, or a
+                      list that leaves the buttons out.
+
+      Feedback: additive means the parts for 1, 2, and 3 are all gone at
+      once. Read the three lines together and add them up.
+
+  - id: less-than-comparison
+    title: "The nose comes back"
+    question: |
+      The nose belongs to wrong guess number 4. A classmate draws it like
+      this:
+
+      ```typescript
+      if (numberOfWrongGuesses !== 4) {
+        // draw the nose
+      }
+      ```
+
+      What does the player see between the fourth and the fifth wrong
+      guess, and what happens after the fifth?
+    evaluation: |
+      Expected: at exactly 4 the nose disappears, and at 5 it comes back
+      and stays, because 5 is not equal to 4. The correct test is
+      numberOfWrongGuesses < 4, since no larger number is ever less than 4,
+      so the nose stays gone once it is gone.
+
+      - `correct`   - says the nose is gone only at 4 and returns from 5
+                      on, so the snowman grows back instead of melting.
+      - `partial`   - says the comparison is wrong or names `<` as the fix
+                      without describing what the player sees, or gets the
+                      count of 4 right but not the return at 5.
+      - `incorrect` - anything else, e.g. the nose never appears, or it
+                      disappears from 4 on and everything is fine.
+
+      Feedback: put in 5 and check the condition yourself. Is 5 different
+      from 4, and what does the if do then?

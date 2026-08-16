@@ -1,0 +1,156 @@
+---
+title: "Test your knowledge: Poker Cards"
+---
+
+![Five poker cards on the canvas, and below them the verdict the program worked out from the hand. Here no combination matched, so the program names the highest card, the 9 of diamonds.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/poker-cards.png){width=380}
+
+This chapter is an exam, and not a pretend one. Students in earlier
+years of this course sat down with exactly this task and were graded
+on it. You get it as practice, with the same text, the same starter
+code, and the same requirements. Your job is a program that looks at
+five playing cards and works out what the hand is worth, built from
+a set of small functions that hand their results to each other.
+
+## AI tutor {#sec-tutor-poker}
+
+In a real exam you sit alone, so treat the tutor as a last resort
+here and get as far as you can by yourself first. When you do ask,
+ask about one function, describe the rule you are trying to
+implement and what your version returns, and use the answer as a
+hint to keep going.
+
+{{< tutor tutor-functions >}}
+
+## How to take an exam like this {#sec-poker-strategy}
+
+An exam of this size is won before the first line of code. Six
+habits decide how far you get.
+
+1. **Read everything first.** Read the whole task and every doc
+   comment in the starter code before you write anything. Ten
+   minutes of reading are cheap, and finding out after 40 minutes
+   that a function returns something different from what you assumed
+   is expensive.
+2. **Implement in the order the task gives.** The order is not
+   decoration. Each of the first four functions uses the one before
+   it, so a working `getCardValue` makes `getCardDescription` short,
+   and both together make `getHighestCard` almost easy.
+3. **Minimum requirements before anything advanced.** Finish all
+   four functions that the task lists as the minimum before you even
+   look at the advanced ones. Four finished functions beat eight
+   half-finished ones in every grading scheme.
+4. **Run after every single function.** The program runs from the
+   start, and after each function you should see one more thing on
+   the canvas behave correctly. That is your safety net, and it also
+   tells you how much time one function really costs you.
+5. **Quality over quantity.** The exam text says so explicitly, and
+   it means what it says. A correct, readable, formatted function is
+   worth more than two rushed ones that almost work.
+6. **Format your code before you hand it in.** That rule has been in
+   force since part 1 of this course, and in an exam it is free
+   points. Readable code is easier to grade and easier to defend.
+
+## Reading the card representation {#sec-poker-card-format}
+
+Understanding the specification is part of this exam, and the card
+representation is the piece worth reading twice.
+
+The deck holds 40 cards. There are four suits (the exam text spells
+the word *suite*), hearts, diamonds, clubs, and spades, written as
+the letters `H`, `D`, `C`, and `S`. There are ten values, 1 to 9 and
+10. No jacks, queens, kings, or aces appear, and red and black play
+no role in these simplified rules.
+
+One card is a string of exactly two characters. The first character
+is the value, the second is the suit.
+
+| card | meaning |
+|------|---------|
+| `"5H"` | 5 of hearts |
+| `"3D"` | 3 of diamonds |
+| `"0S"` | 10 of spades |
+
+: How a two-character card code is read. {#tbl-poker-cards}
+
+The last row of the table holds the trap. The character `'0'` does
+not mean zero, it means 10, because a value has to fit into a single
+character. Every function that works with values has to handle it,
+and forgetting it is the single most common way to lose points in
+this exam. Watch the order of the two characters as well, because a
+card code puts the value first and the suit second.
+
+## Given code you do not write {#sec-poker-helpers}
+
+The exercise comes with a second file, `helpers.ts`. It draws the
+cards, deals a random hand, and shuffles the deck, so that your
+program has something to work with from the first minute. You never
+edit it.
+
+The file `index.ts` also contains a `draw` function that is already
+finished and marked as untouchable. It asks your functions, in order
+from the strongest hand to the weakest, what this hand is, and it
+prints the verdict under the cards. That is why every function you
+have to write starts with a placeholder line that returns a wrong
+value, because without those lines `draw` could not run at all.
+Delete a placeholder when you implement its function.
+
+::: {.callout-note}
+## The helpers file is given code
+`helpers.ts` uses several tools from later courses, among them
+sorting with a comparison function, arrow functions, and `join`.
+Open the file and read it if you are curious about how the cards get
+onto the canvas, because reading code you did not write is a normal
+part of the job. Do not copy those constructs into your own
+functions. Everything the exam asks for can be built with what this
+course has taught you.
+:::
+
+## Your exam: Poker Cards {#sec-poker-exam}
+
+Work through the exam in the order below, with the exam habits from
+@sec-poker-strategy next to you.
+
+1. **Read the task and all doc comments**, then write down in one
+   sentence per function what it takes and what it gives back.
+2. **`splitCardsString`** turns the string `"5H,6H,7H,8H,9H"` into
+   an array of five card strings. Since the Sokoban chapter you have
+   `split` for separators like this one.
+3. **`getCardValue`** turns one card into its number, and this is
+   where `'0'` becomes 10.
+4. **`getCardDescription`** turns one card into readable text such
+   as `"5 of hearts"`. Call `getCardValue` instead of repeating its
+   logic.
+5. **`getHighestCard`** walks the hand and returns the description
+   of the card with the largest value. With those four functions
+   done, the minimum requirements are complete, and the canvas
+   already names the highest card of every hand you deal.
+6. **Then the advanced functions**, as many as you can finish
+   properly. `getCounts`, `isFlush`, and `isStraight` are the ones
+   the exam text singles out, and the checks for pairs, three of a
+   kind, and a full house build on `getCounts`.
+7. **Test with hands you choose.** The starter code holds named
+   example hands for every combination, from a royal flush down to a
+   high card, and one marked line decides which of them the program
+   uses. Put a hand there whose answer you know, and once it is
+   correct, switch that line back to the random hand and click the
+   canvas to deal new ones.
+8. **Format your code and read it once from top to bottom** before
+   you call yourself finished.
+
+The exam is written in English in the playground. The original
+German version of the same instructions is kept next to the
+exercise, in
+[the German exam text on GitHub](https://github.com/rstropek/ts-web-playground/blob/main/exercises/0070-Functions/poker-cards-de.md),
+so you can read the requirements in whichever language makes them
+clearer.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/poker-cards.yaml title="Poker Cards" >}}
+
+## Where this leaves you {#sec-functions-send-off}
+
+With functions in your hands, you now hold the whole toolbox that a
+programmer picks up in a first year, sequence, data, decisions,
+loops, arrays, and functions. Everything from here on is built out
+of those six ideas, in bigger and bigger arrangements. The next part
+of this book uses them to build complete games, so take a moment to
+notice how far you have come, and then turn the page.

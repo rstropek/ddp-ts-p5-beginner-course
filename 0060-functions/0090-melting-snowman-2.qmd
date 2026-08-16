@@ -1,0 +1,242 @@
+---
+title: "Finish the game: logic functions"
+---
+
+![Melting Snowman in the middle of a round: the snowman has already lost its buttons and its nose, and under the hat the word to guess stands in blue monospace letters, some revealed, the rest still underscores.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/melting-snowman-2.png){width=440}
+
+The snowman can melt, but nothing yet decides when it should. This
+chapter adds the guessing to Melting Snowman, and the interesting
+part is where that guessing lives. The functions that work out what
+a keystroke means take strings in and hand strings back without
+touching the canvas, which makes them the first functions in this
+course you can check without running the program.
+
+## AI tutor {#sec-tutor-snowman-2}
+
+The bugs in this exercise are quiet ones. A letter that refuses to
+show up, or a game that counts a correct guess as wrong, almost
+always comes from a comparison rather than from the drawing. Paste
+the function you suspect together with the word you tested it with,
+and say what you expected the return value to be.
+
+{{< tutor tutor-functions >}}
+
+## Functions that think and functions that draw {#sec-guesser-logic-vs-drawing}
+
+Melting Snowman is now spread over three files. `index.ts` holds the
+game state and the callbacks, `snowman.ts` draws the snowman, and
+`textGuesser.ts` holds everything about the word. Inside that third
+file, two very different kinds of function sit next to each other.
+
+**Logic functions** take values and return values. They compute an
+answer and change nothing you can see. `getInitialCurrentWord` and
+`guessKey` are of this kind, and both of them take strings and
+return a string.
+
+**Drawing functions** put pixels on the canvas and return nothing.
+`drawResult` and `drawSnowman` are of this kind, and their return
+type is `: void`.
+
+Keeping the two apart pays off immediately, because a logic function
+can be checked on paper. You write down what you pass in, you follow
+the code line by line, and you compare the result with what you
+expected. No canvas, no timing, no guessing. A drawing function can
+only be judged by looking at the picture.
+
+## The word status string {#sec-guesser-initial-word}
+
+The game shows the player how much of the word is already known, and
+it keeps that picture in a single string called `currentWordStatus`.
+The string is exactly as long as the word to guess. Every letter
+that is still secret stands there as an underscore, every letter
+already guessed stands there as itself, and a space stays a space so
+the player can see where one word ends and the next begins.
+
+For the word `"ice cream"` the game starts with `"___ _____"`, which
+is three underscores, a space, and five more underscores.
+
+Building that first string is the job of one function, and its
+signature is given in the starter code:
+
+```typescript
+function getInitialCurrentWord(wordToGuess: string): string {
+```
+
+One string goes in, one string comes out. The way there is the
+accumulator you know from Word Swirrel (@sec-string-grow). Start
+with the empty string, walk the characters of `wordToGuess` from
+index 0 to `length - 1`, and hang one character onto the result each
+round, an underscore for a letter and a space for a space.
+
+## Guessing a letter {#sec-guesser-guess-key}
+
+The second logic function is the heart of the game. It gets the key
+the player pressed, the secret word, and the current status, and it
+returns what the status should look like afterwards:
+
+```typescript
+function guessKey(key: string, wordToGuess: string, currentWordStatus: string): string {
+```
+
+The function does not change `currentWordStatus` and it does not
+know whether the guess was good or bad. It builds a new string of
+the same length, position by position. Where the secret word has the
+guessed letter, the new string shows that letter; everywhere else it
+keeps whatever the old status had.
+
+Follow four rounds with the short word `"ice"`. The status starts as
+three underscores, and every row shows one key press:
+
+| key pressed | status before | returned status |
+|-------------|---------------|-----------------|
+| `i`         | `___`         | `i__`           |
+| `x`         | `i__`         | `i__`           |
+| `e`         | `i__`         | `i_e`           |
+| `c`         | `i_e`         | `ice`           |
+
+: Four guesses on the word "ice". The second row is a wrong guess. {#tbl-guess-key-run}
+
+Look at the second row. A wrong guess is not reported by the
+function; it simply produces a string identical to the one that went
+in. The caller in `index.ts` uses precisely that:
+
+```typescript
+const newCurrentWordStatus: string = guessKey(key, wordToGuess, currentWordStatus);
+if (currentWordStatus === newCurrentWordStatus) {
+    wrongGuesses++;
+}
+currentWordStatus = newCurrentWordStatus;
+```
+
+Nothing changed means nothing was found, so the guess was wrong. One
+small function, one clear answer, and the decision stays with the
+caller.
+
+### Capital letters must not matter {#sec-guesser-lowercase}
+
+The word to guess in the starter code is `"Winterwald"`, with a
+capital W, and the player will type a small w. Comparing the two
+with `===` fails, and the player would never be able to reveal the
+first letter.
+
+Every string has a method `toLowerCase()` that returns a copy in
+small letters and leaves the original alone, the same way
+`substring` hands you a copy. Comparing
+`key.toLowerCase()` with `wordToGuess[i].toLowerCase()` makes the
+guess work no matter which shift key was involved.
+
+::: {.callout-warning}
+## Reveal the original character, not the typed one
+When the comparison matches, put the character from `wordToGuess`
+into the new status, not the key the player pressed. The game
+recognizes a win by testing `currentWordStatus === wordToGuess`, and
+a status that reads `"winterwald"` never equals a word that reads
+`"Winterwald"`.
+:::
+
+## Waiting for the font {#sec-guesser-await}
+
+The word status is drawn in a monospace font that the program loads
+from the internet, and that download takes time. A program cannot
+draw with a font that has not arrived yet, so `setup` waits for it:
+
+```typescript
+async function setup(): Promise<void> {
+    font = await loadFont("https://cddataexchange.blob.core.windows.net/images/SyneMono-Regular.ttf");
+
+    currentWordStatus = getInitialCurrentWord(wordToGuess);
+
+    createCanvas(800, 500);
+    angleMode(DEGREES);
+
+    redraw();
+    noLoop();
+}
+```
+
+Read `await` as "wait here until it has arrived". The line pauses
+until `loadFont` is finished, and the font lands in the global
+variable `font` before any of the following lines run. A function
+that contains an `await` must be marked `async`, and its return type
+becomes `Promise<void>` instead of `void`, which is TypeScript's way
+of writing "returns nothing, but not immediately". You do not need
+the theory behind promises today. The next chapter uses the very
+same move for loading images.
+
+## Who decides that the game is over {#sec-guesser-game-over}
+
+All the state of the game sits in global variables in `index.ts`,
+and `draw` reads them to pick one of three pictures:
+
+```typescript
+function draw(): void {
+    background("white");
+
+    if (currentWordStatus === wordToGuess) {
+        acceptKeys = false;
+        drawResult(true, wrongGuesses);
+    } else if (wrongGuesses === MAX_WRONG_GUESSES) {
+        acceptKeys = false;
+        drawResult(false, wrongGuesses);
+    } else {
+        drawSnowman(wrongGuesses);
+        drawCurrentWordStatus(font, currentWordStatus);
+    }
+}
+```
+
+The status equal to the secret word means the player has won. Ten
+wrong guesses mean the snowman has melted away. Anything else means
+the round continues, so the snowman and the word appear. In the two
+end states `acceptKeys` becomes `false`, and `keyPressed` leaves
+immediately with a bare `return;` while that flag is down, so a
+finished game ignores the keyboard.
+
+`drawResult` is the drawing counterpart of the two logic functions.
+It gets a `boolean` saying whether the player won and the number of
+wrong guesses, and it writes one sentence in the middle of the
+canvas. A loss reads "Game Over" in red. A win reads "No wrong
+guesses!", "One wrong guess!", or something like "4 wrong guesses.",
+depending on the count. Choosing between those three sentences is a
+job for the `switch` statement you know from the Conditions part.
+
+## Your exercise: Melting Snowman (2) {#sec-snowman-2-exercise}
+
+The starter code contains the finished `index.ts`, a complete
+`snowman.ts` that melts correctly, and a `textGuesser.ts` with three
+empty function bodies. If your snowman from the previous exercise
+never quite melted in the right order, compare it with the one you
+get here before you start.
+
+1. **The initial status.** Implement `getInitialCurrentWord` as
+   described in @sec-guesser-initial-word, then run the program. The
+   underscores appear next to the snowman. Change the word in
+   `index.ts` to one with a space in it and check that the space
+   stays a space.
+2. **The guess.** Implement `guessKey`. Work it through on paper
+   first with the table above (@tbl-guess-key-run), then write the
+   loop. Correct letters appear, wrong ones melt the snowman.
+3. **The result text.** Implement `drawResult` following the
+   requirements in its doc comment.
+
+Test the finished game in all four states before you call it done.
+
+- Win without a single wrong guess.
+- Win with exactly one wrong guess, so the text reads "One wrong
+  guess!".
+- Win with several wrong guesses, so the number appears in the text.
+- Lose by making ten wrong guesses on purpose and watch the snowman
+  disappear completely.
+
+{{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/melting-snowman-2.yaml title="Melting Snowman (2)" >}}
+
+## Check your understanding {#sec-quiz-snowman-2}
+
+When your game can be won and lost and you can explain why a wrong
+guess is recognized by comparing two strings, take the short quiz
+below. You answer six questions about this chapter in your own
+words, and an AI reads your answers and tells you what you already
+understand and what you should read again. The quiz is anonymous,
+and answering in German is fine too.
+
+{{< quiz melting-snowman-2 title="Finish the game" >}}

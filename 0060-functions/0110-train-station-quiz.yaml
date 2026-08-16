@@ -1,0 +1,217 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Trains from strings: parsing functions"
+# (0060-functions/0110-train-station.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: for...of
+# versus the classic for, the hand-written linear search with its -1
+# convention, a function whose return type is an array (p5.Image[]), the
+# collecting loop with the push AFTER the loop, reverse for the locomotive,
+# and the two-dimensional array p5.Image[][].
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: train-station-quiz
+name: "Quiz: Trains from strings"
+
+title: "Check your understanding: trains from strings"
+description: |
+  Six short questions about the chapter *Trains from strings: parsing
+  functions*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in German
+  is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="result.push(trainCars[getWagonIndex(wagon)]);"
+      scope="after the train station chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, strings with indexes, `translate`, `push`/`pop`, `rotate`, and `scale`"
+        "arrays, element access, `.length`, `push`, and parallel arrays"
+        "writing their own functions with parameters and return values"
+        "`await loadImage(url)` inside `async function setup(): Promise<void>` and the type `p5.Image`"
+        "`for...of` walking an array element by element, and when a classic `for` is needed"
+        "a linear search written by hand, with `return i` and `-1` for not found"
+        "a function whose return type is an array, like `p5.Image[]`"
+        "the collecting loop with a buffer and the push after the loop"
+        "`reverse()` turning an array around"
+        "two-dimensional arrays like `p5.Image[][]` and double indexing")
+      not_yet=(array
+        "`split` and other string-cutting shortcuts"
+        "`indexOf`, `map`, `filter`, and array methods beyond push/splice/reverse/length"
+        "objects and classes")}}
+
+questions:
+  - id: return-array
+    title: "A function that hands back an array"
+    question: |
+      `parseTrain` is written as
+      `function parseTrain(trainString: string): p5.Image[]`. What do
+      you get back when you call it, and how is that different from a
+      return type of `p5.Image`?
+    evaluation: |
+      Expected: you get a whole array of loaded pictures, the wagon
+      images of that one train, in drawing order. A return type of
+      p5.Image would hand back one single picture instead of many.
+
+      - `correct`   - says the result is an array (a list) of wagon
+                      images AND that p5.Image alone would be just
+                      one picture.
+      - `partial`   - says it returns the wagon images without the
+                      one-versus-many contrast, or names the
+                      difference without saying what the array holds.
+      - `incorrect` - anything else, e.g. it returns the train string
+                      cut into pieces, or the two brackets mean the
+                      function takes an array as parameter.
+
+      Feedback: state that p5.Image[] means an array of pictures
+      while p5.Image is a single picture, then ask how many wagons
+      one train string describes.
+
+  - id: search-not-found
+    title: "The last line of the search"
+    question: |
+      `getWagonIndex` walks through `abbreviations` and returns `i` at
+      the first match. What happens when the abbreviation is in no
+      position of the array, and why is `-1` the answer in that case?
+    evaluation: |
+      Expected: the loop runs through to the end without ever
+      returning, so the line after the loop runs and the function
+      returns -1. That value is the usual sign for "not found",
+      because no real array position is ever negative.
+
+      - `correct`   - says the loop finishes without a match so the
+                      return -1 after the loop runs, AND that -1 can
+                      never be a real index ("gibt es nicht als
+                      position" counts).
+      - `partial`   - says it returns -1 without explaining that the
+                      loop ran through, or says -1 means not found
+                      without the never-a-real-index reason.
+      - `incorrect` - anything else, e.g. the function returns 0, or
+                      it stops with an error, or -1 counts from the
+                      end of the array.
+
+      Feedback: state that -1 is reached only after the loop found
+      nothing, then ask which index numbers a real array can have.
+
+  - id: missing-flush
+    title: "The lost last wagon"
+    question: |
+      A classmate's `parseTrain` pushes a wagon image only inside the
+      loop, at every comma, and the line
+      `result.push(trainCars[getWagonIndex(wagon)]);` after the loop
+      is missing. For the string `TLB,TCW` their train shows only one
+      wagon. Why?
+    evaluation: |
+      Expected: a push happens only when a comma is found. After the
+      last comma the characters TCW go into the buffer, but the string
+      ends before another comma arrives, so that last abbreviation is
+      never pushed. The push after the loop is what handles it.
+
+      - `correct`   - says the last piece is still in the buffer when
+                      the string ends and no comma follows it, so it
+                      never gets pushed.
+      - `partial`   - says the last wagon is missing or "the code
+                      forgets TCW" without connecting it to the
+                      missing comma at the end of the string, or
+                      talks about the buffer without saying the push
+                      never happens.
+      - `incorrect` - anything else, e.g. the loop stops one
+                      character too early, or reverse deleted the
+                      wagon, or getWagonIndex returned -1.
+
+      Feedback: state that a push only happens at a comma, so the
+      piece after the last comma stays in the buffer, then ask them
+      to walk through TLB,TCW character by character on paper.
+
+  - id: why-reverse
+    title: "Turning the train around"
+    question: |
+      `parseTrain` ends with `return result.reverse();`. Why does the
+      array have to be turned around before it is drawn?
+    evaluation: |
+      Expected: the wagons are drawn from right to left, so the image
+      drawn last ends up at the front of the train. The locomotive
+      stands first in the string, so reverse moves it to the end of
+      the array and it is drawn last, at the front. Without reverse
+      the locomotive would sit at the back.
+
+      - `correct`   - connects the right-to-left drawing order with
+                      the locomotive needing to come last in the
+                      array so it appears at the front.
+      - `partial`   - says the locomotive has to be in front without
+                      the drawing-order reason, or says the drawing
+                      runs right to left without saying what that
+                      means for the locomotive.
+      - `incorrect` - anything else, e.g. reverse sorts the wagons by
+                      type, or the string has to be read backwards,
+                      or reverse is needed so the array is not empty.
+
+      Feedback: state that the last drawn wagon lands at the front of
+      the train, then ask where the locomotive stands in the string
+      and where it has to stand on the canvas.
+
+  - id: two-dimensional
+    title: "Two pairs of brackets"
+    question: |
+      The variable `trains` has the type `p5.Image[][]` and holds the
+      three trains of the station. What exactly is `trains[2]`, and
+      what is `trains[2][0]`?
+    evaluation: |
+      Expected: trains[2] is the third train, a whole array of wagon
+      images for one track. trains[2][0] is one single image, the
+      first wagon of that train. The first index picks the track, the
+      second picks the wagon.
+
+      - `correct`   - both: trains[2] is a whole train (an array of
+                      images) and trains[2][0] is one single image of
+                      that train.
+      - `partial`   - only one of the two right, or the right idea
+                      with the track counted as the second train
+                      (off-by-one) instead of the third.
+      - `incorrect` - anything else, e.g. trains[2] is one image and
+                      trains[2][0] is a character, or the first index
+                      picks the wagon and the second the track.
+
+      Feedback: state that the first index picks the track and the
+      second picks the wagon inside it, then ask what kind of thing
+      one pair of brackets alone leaves you with.
+
+  - id: loop-choice
+    title: "Which loop for which job"
+    question: |
+      The loading loop is written as
+      `for (const imageUrl of imageUrls)`, but `getWagonIndex` uses a
+      classic `for` with a counter `i`. Why is the classic loop the
+      right choice there?
+    evaluation: |
+      Expected: getWagonIndex needs the position itself, because it
+      returns i as the found index. for...of hands over the element
+      only, with no index, which is enough for loading but not for a
+      search that must report where the match sits.
+
+      - `correct`   - says the search needs the index / position to
+                      return it, and for...of does not give one
+                      ("man braucht die stelle" counts).
+      - `partial`   - says for...of has no counter without saying why
+                      the search needs one, or says the search
+                      returns a number without connecting it to the
+                      loop choice.
+      - `incorrect` - anything else, e.g. for...of cannot be used on
+                      arrays of strings, or the classic for is
+                      faster, or for...of cannot leave the loop with
+                      return.
+
+      Feedback: state that getWagonIndex has to hand back the
+      position it found, then ask what the loop variable of a
+      for...of loop actually holds.

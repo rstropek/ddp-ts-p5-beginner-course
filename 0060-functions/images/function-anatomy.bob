@@ -1,0 +1,26 @@
+Function definition
+
++-------------------------------------------- the keyword function
+|
+|          +--------------------------------- the name you invent
+|          |
+|          |     +--------------------------- the parameter name
+|          |     |
+|          |     |       +------------------- the parameter type
+|          |     |       |
+|          |     |       |       +----------- the return type
+|          |     |       |       |
+v          v     v       v       v
+"function smile(happy: boolean): void {"          |
+    "// your drawing code goes here"              +--- the body
+"}"                                               |
+
+
+Function call
+
+  +---------------- the name from the definition
+  |
+  |    +----------- the argument you pass in
+  |    |
+  v    v
+"smile(true);"      this line runs the function

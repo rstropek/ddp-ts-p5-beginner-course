@@ -1,0 +1,10 @@
++-------------------+     +-------------------+     +-------------------+
+|   mousePressed    |     |   mouseDragged    |     |   mouseReleased   |
+|                   |     |                   |     |                   |
+|    did I grab     |     |    the circle     |     |   is it inside    |
+|    the circle?    |     | follows the mouse |     |    the target?    |
++---------+---------+     +---------+---------+     +---------+---------+
+          |                         ^                         |
+          |  "sets it true"         |  "only reads it"        |  "sets it false"
+          v                         |                         v
+----------+-------------------------+-------------------------+-----------> isDragging

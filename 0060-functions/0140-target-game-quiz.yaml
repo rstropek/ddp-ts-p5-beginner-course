@@ -1,0 +1,269 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Drag and drop: Target Game"
+# (0060-functions/0140-target-game.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the three
+# mouse moments with a boolean carrying state between them (two questions,
+# two angles), the point-in-circle grab test against the circle-in-circle
+# drop test, p5's circle() wanting a diameter, the setInterval countdown
+# handed over by name, and random ranges that keep a circle fully visible.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: target-game-quiz
+name: "Quiz: Drag and drop"
+
+title: "Check your understanding: drag and drop"
+description: |
+  Six short questions about the chapter *Drag and drop: Target Game*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="distance(mouseX, mouseY, circleX, circleY) <= CIRCLE_RADIUS"
+      scope="after the target game chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse and key events, and the `draw` animation loop"
+        "variables, conditions, loops, arrays, and strings"
+        "writing functions with parameters, with `void` or a return value, and `boolean` answers"
+        "callbacks handed over by name to `setInterval` and `clearInterval`"
+        "the distance between two points with `sqrt` and `pow`, and the point-in-circle test"
+        "`random` with a range, `split`, `parseInt`, and `includes`"
+        "the design method: jobs as plain sentences, one function per job, names from the jobs"
+        "the three mouse moments `mousePressed`, `mouseDragged`, and `mouseReleased`"
+        "a global `boolean` that remembers between events whether a drag is going on")
+      not_yet=(array
+        "objects, classes, and arrays of arrays"
+        "arrow functions"
+        "array methods beyond `push`, `splice`, `length`, and `includes`"
+        "the content of the later training and exam chapters")}}
+
+questions:
+  - id: drag-state-why
+    title: "What mouseDragged does not know"
+    question: |
+      `mouseDragged` runs on every mouse movement while a button is
+      down:
+
+      ```typescript
+      function mouseDragged(): void {
+          if (isDragging) {
+              circleX = mouseX;
+              circleY = mouseY;
+          }
+      }
+      ```
+
+      Why is `mouseX` and `mouseY` not enough here? Say what
+      `isDragging` tells `mouseDragged` that it could not find out on
+      its own.
+    evaluation: |
+      Expected: mouseDragged cannot see where the button went down.
+      Whether this drag started on the circle was decided earlier, in
+      mousePressed, and the three mouse functions know nothing about
+      each other. So mousePressed writes that decision into isDragging
+      and mouseDragged reads it.
+
+      - `correct`   - says the boolean carries the fact "the press
+                      started on the circle" from the earlier
+                      mousePressed event to mouseDragged, which cannot
+                      know it itself (naming the wrong-drag
+                      consequence as well is fine).
+      - `partial`   - only says the circle would move when it should
+                      not, without the remembered-decision idea, or
+                      only says isDragging "stores the state" without
+                      which fact or where it comes from.
+      - `incorrect` - anything else, for example mouseDragged cannot
+                      read mouseX, isDragging holds the circle
+                      position, or p5 calls mouseDragged only while
+                      the pointer is over a shape.
+
+      Feedback: name the event that tested the circle, mousePressed,
+      and say that its answer is gone by the time mouseDragged runs
+      unless a variable keeps it.
+
+  - id: release-resets-flag
+    title: "The missing reset"
+    question: |
+      `mouseReleased` holds one line, `isDragging = false;`. A
+      classmate deletes that line. The player grabs the circle, drags
+      it, lets go, then presses the mouse far away from the circle and
+      moves it.
+
+      What happens on the canvas now, and why?
+    evaluation: |
+      Expected: isDragging is never set back to false, so it stays
+      true after the first grab. On the later press far away,
+      mouseDragged still sees true and moves the circle, so the circle
+      jumps to the pointer and follows it although it was never
+      grabbed again.
+
+      - `correct`   - both: the circle jumps to or follows the
+                      pointer although it was never grabbed (either
+                      wording is enough) AND the reason that
+                      isDragging stayed true.
+      - `partial`   - only the stuck variable without what the player
+                      sees, or only the jumping circle without the
+                      stuck variable.
+      - `incorrect` - anything else, for example the circle can never
+                      be grabbed again, the program stops with an
+                      error, or nothing changes because mouseDragged
+                      runs only while a button is down.
+
+      Feedback: state the value isDragging has at the second press
+      (still true), then say what mouseDragged does with that value.
+
+  - id: grab-vs-drop-test
+    title: "Two tests, two formulas"
+    question: |
+      Both mouse handlers use the same `distance` function:
+
+      ```typescript
+      // grab test, in mousePressed
+      distance(mouseX, mouseY, circleX, circleY) <= CIRCLE_RADIUS
+
+      // drop test, in mouseReleased
+      distance(circleX, circleY, targetX, targetY) + CIRCLE_RADIUS <= TARGET_RADIUS
+      ```
+
+      Why does the second line add `CIRCLE_RADIUS` while the first one
+      does not?
+    evaluation: |
+      Expected: the first test asks about a single point, the mouse
+      pointer, which lies inside when its distance to the center is at
+      most the radius. The second asks about a whole circle: the point
+      of the filled circle farthest from the target center lies one
+      CIRCLE_RADIUS behind its center, and that point must still stay
+      within TARGET_RADIUS, so the whole circle is inside.
+
+      - `correct`   - contrasts a point with a whole circle and says
+                      the extra radius covers the far edge of the
+                      filled circle, so all of it fits inside.
+      - `partial`   - says the second test is circle-in-circle without
+                      saying why the radius is added, or explains only
+                      the point test.
+      - `incorrect` - anything else, for example the extra radius is a
+                      tolerance that makes scoring easier, both lines
+                      do the same thing, or the distance is measured
+                      from the edge of the filled circle.
+
+      Feedback: mark the point of the filled circle that is farthest
+      from the target center and say how far that point is from the
+      target center.
+
+  - id: radius-diameter
+    title: "Half the size"
+    question: |
+      `CIRCLE_RADIUS` is 50. A classmate writes
+
+      ```typescript
+      circle(circleX, circleY, CIRCLE_RADIUS);
+      ```
+
+      and the filled circle on the canvas looks half as big as it
+      should. What is wrong, and which value does the third argument
+      need?
+    evaluation: |
+      Expected: p5's circle takes a diameter as its third number, not
+      a radius, so this draws a circle of diameter 50. The third
+      argument needs CIRCLE_RADIUS * 2, which is 100.
+
+      - `correct`   - both: the third argument is a diameter AND the
+                      value must be CIRCLE_RADIUS * 2 (saying 100, or
+                      "double it", counts as the value).
+      - `partial`   - only one half, for example "you have to double
+                      it" without the word diameter or an equivalent
+                      ("the whole width across"), or "it wants a
+                      diameter" without the value.
+      - `incorrect` - anything else, for example storing 100 in
+                      CIRCLE_RADIUS (that breaks every distance test,
+                      which needs the radius), or blaming the random
+                      position or the canvas size.
+
+      Feedback: name the third argument of `circle` (the diameter) and
+      say that the constant stays a radius because the distance tests
+      need it that way.
+
+  - id: setinterval-by-name
+    title: "The clock without parentheses"
+    question: |
+      The countdown is started with this line:
+
+      ```typescript
+      timer = setInterval(countDown, 1000);
+      ```
+
+      Why is there no `()` behind `countDown`, and what would
+      `setInterval(countDown(), 1000)` do instead?
+    evaluation: |
+      Expected: the bare name hands the function itself over, so
+      setInterval can call it once per second later. With parentheses
+      the program calls countDown once immediately and hands the
+      result of that call over, which is nothing, so no countdown is
+      scheduled and the time never goes down.
+
+      - `correct`   - both: the bare name hands the function over to
+                      be called later AND the parentheses call it once
+                      right away, leaving setInterval with nothing to
+                      call repeatedly.
+      - `partial`   - only one half, for example "with () it runs
+                      immediately" without saying that the repeated
+                      call is then missing, or only "the name is the
+                      function itself".
+      - `incorrect` - anything else, for example parentheses are
+                      needed only for functions with parameters, both
+                      lines do the same, or countDown would then run
+                      1000 times.
+
+      Feedback: say what travels into setInterval in each version, the
+      function itself or the result of one call, and what is left to
+      call every second.
+
+  - id: fully-visible-random
+    title: "A circle that hangs over the edge"
+    question: |
+      The filled circle must be fully visible on the canvas, and its
+      radius is `CIRCLE_RADIUS`. A classmate places it with
+
+      ```typescript
+      circleX = random(0, width);
+      ```
+
+      What can the player see with that line, and which range does
+      `random` need instead?
+    evaluation: |
+      Expected: the center can land at or near an edge, so part of the
+      circle lies outside the canvas and is cut off. The center must
+      keep one radius away from every edge, so the range is
+      random(CIRCLE_RADIUS, width - CIRCLE_RADIUS).
+
+      - `correct`   - both: the circle can be cut off at the border
+                      AND the range from CIRCLE_RADIUS to
+                      width - CIRCLE_RADIUS (described in words, for
+                      example "start one radius in and stop one radius
+                      before the right edge", counts). The question
+                      asks for a range, not a statement, so a bare
+                      expression without a semicolon never lowers
+                      the verdict here.
+      - `partial`   - only one half, for example the cut-off circle
+                      without a corrected range, or the range without
+                      saying what goes wrong.
+      - `incorrect` - anything else, for example p5 keeps shapes
+                      inside the canvas by itself, the fix is
+                      random(0, width - CIRCLE_RADIUS * 2), or the
+                      canvas has to be made bigger.
+
+      Feedback: name the smallest and the largest x the center may
+      have if no part of the circle may leave the canvas.

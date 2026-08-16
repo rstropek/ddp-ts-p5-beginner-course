@@ -1,0 +1,228 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Functions that answer: return values"
+# (0060-functions/0050-return-values.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the result
+# type that replaces `: void`, `return` handing a value back AND ending the
+# function, the half-open bounds of getRandomInt, why a named recipe beats
+# the raw floor(random(...)) line, doc comments and their tooltip, and a
+# call standing where a value is allowed.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: return-values-quiz
+name: "Quiz: Functions that answer with return values"
+
+title: "Check your understanding: return values"
+description: |
+  Six short questions about the chapter *Functions that answer: return
+  values*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine
+  too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="const diameter: number = getRandomInt(10, 50);"
+      scope="after the return values chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, `if`, `switch`, strings with indexes, `push`/`pop`, and `translate`"
+        "arrays with `number[]`, element access, and `.length`"
+        "writing their own functions with parameters, and decomposition"
+        "`random`, `floor`, and the dice recipe `floor(random(min, max))`"
+        "a result type after the parentheses instead of `: void`"
+        "`return value;` handing a value back and ending the function"
+        "doc comments with `/**`, `@param`, and `@returns`, and the editor tooltip")
+      not_yet=(array
+        "callbacks, `setInterval`, and `clearInterval`"
+        "objects and classes"
+        "images and programs split over several files")}}
+
+questions:
+  - id: void-vs-result-type
+    title: "The word after the parentheses"
+    question: |
+      Here are two function heads from your own code:
+
+      ```typescript
+      function drawDice(centerX: number, centerY: number, eyes: number): void
+      function getRandomInt(min: number, max: number): number
+      ```
+
+      What does the word after the closing parenthesis promise in each
+      case?
+    evaluation: |
+      Expected: `void` promises that the function hands nothing back, it
+      only does something (it draws). `number` promises that the
+      function hands a number back to the code that called it. The
+      result type says what comes out, not what goes in.
+
+      - `correct`   - both halves: void gives nothing back, number gives
+                      a number back to the caller ("liefert nichts
+                      zurück" / "gibt eine Zahl zurück" count).
+      - `partial`   - only one of the two heads explained, or both
+                      described as "the type" without saying what comes
+                      back.
+      - `incorrect` - anything else, e.g. void means the function has no
+                      parameters, or number means the parameters are
+                      numbers.
+
+      Feedback: state that void means nothing comes back and number
+      means a number comes back, then ask which of the two functions
+      could stand on the right side of an assignment.
+
+  - id: return-ends-function
+    title: "The line that never runs"
+    question: |
+      A classmate writes this function and wonders why no circle ever
+      appears:
+
+      ```typescript
+      function drawRandomCircle(): number {
+        const diameter: number = getRandomInt(10, 50);
+        return diameter;
+        circle(150, 150, diameter);
+      }
+      ```
+
+      What is wrong, and how do you fix it?
+    evaluation: |
+      Expected: `return` ends the function immediately, so the `circle`
+      line below it never runs. The fix is to move the `circle` call
+      above the `return` (compute and draw first, return last).
+
+      - `correct`   - says return ends the function so the line under it
+                      is never reached, AND puts the circle call before
+                      the return.
+      - `partial`   - says the circle line never runs but does not name
+                      return as the reason, or names return correctly
+                      but gives no fix or a wrong one.
+      - `incorrect` - anything else, e.g. a function may not draw and
+                      return at the same time, or the circle is
+                      invisible because of the fill color.
+
+      Feedback: state that return ends the function on the spot, so the
+      circle line is dead code, then ask which two lines would have to
+      swap places.
+
+  - id: half-open-bounds
+    title: "Which numbers can come out?"
+    question: |
+      The body of `getRandomInt` is `return floor(random(min, max));`.
+      You call `getRandomInt(1, 7)`. Which numbers can this call hand
+      back?
+    evaluation: |
+      Expected: the whole numbers 1, 2, 3, 4, 5, 6. random(1, 7) gives a
+      decimal that is at least 1 and always stays below 7, and floor
+      cuts the decimals away, so 7 never comes out. The lower bound is
+      included, the upper bound is not.
+
+      - `correct`   - the range 1 to 6, whole numbers, with 7 named or
+                      clearly excluded (a dice answer "1 bis 6" counts).
+      - `partial`   - 1 to 7 including 7, or whole numbers between 1 and
+                      7 without settling whether 7 can appear, or 2 to 6
+                      because the lower bound was dropped too.
+      - `incorrect` - anything else, e.g. any decimal between 1 and 7,
+                      or 0 to 7, or exactly the number 7 every time.
+
+      Feedback: state that the call hands back 1, 2, 3, 4, 5, or 6, then
+      ask what floor does with a value like 6.9 and whether random can
+      ever reach 7.
+
+  - id: named-recipe
+    title: "Why give the line a name?"
+    question: |
+      `mouseClicked` calls `getRandomInt` three times, and the whole
+      body of `getRandomInt` is the single line
+      `floor(random(min, max))`. Why is one line worth its own function
+      with a name?
+    evaluation: |
+      Expected: the recipe now exists in one place, so a change to it
+      changes all three calls at once, and the name says what the line
+      is for, so `getRandomInt(10, 50)` reads at a glance while
+      `floor(random(10, 50))` needs a moment of thought.
+
+      - `correct`   - names at least one of the two benefits concretely:
+                      one place to change for all three calls, or the
+                      name making the calls readable.
+      - `partial`   - says only "less code" or "you don't repeat
+                      yourself" without saying what that gains, or
+                      "functions are good style".
+      - `incorrect` - anything else, e.g. the function makes the numbers
+                      more random or the program faster, or one line
+                      cannot be a function body.
+
+      Feedback: ask what has to be edited if the random numbers should
+      be rounded differently, with the named function and without it.
+
+  - id: doc-comment-payoff
+    title: "What the head cannot say"
+    question: |
+      The doc comment above `getRandomInt` writes down that `min` is
+      inclusive and `max` is exclusive. What does that comment tell a
+      reader that the head `(min: number, max: number): number` cannot,
+      and where does the comment text show up while you write code?
+    evaluation: |
+      Expected: the head only says that three numbers are involved. It
+      cannot say what the numbers mean or that max is never reached, and
+      the doc comment writes that down in words. The editor shows the
+      text in a small box when you type the call or point the mouse at
+      it, the same box you already know from `random` and `circle`.
+
+      - `correct`   - both halves: the meaning of the parameters
+                      (inclusive/exclusive) cannot be expressed by the
+                      types, AND the editor shows the text while typing
+                      or hovering ("Tooltip" / "kleines Fenster" count).
+      - `partial`   - only one half, e.g. explains that the comment
+                      documents the bounds but says nothing about the
+                      editor box.
+      - `incorrect` - anything else, e.g. the doc comment makes max
+                      exclusive, or the text is printed while the
+                      program runs.
+
+      Feedback: ask what the type `number` alone could ever say about
+      the value 7 being allowed or not, and what pops up when you type
+      `getRandomInt(` in the playground.
+
+  - id: call-is-a-value
+    title: "A call on the right side"
+    question: |
+      `mouseClicked` starts with this line:
+
+      ```typescript
+      const centerX: number = getRandomInt(0, width);
+      ```
+
+      What does `centerX` hold once the line has run, and why may a
+      call stand on the right side of an assignment?
+    evaluation: |
+      Expected: centerX holds a plain number, the value getRandomInt
+      handed back, for example 143. The answer travels back to exactly
+      the spot where the call stands, so a call with a result type can
+      stand anywhere a number is allowed.
+
+      - `correct`   - both halves: centerX holds the returned number
+                      (not the function), AND the call is replaced by
+                      its answer, so it behaves like a number in that
+                      place.
+      - `partial`   - says it holds a random number without the idea
+                      that the call is replaced by its answer, or
+                      explains the return trip without saying what
+                      centerX holds.
+      - `incorrect` - anything else, e.g. centerX holds the function
+                      itself and calls it later, or it holds the call
+                      as a piece of text.
+
+      Feedback: state that centerX holds the number that came back,
+      then ask what you could have typed in that place instead of the
+      call.

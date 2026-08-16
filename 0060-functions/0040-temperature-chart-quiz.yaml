@@ -1,0 +1,220 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Decomposition: four functions, one chart"
+# (0060-functions/0040-temperature-chart.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas:
+# decomposition (plan the jobs on paper before coding), why only
+# drawTemperatures needs a parameter, why the draw order decides what you
+# see, the implement-one-test-one rhythm, the degrees-to-pixels formula,
+# and why ticks and labels must come from loops.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: temperature-chart-quiz
+name: "Quiz: Decomposition, four functions, one chart"
+
+title: "Check your understanding: decomposition and the temperature chart"
+description: |
+  Six short questions about the chapter *Decomposition: four functions,
+  one chart*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can
+  see what you already understand and what you should read again. One
+  or two sentences are enough for most answers, and answering in German
+  is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="let y: number = 225 - temperatures[i] * 5;"
+      scope="after the temperature chart chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse events, and the `draw` animation loop"
+        "loops, `if`, `switch`, strings with indexes, `push`/`pop`, `translate`, and `rotate`"
+        "arrays with `number[]`, element access, `.length`, and parallel arrays"
+        "writing their own functions with parameters and the result type `: void`"
+        "calling one of their own functions from `setup`"
+        "that every shape is painted on top of what is already on the canvas"
+        "the text box form of `text` with five parameters"
+        "decomposition: split the picture into jobs, name them, then code job by job")
+      not_yet=(array
+        "functions that hand a value back with `return`"
+        "callbacks, `setInterval`, and `clearInterval`"
+        "objects and classes"
+        "images and programs split over several files")}}
+
+questions:
+  - id: decomposition-vs-refactoring
+    title: "Two roads to functions"
+    question: |
+      For the domino you first wrote code that ran, and only afterwards
+      pulled the repeated part out into `drawDice`. For the temperature
+      chart you work the other way around. Describe what you do
+      instead, and say when the split into functions happens.
+    evaluation: |
+      Expected: decomposition starts from the problem. You split the
+      picture into jobs, give every job a name, and then write the code
+      job by job. The split happens on paper, before the first line of
+      code.
+
+      - `correct`   - says the picture is split into named jobs first
+                      AND that this happens before any code is written
+                      ("auf dem Papier zuerst" counts; "plan the four
+                      functions on paper" counts as the split into
+                      named jobs).
+      - `partial`   - describes the splitting into functions but leaves
+                      out that it happens before coding, or says "plan
+                      first" without the split into named jobs.
+      - `incorrect` - anything else, e.g. describes refactoring again
+                      (write the code, then pull functions out), or
+                      says the four functions must be written in the
+                      order they are called.
+
+      Feedback: state that decomposition splits the problem into named
+      jobs on paper before the first line of code, then ask which
+      sheet of paper the four names stood on.
+
+  - id: why-one-parameter
+    title: "One function with a parameter"
+    question: |
+      Three of the four functions are declared as `drawAxes()`,
+      `drawYLabels()`, and `drawXLabels()`, with empty parentheses. The
+      fourth one is `drawTemperatures(temperatures: number[])`. Why
+      does exactly this one function need a parameter?
+    evaluation: |
+      Expected: the other three always paint the same fixed thing
+      (the axes, the degree scale, the month names) and need nothing
+      from outside. drawTemperatures paints different bars for
+      different data, so the array of twelve numbers travels in and the
+      same function can draw Linz or Johannesburg.
+
+      - `correct`   - says the bars depend on the data handed in, so
+                      one function serves any city, AND that the other
+                      three always paint the same picture.
+      - `partial`   - only one half, e.g. "so you can pass Linz or
+                      Johannesburg" without saying the other three need
+                      nothing from outside.
+      - `incorrect` - anything else, e.g. because it is the longest
+                      function, or because it is called first in
+                      `setup`.
+
+      Feedback: ask what would have to change inside `drawAxes` when
+      the city changes, and what changes inside `drawTemperatures`.
+
+  - id: draw-order
+    title: "Bars first, axes after"
+    question: |
+      `setup` calls `drawTemperatures(AVG_TEMP_JOHANNESBURG);` first,
+      and `drawAxes();`, `drawYLabels();`, `drawXLabels();` after it.
+      What would the chart look like if `drawTemperatures` were called
+      last instead?
+    evaluation: |
+      Expected: every shape is painted on top of what is already there,
+      so the yellow bars would be painted over the axes and the labels.
+      The zero line and the month names would disappear behind the
+      bars. Everything is still drawn, it is just covered.
+
+      - `correct`   - says the bars would cover the lines and/or the
+                      text, naming at least one of them (zero line,
+                      axes, month names).
+      - `partial`   - says the picture would look wrong or "the order
+                      matters" without saying that the bars hide the
+                      axes or the labels.
+      - `incorrect` - anything else, e.g. the axes would not be drawn
+                      at all, the bars would end up in the wrong
+                      place, or the program would report an error.
+
+      Feedback: state that the yellow bars would be painted over the
+      zero line and the month names, then point at the finished chart
+      where the names sit on top of the bars.
+
+  - id: implement-one-test-one
+    title: "One function, one run"
+    question: |
+      The exercise asks you to write one function, call it from
+      `setup`, run the program, and only then start the next function.
+      What goes wrong if you write all four functions first and run the
+      program once at the end?
+    evaluation: |
+      Expected: if the picture is wrong, you cannot tell which of the
+      four functions causes it, and several mistakes can hide each
+      other. One function at a time means the mistake sits in the code
+      you just wrote, and the picture grows toward the goal step by
+      step.
+
+      - `correct`   - says you would not know which function is
+                      responsible for the wrong picture ("du findest
+                      den Fehler nicht mehr" counts when it names the
+                      four candidates).
+      - `partial`   - says debugging gets harder or "you see the result
+                      later" without the point that the wrong function
+                      cannot be identified.
+      - `incorrect` - anything else, e.g. empty functions make the
+                      program crash, or you must write the functions in
+                      the same order in which they are called.
+
+      Feedback: ask how many possible places a mistake has after one
+      run of four new functions, and how many after one run of one new
+      function.
+
+  - id: degrees-to-pixels
+    title: "From degrees to pixels"
+    question: |
+      The bars and the temperature scale both use the same formula:
+
+      ```typescript
+      let y: number = 225 - t * 5;
+      ```
+
+      What y does a temperature `t` of 20 degrees get, and why is the
+      temperature subtracted instead of added?
+    evaluation: |
+      Expected: 20 degrees gives 225 - 100, so y is 125. The 225 is the
+      height of the zero line and one degree is worth five pixels. y
+      grows downward on the canvas, so a warm month has to land above
+      the zero line, which means a smaller y.
+
+      - `correct`   - the value 125 AND the reason that y grows
+                      downward, so warmer must sit higher up.
+      - `partial`   - 125 without the direction reason, or the
+                      direction reason with a missing or wrong value.
+      - `incorrect` - anything else, e.g. y = 325, or the answer gives
+                      the bar height (100) as the y position, or claims
+                      the minus makes the bar hang below the line.
+
+      Feedback: state that 20 degrees gives 225 - 100, which is
+      y = 125, then ask in which direction y grows on the canvas.
+
+  - id: ticks-from-loops
+    title: "No hand-typed positions"
+    question: |
+      The exercise has one hard rule for the tick marks and the labels
+      on both axes. Every position comes from a loop, and no position
+      may be typed in by hand. What is the problem with twelve
+      hand-typed x values?
+    evaluation: |
+      Expected: hand-typed numbers only fit today's layout. As soon as
+      a column gets wider or the axis starts somewhere else, all twelve
+      have to be retyped, and one forgotten number puts a label in the
+      wrong place. The loop computes each position with the same
+      formula as the bars, so ticks, labels, and bars always fit
+      together.
+
+      - `correct`   - says the hand-typed values break or all have to
+                      be changed when the layout changes, or that the
+                      loop keeps labels and bars in step because both
+                      use the same formula.
+      - `partial`   - says a loop is shorter or less typing without the
+                      change-and-break idea or the fitting-together
+                      idea.
+      - `incorrect` - anything else, e.g. hand-typed numbers would not
+                      compile, or a loop runs faster.
+
+      Feedback: ask what has to be edited when one column becomes 40
+      pixels wide instead of 30, with a loop and without one.
