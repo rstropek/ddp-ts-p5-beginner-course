@@ -241,3 +241,6 @@ activities:
     craftsmanship:
       file: 0070-vscode/0040-craftsmanship-quiz.yaml
       note: "Creative Coding book: Pride in your craft (0070-vscode/0040) — GitHub-hosted"
+    slot-machine:
+      file: 0070-vscode/0050-slot-machine-quiz.yaml
+      note: "Creative Coding book: Sprite sheets, slot machine (0070-vscode/0050) — GitHub-hosted"

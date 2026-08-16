@@ -78,8 +78,9 @@ For this exercise, you'll pick **one command** from one of three sections
 of the p5.js reference. All three belong to the *Shape* group:
 
 - **2D Primitives** is the section where almost all your drawing commands
-  come from. You already know `arc`, `circle`, `ellipse`, `line`, `rect`,
-  and `triangle`, so those are off the table. But the section holds more:
+  come from. You already know `arc`, `circle`, `line`, `rect`, and
+  `triangle`, so those are off the table, and so is `ellipse`, because a
+  later chapter of this course teaches it. But the section holds more:
   a command for a single dot, one for squares, one for four-cornered
   shapes that don't have to be rectangles. A solid choice.
 - **Curves** is more advanced. These commands draw lines that bend, and

@@ -1,0 +1,191 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for the chapter quiz "One file, many pictures: the slot
+# machine" (0070-vscode/0050-slot-machine-quiz.yaml). Teacher-only test data,
+# never published as an activity. All answers are synthetic and written the way
+# 15-to-17-year-olds actually type.
+id: slot-machine-quiz-eval
+target: ./0050-slot-machine-quiz.yaml
+
+questions:
+  - question: what-is-a-sprite-sheet
+    answers:
+      - expect: correct
+        answer: "its one big picture file with all the small pictures in it, in a grid. you only download and load it once instead of 24 times"
+      # terse correct paraphrase, avoids the word sprite
+      - expect: correct
+        answer: "many little images packed in one file, so only one loadImage and one variable"
+      # German correct
+      - expect: correct
+        answer: "ein sprite sheet ist eine einzige bilddatei mit vielen kleinen bildern im raster. man muss sie nur einmal laden statt jede datei einzeln"
+      # rubric partial branch: what it is, no benefit named
+      - expect: partial
+        answer: "a sprite sheet is a picture with lots of small pictures inside it"
+      # rubric partial branch: benefit only, no description
+      - expect: partial
+        answer: "because one file is faster than a lot of files"
+      # classic misconception: sheet as a folder of files
+      - expect: incorrect
+        answer: "its the folder where you put all your png files so the program finds them"
+      # ADVERSARIAL: fluent and confident, but describes an array of addresses
+      # (the Sokoban solution) instead of one packed file.
+      - expect: incorrect
+        answer: |
+          A sprite sheet is the array in your program that holds all the image
+          addresses. You write the names of the 24 picture files into it and
+          loop over them with loadImage, so you only need one loop instead of
+          24 lines of code.
+
+  - question: tile-position-in-the-sheet
+    answers:
+      - expect: correct
+        answer: "x = 288 and y = 96, because 3*96 = 288 and 1*96 = 96"
+      # German correct, terse
+      - expect: correct
+        answer: "288 von links und 96 von oben, spalte mal 96 und zeile mal 96"
+      # correct with the values written as sx/sy from the chapter
+      - expect: correct
+        answer: "sx is 288, sy is 96. you always multiply the column and the row with the tile size"
+      # rubric partial branch: right rule, numbers swapped
+      - expect: partial
+        answer: "you multiply both with 96, so x = 96 and y = 288"
+      # rubric partial branch: right values, no reasoning at all
+      - expect: partial
+        answer: "288 and 96"
+      # classic misconception: column/row used as pixel values
+      - expect: incorrect
+        answer: "at pixel 3 from the left and pixel 1 from the top"
+      # ADVERSARIAL: fluent, confident, but counts the first tile as column 1
+      - expect: incorrect
+        answer: |
+          Column 3 is the third tile, so you have to go past two tiles first.
+          That makes 2 * 96 = 192 pixels from the left, and row 1 is the first
+          row, so the tile starts at 0 pixels from the top.
+
+  - question: nine-arguments-two-groups
+    answers:
+      - expect: correct
+        answer: "the first four are where it goes on the canvas and how big it is drawn, the last four are the window in the file that gets cut out and how big it is"
+      # terse correct in everyday words
+      - expect: correct
+        answer: "first four = on screen, last four = which piece of the sheet"
+      # German correct
+      - expect: correct
+        answer: "die ersten vier sagen wo auf dem canvas und wie groß gezeichnet wird, die letzten vier sagen welches fenster aus der datei ausgeschnitten wird und wie groß es ist"
+      # rubric partial branch: positions only, sizes not mentioned
+      - expect: partial
+        answer: "the first two are the position on the canvas and then comes the position in the file"
+      # rubric partial branch: one group right, other vague
+      - expect: partial
+        answer: "0, 0, 96, 96 is where the icon is drawn on the canvas. the rest is something about the sheet"
+      # ADVERSARIAL: fluent and confident, groups swapped
+      - expect: incorrect
+        answer: |
+          The first four numbers describe the cut inside the sprite sheet, so
+          the program starts at 0, 0 in the file and takes a 96 by 96 window
+          from there. The last four numbers then say that the icon is drawn at
+          192, 0 on the canvas with a size of 96 by 96.
+      # classic misconception: reads the numbers as colors/scale factors
+      - expect: incorrect
+        answer: "the first four set the size of the picture and the last four make it bigger or smaller, like a zoom factor"
+
+  - question: whole-sheet-in-one-tile
+    answers:
+      - expect: correct
+        answer: "he forgot the last four numbers, so there is no cut window and image draws the whole file into the little square"
+      # terse correct naming the five-argument version
+      - expect: correct
+        answer: "he used the image version with 5 arguments, that always draws the complete file"
+      # German correct
+      - expect: correct
+        answer: "die vier zahlen für den ausschnitt aus der datei fehlen, darum zeichnet image das ganze bild in das kleine rechteck"
+      # rubric partial branch: "wrong arguments" without naming the source group
+      - expect: partial
+        answer: "he called image with the wrong number of arguments"
+      # confident misconception: blames the canvas or the file
+      - expect: incorrect
+        answer: "his canvas is too small, so the whole sheet gets scaled down to fit into it. he needs createCanvas with bigger numbers"
+      # ADVERSARIAL: fluent, plausible, blames the loading step
+      - expect: incorrect
+        answer: |
+          The await in front of loadImage is missing, so the sheet is not
+          loaded properly when draw runs. p5 then falls back to the raw file
+          and paints all 24 icons at once. Adding await fixes it.
+
+  - question: public-folder-address
+    answers:
+      - expect: correct
+        answer: "public is the folder for the files that belong to my project, and the dev server gives everything in it at the root of the address, so i write /Sheet_Fruits_Panel.png without the folder"
+      # German correct, both halves
+      - expect: correct
+        answer: "in public kommen die eigenen dateien vom projekt rein. der server stellt alles aus public direkt an der wurzel der adresse bereit, deswegen steht der ordnername nicht in der adresse"
+      # terse correct
+      - expect: correct
+        answer: "the picture ships with the project now, and public is served at the root so the path starts with just /"
+      # rubric partial branch: folder half only
+      - expect: partial
+        answer: "because public is the folder where the pictures go in the starter"
+      # rubric partial branch: address half only
+      - expect: partial
+        answer: "the server puts that folder at the root of the address, thats why theres only a slash"
+      # confident misconception: still an internet download
+      - expect: incorrect
+        answer: "the file is uploaded to the internet from public and then loadImage downloads it again from there"
+      # ADVERSARIAL: fluent and confident, invents a p5 rule
+      - expect: incorrect
+        answer: |
+          p5.js can only read files from a folder called public, that is a rule
+          of the library. The folder name is left out of the address because
+          p5.js already knows it and adds it back before it opens the file.
+
+  - question: async-setup-and-await
+    answers:
+      - expect: correct
+        answer: "loading takes time so i have to await it, and await only works in an async function. thats why setup gets async and Promise<void>"
+      # correct with the consequence instead of the async rule
+      - expect: correct
+        answer: "because await waits until the picture is really there. otherwise draw would paint nothing because the image isnt loaded yet"
+      # German correct
+      - expect: correct
+        answer: "das laden dauert, mit await wartet das programm bis das bild da ist. und await darf man nur in einer async funktion verwenden"
+      # rubric partial branch: loading-before-drawing idea, no await/async link
+      - expect: partial
+        answer: "because the picture has to be finished loading before you can draw it"
+      # rubric partial branch: names the rule, no idea what await does
+      - expect: partial
+        answer: "you always have to write async in front of setup when you load stuff"
+      # classic misconception: speed
+      - expect: incorrect
+        answer: "async makes the loading faster so the picture is there quicker"
+      # ADVERSARIAL: fluent, confident, wrong mechanism
+      - expect: incorrect
+        answer: |
+          Every function that uses the sprite sheet has to be async, so draw
+          and drawSymbol need it too. The async keyword marks the functions
+          that are allowed to touch a p5.Image variable, and Promise<void>
+          means the function gives the image back to p5.
+
+  - question: symbol-row-constant
+    answers:
+      - expect: correct
+        answer: "the reels now show the icons from the 4th row of the sheet instead of the first one, everything else stays the same"
+      # correct with the number, terse
+      - expect: correct
+        answer: "sy is 288 now, so it cuts from three tiles further down. different symbols, same game"
+      # German correct
+      - expect: correct
+        answer: "es werden die symbole aus der vierten zeile vom sprite sheet angezeigt, das spiel funktioniert genau gleich"
+      # rubric partial branch: cut moves, no mention of a different row of icons
+      - expect: partial
+        answer: "the window that gets cut out moves down in the file"
+      # rubric partial branch: right row, but claims it breaks
+      - expect: partial
+        answer: "you get the last row of icons but the machine doesnt work anymore because 3 is out of range"
+      # classic misconception: destination moves instead of source
+      - expect: incorrect
+        answer: "the icons are drawn 288 pixels lower on the canvas, so the reels move down"
+      # ADVERSARIAL: fluent and confident, invents extra reels
+      - expect: incorrect
+        answer: |
+          SYMBOL_ROW says how many rows of symbols the machine shows. With 3
+          the program draws three rows of reels under each other instead of
+          one, which is how real slot machines with several paylines work.

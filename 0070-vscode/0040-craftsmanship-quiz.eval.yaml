@@ -35,6 +35,32 @@ questions:
       - expect: incorrect
         answer: "both of them look for errors in the code so the program doesnt crash, the formatter finds them and the linter fixes them"
 
+  - question: biome-names-the-tool
+    answers:
+      - expect: correct
+        answer: "its biome. only one program, it does the formatting and the linting"
+      # terse correct, names the config file instead of the tool
+      - expect: correct
+        answer: "just biome.json, one tool for both"
+      # German correct
+      - expect: correct
+        answer: "das macht alles biome, das ist ein einziges programm für formatieren und linten"
+      # rubric partial branch: right name, wrong count
+      - expect: partial
+        answer: "biome does the formatting and there is a second linter tool for the rules"
+      # rubric partial branch: right count, no name
+      - expect: partial
+        answer: "you only need one tool, it formats and it checks the rules at the same time"
+      # confident misconception: the command runner mistaken for the tool
+      - expect: incorrect
+        answer: "npm does it, npm run format formats and npm run check checks, so thats two programs"
+      # INTENTIONALLY fluent (trap): plausible prose, names the editor
+      - expect: incorrect
+        answer: |
+          VS Code does all of it on its own. The editor formats the file when
+          you save it and the TypeScript compiler prints the rule messages, so
+          there is no extra tool in the project.
+
   - question: format-and-behavior
     answers:
       - expect: correct

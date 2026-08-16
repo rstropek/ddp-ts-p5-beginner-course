@@ -68,7 +68,10 @@ at the mouse's starting position, and nothing ever moves again.
 
 To follow the mouse, you need code that runs again and again. p5.js has an
 elegant solution: write a function called `mouseMoved`, and p5.js calls it
-automatically **every time the mouse moves across the canvas**:
+automatically **every time the mouse moves across the canvas**. You write that
+function exactly like `setup`, with the word `function`, a name, and the
+statements between curly braces. Only the name is different, and the name is
+what tells p5.js when to run it:
 
 ```typescript
 function setup() {
@@ -113,8 +116,10 @@ the canvas.
 Crosshairs are more than a dot at the mouse position: a horizontal line, a
 vertical line, and two circles, all centered on the mouse. The horizontal
 line should start 15 pixels left of the mouse and end 15 pixels right of it.
-You don't need to know the mouse position in advance for that, because a
-parameter can contain a small **calculation**:
+The command `line` takes four parameters, the x and y of its starting point
+followed by the x and y of its end point. You don't need to know the mouse
+position in advance for either of them, because a parameter can contain a
+small **calculation**:
 
 ```typescript
 line(mouseX - 15, mouseY, mouseX + 15, mouseY);

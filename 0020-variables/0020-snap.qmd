@@ -152,8 +152,8 @@ text("hello", 5, 195);
 
 The first parameter is a string, the two numbers are the position of the
 text on the canvas. Text is drawn in the current `fill` color, so set
-`fill` before drawing it, and use `noStroke()` so the letters don't get an
-outline.
+`fill` before drawing it, and use `noStroke()`, which switches the outline
+off, so the letters don't get one.
 
 The second tool solves this puzzle: `x` and `y` are numbers, but `text`
 wants a string. A **template string** builds one from the other:

@@ -112,6 +112,30 @@ circle's center (200 across, 260 down) and its diameter (360). Change the
 numbers, and the circle moves or grows. You'll explore what each parameter
 means while you play with the code.
 
+## Your statements live in the setup function {#sec-setup}
+
+Your statements don't stand alone in the file. They sit inside a **function**,
+a named block of statements that runs as a unit. This one is named `setup`,
+and the computer runs it once when your program starts. Your first exercise
+has this shape, with a few more statements in the middle:
+
+```typescript
+function setup() {
+  createCanvas(400, 500);
+  background("pink");
+  circle(200, 260, 360);
+}
+```
+
+The line `function setup() {` opens the block, the closing `}` at the very
+bottom ends it, and everything between them is your program. The statements
+inside are shifted to the right so you can see at a glance what belongs to
+`setup`.
+
+For now, one rule is enough. Every statement you write in this part goes
+inside `setup`, between the curly braces. Later in the course you'll write
+functions with other names, and functions that run at other moments.
+
 ## Red squiggly lines show you your mistakes {#sec-squiggles}
 
 While you type, the editor constantly checks your code. When something is

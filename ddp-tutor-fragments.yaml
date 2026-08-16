@@ -819,6 +819,28 @@ fragments:
         setup, and the drawing statements belong in draw, because the
         starter's draw begins with p.background and paints over anything that
         was drawn in setup
+      - sprite sheets: one image file holding many equal-sized small images
+        (sprites) in a grid, so a game loads ONE file instead of many. The
+        course's sheet Sheet_Fruits_Panel.png is 576x384 pixels, 6 columns
+        by 4 rows of 96x96 tiles; the tile in column col and row row starts
+        at pixel (col * 96, row * 96) in the file
+      - the nine-argument image() command: after the picture come four
+        numbers for the DESTINATION rectangle on the canvas (position and
+        size) and then four numbers for the SOURCE rectangle inside the
+        image file (position and size in pixels of the file), so a single
+        tile can be cut out of a sprite sheet and drawn anywhere
+      - the public/ folder of the starter as the home of a project's own
+        asset files: a file like public/Sheet_Fruits_Panel.png is served by
+        the development server at the root of the page's address and loaded
+        with await p.loadImage("/Sheet_Fruits_Panel.png") inside an async
+        setup — an image no longer has to come from an address on the
+        internet
+      - the slot machine as the part's closing exercise: four reels showing
+        symbols from one row of the sprite sheet, Spin and Stop buttons
+        drawn with p5 (rectangle, text, and a rectangle hit test — HTML
+        buttons are NOT covered), spinning with setInterval and
+        clearInterval, match counting with an array of counters, and
+        optionally inactive-looking buttons and a credit system
 
       Do not use or introduce — not in code, not in explanations:
 

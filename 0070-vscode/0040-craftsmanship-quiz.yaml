@@ -1,11 +1,12 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
 # Quiz for the book chapter "Pride in your craft"
 # (0070-vscode/0040-craftsmanship.qmd in ts-ddp-first).
-# Core emphasis: the difference between a formatter and a linter. Also covered:
-# a formatter never changes behavior, reading a linter message (file, line,
-# rule, explanation), what `npm run check` fixes by itself versus what it only
-# reports, why `npm run format` is still needed although saving formats, and
-# why this course demands clean code before handing in.
+# Core emphasis: the difference between a formatter and a linter, and that
+# Biome is the one tool doing both jobs. Also covered: a formatter never
+# changes behavior, reading a linter message (file, line, rule, explanation),
+# what `npm run check` fixes by itself versus what it only reports, why
+# `npm run format` is still needed although saving formats, and why this course
+# demands clean code before handing in.
 # Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
 
 id: craftsmanship-quiz
@@ -13,7 +14,7 @@ name: "Quiz: Pride in your craft"
 
 title: "Check your understanding: pride in your craft"
 description: |
-  Six short questions about the chapter *Pride in your craft*. Answer in
+  Seven short questions about the chapter *Pride in your craft*. Answer in
   your own words. There are no answer options to pick from, and this quiz
   is anonymous: it's here for you, so you can see what you already
   understand and what you should read again. One or two sentences are
@@ -52,8 +53,8 @@ questions:
   - id: formatter-vs-linter
     title: "Two different helpers"
     question: |
-      Biome does two jobs for your project. It is a formatter, and it is a
-      linter.
+      Two jobs are done on your project's code. One of them is formatting,
+      the other one is linting.
 
       Explain in your own words what a formatter does and what a linter
       does.
@@ -75,6 +76,32 @@ questions:
 
       Feedback: name the split plainly, the formatter works on the look, the
       linter works on the content.
+
+  - id: biome-names-the-tool
+    title: "The tool behind the commands"
+    question: |
+      A classmate watches your terminal and asks: "Which program is doing
+      all this? Do I need one for the formatting and a second one for the
+      rule messages?"
+
+      Answer your classmate: name the tool this course uses, and say how
+      many programs it is.
+    evaluation: |
+      Expected: Biome. It is one single program that does both jobs,
+      formatting and linting, and it is already in the exercise folder
+      because it came with the starter and `npm install`.
+
+      - `correct`   - names Biome (any close spelling counts, as does
+                      naming the file `biome.json`) AND says it is one
+                      program doing both jobs.
+      - `partial`   - names Biome but says two separate programs are
+                      needed, or says one program does both without naming
+                      Biome.
+      - `incorrect` - anything else, especially naming npm, VS Code, Node.js,
+                      or TypeScript as the formatter and linter.
+
+      Feedback: name the tool plainly, Biome, one program that formats and
+      lints.
 
   - id: format-and-behavior
     title: "Does the picture change?"

@@ -1,0 +1,269 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "One file, many pictures: the slot machine"
+# (0070-vscode/0050-slot-machine.qmd in ts-ddp-first).
+# Core emphasis: sprite sheets. What they are and why games use them, the grid
+# arithmetic that finds one tile, the nine-argument `image` command with its
+# destination group and its source group, the classic "whole sheet in one tile"
+# symptom, the `public/` folder plus the site-local address, why `setup` has to
+# be `async`, and how one number picks the row of symbols.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: slot-machine-quiz
+name: "Quiz: One file, many pictures"
+
+title: "Check your understanding: one file, many pictures"
+description: |
+  Seven short questions about the chapter *One file, many pictures: the slot
+  machine*. Answer in your own words. There are no answer options to pick
+  from, and this quiz is anonymous: it's here for you, so you can see what you
+  already understand and what you should read again. One or two sentences are
+  enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="p.image(sheet, 0, 0, 96, 96, 192, 0, 96, 96);"
+      scope="after the slot machine chapter"
+      knows=(array
+        "drawing commands, colors, conditions, loops, arrays, and their own functions"
+        "VS Code, the course starter project, `npm install`, `npm start`, `npm run format`, and `npm run check`"
+        "the `p.` prefix of instance mode, so `p.image(...)` and `p.random(...)`"
+        "loading a picture with `await p.loadImage(...)` inside an `async` `setup`"
+        "a sprite sheet: many equally sized small pictures packed into one file"
+        "grid arithmetic for one tile: `col * 96` from the left and `row * 96` from the top"
+        "the nine-argument `p.image(img, dx, dy, dw, dh, sx, sy, sw, sh)`, destination on the canvas first, source window in the file second"
+        "files in the starter's `public/` folder, loaded with an address like `/Sheet_Fruits_Panel.png`"
+        "`setInterval` and `clearInterval`, `mouseClicked`, rectangle hit tests, and `p.floor(p.random(6))`")
+      not_yet=(array
+        "sprite sheets whose sprites have different sizes, and data files that describe them"
+        "p5 image commands like `tint`, `get`, or `copy`"
+        "writing your own classes and objects"
+        "`npm run build` and publishing a finished program")}}
+
+questions:
+  - id: what-is-a-sprite-sheet
+    title: "One file instead of many"
+    question: |
+      The Sokoban board loaded five separate picture files, one per tile type.
+      The slot machine loads one file that holds 24 icons.
+
+      What is a sprite sheet, and why do games pack their small pictures into
+      one file like that?
+    evaluation: |
+      Expected: a sprite sheet is one picture file that holds many small
+      pictures (sprites) next to each other, usually all the same size in a
+      grid. One file means one download and one `loadImage`, and one variable
+      in the program, instead of one of each per picture. A real game has
+      hundreds of tiles, so many single files would be slow and messy.
+
+      - `correct`   - says it is one file holding many small pictures AND
+                      names a real benefit (only one file to download or load,
+                      only one variable, fewer files to manage).
+      - `partial`   - describes the one-file idea with no benefit, or names a
+                      benefit like "faster" without saying what a sprite sheet
+                      is.
+      - `incorrect` - anything else, especially describing it as a folder full
+                      of picture files, or as a list of addresses in an array.
+
+      Feedback: state the idea plainly, one picture file with many small
+      pictures in a grid, so the program downloads and loads it once.
+
+  - id: tile-position-in-the-sheet
+    title: "Finding one tile"
+    question: |
+      A sprite sheet holds tiles that are 96 by 96 pixels, and they sit in a
+      grid without gaps. Counting starts at zero, so the top left tile is
+      column 0, row 0.
+
+      At which pixel does the tile in column 3, row 1 start? Give the two
+      numbers and say how you got them.
+    evaluation: |
+      Expected: 288 pixels from the left and 96 pixels from the top, because
+      the column number and the row number are each multiplied by the tile
+      size: 3 * 96 = 288 and 1 * 96 = 96.
+
+      - `correct`   - gives 288 for x (left) and 96 for y (top) AND shows the
+                      multiplication by 96 in words or numbers. Writing it as
+                      `x = 288, y = 96` or `sx = 288, sy = 96` counts.
+      - `partial`   - explains the rule "column times 96, row times 96"
+                      correctly but gets a number wrong or swaps the two, or
+                      gives 288 and 96 with no reason at all.
+      - `incorrect` - anything else, especially treating 3 and 1 as pixel
+                      values, or counting the first tile as column 1.
+
+      Feedback: name the exact values, 288 from the left and 96 from the top,
+      because each number is multiplied by the tile size 96.
+
+  - id: nine-arguments-two-groups
+    title: "Nine numbers in two groups"
+    question: |
+      This line draws one icon of a sprite sheet:
+
+      ```typescript
+      p.image(sheet, 0, 0, 96, 96, 192, 0, 96, 96);
+      ```
+
+      What do the first four numbers after `sheet` mean, and what do the last
+      four numbers mean?
+    evaluation: |
+      Expected: the first four numbers are the destination on the canvas,
+      where the picture is drawn (x and y) and how big it is drawn (width and
+      height). The last four are the source, the window inside the picture
+      file, where the cut starts (x and y in pixels of the file) and how big
+      the cut is (width and height).
+
+      - `correct`   - says the first four describe the place and size on the
+                      canvas AND the last four describe the place and size of
+                      the window inside the file. Everyday wording counts
+                      ("where it lands on screen", "which part is cut out").
+      - `partial`   - names both groups but describes only position and not
+                      size, or explains one group right and leaves the other
+                      vague.
+      - `incorrect` - anything else, especially the two groups swapped (file
+                      first, canvas second).
+
+      Feedback: name the order plainly, canvas first (where and how big it is
+      drawn), file second (which window is cut out).
+
+  - id: whole-sheet-in-one-tile
+    title: "All 24 icons at once"
+    question: |
+      A classmate wants to draw one 96 by 96 icon of the sprite sheet. Instead
+      the canvas shows the whole sheet, all 24 icons together, squeezed into
+      one small square.
+
+      What went wrong in the `image` call?
+    evaluation: |
+      Expected: the call has no source window, so p5 drew the entire file into
+      the small destination rectangle. That happens with the five-argument
+      `image(img, x, y, w, h)`, where the four source numbers are missing. The
+      fix is the nine-argument version with the source rectangle of the wanted
+      tile.
+
+      - `correct`   - says the four source numbers (the window inside the
+                      file) are missing or wrong, so the whole file gets
+                      drawn. Saying "the five-argument version was used" or
+                      "there is no cut-out" counts.
+      - `partial`   - says the wrong version of `image` was used or that the
+                      arguments are wrong, without saying that the source
+                      window is the missing part.
+      - `incorrect` - anything else, especially blaming the canvas size, the
+                      picture file, `loadImage`, or a missing `await`.
+
+      Feedback: name the cause, without the four source numbers `image` draws
+      the whole file into the destination rectangle.
+
+  - id: public-folder-address
+    title: "Where the picture file lives"
+    question: |
+      In your slot machine project the sprite sheet is not loaded from the
+      internet. The file goes into the starter's `public/` folder, and the
+      program loads it like this:
+
+      ```typescript
+      sheet = await p.loadImage("/Sheet_Fruits_Panel.png");
+      ```
+
+      Why does the file go into `public/`, and why does the address in the
+      code not mention that folder?
+    evaluation: |
+      Expected: `public/` is the starter's folder for pictures and other
+      ready-made files, so the picture belongs to the project instead of
+      coming from a web server on the internet. The development server serves
+      everything in `public/` at the root of the page's address, so the file
+      is reachable as `/Sheet_Fruits_Panel.png` and the folder name is not
+      part of the address.
+
+      - `correct`   - says `public/` is the place for the project's own files
+                      (or that the picture ships with the project) AND that
+                      the server offers that folder's content at the root of
+                      the address, which is why the address starts at `/`.
+      - `partial`   - explains only one half, for example "that's the folder
+                      for images" with nothing about the address, or "the
+                      server puts it at the root" with nothing about why the
+                      file belongs there.
+      - `incorrect` - anything else, especially claiming the program still
+                      downloads the picture from the internet, or that
+                      `public/` is renamed or deleted while the program runs.
+
+      Feedback: state both halves, `public/` holds the project's own files,
+      and the development server offers them at the root of the address.
+
+  - id: async-setup-and-await
+    title: "Waiting for the picture"
+    question: |
+      The starter's `setup` looks like this:
+
+      ```typescript
+      function setup(): void {
+      ```
+
+      To load the sprite sheet you change it to:
+
+      ```typescript
+      async function setup(): Promise<void> {
+      ```
+
+      Why does loading a picture need this change?
+    evaluation: |
+      Expected: loading a file takes time, and `await` tells the program to
+      wait until the picture has arrived. `await` is only allowed inside a
+      function marked `async`, and such a function returns `Promise<void>`.
+      Without the waiting, `draw` would try to paint a picture that is not
+      there yet, and the canvas would stay empty.
+
+      - `correct`   - says `await` waits for the picture to arrive AND that
+                      `await` is only allowed inside an `async` function.
+                      Naming the consequence (nothing is drawn without
+                      waiting) counts instead of the second half.
+      - `partial`   - says the picture has to be loaded before drawing but
+                      does not connect that to `await` or to `async`, or names
+                      the `async` rule with no idea what `await` does.
+      - `incorrect` - anything else, especially claiming `async` makes the
+                      loading faster, or that it is needed for every function
+                      that uses a picture.
+
+      Feedback: name the reason, `await` waits until the file has arrived, and
+      `await` only works inside an `async` function.
+
+  - id: symbol-row-constant
+    title: "Choosing the row of symbols"
+    question: |
+      Your slot machine uses this constant and this line inside `drawSymbol`:
+
+      ```typescript
+      const SYMBOL_ROW: number = 0;
+
+      const sy: number = SYMBOL_ROW * SPRITE_SIZE;
+      ```
+
+      You change `SYMBOL_ROW` to 3. What changes on the canvas when the
+      machine runs?
+    evaluation: |
+      Expected: the symbols now come from the fourth row of the sheet instead
+      of the first one, because `sy` becomes 3 * 96 = 288 and the cut window
+      moves three tile heights down. The machine works exactly as before, only
+      with a different set of six icons.
+
+      - `correct`   - says the icons now come from another row of the sheet
+                      (the fourth one, or the row three tiles further down),
+                      and does not claim the program breaks. Naming 288 as the
+                      new `sy` is a plus, not a must.
+      - `partial`   - says something in the picture changes because the cut
+                      moves, without saying that a different row of symbols is
+                      drawn, or names the right row but says the reels stop
+                      working.
+      - `incorrect` - anything else, especially claiming the icons move down
+                      on the canvas, or that three more symbols appear.
+
+      Feedback: state the effect, `sy` jumps to 288, so every symbol is cut
+      from the fourth row of the sheet.
