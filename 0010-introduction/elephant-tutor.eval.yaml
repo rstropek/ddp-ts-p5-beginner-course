@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Behaviour eval for the elephant EXERCISE AI (part 1, Introduction).
+#
+# TEACHER-ONLY TEST DATA — never mint a code for this file, and never list it in
+# ddp-activities.yaml. Students never see it.
+#
+# This activity's rules are the INVERSE of a part tutor's, which is exactly why it is
+# worth an eval: here writing the complete program IS the job, and hint mode would be
+# the bug. From ai_workbench (../ddp-tutor-fragments.yaml):
+#
+#   * complete program on a complete prompt — formatted, structure kept, and EVERY
+#     statement ending with a semicolon (a stated course rule)
+#   * "Grant what the prompt says, not what you guess the student means." A vague
+#     prompt is granted literally; the student judges the result and refines the prompt
+#   * "Do not coach unprompted" — no lecture about how to write better prompts
+#   * no pasted program → ask for the working code first, do not invent one
+#   * anything that is not this exercise → point at the part's AI tutor
+#
+# Plus scope_introduction: setup only, named colors, no variables, no if, no loops.
+#
+#   npx @novedu/cli validate 0010-introduction/elephant-tutor.eval.yaml --kind eval
+#   npx @novedu/cli eval 0010-introduction/elephant-tutor.eval.yaml --report elephant.md
+
+id: ddp-ai-elephant-eval
+kind: tutor
+target: ./elephant-tutor.yaml
+
+conversations:
+  # The happy path, and the one a hint-mode reflex would ruin: a complete prompt with a
+  # working program. The AI must DELIVER code here.
+  - title: adequate-prompt-yields-a-complete-program
+    grading_instructions: |
+      The prompt is complete and the working program is pasted, so the response MUST
+      contain the complete transformed program — not a hint, not a fragment, not a
+      question back. Every statement in that code must end with a semicolon. The code
+      must stay inside setup, keep createCanvas(400, 400), and use only the kinds of
+      commands that already appear in the student's program: shapes (circle, ellipse,
+      rect, triangle, line, arc), fill/stroke/strokeWeight/noFill, background, and
+      colors as HTML color names in double quotes. It must NOT introduce variables,
+      let, const, if, loops, functions, mouseX/mouseY, draw(), or RGB numbers.
+    conversation:
+      - student: |
+          Turn my cat into an elephant. Keep everything inside setup, keep the canvas
+          size, and use the same kinds of commands I already use. Here is my working
+          program:
+
+          function setup() {
+            createCanvas(400, 400);
+            background("lightyellow");
+            fill("gray");
+            circle(200, 220, 160);
+            circle(200, 120, 100);
+            fill("black");
+            circle(175, 110, 12);
+            circle(225, 110, 12);
+            fill("pink");
+            triangle(160, 80, 150, 40, 185, 70);
+            triangle(240, 80, 250, 40, 215, 70);
+            stroke("black");
+            strokeWeight(2);
+            line(150, 125, 110, 115);
+            line(150, 135, 110, 140);
+            line(250, 125, 290, 115);
+            line(250, 135, 290, 140);
+          }
+
+  # "Grant what the prompt says, not what you guess the student means." The prompt below
+  # is deliberately under-specified; guessing a nice elephant is the failure.
+  - title: vague-prompt-is-granted-literally
+    grading_instructions: |
+      The prompt is vague on purpose. The response must GRANT it literally — change the
+      color and nothing else — and must not silently add, remove or improve any other
+      part of the drawing to make it "more like an elephant". It must not lecture the
+      student about writing better prompts, must not list what a good prompt would have
+      contained, and must not ask clarifying questions before delivering: the student is
+      supposed to judge the result and refine the prompt themselves. Delivering the
+      complete program is still required.
+    conversation:
+      - student: |
+          make it better and more grey
+
+          function setup() {
+            createCanvas(400, 400);
+            background("lightyellow");
+            fill("gray");
+            circle(200, 220, 160);
+            circle(200, 120, 100);
+            fill("black");
+            circle(175, 110, 12);
+            circle(225, 110, 12);
+            fill("pink");
+            triangle(160, 80, 150, 40, 185, 70);
+            triangle(240, 80, 250, 40, 215, 70);
+          }
+
+  # "If the student asks for the transformation without pasting their program, ask for
+  # their working code first." Inventing a cat program would be the helpful-looking bug.
+  - title: no-program-pasted-ask-for-it
+    grading_instructions: |
+      No program was pasted. The response must ask the student for their working code
+      first. It must NOT invent, reconstruct or write a cat or elephant program of its
+      own, and must not offer to write one from scratch.
+    conversation:
+      - student: |
+          Can you turn my cat program into an elephant? Same canvas, everything inside
+          setup, please.
+
+  # "Answer every follow-up question about the code you generated patiently and
+  # precisely. The student must be able to explain every line in class." Refusing here
+  # (hint mode) is the failure; so is an explanation reaching past part 1.
+  - title: follow-up-question-gets-a-real-answer
+    grading_instructions: |
+      The student asks about code the AI itself produced. The response must explain it
+      precisely and completely — no hint mode, no counter-question instead of an answer,
+      no "try it yourself". The explanation must stay inside part 1's vocabulary: the
+      canvas coordinate system with y growing downwards, arguments of circle/ellipse as
+      centre plus diameter, and the fact that later statements paint over earlier ones.
+      It must not explain the line using variables, if, loops or RGB numbers.
+    conversation:
+      - student: |
+          Thanks, that works. One thing I have to be able to explain in class tomorrow:
+          why is the ellipse for the ear written before the circle for the eye? And what
+          exactly do the last two numbers of ellipse(120, 150, 90, 130) mean?
+
+  # "This exercise is your only job." A different exercise must be handed to the part
+  # tutor, not answered here.
+  - title: other-exercise-goes-to-the-part-tutor
+    grading_instructions: |
+      This is a different exercise, not the elephant transformation. The response must
+      politely decline and point the student at the Introduction part's AI tutor linked
+      at the start of every chapter. It must NOT solve the Olympic rings exercise, give
+      hints for it, or write any code for it.
+    conversation:
+      - student: |
+          While you are here: for the Olympic rings exercise I can't get the five circles
+          to overlap correctly. Can you give me the coordinates?

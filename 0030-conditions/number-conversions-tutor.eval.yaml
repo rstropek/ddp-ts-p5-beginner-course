@@ -1,0 +1,106 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Behaviour eval for the number-conversions tutor (part 3, Conditions).
+#
+# TEACHER-ONLY TEST DATA — never mint a code for this file, and never list it in
+# ddp-activities.yaml. Students never see it.
+#
+# This is the course's only tutor with a `tools:` grant (random_number), so it also
+# exercises the tool-enabled path end to end: an eval run binds the real catalog tool,
+# and a practice problem should visibly draw a value.
+#
+# The rules under test are this tutor's own, on top of the shared fragments:
+#
+#   * worked calculations go into a small Markdown table, one row per step
+#   * never 0b or 0x literals — the course has not introduced them
+#   * binary groups are CONCATENATED, written side by side, never joined with plus signs
+#   * practice: one problem at a time, drawn with random_number, wait for the attempt,
+#     ask for the process rather than the result, and never reveal all later steps
+#   * socratic_exercises still applies: point at the wrong row, do not redo the work
+#
+#   npx @novedu/cli validate 0030-conditions/number-conversions-tutor.eval.yaml --kind eval
+#   npx @novedu/cli eval 0030-conditions/number-conversions-tutor.eval.yaml --report conversions.md
+
+id: ddp-tutor-number-conversions-eval
+kind: tutor
+target: ./number-conversions-tutor.yaml
+
+conversations:
+  # The format rules, on the tutor's own bread-and-butter task.
+  - title: worked-conversion-uses-a-step-table
+    grading_instructions: |
+      This is a worked calculation, so the response must present it as a small Markdown
+      table with one row per step — here one row per division by 2, showing the quotient
+      and the remainder — and must say that the remainders are read from bottom to top.
+      It must name which number system each number belongs to. It must NOT write any
+      0b or 0x literal anywhere. The final binary answer for decimal 45 is 101101.
+    conversation:
+      - student: Can you guide me through converting decimal 45 to binary?
+
+  # The concatenation rule: "never join groups with plus signs, because that reads as
+  # addition" is stated explicitly and is easy for a model to violate in passing.
+  - title: binary-groups-are-concatenated-not-added
+    grading_instructions: |
+      When the response joins the four-bit groups into one binary number, it must
+      describe that as concatenation and write the groups side by side. It must NOT join
+      them with plus signs or any other arithmetic operator, and must not write 0b or 0x
+      literals. It should mention that leading zeros may be added on the far left to
+      complete a group of four, while zeros inside or at the right cannot be removed.
+    conversation:
+      - student: |
+          I have hexadecimal 2F. I know F is 1111 and 2 is 0010. How do I put the two
+          groups together to get the whole binary number?
+
+  # The practice loop, and the tool: random_number must supply the value, and only ONE
+  # problem may be handed out before the student attempts it. `required_tools` asserts
+  # the tool call itself — at least one random_number call, or the run report flags it.
+  - title: practice-draws-one-random-problem
+    required_tools: [random_number]
+    grading_instructions: |
+      The student asked for practice, so the response must hand out exactly ONE problem
+      and then stop and wait — no second or third problem, and no worked solution or
+      later steps for the problem it just posed. It must pose a concrete value to
+      convert and must ask the student to show their process, not only the result.
+      No 0b or 0x literals.
+    conversation:
+      - student: |
+          Give me one conversion problem to practise. Let me show each step before you
+          check it.
+
+  # socratic_exercises inside the tutor's own subject: repair the student's own table,
+  # do not silently redo the calculation for them.
+  - title: wrong-step-is-pointed-at-not-redone
+    grading_instructions: |
+      Exactly one step of the student's calculation is wrong: 2^3 is 8, not 6, so the
+      correct decimal value of binary 11001 is 25. The response must point at THAT row
+      specifically and ask a short question that helps the student repair it. It must NOT
+      present the whole corrected table or simply state the finished answer as the
+      student's work. No 0b or 0x literals.
+    conversation:
+      - student: |
+          Binary 11001 to decimal. My place values:
+
+          | bit | place | contribution |
+          | --- | --- | --- |
+          | 1 | 16 | 16 |
+          | 1 | 6 | 6 |
+          | 0 | 4 | 0 |
+          | 0 | 2 | 0 |
+          | 1 | 1 | 1 |
+
+          That gives me 23. Is that right?
+
+  # scope_conditions applies here too: loops are part 4, so a "write a program that
+  # converts it" request must be steered back rather than answered with a loop.
+  - title: code-request-stays-inside-part-3
+    grading_instructions: |
+      Loops are not yet part of the course at this point. The response must NOT show a
+      while loop, a for loop or an array. It should say briefly that this comes later and
+      steer back to what the student can already do — digit extraction with % and floor,
+      written out step by step. Any code it does show must use only const/let with type
+      annotations, arithmetic, if/else and the p5.js helpers (floor, pow), and must not
+      use 0b or 0x literals or Math.* functions.
+    conversation:
+      - student: |
+          Instead of doing it by hand, can you write me a program that converts any
+          decimal number to binary? A loop that divides by 2 until nothing is left would
+          do it, right?
