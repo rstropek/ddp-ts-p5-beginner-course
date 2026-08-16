@@ -47,6 +47,9 @@ activities:
     tutor-images:
       file: 0060-functions/images-tutor.yaml
       note: "Creative Coding book: specialized image helper for exercises with images (from 0060-functions/0100 on) — GitHub-hosted"
+    tutor-vscode:
+      file: 0070-vscode/vscode-tutor.yaml
+      note: "Creative Coding book: AI tutor for part 7, Visual Studio Code — GitHub-hosted"
 
     # Exercise AIs: the code-generating counterparts for the book's
     # designated AI exercises (the part tutors stay strictly hint-only).
@@ -225,3 +228,16 @@ activities:
     target-game:
       file: 0060-functions/0140-target-game-quiz.yaml
       note: "Creative Coding book: Drag and drop, Target Game (0060-functions/0140) — GitHub-hosted"
+
+    new-workshop:
+      file: 0070-vscode/0010-new-workshop-quiz.yaml
+      note: "Creative Coding book: A new workshop, VS Code/Node.js/npm (0070-vscode/0010) — GitHub-hosted"
+    starter-code:
+      file: 0070-vscode/0020-starter-code-quiz.yaml
+      note: "Creative Coding book: Getting the starter code (0070-vscode/0020) — GitHub-hosted"
+    first-program-again:
+      file: 0070-vscode/0030-first-program-again-quiz.yaml
+      note: "Creative Coding book: Your first program, again (0070-vscode/0030) — GitHub-hosted"
+    craftsmanship:
+      file: 0070-vscode/0040-craftsmanship-quiz.yaml
+      note: "Creative Coding book: Pride in your craft (0070-vscode/0040) — GitHub-hosted"

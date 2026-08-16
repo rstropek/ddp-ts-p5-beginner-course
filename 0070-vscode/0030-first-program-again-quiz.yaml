@@ -1,0 +1,252 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Your first program, again"
+# (0070-vscode/0030-first-program-again.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's mechanics: what
+# `npm install` and `node_modules` are, what `npm start` and localhost give
+# them, the setup/draw split in the starter (draw repaints the background
+# 60 times a second), the `p.` prefix of instance mode, hot reload on save,
+# stopping the development server with Ctrl+C, and the fixed frame at the
+# top of src/index.ts.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: first-program-again-quiz
+name: "Quiz: Your first program, again"
+
+title: "Check your understanding: your first program, again"
+description: |
+  Seven short questions about the chapter *Your first program, again*.
+  Answer in your own words. There are no answer options to pick from, and
+  this quiz is anonymous: it's here for you, so you can see what you
+  already understand and what you should read again. One or two sentences
+  are enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="p.circle(200, 260, 360);"
+      scope="after the first program again chapter"
+      knows=(array
+        "drawing commands, colors, `setup` and `draw`, loops, arrays, and their own functions"
+        "VS Code, Node.js, npm, and VS Code's integrated terminal"
+        "the course starter project with `src/index.ts`, `index.html`, and `package.json`"
+        "`npm install`, the generated folder `node_modules`, and `npm start`"
+        "the localhost address in the browser and the development server behind it"
+        "p5.js in instance mode: every p5.js name gets the prefix `p.`, commands and constants alike"
+        "`setup` runs once, `draw` runs about 60 times per second and starts with `p.background`")
+      not_yet=(array
+        "what the arrow `=>` in the fixed frame at the top of `src/index.ts` means"
+        "`import` and `export`"
+        "`npm run build` and publishing a finished program"
+        "git beyond cloning and pulling the starter")}}
+
+questions:
+  - id: node-modules-deleted
+    title: "The folder you may delete"
+    question: |
+      Your `shapes` folder takes up a lot of space on the hard drive, and
+      almost all of it is the folder `node_modules`. You delete
+      `node_modules`.
+
+      What did you just delete, and how do you get it back?
+    evaluation: |
+      Expected: `node_modules` holds the packages (p5.js and the developer
+      tools) that npm downloaded from the internet. Nothing of your own
+      work is in there. Running `npm install` again reads `package.json`
+      and downloads everything back.
+
+      - `correct`   - says the folder holds the downloaded packages /
+                      libraries (not the student's own code) AND names
+                      `npm install` as the way to get it back.
+      - `partial`   - only one half, for example names `npm install` but
+                      calls `node_modules` the project or the own code, or
+                      describes the content right and gives no way back.
+      - `incorrect` - anything else, e.g. the program is lost forever, or
+                      `node_modules` contains the student's sketch.
+
+      Feedback: state that `node_modules` is generated and that
+      `npm install` rebuilds it from `package.json`.
+
+  - id: npm-start-localhost
+    title: "The address in the terminal"
+    question: |
+      In the web playground, a server on the internet showed your program.
+      Now you type `npm start` in VS Code's terminal, and the terminal
+      prints the address `http://localhost:5173`.
+
+      What did `npm start` start, and what does `localhost` in that address
+      mean?
+    evaluation: |
+      Expected: `npm start` started a development server on the student's
+      own computer, which serves the program's web page to the browser.
+      `localhost` means this computer, the one in front of you, so the page
+      never travels over the internet and nobody else can open it.
+
+      - `correct`   - names a (web/development) server running on your own
+                      computer AND explains localhost as this computer /
+                      "der eigene Rechner", not the internet.
+      - `partial`   - only one half, e.g. says a server starts but explains
+                      localhost as "a website" or not at all, or explains
+                      localhost right without saying a server was started.
+      - `incorrect` - anything else, e.g. the program is uploaded to the
+                      internet, or classmates can open the address.
+
+      Feedback: state that the server runs on the student's own computer
+      and that localhost points at exactly that computer.
+
+  - id: white-canvas-bug
+    title: "The canvas stays white"
+    question: |
+      A classmate moved the first program into the starter project like
+      this, and the canvas in the browser stays completely white:
+
+      ```typescript
+      function setup(): void {
+        p.createCanvas(400, 500);
+        p.background("pink");
+        p.circle(200, 260, 360);
+      }
+
+      function draw(): void {
+        p.background("white");
+      }
+      ```
+
+      Why is the canvas white, and how do you fix it?
+    evaluation: |
+      Expected: `draw` runs about 60 times per second and paints the whole
+      canvas white each time, so it covers the pink background and the
+      circle that `setup` drew once. The fix is to move `p.background` and
+      `p.circle` into `draw`, where the pink background replaces the white
+      one; `p.createCanvas` stays in `setup`.
+
+      - `correct`   - says draw repaints white over the drawing (any
+                      wording: "übermalt", "draws white on top") AND moves
+                      the drawing statements into `draw`.
+      - `partial`   - names the white background as the cause but gives no
+                      fix or a wrong one, or moves the statements to `draw`
+                      without saying why the white wins.
+      - `incorrect` - anything else, e.g. a missing `p.`, a wrong canvas
+                      size, or `setup` never running.
+
+      Feedback: state that `draw` runs after `setup` and 60 times a second,
+      so whatever `setup` painted is gone in a blink.
+
+  - id: prefix-rewrite
+    title: "Two lines in the new workshop"
+    question: |
+      These two lines come straight from your web playground program:
+
+      ```typescript
+      angleMode(DEGREES);
+      circle(200, 260, 360);
+      ```
+
+      Write both lines the way they have to look in the starter project.
+    evaluation: |
+      Expected, exactly:
+      `p.angleMode(p.DEGREES);`
+      `p.circle(200, 260, 360);`
+      Every p5.js name gets `p.`, the constant `DEGREES` included.
+
+      - `correct`   - both lines with all three prefixes (`p.angleMode`,
+                      `p.DEGREES`, `p.circle`) and both semicolons.
+      - `partial`   - only the commands prefixed and `DEGREES` left bare,
+                      or one line right and one wrong, or both lines right
+                      but a semicolon missing.
+      - `incorrect` - anything else, e.g. no prefix at all, or `p` written
+                      in front of the whole line as `p(circle(...))`.
+
+      Feedback: name the constant explicitly, `p.DEGREES`, because the
+      prefix rule covers constants just like commands.
+
+  - id: save-and-reload
+    title: "After you press save"
+    question: |
+      The development server is running in the terminal, and the browser
+      shows your picture. You change one color in `src/index.ts` and save
+      the file.
+
+      What happens in the browser?
+    evaluation: |
+      Expected: the browser reloads the page by itself and shows the new
+      color within a moment. You don't press a run button and you don't
+      reload by hand, because the development server watches the files
+      (hot reload).
+
+      - `correct`   - says the browser updates / reloads on its own and
+                      shows the change, with no manual run or reload step.
+      - `partial`   - says the change appears but claims you have to reload
+                      the page or press a run button first.
+      - `incorrect` - anything else, e.g. nothing happens until you restart
+                      the server, or you have to run `npm install` again.
+
+      Feedback: name the mechanism, the running development server watches
+      your files and pushes the change into the browser.
+
+  - id: stopping-the-server
+    title: "The terminal that won't listen"
+    question: |
+      You started the development server with `npm start`. Now you want to
+      type another command in the same terminal, but the terminal doesn't
+      react to your typing.
+
+      What is going on, and what do you press?
+    evaluation: |
+      Expected: the development server is still running and keeps the
+      terminal busy, so it takes no new command. Press Ctrl+C (labeled Strg
+      on a German keyboard) in that terminal to stop the server.
+
+      - `correct`   - says the running server occupies the terminal AND
+                      names Ctrl+C / Strg+C as the way to stop it.
+      - `partial`   - names Ctrl+C without saying that the server is
+                      blocking the terminal, or explains the blocking but
+                      names no key (or a wrong one).
+      - `incorrect` - anything else, e.g. the terminal has crashed, or you
+                      must close VS Code, or Ctrl+C copies the output.
+
+      Feedback: state that Ctrl+C stops the running server and hands the
+      terminal back to you.
+
+  - id: fixed-frame
+    title: "The block at the top"
+    question: |
+      Every starter project begins `src/index.ts` with this block:
+
+      ```typescript
+      import p5 from "p5";
+
+      const p = new p5((sketch: p5): void => {
+        sketch.setup = setup;
+        sketch.draw = draw;
+        sketch.keyPressed = keyPressed;
+      });
+      ```
+
+      What do you do with this block while you work on an exercise, and
+      why?
+    evaluation: |
+      Expected: leave it exactly as it is and never change it. The block
+      connects the student's `setup`, `draw`, and `keyPressed` functions to
+      p5.js, and parts of its syntax belong to a later course, so it is a
+      fixed recipe for now (like `push` was for a long time).
+
+      - `correct`   - says leave it unchanged AND gives a reason: it hooks
+                      the own functions up to p5.js, or the syntax comes in
+                      a later course, so it works as a given recipe.
+      - `partial`   - says leave it alone with no reason at all, or gives
+                      the reason but suggests editing or deleting parts of
+                      it.
+      - `incorrect` - anything else, e.g. rewrite it for every exercise,
+                      or it can be deleted because `setup` runs anyway.
+
+      Feedback: state that the block stays untouched and that it is what
+      connects the student's own functions to p5.js.

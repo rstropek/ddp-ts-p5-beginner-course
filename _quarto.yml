@@ -97,6 +97,12 @@ book:
         - 0060-functions/0150-ratio-visualizer.qmd
         - 0060-functions/0160-training.qmd
         - 0060-functions/0170-poker-cards.qmd
+    - part: "Visual Studio Code"
+      chapters:
+        - 0070-vscode/0010-new-workshop.qmd
+        - 0070-vscode/0020-starter-code.qmd
+        - 0070-vscode/0030-first-program-again.qmd
+        - 0070-vscode/0040-craftsmanship.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

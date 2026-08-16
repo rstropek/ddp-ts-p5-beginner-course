@@ -1,0 +1,203 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "A new workshop: Visual Studio Code, Node.js,
+# and npm" (0070-vscode/0010-new-workshop.qmd in ts-ddp-first).
+# Students check their understanding of the tools of the new workshop: what
+# VS Code is and what it does not know about, why Node.js is needed although
+# nobody writes Node.js programs, what npm fetches and from where, what the
+# integrated terminal is, how to research an installation, and what a printed
+# version number proves.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: new-workshop-quiz
+name: "Quiz: A new workshop"
+
+title: "Check your understanding: a new workshop"
+description: |
+  Six short questions about the chapter *A new workshop: Visual Studio Code,
+  Node.js, and npm*. Answer in your own words. There are no answer options to
+  pick from, and this quiz is anonymous: it's here for you, so you can see
+  what you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="node --version"
+      scope="after the new workshop chapter of the Visual Studio Code part"
+      knows=(array
+        "everything from the web playground: TypeScript, p5.js, and drawing programs"
+        "that VS Code is a free code editor that edits files on their own computer"
+        "that VS Code knows nothing about exercises or prepared tasks"
+        "that Node.js runs JavaScript directly on the computer, outside a browser"
+        "that npm comes with Node.js and downloads packages from a public catalog"
+        "that a package is a library or a tool, bundled for download"
+        "what a terminal is and that VS Code has an integrated one"
+        "the check commands `node --version` and `npm --version`"
+        "researching install steps with a search engine or a general AI")
+      not_yet=(array
+        "the starter project and how to get it from GitHub"
+        "the commands `npm install` and `npm start`"
+        "the `p.` prefix in front of p5.js commands"
+        "writing or running an actual program in VS Code")}}
+
+questions:
+  - id: vscode-role
+    title: "What VS Code brings and what it doesn't"
+    question: |
+      From now on you write your programs in Visual Studio Code instead of
+      the web playground.
+
+      Name one help that VS Code gives you while you type, and name one
+      thing the playground gave you that VS Code does not.
+    evaluation: |
+      Expected: VS Code helps like the playground editor did, with red
+      squiggly lines under mistakes or a tooltip on hover. What it does not
+      give you is the exercise, the task description, or any prepared
+      material, because VS Code is a general editor for any code.
+
+      - `correct`   - names one typing help (squiggles, underlines mistakes,
+                      tooltip, shows documentation) AND says VS Code has no
+                      exercises, tasks, or prepared descriptions.
+      - `partial`   - only one of the two halves; also when the missing half
+                      is answered with "it runs in a browser" or a detail
+                      about files instead of the missing exercises.
+      - `incorrect` - anything else, for example that VS Code writes the
+                      programs for you.
+
+      Feedback: name the missing piece plainly, that nobody prepares a task
+      for you in VS Code.
+
+  - id: why-nodejs
+    title: "Node.js without Node.js programs"
+    question: |
+      You will never write a Node.js program in this course, but you still
+      have to install Node.js.
+
+      Explain why the developer tools of the next chapters cannot work
+      without it.
+    evaluation: |
+      Expected: those tools (the small web server, the TypeScript compiler)
+      are themselves programs written in JavaScript, and they have to run
+      directly on the computer, outside any browser. Node.js is what runs
+      JavaScript outside the browser.
+
+      - `correct`   - says the tools are JavaScript programs that run outside
+                      the browser and that Node.js is what runs them there
+                      (wording like "on the computer itself" counts).
+      - `partial`   - says only that Node.js runs JavaScript outside the
+                      browser, with no link to the tools needing it; or says
+                      only that the tools need Node.js, with no reason.
+      - `incorrect` - anything else, for example that Node.js is needed to
+                      open the browser or to write TypeScript.
+
+      Feedback: point at the two tools by name, the web server and the
+      compiler, and say both are JavaScript programs.
+
+  - id: npm-fetches-p5
+    title: "Where p5.js comes from now"
+    question: |
+      In the web playground, p5.js was simply there. On your own computer
+      nothing is prepared.
+
+      Which tool brings p5.js onto your computer, and where does it get it
+      from?
+    evaluation: |
+      Expected: npm brings it, and npm downloads it from a big public catalog
+      of packages on the internet.
+
+      - `correct`   - names npm AND says it downloads it from the internet
+                      (a catalog, a server, a package registry, "the npm
+                      website" all count).
+      - `partial`   - names npm but says nothing about where it comes from;
+                      or describes downloading from an internet catalog
+                      without naming npm.
+      - `incorrect` - anything else, for example that Node.js contains p5.js
+                      already, or that you copy it from the playground.
+
+      Feedback: keep the two roles apart, Node.js runs JavaScript and npm
+      fetches the packages.
+
+  - id: integrated-terminal
+    title: "The integrated terminal"
+    question: |
+      Your teacher says: "Open the integrated terminal in VS Code and type a
+      command."
+
+      What is a terminal, and what does *integrated* mean here?
+    evaluation: |
+      Expected: a terminal is a window where you control the computer by
+      typing commands instead of clicking, and it answers in text.
+      Integrated means it's built into VS Code, so you don't need a separate
+      program for it.
+
+      - `correct`   - describes typing commands instead of clicking (an
+                      answer in text may be mentioned) AND says the terminal
+                      sits inside VS Code.
+      - `partial`   - only one of the two halves, for example a good
+                      description of a terminal with nothing about it being
+                      part of VS Code.
+      - `incorrect` - anything else, for example that the terminal is the
+                      window where the program's drawing appears.
+
+      Feedback: say plainly that you type a line, press Enter, and the answer
+      comes back as text in the same window.
+
+  - id: research-prompt
+    title: "Asking an AI for install help"
+    question: |
+      You want to ask a general AI on the internet how to install Node.js.
+
+      Which two things about your own situation belong in your question, and
+      why do they make the answer better?
+    evaluation: |
+      Expected: your operating system (Windows, macOS, Linux) and what you
+      already tried. Installation steps differ per operating system, and
+      without knowing your attempts the AI repeats steps or advice that
+      already failed.
+
+      - `correct`   - names both the operating system and what was already
+                      tried, plus at least one reason (steps differ per
+                      system, or it would repeat what you did).
+      - `partial`   - names both things but gives no reason; or names only
+                      the operating system with a reason.
+      - `incorrect` - anything else, for example naming only your age or
+                      "that I am a beginner" without the operating system.
+
+      Feedback: name the two pieces plainly, the operating system and the
+      steps already tried.
+
+  - id: version-check
+    title: "What the version number proves"
+    question: |
+      You type `node --version` in the terminal, and it answers with a line
+      like `v22.14.0`.
+
+      What does this line tell you, and what would you try first if you got
+      an error message instead?
+    evaluation: |
+      Expected: the line proves that Node.js is installed and that the
+      terminal can run it, so the installation worked. On an error message,
+      first close VS Code completely and open it again, because a terminal
+      opened before the installation does not know the new program yet.
+
+      - `correct`   - says the installation worked / Node.js is there AND
+                      names restarting or reopening VS Code as the first
+                      step.
+      - `partial`   - only one of the two halves; also when the first step
+                      given is a sensible research move (searching the error
+                      message) instead of the restart.
+      - `incorrect` - anything else, for example that the number shows the
+                      program is running right now, or advice to install
+                      Node.js a second time on top.
+
+      Feedback: explain the restart, a terminal that was already open never
+      noticed the new installation.

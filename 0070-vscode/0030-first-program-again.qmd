@@ -1,0 +1,232 @@
+---
+title: "Your first program, again"
+---
+
+Weeks ago you typed your very first program into the web playground, and a pink
+canvas with a line, a rectangle, a circle, and a triangle appeared. Today that
+same picture comes back, served by your own computer, out of a folder that
+belongs to you. Same language, same library, only the workshop has changed, and
+by the end of this chapter you'll have the proof on your screen.
+
+## AI tutor {#sec-tutor-first-again}
+
+Error messages from npm and from the terminal are new territory. They talk about
+folders, packages, and servers instead of a missing semicolon. The AI tutor of
+this part knows the starter project of this course and helps you read them. For
+the coding part it works as always and gives you hints, not finished solutions.
+
+{{< tutor tutor-vscode >}}
+
+## Open your exercise folder in VS Code {#sec-open-folder-first-again}
+
+Start VS Code and choose **File > Open Folder**. That menu path is the same on
+Windows, macOS, and Linux. Open the copy you made for this exercise, the folder
+called `shapes`, and not the course folder around it or the untouched master
+starter next to it.
+
+The first time you open a folder, VS Code asks whether you trust its authors.
+You do, because this code came from your course. The Explorer sidebar then
+lists the files you know from the starter tour, among them `src`, `index.html`,
+and `package.json`.
+
+## npm install brings the packages {#sec-npm-install-first-again}
+
+Your folder holds a list of the packages the project needs, and no packages
+yet. `package.json` is that list, and npm turns it into real code on your hard
+drive.
+
+Open VS Code's integrated terminal. It opens directly inside the folder you
+have open, which is exactly why opening the right folder matters. Then type:
+
+```bash
+npm install
+```
+
+npm reads `package.json`, downloads every listed package from the internet, and
+puts all of it into a new folder called `node_modules`. Expect a progress
+display and a short wait, because p5.js and the developer tools together are a
+lot of files.
+
+Run `npm install` once per exercise copy. `node_modules` is big, it is
+generated, and you never edit anything in it by hand. You can delete the whole
+folder and get it back with another `npm install`. That's also why your download
+was so small, because a list of package names ships much cheaper than the
+packages themselves.
+
+## npm start gives you your own web server {#sec-npm-start-first-again}
+
+A p5.js program lives in a web page, and something has to serve that page to
+your browser. In the playground a server on the internet did that for you. On
+your own computer you start your own:
+
+```bash
+npm start
+```
+
+The terminal answers with an address, usually `http://localhost:5173`. Open it
+in your browser. If port 5173 was already taken, the number in the terminal is
+different, so read the address the terminal actually printed.
+
+`localhost` always means *this computer*, the one you're sitting at. The page
+never travels over the internet and nobody else can open it, which is why this
+kind of server is called a **development server**. It exists so you can look at
+your own work while you build it.
+
+::: {.callout-note}
+## localhost has a number: 127.0.0.1
+
+Computers address each other with numbers, so behind the name `localhost`
+there is a numeric address, `127.0.0.1`. Both mean the same thing, this
+computer. A web page or an AI will sometimes write `http://127.0.0.1:5173`
+instead of `http://localhost:5173`, and both open the same page.
+
+Programmers even wear this as a joke. A popular T-shirt says "There's no
+place like 127.0.0.1", playing on the English saying "there's no place like
+home", because that's what the number is, your computer's own home address.
+:::
+
+What appears is a white canvas, the starter's own little program, already
+running before you changed a line. The server also watches your files, so when
+you save a change, the browser reloads by itself and you never press a run
+button. That's called **hot reload**, the modern version of the run experience
+you know from the playground.
+
+While the development server runs, the terminal is busy and takes no new
+commands. To stop the server, click into the terminal and press **Ctrl+C** (on
+a German keyboard the key is labeled Strg). Until you stop it, the browser tab
+keeps working.
+
+## A look at src/index.ts {#sec-index-ts-first-again}
+
+Open `src/index.ts`. The file starts with a block that looks unfamiliar:
+
+```typescript
+import p5 from "p5";
+
+const p = new p5((sketch: p5): void => {
+  sketch.setup = setup;
+  sketch.draw = draw;
+  sketch.keyPressed = keyPressed;
+});
+```
+
+Those lines are a **fixed frame**. They connect your functions to p5.js, they
+come to you type for type, and you never change them. Some of the syntax in
+there belongs to a later course, so treat the frame the way you treated `push`
+for a long time. It's a recipe that works, and the details come when you need
+them.
+
+Below the frame, familiar friends are waiting:
+
+```typescript
+function setup(): void {
+  p.createCanvas(800, 400);
+}
+
+function draw(): void {
+  p.background("white");
+}
+
+function keyPressed(): void {}
+```
+
+`setup` and `draw` do exactly what they did in the playground, and `keyPressed`
+is a new slot that runs whenever a key is pressed. You don't need it here, so
+leave it empty.
+
+### Every p5.js name gets a `p.` {#sec-prefix-first-again}
+
+One real difference separates the starter from the playground. The starter uses
+p5.js in **instance mode**, which means all p5.js names live on an object called
+`p` instead of standing on their own. Every name that came from p5.js gets `p.`
+in front of it, commands and constants alike:
+
+```typescript
+// in the web playground
+createCanvas(400, 500);
+background("pink");
+angleMode(DEGREES);
+
+// in the starter project
+p.createCanvas(400, 500);
+p.background("pink");
+p.angleMode(p.DEGREES);
+```
+
+Your own variables and your own functions keep their names unchanged. Only what
+p5.js gave you needs the prefix.
+
+### Which statement goes into setup, and which into draw {#sec-setup-draw-first-again}
+
+You met the split between `setup` and `draw` in the Conditions part, and the
+starter makes it impossible to ignore. `setup` runs once at the start. `draw`
+runs about 60 times per second, and it begins with `p.background("white");`,
+which paints the whole canvas white before anything else happens.
+
+So anything you draw in `setup` gets painted over a fraction of a second later,
+and drawing statements belong in `draw`. Only the `p.createCanvas` call stays in
+`setup`, because the canvas is created once, not 60 times a second. Your own
+background statement takes the place of the white one at the top of `draw`.
+
+A picture that never changes gets redrawn 60 times per second and still looks
+perfectly still, because every frame is identical to the one before.
+
+## When something goes wrong {#sec-trouble-first-again}
+
+New tools bring new error messages, and every one of them is research material.
+Copy the exact text into a search engine, into a general AI together with your
+operating system, or into the tutor of this part. These four are the ones almost
+everybody meets:
+
+- **The terminal says `npm` is not recognized.** Either Node.js isn't installed,
+  or the terminal was already open before you installed it and never noticed the
+  new program. Close VS Code completely and open it again.
+- **`npm install` finds no `package.json`.** The wrong folder is open in VS
+  Code. Open the exercise copy `shapes` itself.
+- **The browser shows nothing.** Look at the terminal. Is the development server
+  still running? If it stopped, start it again with `npm start` and use the
+  address it prints.
+- **A red squiggle sits under a drawing command.** That's almost always a
+  missing `p.` in front of a p5.js name.
+
+## Your exercise: your first program, again {#sec-exercise-first-again}
+
+Bring your very first program back to life, this time in your own workshop:
+
+1. **Get your old code.** Open the Shapes exercise in the web playground and
+   copy your code from the first week. If it's gone, type the example from the
+   task description again; it shows the same program.
+2. **Sort the statements.** In `src/index.ts`, put the `createCanvas` call with
+   your sizes into `setup`. Put every drawing statement into `draw`, and let
+   your own background statement replace the white one.
+3. **Add the prefix.** Put `p.` in front of every p5.js name. You don't have to
+   find them all by reading, because the red squiggles point at every one you
+   miss. They're the same squiggles you met in your very first chapter, so let
+   the editor guide you.
+4. **Save the file and watch the browser.** The page reloads by itself. Saving
+   also formats your code automatically, because the starter brings the
+   formatter's settings along, and handing in formatted code is a rule of this
+   course anyway.
+5. **Play.** Change a color or a coordinate, save, and watch how fast the
+   picture follows.
+
+You're done when the browser at your `localhost` address shows the same picture
+as in your first week.
+
+**Bonus for the fast ones:** bring the smiley from the arcs chapter over too. It
+needs `p.angleMode(p.DEGREES);` in `setup`, and the constant needs the prefix
+just as much as the command does.
+
+That's the proof you came for. Same language, same library, same picture, and a
+workshop that can build any exercise in this book. The playground carried you
+through six parts and did its job well. From here on, the tools on your own
+computer take over.
+
+## Check your understanding {#sec-quiz-first-again}
+
+When your picture is back on the screen, take the short quiz below. You answer
+seven questions about this chapter in your own words, and an AI reads your
+answers and tells you what you already understand and what you should read
+again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz first-program-again title="Your first program, again" >}}

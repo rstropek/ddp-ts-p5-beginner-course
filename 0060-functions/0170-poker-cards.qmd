@@ -151,6 +151,8 @@ clearer.
 With functions in your hands, you now hold the whole toolbox that a
 programmer picks up in a first year, sequence, data, decisions,
 loops, arrays, and functions. Everything from here on is built out
-of those six ideas, in bigger and bigger arrangements. The next part
-of this book uses them to build complete games, so take a moment to
+of those six ideas, in bigger and bigger arrangements. What changes
+next is not the language but the workshop: in the next part you'll
+leave the web playground and set up the tools professional
+developers use every day, on your own computer. Take a moment to
 notice how far you have come, and then turn the page.

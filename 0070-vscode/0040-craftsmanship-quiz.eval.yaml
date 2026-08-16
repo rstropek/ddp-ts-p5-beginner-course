@@ -1,0 +1,162 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for the chapter quiz "Pride in your craft"
+# (0070-vscode/0040-craftsmanship-quiz.yaml). Teacher-only test data, never
+# published as an activity. All answers are synthetic and written the way
+# 15-to-17-year-olds actually type.
+id: craftsmanship-quiz-eval
+target: ./0040-craftsmanship-quiz.yaml
+
+questions:
+  - question: formatter-vs-linter
+    answers:
+      - expect: correct
+        answer: "the formatter makes the code look nice, indentation and spaces and semicolons. the linter reads what the code says and complains about stuff like var or =="
+      # terse correct paraphrase, avoids the words layout and rule
+      - expect: correct
+        answer: "one fixes how it looks, the other finds bad habits like an if without braces"
+      # German, correct, both halves
+      - expect: correct
+        answer: "der formatter macht nur das aussehen schön, einrückung und abstände. der linter schaut sich den inhalt an und meldet regelverstöße wie var oder =="
+      # rubric partial branch: formatter right, linter vague ("checks the code")
+      - expect: partial
+        answer: "the formatter does the indentation and the spacing, and the linter checks the code"
+      # rubric partial branch: linter right, formatter missing
+      - expect: partial
+        answer: "the linter tells you when you use == or var instead of let"
+      # ADVERSARIAL: fluent, confident, roles swapped. Must NOT get credit for
+      # naming both concepts.
+      - expect: incorrect
+        answer: |
+          The formatter checks whether your code follows the rules of the
+          project, for example that you never use var and never compare with
+          ==. The linter is the part that fixes the indentation and the
+          spacing so the file looks tidy.
+      # classic misconception: linter as compiler / error finder
+      - expect: incorrect
+        answer: "both of them look for errors in the code so the program doesnt crash, the formatter finds them and the linter fixes them"
+
+  - question: format-and-behavior
+    answers:
+      - expect: correct
+        answer: "no, it only changes how the code looks, the commands stay the same so the picture is the same"
+      # German correct, terse
+      - expect: correct
+        answer: "nein, formatieren ändert nur das aussehen vom code, nicht was er macht"
+      # verbose padded correct answer: irrelevant extra facts must not lower it
+      - expect: correct
+        answer: |
+          No, the picture stays exactly the same. Formatting only touches the
+          layout, so indentation, spaces, line breaks and the semicolons at
+          the end of a statement. Biome does this for the whole project when
+          you run npm run format, and it also runs every time I save a file
+          in VS Code. But my circle and my rectangle still get drawn with the
+          same numbers, so the canvas looks the same as before.
+      # rubric partial branch: right verdict, no reason
+      - expect: partial
+        answer: "no it cant"
+      # rubric partial branch: reason there, but unsure about the outcome
+      - expect: partial
+        answer: "it only changes the layout, but maybe the picture moves a bit if the lines get sorted differently"
+      # confident misconception: formatting as reordering statements
+      - expect: incorrect
+        answer: "yes, because the formatter sorts the drawing commands and then the shapes are drawn in a different order and the circle is on top"
+
+  - question: unused-variable-message
+    answers:
+      - expect: correct
+        answer: "in index.ts line 3 i made a variable speed but i never use it. i go there and delete it or actually use it somewhere"
+      # terse correct, everyday words, no file/line named (allowed by rubric)
+      - expect: correct
+        answer: "speed is never used anywhere. just delete that line"
+      # German correct
+      - expect: correct
+        answer: "die variable speed wird nirgends verwendet, zeile 3 in index.ts. ich lösche sie oder verwende sie wirklich"
+      # rubric partial branch: message read right, no next step
+      - expect: partial
+        answer: "it says the variable speed in index.ts on line 3 is not used anywhere in the program"
+      # rubric partial branch: action only, no reading of the message
+      - expect: partial
+        answer: "i just delete line 3"
+      # confident misconception: reads "unused" as "undeclared/missing"
+      - expect: incorrect
+        answer: "it means the variable speed does not exist yet, so i have to declare it in line 3 with let speed"
+      # INTENTIONALLY fluent (trap): treats a linter message as ignorable noise
+      - expect: incorrect
+        answer: |
+          This is only a warning from Biome, not a real error, so the program
+          runs fine and there is nothing to do. You can safely ignore these
+          messages and hand the project in as it is.
+
+  - question: check-fixed-one-not-the-other
+    answers:
+      - expect: correct
+        answer: "the semicolon is just formatting so the tool can put it in safely. var and == are rule violations, it only reports them and i have to change them myself"
+      # terse correct paraphrase
+      - expect: correct
+        answer: "semicolons belong to the layout, thats automatic. changing var to let is a real change in the code so thats my job"
+      # German correct
+      - expect: correct
+        answer: "das semikolon gehört zur formatierung, das macht das tool selber. var und == sind linter regeln, die meldet es nur und ich muss sie selber ausbessern"
+      # rubric partial branch: automatic half only, no "you fix the rest"
+      - expect: partial
+        answer: "because the formatter part of check always adds missing semicolons automatically"
+      # rubric partial branch: "fix it yourself" without a reason
+      - expect: partial
+        answer: "those two you have to fix by hand"
+      # confident misconception: reads the report as a bug in the tool
+      - expect: incorrect
+        answer: "npm run check only half worked, probably a bug. if you run it a few more times it will replace the var and the == too"
+      # INTENTIONALLY fluent (trap): decisive error, claims var and == are fine
+      - expect: incorrect
+        answer: |
+          The semicolon was a real mistake, so Biome repaired it. The var and
+          the == are perfectly correct TypeScript, so there is nothing to fix
+          there and the messages can stay.
+
+  - question: save-and-npm-format
+    answers:
+      - expect: correct
+        answer: "no. saving only formats the file im working on right now, npm run format does every file in the project"
+      # German correct
+      - expect: correct
+        answer: "nicht ganz, beim speichern wird nur die eine datei formatiert, npm run format nimmt alle dateien vom projekt"
+      # terse correct paraphrase
+      - expect: correct
+        answer: "hes wrong, save = one file, the command = the whole project"
+      # rubric partial branch: right verdict, only "safer", no reach difference
+      - expect: partial
+        answer: "no hes not right, its just safer to run the command before you hand in"
+      # confident misconception: save-formatting does not exist in the starter
+      - expect: incorrect
+        answer: "hes wrong because saving in vs code does not format anything, only npm run format formats your code at all"
+      # INTENTIONALLY fluent (trap): agrees with the classmate
+      - expect: incorrect
+        answer: |
+          Yes, my classmate is right. Format on save is switched on in the
+          starter project, so every file is already formatted the moment you
+          save it. Running npm run format before handing in does exactly the
+          same thing twice and is a waste of time.
+
+  - question: why-clean-before-handing-in
+    answers:
+      - expect: correct
+        answer: "because other people read my code, my teacher and my classmates and me next week. messy code is hard to read and you overlook mistakes"
+      # German correct, uses the professional-expectation branch
+      - expect: correct
+        answer: "in echten teams wird sauberer code einfach erwartet, und man sieht fehler viel leichter wenn alles ordentlich ist"
+      # terse correct, everyday wording of the pride/care branch
+      - expect: correct
+        answer: "code is read way more often than written, and clean work just shows you care"
+      # rubric partial branch: rule/points only, no reason behind the rule
+      - expect: partial
+        answer: "because its a rule in this course and you lose points otherwise"
+      # confident misconception: performance
+      - expect: incorrect
+        answer: "formatted code runs faster because the computer can read it better"
+      # INTENTIONALLY fluent (trap): plausible prose, wrong reason (correctness)
+      - expect: incorrect
+        answer: |
+          Clean code is required because a program with bad indentation does
+          not compile. If the lines are not indented correctly, TypeScript
+          cannot tell which statement belongs to which function, so the
+          program would not run at all.

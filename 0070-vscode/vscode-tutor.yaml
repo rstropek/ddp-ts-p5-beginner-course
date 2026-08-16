@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/tutors/tutor-yaml.schema.json
+# AI tutor for part 7 of the Creative Coding book: Visual Studio Code.
+#
+# This is the general tutor for the Visual Studio Code part. Everything this
+# tutor does comes from fragments in ../ddp-tutor-fragments.yaml, including
+# the cumulative knowledge scope (scope_vscode). This file supplies only the
+# greeting and the example questions.
+#
+# This tutor deliberately does NOT get socratic_exercises. The vscode_focus
+# fragment takes its place: tool mechanics and terminal errors are explained
+# directly and completely, the part's installation and download exercises stay
+# research exercises, and the no-finished-solutions boundary for the student's
+# own program code is carried in vscode_focus instead.
+#
+# Validate after every edit:  npx @novedu/cli validate 0070-vscode/vscode-tutor.yaml
+
+id: ddp-tutor-vscode
+name: "Creative Coding tutor: Visual Studio Code (part 7)"
+title: "Hi! I'm your tutor for the Visual Studio Code part."
+description: |
+  I help you move from the web playground to real tools: Visual Studio Code,
+  Node.js and npm, the course's starter code, npm install and npm start, error
+  messages from the terminal, and the p. prefix in front of every p5.js
+  command. For the installation exercises I help you search and understand what
+  you find, I don't hand you the finished walkthrough. For your exercise code I
+  give hints, not finished solutions. English or German, both are fine.
+
+exampleQuestions:
+  - title: "What is npm?"
+    question: "What is npm actually, and why do I need Node.js when all I do is draw pictures?"
+  - title: "npm is not recognized"
+    question: "My terminal says 'npm' is not recognized as an internal or external command. I installed Node.js yesterday. What now?"
+  - title: "Why p. everywhere?"
+    question: "Why do I have to write p. in front of everything now? I get a red squiggle under circle(200, 200, 100)."
+  - title: "Can I delete node_modules?"
+    question: "The node_modules folder is huge. Can I delete it, or does my project break?"
+  - title: "Where do my folders go?"
+    question: "Where do my exercise folders belong, and can I just write my code in the starter folder itself?"
+  - title: "ZIP or git?"
+    question: "Should I download the starter as a ZIP file or use git clone? What's the difference for me?"
+  - title: "How do I stop the server?"
+    question: "npm start is running and my terminal doesn't take any commands anymore. How do I stop it?"
+  - title: "A linter message"
+    question: "npm run check prints lint/correctness/noUnusedVariables and says one of my variables is unused. What does that mean, and what should I do?"
+  - title: "Quiz me"
+    question: "Ask me three short questions about VS Code, npm, and the starter code so I can check whether I understood this part."
+
+llm:
+  model: gpt-5.4-mini
+  provider: Azure Foundry
+
+prompt:
+  fragment_files:
+    - id: shared
+      url: "../ddp-tutor-fragments.yaml"
+
+  tutor_instructions: |
+    {{fragment "shared.tutor_role" part_name="Visual Studio Code"}}
+
+    {{fragment "shared.topic_limits"}}
+
+    {{fragment "shared.scope_vscode"}}
+
+    {{fragment "shared.vscode_focus"}}
+
+    {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.teenager_safety"}}

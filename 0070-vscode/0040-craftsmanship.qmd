@@ -1,0 +1,180 @@
+---
+title: "Pride in your craft"
+---
+
+Your first program runs in your own workshop, and that's a real result. Running
+is not the same as finished, though. This chapter adds the last layer that turns
+a working program into work you can hand over, and it gives you two helper tools
+plus the two commands that run them.
+
+## AI tutor {#sec-tutor-craft}
+
+The tools in this chapter talk to you in a new kind of text. A linter message
+names a file, a line, a rule, and a problem, all in a few dense lines, and that
+takes practice to read. The AI tutor of this part knows the starter project and
+its rules, so paste a message you don't understand into the chat and ask what it
+wants from you. You'll get the message explained, not your program rewritten.
+
+{{< tutor tutor-vscode >}}
+
+## Working code is not finished code {#sec-working-vs-finished-craft}
+
+A carpenter who builds a chair doesn't stop when the chair holds your weight.
+The joints still get cleaned up, the surface gets sanded, and the edges get
+smoothed, because handing over a rough chair says something about the person who
+built it. None of that sanding makes the chair carry more weight. It makes it a
+piece of work somebody is proud to deliver.
+
+Code works the same way. Your program is read far more often than it is written,
+by you next week when you want to change something, by classmates when you build
+something together, and by your teacher when it gets graded. Messy code hides
+mistakes, and tidy code shows them.
+
+That's why this course has demanded formatted code before you hand anything in
+since the very first weeks, and why unformatted submissions cost you points.
+It's not pedantry. It's the same care the carpenter puts into the surface, and
+in your new workshop you have tools that do most of that work for you.
+
+## The formatter {#sec-formatter-craft}
+
+A **formatter** is a tool that rewrites the layout of your code. It fixes
+indentation, spacing between words and symbols, line breaks, and it adds
+end-of-statement semicolons where they're missing. What a formatter never
+touches is the meaning. The same commands run in the same order with the same
+values, so a formatted program draws exactly the picture it drew before.
+
+You've been using a formatter since the last chapter without being told its
+name. Every time you saved `src/index.ts` and the indentation jumped into place,
+that was the formatter, started automatically by the starter's VS Code settings.
+
+The starter also gives you a command that does the whole project at once:
+
+```bash
+npm run format
+```
+
+Save-formatting only touches the file you're editing right now. `npm run format`
+walks through every file of the project and formats all of them. On a project
+that's already tidy, the answer looks like this:
+
+```
+Formatted 8 files in 2ms. No fixes applied.
+```
+
+This is the command to run before you hand anything in.
+
+## The linter {#sec-linter-craft}
+
+A **linter** is a tool that reads your code and points at things the language
+allows but that are suspicious or against the rules of your project. A linter
+doesn't care how your code looks. It cares about what your code says.
+
+Here is the kind of thing a linter reports:
+
+- a variable you declare and then never use
+- a variable declared with `var`
+- a comparison written with `==`
+- an `if` whose branch has no curly braces around it
+- a function without explicit type annotations
+
+That list should sound familiar, because it's the list of rules this course has
+been drilling into you since the parts about variables and conditions. Those
+were never school rules invented to make your life harder. They're the rules
+professional programmers work by, and in this project a machine checks them for
+you. In every professional team, a linter does exactly the same job.
+
+A linter reports and explains, and fixing is mostly your job. A message looks
+like this:
+
+```
+src/index.ts:3:5 lint/correctness/noUnusedVariables  FIXABLE
+  ! This variable speed is unused.
+  i Unused variables are often the result of typos, incomplete
+    refactors, or other sources of bugs.
+```
+
+Read it from the front. `src/index.ts` is the file, `3:5` is line 3 and column
+5, and `lint/correctness/noUnusedVariables` is the name of the rule you broke.
+Below that come a few sentences that explain the problem and often suggest a
+fix. Here the linter noticed a variable nobody uses, which is very often the
+leftover of a typo or of code you started and never finished.
+
+## Biome, and the two commands {#sec-biome-craft}
+
+**Biome** is the tool that is both formatter and linter for TypeScript in this
+course. One program, two jobs, and it's already installed in your exercise
+folder because it came along with the starter and `npm install`.
+
+The rules Biome applies in this project live in the file `biome.json`, which you
+saw during the starter tour. Leave that file alone. Every project decides for
+itself which rules it wants, and in this course your teachers made that decision
+for you.
+
+Two commands start Biome, and they do different amounts of work:
+
+```bash
+npm run format
+npm run check
+```
+
+`npm run format` runs the formatter only. It fixes layout and semicolons in
+every file, and it says nothing about `var`, `==`, or unused variables.
+
+`npm run check` runs the formatter, the linter, and the sorting of your imports
+in one pass. It applies the fixes it can apply safely, so formatting and missing
+semicolons are repaired without asking you. Everything else it reports, and
+those reports are yours to fix by hand.
+
+## Your exercise: polish your shapes {#sec-exercise-craft}
+
+Open the `shapes` folder from the last chapter in VS Code, open the integrated
+terminal, and work through these five steps:
+
+1. **Format the whole project.** Type `npm run format`. Most likely you'll see
+   "No fixes applied", and that's success, not a dud. Your files were already
+   formatted, because saving formats them for you. Clean is the normal state
+   here.
+2. **Run the full check.** Type `npm run check`. On an untouched starter with
+   your shapes program in it, this is probably quiet too.
+3. **Provoke the linter on purpose.** Now break the rules deliberately. Add
+   these two lines inside your `draw` function, exactly as they are, with the
+   missing semicolon and the missing braces:
+
+   ```typescript
+   var speed = 5
+
+   if (speed == 5) p.circle(100, 100, 50);
+   ```
+
+   Save the file, then type `npm run check` again.
+4. **Read every message.** For each one, find the file and the line, the name of
+   the rule, and what the rule wants from you. Compare the file with what you
+   typed: the semicolon after `5` is already back, because the formatter fixed
+   that by itself. The `var`, the `==`, and the missing braces are only
+   reported, because changing them is a decision only you can make. Fix all
+   three by hand, the way this course writes them: a typed declaration like
+   `const speed: number = 5;`, a comparison with `===`, and curly braces
+   around the branch. Run `npm run check` again, and repeat until the check
+   is quiet.
+5. **Remove the experiment.** Delete the lines you added in step 3, save, and
+   run `npm run check` one last time. Your program is clean again.
+
+From now on this is a habit, not an exercise. Before you hand something in,
+before you present it, and before you show it to anybody, run `npm run format`
+or `npm run check` over your project.
+
+That completes your workshop. You have the editor, Node.js, and npm, you have
+the starter project and a folder rule that keeps a whole year of exercises
+findable, and now you have the tools that finish the surface of your work. The
+picture on the canvas is the part everybody sees, and the clean code behind it
+is the part programmers see. Caring about both is what turns programming into a
+craft.
+
+## Check your understanding {#sec-quiz-craft}
+
+When your check runs quiet, take the short quiz below. You answer six questions
+about this chapter in your own words, and an AI reads your answers and tells you
+what you already understand and what you should read again. The quiz is
+anonymous, and answering in German is fine too.
+
+{{< quiz craftsmanship title="Pride in your craft" >}}

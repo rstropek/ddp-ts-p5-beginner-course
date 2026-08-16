@@ -1,0 +1,149 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for the "Getting the starter code" quiz
+# (0070-vscode/0020-starter-code.qmd). Teacher-only regression test data.
+id: starter-code-quiz-eval
+target: ./0020-starter-code-quiz.yaml
+
+questions:
+  - question: why-starter-project
+    answers:
+      - expect: correct
+        answer: "because a project needs more than just your code, like index.html and package.json, and the starter has all that already"
+      # correct without any file name, everyday wording only
+      - expect: correct
+        answer: "in an empty folder there is nothing, the browser page and the settings files are missing. the starter brings them"
+      # German, correct
+      - expect: correct
+        answer: "weil ein projekt noch andere dateien braucht bevor man coden kann, und die sind im starter schon drin"
+      # mirrors the `partial` branch: pure time argument, no idea that extra
+      # files exist at all
+      - expect: partial
+        answer: "spart zeit, man muss weniger tippen"
+      # INTENTIONALLY fluent and confident (trap): plausible-sounding but the
+      # stated reason is wrong (VS Code opens empty folders fine)
+      - expect: incorrect
+        answer: |
+          You start from the starter project because Visual Studio Code
+          cannot open an empty folder at all. It needs at least one existing
+          project inside the folder before the editor will show anything.
+      - expect: incorrect
+        answer: "because the exercise solution is already in the starter, you just have to change a bit"
+
+  - question: package-json-without-packages
+    answers:
+      - expect: correct
+        answer: "package.json only says which packages the project wants, the code of p5.js is not in it. it gets downloaded later"
+      # short correct via the shopping-list idea, no mention of npm
+      - expect: correct
+        answer: "its just a list of what is needed, not the stuff itself"
+      # mirrors the `partial` branch: right that something arrives later, but
+      # never says what package.json actually is
+      - expect: partial
+        answer: "the p5 stuff comes later, its not there yet at the start"
+      # INTENTIONALLY confident technical prose (trap): decisive error, claims
+      # package.json contains the library code
+      - expect: incorrect
+        answer: |
+          The p5.js library is stored inside package.json itself, in a
+          compressed form. That is why you cannot see a separate folder for
+          it, the whole library sits in that one file.
+      - expect: incorrect
+        answer: "then something went wrong while unpacking, files are missing and you have to download again"
+
+  - question: github-repository
+    answers:
+      - expect: correct
+        answer: "github is a website where programmers put their code so others can use it, a repository is one project on there"
+      # correct, very short, everyday words for both parts
+      - expect: correct
+        answer: "site for storing code online, repo = one project there"
+      # mirrors the `partial` branch: only GitHub explained, repository not
+      - expect: partial
+        answer: "github ist eine seite im internet wo man code speichert und teilt"
+      # other half only: repository explained, nothing about GitHub
+      - expect: partial
+        answer: "a repository is one code project, like vite-p5-starter"
+      # INTENTIONALLY fluent (trap): confuses GitHub with a program on your
+      # computer and a repository with an installer
+      - expect: incorrect
+        answer: |
+          GitHub is a program you install on your computer to run your code,
+          and a repository is the installer file you download from it before
+          you can start.
+
+  - question: zip-or-git-update
+    answers:
+      - expect: correct
+        answer: "lisa types git pull in her folder, tom just downloads the zip again and unpacks it"
+      # correct, German, both halves
+      - expect: correct
+        answer: "lisa macht git pull, tom lädt das zip nochmal runter"
+      # mirrors the `partial` branch: only Lisa's side is right, Tom's is
+      # missing
+      - expect: partial
+        answer: "lisa uses git pull. no idea what tom does"
+      # `partial` branch named in the rubric: Lisa's command is clone again
+      # (wrong command, right idea), Tom's half is right
+      - expect: partial
+        answer: "lisa runs git clone again and tom downloads the zip file again"
+      # INTENTIONALLY confident (trap): fluent, but the conclusion is wrong,
+      # a ZIP user can update perfectly well
+      - expect: incorrect
+        answer: |
+          Only Lisa can get the improvement, because a ZIP download is a
+          one-time thing. Tom would have to wait for the teachers to send him
+          the new files by mail.
+
+  - question: coding-in-master-copy
+    answers:
+      - expect: correct
+        answer: "when he refreshes it his shapes code can get overwritten, and his old code is also in every new copy he makes"
+      # correct via the second consequence only, sloppy teen wording
+      - expect: correct
+        answer: "his next exercise folder already has the shapes program in it, its not a clean start anymore"
+      # correct via the first consequence only, in German
+      - expect: correct
+        answer: "beim aktualisieren kann sein programm überschrieben werden, dann ist die arbeit weg"
+      # mirrors the `partial` branch: knows the rule, names no consequence
+      - expect: partial
+        answer: "you are not allowed to write code in the starter folder, thats the rule"
+      # INTENTIONALLY fluent (trap): sounds knowledgeable, but claims nothing
+      # bad can happen
+      - expect: incorrect
+        answer: |
+          Nothing really goes wrong for Max. The starter folder is a normal
+          folder like any other, so writing his program there gives exactly
+          the same result as writing it in a copy.
+      - expect: incorrect
+        answer: "the program doesnt start anymore because the folder is called vite-p5-starter and not shapes"
+
+  - question: copy-per-exercise
+    answers:
+      - expect: correct
+        answer: "all her old exercises are gone, she cant open or show them later"
+      # correct, German, names reuse instead of showing
+      - expect: correct
+        answer: "die alten programme sind weg, sie kann sie nicht mehr starten oder wieder verwenden"
+      # INTENTIONALLY verbose correct answer (trap): padded with true but
+      # irrelevant chapter facts, must not score higher for length
+      - expect: correct
+        answer: |
+          So the rule says you copy the whole starter folder for every
+          exercise and give the copy the name of the exercise, and the master
+          copy stays clean and you never write code in it. Nina does it
+          differently and always writes in the same folder. That means every
+          old program is deleted when the next one starts, so at the end of
+          the year she has exactly one program left and all the others are
+          simply gone.
+      # mirrors the `partial` branch: vague tidiness, no loss of old work
+      - expect: partial
+        answer: "its just messy and unprofessional"
+      - expect: incorrect
+        answer: "she loses nothing, one folder is enough for everything"
+      # INTENTIONALLY confident technical error (trap): invents a technical
+      # limit that does not exist
+      - expect: incorrect
+        answer: |
+          A project folder can only ever contain one program, so as soon as
+          she writes the second exercise the whole project stops working and
+          she has to set everything up again from zero.

@@ -1,0 +1,144 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for the quiz of the chapter "A new workshop: Visual Studio
+# Code, Node.js, and npm" (0070-vscode/0010-new-workshop.qmd).
+id: new-workshop-quiz-eval
+target: ./0010-new-workshop-quiz.yaml
+
+questions:
+  - question: vscode-role
+    answers:
+      - expect: correct
+        answer: "it underlines mistakes with red squiggles like the playground, but there are no exercises in it, nobody gives you a task"
+      # correct through the tooltip half, very short and lowercase
+      - expect: correct
+        answer: "hover a command and you get the doku tooltip. no task descriptions though, you write whatever you want"
+      # German correct answer, both halves present
+      - expect: correct
+        answer: "rote wellenlinien unter fehlern gibts auch in vs code, aber keine übungen mit angabe wie im playground"
+      # mirrors the rubric's first partial branch: help named, missing half absent
+      - expect: partial
+        answer: "it shows you the errors while you type with the red lines"
+      # partial branch named explicitly in the rubric: the second half is answered
+      # with a browser/file detail instead of the missing exercises
+      - expect: partial
+        answer: "squiggly lines when you type something wrong. and it doesnt run in the browser, the files are on my laptop"
+      # INTENTIONALLY fluent and confident (trap): invents an ability VS Code
+      # does not have
+      - expect: incorrect
+        answer: |
+          Visual Studio Code analyzes what you want to build and generates the
+          whole program for you, so the only thing you lose compared to the
+          playground is the preview window on the right side.
+
+  - question: why-nodejs
+    answers:
+      - expect: correct
+        answer: "the web server and the compiler are js programs themselfs and they have to run on the computer not in a browser. node does that"
+      # correct in everyday words, avoids the term JavaScript for the tools
+      - expect: correct
+        answer: "those tools are also programs written in js, and a browser can only run js inside a website, so you need node to run them on the pc"
+      # mirrors the rubric's first partial branch: right definition of Node.js,
+      # no link to the tools
+      - expect: partial
+        answer: "node.js runs javascript outside the browser"
+      # second partial branch: the dependency is stated, the reason is missing
+      - expect: partial
+        answer: "weil die tools ohne node einfach nicht starten"
+      # INTENTIONALLY confident technical prose (trap): plausible sounding but
+      # the role of Node.js is wrong
+      - expect: incorrect
+        answer: |
+          Node.js is the part that opens the browser window and displays the
+          canvas, so without it the p5.js drawings would have nowhere to
+          appear on the screen.
+      - expect: incorrect
+        answer: "you need node.js to be able to write typescript code in vs code"
+
+  - question: npm-fetches-p5
+    answers:
+      - expect: correct
+        answer: "npm downloads it from the internet, from that big package catalog"
+      # correct with a vaguer everyday word for the catalog ("server")
+      - expect: correct
+        answer: "npm holt sich p5.js von einem server im internet"
+      # mirrors the rubric's first partial branch: tool named, source missing
+      - expect: partial
+        answer: "npm brings it"
+      # second partial branch: source described, tool not named
+      - expect: partial
+        answer: "you download it from a big catalog of packages online"
+      # classic misconception the rubric names
+      - expect: incorrect
+        answer: "node.js already has p5.js inside it, you get it when you install node"
+      # INTENTIONALLY verbose (trap): fluent, but the source is invented
+      - expect: incorrect
+        answer: |
+          The p5.js library is copied out of the web playground the first time
+          you open a project in VS Code, because the playground stores your
+          libraries for you in your account.
+
+  - question: integrated-terminal
+    answers:
+      - expect: correct
+        answer: "a window where you type commands instead of clicking and it answers with text. integrated means its built into vs code"
+      # terse correct answer, both halves in one line
+      - expect: correct
+        answer: "typing commands instead of clicking, and its inside vs code already"
+      # German correct answer
+      - expect: correct
+        answer: "man tippt befehle statt zu klicken und bekommt text zurück, und integriert heißt direkt in vs code eingebaut"
+      # mirrors the rubric's partial: good terminal description, nothing about VS Code
+      - expect: partial
+        answer: "a black window where you type commands and the computer writes back an answer"
+      # other half only: integration explained, terminal not described
+      - expect: partial
+        answer: "integrated means you dont need an extra program, its part of vs code"
+      # INTENTIONALLY confident (trap): confuses the terminal with the preview
+      - expect: incorrect
+        answer: |
+          The integrated terminal is the area inside VS Code where your canvas
+          is drawn while the program runs, so you can watch the shapes without
+          switching to the browser.
+
+  - question: research-prompt
+    answers:
+      - expect: correct
+        answer: "which os i have, like windows 11, and what i already tried. otherwise it explains mac stuff or tells me things i did already"
+      # correct, terse, reason only implied through "steps are different"
+      - expect: correct
+        answer: "my operating system and what i tried so far, because the steps are different on every system"
+      # mirrors the rubric's first partial branch: both things named, no reason
+      - expect: partial
+        answer: "mein betriebssystem und was ich schon probiert hab"
+      # second partial branch: only the OS, but with a reason
+      - expect: partial
+        answer: "you have to say if you are on windows or mac, the installer is not the same"
+      # INTENTIONALLY confident (trap): plausible advice, but misses both
+      # required pieces
+      - expect: incorrect
+        answer: |
+          You should tell the AI that you are a beginner and that it must
+          answer in simple English, then the installation instructions will
+          automatically fit your computer.
+
+  - question: version-check
+    answers:
+      - expect: correct
+        answer: "node is installed and the terminal finds it, so it worked. if theres an error i close vs code and start it again"
+      # correct, both halves, sloppy wording
+      - expect: correct
+        answer: "means the install was fine. on an error first restart vs code completly and try again"
+      # mirrors the rubric's first partial branch: only the meaning of the line
+      - expect: partial
+        answer: "that node.js is installed on my computer"
+      # rubric names this as partial on purpose: the research move is sensible
+      # but skips the restart, which is the first step the chapter asks for
+      - expect: partial
+        answer: "node is there. and if it says error i copy the message into google together with my os"
+      # INTENTIONALLY confident (trap): misreads the version output as a
+      # running program
+      - expect: incorrect
+        answer: |
+          The line shows that Node.js is running my program right now in the
+          background, and if there is an error message I simply install
+          Node.js a second time on top of the old one.

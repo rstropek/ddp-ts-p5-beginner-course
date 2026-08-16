@@ -1,0 +1,203 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Getting the starter code"
+# (0070-vscode/0020-starter-code.qmd in ts-ddp-first).
+# Students check their understanding of the chapter on their own: why a
+# starter project exists, what package.json is (and what it is not), GitHub
+# and repositories, ZIP vs. git, and the course's folder rule.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: starter-code-quiz
+name: "Quiz: Getting the starter code"
+
+title: "Check your understanding: getting the starter code"
+description: |
+  Six short questions about the chapter *Getting the starter code*. Answer
+  in your own words. There are no answer options to pick from, and this
+  quiz is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are
+  enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question"). No `example`: this chapter shows no program code, only
+  # folders and two git commands, so the fragment's everyday-example wording
+  # fits better than a code line.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      scope="after the starter code chapter"
+      knows=(array
+        "VS Code, Node.js, and npm as the tools of this part"
+        "GitHub as a website where code projects are stored and shared, and a repository as one project there"
+        "the starter code and what is inside it (index.html, package.json, src/index.ts, configuration files, the public folder)"
+        "that package.json only lists the packages a project needs, while the packages themselves are not in the download"
+        "getting the starter as a ZIP download or with git clone, and refreshing it with git pull"
+        "the folder rule: one course folder, a clean master copy of the starter, one copy per exercise")
+      not_yet=(array
+        "npm install and npm start — the next chapter"
+        "the p. prefix in front of p5.js commands"
+        "writing program code in src/index.ts"
+        "git beyond clone and pull (no commits, branches, or push)")}}
+
+questions:
+  - id: why-starter-project
+    title: "Why not an empty folder"
+    question: |
+      A classmate asks: "Why don't we just make an empty folder and start
+      writing our program there?"
+
+      Give one good reason why this course starts every exercise from the
+      starter code instead.
+    evaluation: |
+      Expected: a project on your own computer needs several files before
+      the first line of code (a web page for the browser, configuration for
+      TypeScript and the tools, the list of packages). The starter brings
+      them ready-made, so nobody types them by hand every time.
+
+      - `correct`   - says a project needs more files than your own program
+                      code, and the starter already contains them (naming
+                      one such file or "all the setup" counts).
+      - `partial`   - only a general "it saves time" or "less typing", with
+                      no hint that extra files are needed at all.
+      - `incorrect` - anything else, for example "an empty folder can't be
+                      opened in VS Code", or "the starter already contains
+                      the solution of the exercise".
+
+      Feedback: name one of the extra files, for example `index.html` or
+      `package.json`, so the reason becomes concrete.
+
+  - id: package-json-without-packages
+    title: "The list without the packages"
+    question: |
+      Right after unpacking the starter code, you look through the whole
+      folder. `package.json` mentions p5.js, but nowhere in the folder is
+      there any p5.js code.
+
+      Why is that not a mistake?
+    evaluation: |
+      Expected: `package.json` only writes down which packages the project
+      needs. It does not contain the packages themselves. They get
+      downloaded later (by npm).
+
+      - `correct`   - says `package.json` is only a list or note of what is
+                      needed and does not hold the p5.js code itself
+                      ("wish list", "shopping list", "it just says which
+                      packages" all count). Mentioning the later download
+                      is a bonus, not required.
+      - `partial`   - says only that the packages come or get downloaded
+                      later, without saying that `package.json` names them
+                      instead of containing them.
+      - `incorrect` - anything else, for example "the download is broken",
+                      or "the p5.js code is hidden inside `package.json`".
+
+      Feedback: compare `package.json` with a shopping list. The list names
+      the groceries; it is not the groceries.
+
+  - id: github-repository
+    title: "GitHub and repositories"
+    question: |
+      Your teacher says: "The starter code lives in a repository on
+      GitHub."
+
+      What is GitHub, and what is a repository?
+    evaluation: |
+      Expected: GitHub is a website where programmers store their code
+      projects and share them with other people. A repository is one
+      project on GitHub.
+
+      - `correct`   - both parts, in any everyday wording ("a site where
+                      code is kept", "one project / one code folder there").
+      - `partial`   - only one of the two described correctly.
+      - `incorrect` - anything else, for example a repository called a
+                      program you install, or GitHub called a program that
+                      runs your code.
+
+      Feedback: point at the course's own repository, `vite-p5-starter`,
+      as the example of one project on GitHub.
+
+  - id: zip-or-git-update
+    title: "The starter got better"
+    question: |
+      The teachers improve the starter code and put the new version on
+      GitHub. Lisa got her copy with `git clone`. Tom downloaded the ZIP
+      file.
+
+      What does each of them do to get the improved starter?
+    evaluation: |
+      Expected: Lisa runs `git pull` in her starter folder. Tom downloads
+      the ZIP from the repository page again and unpacks it over his old
+      master copy.
+
+      - `correct`   - both: `git pull` (or "pull") for Lisa, and
+                      downloading the ZIP again for Tom.
+      - `partial`   - only one of the two named right, or Lisa's answer
+                      given as `git clone` again while Tom's is right.
+      - `incorrect` - anything else, for example "Tom can't get updates at
+                      all", or "both have to install VS Code again".
+
+      Feedback: `git pull` is the one command that fetches the newer
+      version; without git the same job is a fresh ZIP download.
+
+  - id: coding-in-master-copy
+    title: "Coding in the master copy"
+    question: |
+      Max skips the copy step. He writes his shapes program directly in
+      his master copy `creative-coding/vite-p5-starter`. Two weeks later
+      he refreshes that folder to get the newest starter, and then copies
+      it for his next exercise.
+
+      What goes wrong for Max?
+    evaluation: |
+      Expected: his master copy is not clean anymore. Refreshing it can
+      overwrite his shapes program, and his old code travels into every new
+      exercise copy he makes from it.
+
+      - `correct`   - names one real consequence: his shapes code can be
+                      lost or overwritten when he refreshes, or his old
+                      code ends up inside the new exercise folder.
+      - `partial`   - only says he broke the rule or should not code in the
+                      starter, without naming any consequence.
+      - `incorrect` - anything else, for example "nothing happens, it's the
+                      same thing", or "the program stops running because
+                      the folder has the wrong name".
+
+      Feedback: the master copy has one job, staying exactly like the
+      version on GitHub.
+
+  - id: copy-per-exercise
+    title: "One folder or many"
+    question: |
+      Nina keeps only one project folder for the whole course. For every
+      new exercise she deletes her old code in `src/index.ts` and writes
+      the new program in the same folder.
+
+      What does Nina lose compared with the course's folder rule?
+    evaluation: |
+      Expected: her earlier exercises are gone. With one copy per exercise
+      every finished program stays complete and still runs, so you can open
+      it, show it, or reuse it later.
+
+      - `correct`   - says the older exercises are lost, or that she can no
+                      longer open, run, show, or reuse them.
+      - `partial`   - only a vague "it gets messy" or "that's not tidy",
+                      without naming the loss of the earlier programs.
+      - `incorrect` - anything else, for example "she loses nothing", or "a
+                      folder can hold only one program".
+
+      Feedback: think of the end of the year, when a folder per exercise
+      means every program you ever wrote still starts.

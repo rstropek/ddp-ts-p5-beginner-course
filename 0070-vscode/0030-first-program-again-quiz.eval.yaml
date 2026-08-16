@@ -1,0 +1,173 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for the chapter quiz "Your first program, again"
+# (0070-vscode/0030-first-program-again-quiz.yaml). Teacher-only test data,
+# never published as an activity. All answers are synthetic and written the
+# way 15-to-17-year-olds actually type.
+id: first-program-again-quiz-eval
+target: ./0030-first-program-again-quiz.yaml
+
+questions:
+  - question: node-modules-deleted
+    answers:
+      - expect: correct
+        answer: "the downloaded packages like p5, my own code is in src. just run npm install again and its back"
+      # terse correct answer in everyday words, avoids "package"
+      - expect: correct
+        answer: "only the stuff npm loaded from the internet, npm install brings it back"
+      # German, correct, both halves
+      - expect: correct
+        answer: "da sind nur die pakete drin die npm runtergeladen hat, mit npm install kommen sie wieder"
+      # rubric partial branch 1: right way back, wrong idea of the content
+      - expect: partial
+        answer: "thats my whole project, but with npm install i get it back"
+      # rubric partial branch 2: content right, no way back
+      - expect: partial
+        answer: "the libraries that npm downloaded, p5 and so on"
+      # INTENTIONALLY confident and fluent (trap): treats a generated folder
+      # as irreplaceable work
+      - expect: incorrect
+        answer: |
+          The node_modules folder contains the compiled version of my own
+          sketch, so deleting it destroys the program permanently. I would
+          have to write the whole shapes exercise again from scratch.
+
+  - question: npm-start-localhost
+    answers:
+      - expect: correct
+        answer: "it started a little web server on my own pc and localhost just means this computer here, so nobody else sees it"
+      # terse correct, everyday wording for both halves
+      - expect: correct
+        answer: "a dev server on my laptop. localhost = my own laptop, the page stays here"
+      # German, correct
+      - expect: correct
+        answer: "npm start startet einen entwicklungsserver auf meinem computer, localhost ist der eigene rechner, das geht nicht ins internet"
+      # rubric partial branch: server named, localhost not really explained
+      - expect: partial
+        answer: "npm start starts the server for the project. localhost is the name of the website it opens"
+      # rubric partial branch: localhost right, no server
+      - expect: partial
+        answer: "localhost heißt der eigene computer, die seite bleibt bei mir"
+      # classic misconception, confidently worded
+      - expect: incorrect
+        answer: "npm start uploads the project to the internet, and localhost is the free web address you get for it so classmates can look at it"
+
+  - question: white-canvas-bug
+    answers:
+      - expect: correct
+        answer: "draw runs like 60 times a second and paints white over everything setup drew. move the background and the circle down into draw, createCanvas stays in setup"
+      # terse correct, everyday words for "repaints over"
+      - expect: correct
+        answer: "the white in draw übermalt the circle every frame. the drawing has to go into draw instead"
+      # German correct answer
+      - expect: correct
+        answer: "draw wird ständig ausgeführt und malt alles weiß zu. die zeichenbefehle gehören in draw, dort ersetzt pink das weiß"
+      # rubric partial branch: cause right, no fix
+      - expect: partial
+        answer: "because draw always paints the background white again"
+      # rubric partial branch: fix right, no reason
+      - expect: partial
+        answer: "you have to put the background and the circle into draw"
+      # ADVERSARIAL: names a plausible but wrong cause from the same chapter
+      # (the prefix rule), even though every p. is already there
+      - expect: incorrect
+        answer: "the p. is missing in front of the commands, thats why nothing gets drawn"
+      # INTENTIONALLY fluent technical prose (trap) with a decisive error
+      - expect: incorrect
+        answer: |
+          The problem is that setup never runs in the starter project, so
+          neither the pink background nor the circle is ever drawn. Only draw
+          is executed, and that is why you only see white.
+
+  - question: prefix-rewrite
+    answers:
+      - expect: correct
+        answer: |
+          p.angleMode(p.DEGREES);
+          p.circle(200, 260, 360);
+      # correct, written as prose around the two lines
+      - expect: correct
+        answer: "p.angleMode(p.DEGREES); and p.circle(200, 260, 360); because the constant needs the p. too"
+      # rubric partial branch: command prefixed, constant left bare
+      - expect: partial
+        answer: |
+          p.angleMode(DEGREES);
+          p.circle(200, 260, 360);
+      # rubric partial branch: both lines right but a semicolon missing
+      # (course rule: code answers with a missing semicolon are partial)
+      - expect: partial
+        answer: |
+          p.angleMode(p.DEGREES)
+          p.circle(200, 260, 360)
+      # rubric partial branch: only one of the two lines converted
+      - expect: partial
+        answer: |
+          angleMode(DEGREES);
+          p.circle(200, 260, 360);
+      - expect: incorrect
+        answer: "the lines stay exactly the same, p5 works the same everywhere"
+      # misunderstands the prefix as a wrapper around the whole call
+      - expect: incorrect
+        answer: |
+          p(angleMode(DEGREES));
+          p(circle(200, 260, 360));
+
+  - question: save-and-reload
+    answers:
+      - expect: correct
+        answer: "the page reloads by itself and the new color is there, i dont have to press anything"
+      # German correct, terse
+      - expect: correct
+        answer: "der browser lädt automatisch neu und zeigt die neue farbe"
+      # rubric partial branch: change appears, but claims a manual reload
+      - expect: partial
+        answer: "the new color shows up after you refresh the browser page with f5"
+      - expect: incorrect
+        answer: "nothing changes until you stop the server with ctrl c and start it with npm start again"
+      # INTENTIONALLY fluent (trap): invents a build step for every save
+      - expect: incorrect
+        answer: |
+          Every time you save, you have to run npm install again so that the
+          new version of your code is downloaded into the project. Only then
+          does the browser show the new color.
+
+  - question: stopping-the-server
+    answers:
+      - expect: correct
+        answer: "the server is still running and blocks the terminal, press ctrl+c to stop it"
+      # German correct, uses the German key label
+      - expect: correct
+        answer: "der server läuft noch und belegt das terminal, mit strg+c beendet man ihn"
+      # rubric partial branch: key right, no reason
+      - expect: partial
+        answer: "just press ctrl+c"
+      # rubric partial branch: reason right, no key named
+      - expect: partial
+        answer: "the dev server is still running there so the terminal is busy and takes no commands"
+      - expect: incorrect
+        answer: "the terminal crashed, you have to close vs code and open it again"
+      # classic misconception about Ctrl+C, confidently worded
+      - expect: incorrect
+        answer: "ctrl+c only copies the text in the terminal, so you just open a second terminal and the server keeps running forever"
+
+  - question: fixed-frame
+    answers:
+      - expect: correct
+        answer: "leave it alone, never touch it. it connects my setup and draw and keyPressed to p5"
+      # correct via the other reason branch, terse
+      - expect: correct
+        answer: "you dont change it, its just given like push was, the details come in a later course"
+      # German correct
+      - expect: correct
+        answer: "man lässt den block einfach so stehen, er verbindet meine funktionen setup, draw und keyPressed mit p5.js"
+      # rubric partial branch: right action, no reason at all
+      - expect: partial
+        answer: "nothing, you just leave it there"
+      # rubric partial branch: reason ok but suggests editing it
+      - expect: partial
+        answer: "it hooks my functions into p5, and if i dont need keyPressed i delete that line out of the block"
+      # INTENTIONALLY fluent (trap): confident and decisively wrong action
+      - expect: incorrect
+        answer: |
+          This block has to be rewritten for every exercise so that it matches
+          the functions you use in that exercise. It is the part of the file
+          you edit first, before you write any drawing code.

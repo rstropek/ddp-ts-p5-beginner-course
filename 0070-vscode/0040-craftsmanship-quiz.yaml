@@ -1,0 +1,223 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Pride in your craft"
+# (0070-vscode/0040-craftsmanship.qmd in ts-ddp-first).
+# Core emphasis: the difference between a formatter and a linter. Also covered:
+# a formatter never changes behavior, reading a linter message (file, line,
+# rule, explanation), what `npm run check` fixes by itself versus what it only
+# reports, why `npm run format` is still needed although saving formats, and
+# why this course demands clean code before handing in.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: craftsmanship-quiz
+name: "Quiz: Pride in your craft"
+
+title: "Check your understanding: pride in your craft"
+description: |
+  Six short questions about the chapter *Pride in your craft*. Answer in
+  your own words. There are no answer options to pick from, and this quiz
+  is anonymous: it's here for you, so you can see what you already
+  understand and what you should read again. One or two sentences are
+  enough for most answers, and answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="npm run check"
+      scope="after the pride in your craft chapter"
+      knows=(array
+        "drawing commands, colors, `setup` and `draw`, loops, arrays, and their own functions"
+        "VS Code, Node.js, npm, the integrated terminal, and the course starter project"
+        "`npm install`, `npm start`, and the development server with hot reload"
+        "a formatter changes only the layout of code: indentation, spacing, line breaks, missing semicolons"
+        "a linter reads the code and reports rule violations such as `var`, `==`, an `if` without curly braces, or an unused variable"
+        "Biome is both formatter and linter in this course, and its rules for this project live in `biome.json`"
+        "`npm run format` formats every file; `npm run check` formats, lints, and sorts imports in one pass"
+        "saving a file in VS Code formats that one file automatically")
+      not_yet=(array
+        "changing rules in `biome.json` or writing your own rules"
+        "the `--unsafe` flag of Biome"
+        "`npm run build` and publishing a finished program"
+        "git beyond cloning and pulling the starter")}}
+
+questions:
+  - id: formatter-vs-linter
+    title: "Two different helpers"
+    question: |
+      Biome does two jobs for your project. It is a formatter, and it is a
+      linter.
+
+      Explain in your own words what a formatter does and what a linter
+      does.
+    evaluation: |
+      Expected: a formatter changes how the code looks (indentation,
+      spacing, line breaks, missing semicolons) and never what it does. A
+      linter reads the code and reports things that are allowed but
+      suspicious or against the project's rules, for example `var`, `==`,
+      an `if` without braces, or an unused variable.
+
+      - `correct`   - describes the formatter as layout/appearance only
+                      ("wie der code ausschaut", "tidy", "indentation") AND
+                      the linter as finding rule violations, bad habits, or
+                      suspicious code (any one example counts).
+      - `partial`   - one of the two described right and the other missing,
+                      vague ("checks the code"), or wrong.
+      - `incorrect` - anything else, especially the two swapped, or a
+                      linter described as finding syntax errors only.
+
+      Feedback: name the split plainly, the formatter works on the look, the
+      linter works on the content.
+
+  - id: format-and-behavior
+    title: "Does the picture change?"
+    question: |
+      Your shapes program runs and draws exactly the picture you want. Then
+      you type `npm run format` in the terminal.
+
+      Can that command change the picture your program draws? Explain why.
+    evaluation: |
+      Expected: no. A formatter only changes the layout of the code
+      (indentation, spacing, line breaks, missing semicolons), so the same
+      commands still run in the same order with the same values, and the
+      picture stays exactly the same.
+
+      - `correct`   - says no / the picture stays the same AND gives the
+                      reason that only the look of the code changes, not
+                      what it does.
+      - `partial`   - says no with no reason or a wrong reason, or gives the
+                      layout-only reason but is unsure whether the picture
+                      changes.
+      - `incorrect` - anything else, e.g. yes, because formatting can move
+                      statements into another order or delete code.
+
+      Feedback: state that formatting rewrites only how the code looks and
+      never what it does.
+
+  - id: unused-variable-message
+    title: "Reading a linter message"
+    question: |
+      You run `npm run check` and the terminal prints this:
+
+      ```
+      src/index.ts:3:5 lint/correctness/noUnusedVariables  FIXABLE
+        ! This variable speed is unused.
+        i Unused variables are often the result of typos, incomplete
+          refactors, or other sources of bugs.
+      ```
+
+      What is the linter telling you here, and what do you do next?
+    evaluation: |
+      Expected: in `src/index.ts`, line 3, there is a variable named `speed`
+      that is declared but never used anywhere. Next, open that line and
+      either delete the variable or use it, because an unused variable is
+      often the leftover of a typo or of unfinished code.
+
+      - `correct`   - says the variable `speed` is never used (naming file
+                      or line 3 counts as a plus, not a must) AND names a
+                      sensible next step: go to that line and delete it or
+                      actually use it.
+      - `partial`   - reads the message right but names no next step, or
+                      gives the step ("delete it") without saying what the
+                      message means.
+      - `incorrect` - anything else, e.g. the variable is missing / not
+                      declared, or the program crashed at line 3, or the
+                      answer is to ignore the message.
+
+      Feedback: state that `speed` is declared but never used, and that the
+      fix is to remove it or to use it.
+
+  - id: check-fixed-one-not-the-other
+    title: "Fixed by itself, or only reported"
+    question: |
+      You added these two lines to your program on purpose:
+
+      ```typescript
+      var speed = 5
+
+      if (speed == 5) p.circle(100, 100, 50);
+      ```
+
+      After `npm run check`, the missing semicolon after `5` is there, but
+      `var` and `==` are still in your file and only appear as messages.
+
+      Why did the command repair one thing but not the others?
+    evaluation: |
+      Expected: the semicolon is a formatting matter, so the formatter part
+      of `npm run check` can add it safely without changing what the code
+      does. `var` and `==` are linter rule violations, and replacing them is
+      a change to the code itself, so the tool only reports them and the
+      programmer fixes them by hand.
+
+      - `correct`   - says the semicolon is formatting / a safe automatic
+                      fix AND that `var` and `==` are rule violations the
+                      tool reports for the student to fix by hand.
+      - `partial`   - only one half, for example says the tool fixes
+                      formatting automatically without saying who fixes the
+                      rest, or says "you have to fix those yourself" with no
+                      reason.
+      - `incorrect` - anything else, e.g. the command is broken, or `var`
+                      and `==` are fine and the messages can be ignored.
+
+      Feedback: state that `npm run check` applies the safe fixes itself and
+      reports the rest for you to decide.
+
+  - id: save-and-npm-format
+    title: "Saving is not enough"
+    question: |
+      A classmate says: "I always save my files in VS Code, so my code is
+      formatted anyway. Running `npm run format` before handing in is
+      pointless."
+
+      Is your classmate right? Explain your answer.
+    evaluation: |
+      Expected: not quite. Saving formats only the one file you are editing
+      at that moment, while `npm run format` formats every file of the
+      project in one go. Files you edited without saving properly, or files
+      you never opened, are covered only by the command.
+
+      - `correct`   - says saving covers only the file you are working on /
+                      that one file AND that `npm run format` covers the
+                      whole project / all files.
+      - `partial`   - says the classmate is wrong but explains only that the
+                      command is safer, without the one-file versus
+                      whole-project difference.
+      - `incorrect` - anything else, e.g. the classmate is right, or saving
+                      does not format at all in the starter.
+
+      Feedback: name the difference in reach, one file on save, every file
+      with `npm run format`.
+
+  - id: why-clean-before-handing-in
+    title: "Why the course insists"
+    question: |
+      Your program runs and draws the right picture. The course still
+      requires you to hand in formatted code that passes the check.
+
+      Give one good reason why clean code matters, even though the picture
+      is already correct.
+    evaluation: |
+      Expected: code is read far more often than it is written, by you next
+      week, by classmates, and by your teacher, and tidy code is easier to
+      read and hides fewer mistakes. Clean work is also what professional
+      teams expect, and it has been a rule of this course since the first
+      weeks.
+
+      - `correct`   - gives one real reason about people reading the code:
+                      easier for others or for future-you to read, mistakes
+                      easier to spot, professional expectation, or care and
+                      pride in the work.
+      - `partial`   - only says it is a rule / costs points, with no reason
+                      behind the rule.
+      - `incorrect` - anything else, e.g. formatted code runs faster, or
+                      clean code makes the picture look better.
+
+      Feedback: state the core reason, code is read much more often than it
+      is written, so it has to be readable for people.

@@ -1,0 +1,196 @@
+---
+title: "Getting the starter code"
+---
+
+Your workshop has tools now, and it still has no workbench. This chapter builds
+one. When you're finished, a tidy folder for the whole course sits on your
+computer, the course's starter project sits inside it, and a first copy of that
+project is ready to become your next exercise. Nothing about programming
+changes here, only the place where your programs live.
+
+## AI tutor {#sec-tutor-starter-code}
+
+A general AI on the internet knows GitHub, ZIP files, and git very well, but it
+has never seen this course's starter project and it doesn't know the folder
+rules of this chapter. The AI tutor of this part knows both. Downloading and
+unpacking is research territory again, so look up the steps for your computer
+with a search engine or a general AI, and bring your questions to the tutor
+when you're unsure whether what you found fits this course.
+
+{{< tutor tutor-vscode >}}
+
+## Why you start from a starter project {#sec-why-starter-code}
+
+In the web playground, every exercise was prepared for you. You opened a link,
+and the editor already held a working program with the right structure around
+it. On your own computer nothing is prepared, and a project needs several files
+before you can write a single line of code. It needs a web page for the browser
+to open, configuration for TypeScript and the developer tools, and a list of the
+packages the project needs.
+
+Nobody types those files by hand for every new idea. Professional developers
+keep a prepared project, a **template**, and start every new project as a copy
+of it. This course has a template too, and it's called the **starter code**.
+
+The starter code is published on GitHub, a website where programmers store
+their code projects and share them with other people. You have seen links to it
+in this book before. One project on GitHub is called a **repository**, and the
+course's template lives in the
+[vite-p5-starter repository](https://github.com/Teaching-HTL-Leonding/vite-p5-starter).
+
+## What's in the box {#sec-starter-contents}
+
+The starter code is a small folder, and here is the whole project seen from
+above:
+
+```
+vite-p5-starter/
+├── index.html
+├── package.json
+├── tsconfig.json
+├── vite.config.ts
+├── biome.json
+├── readme.md
+├── public/
+└── src/
+    └── index.ts
+```
+
+- `src/index.ts` is the file where your program will live. Everything you write
+  in the coming chapters goes in there.
+- `index.html` is the small web page that the browser opens to show your canvas.
+- `package.json` is the project's ID card. It holds the project's name and the
+  list of packages the project needs, and p5.js is on that list.
+- `tsconfig.json`, `vite.config.ts`, and `biome.json` are configuration files
+  for TypeScript and the developer tools. Leave them alone for now.
+- `readme.md` is the starter's own description, written by your teachers.
+  Reading it is never wrong.
+- `public/` is the folder for pictures and other files your program may load
+  later. In a fresh starter it's still empty.
+
+One thing is missing on purpose. The packages themselves are not in the box,
+and nowhere in the starter is there a folder with the p5.js code in it.
+`package.json` only writes down *which* packages are needed. Fetching them is a
+job for npm, and that happens in the next chapter.
+
+## Two ways to get the starter code {#sec-getting-starter-code}
+
+There are two ways to get the starter code onto your computer, and both are
+fine for this course.
+
+The straightforward way is a download. On the repository page, the green
+**Code** button offers **Download ZIP**. You get one compressed file that holds
+the whole project, and you unpack it into a folder of your choice. No extra
+software needed.
+
+The professional way is **git**, a version-control program that developers use
+to keep track of every change in a project. git has to be installed on your
+computer first, and two of its commands matter here. The command `git clone`
+copies a repository from GitHub to your computer, and `git pull` refreshes that
+copy later, so improvements your teachers make to the starter arrive on your
+machine with one command. Installing git and typing those commands is research
+territory, exactly like the installations in the previous chapter, so look it
+up with a search engine or a general AI.
+
+Choose honestly. The ZIP download is completely fine for the whole course. git
+is the tool you'll meet in every programming job, it's worth the research if
+you're curious, and it pays off every time the starter gets an update. If you
+took the ZIP, an update simply means downloading the ZIP again.
+
+## One folder per exercise {#sec-folder-rule-starter-code}
+
+From now on you decide where your files live, so this course gives you one rule
+for it. Follow it from the first exercise on, and your work stays findable and
+runnable for the rest of the year.
+
+::: {.callout-important}
+## The folder rule of this course
+
+1. **One folder for the course.** Create a single folder, for example
+   `creative-coding`, in a place you'll find again next week. Not in the
+   Downloads folder, and not loose on your desktop among everything else.
+2. **The starter stays clean.** Put the starter code (the unpacked ZIP or the
+   cloned repository) inside it as `creative-coding/vite-p5-starter`. This is
+   your master copy, and you never write program code in it. Before a new
+   exercise, refresh it with `git pull`, or by downloading the ZIP again.
+3. **One copy per exercise.** For every exercise, copy the whole starter folder
+   and rename the copy after the exercise, for example
+   `creative-coding/shapes`. All your coding happens in the copy.
+:::
+
+::: {.callout-warning}
+## Choose the place for your course folder carefully
+
+Two kinds of places cause trouble that has nothing to do with your code:
+
+- **Folders that sync to a cloud.** Don't put your course folder into
+  OneDrive, SharePoint, Dropbox, or any other folder that syncs your files to
+  the internet. In the next chapter, npm will create tens of thousands of
+  small files in every exercise folder, and the sync tool tries to upload
+  every single one of them. That makes your computer slow, and it can block
+  files at the exact moment npm needs them, which produces error messages
+  that look like your fault but aren't. Watch out: on many school computers
+  the Desktop and the Documents folder sync to OneDrive automatically, so
+  those two are exactly the places to avoid.
+- **Long or unusual paths (Windows).** Windows limits how long the path to a
+  file may be, and npm builds folders inside folders many levels deep. If
+  your course folder already sits deep in the folder tree, that limit is
+  suddenly within reach. Special characters in folder names, like spaces or
+  the letters ä, ö, and ü, confuse some developer tools too.
+
+The safe choice is short and plain. On Windows, a folder like `C:\Code` is
+ideal, and your course folder becomes `C:\Code\creative-coding`. On macOS or
+Linux, a simple folder directly in your home directory does the same job.
+:::
+
+After your first few exercises, your course folder looks like this:
+
+```
+creative-coding/
+├── vite-p5-starter/   the clean master copy, never edited
+├── shapes/            exercise 1, a copy of the starter
+├── smiley/            exercise 2, a copy of the starter
+└── dice/              exercise 3, a copy of the starter
+```
+
+Three good things follow from the folder rule. Every finished exercise stays as
+you left it and still runs weeks later. A broken experiment can only damage the
+one folder you're experimenting in. And when your teachers improve the starter
+code, your next copy picks up the improvement automatically, while your older
+exercises keep working with the version they were built from.
+
+## Your exercise: build your folder structure {#sec-exercise-starter-code}
+
+There's no playground exercise this time. You build the folder structure on the
+computer you'll use for the rest of the course:
+
+1. **Create your course folder.** Make a folder named `creative-coding` in a
+   short, simple place, for example inside `C:\Code` on Windows. Keep it out
+   of OneDrive, SharePoint, and Dropbox.
+2. **Get the starter code into it.** Download the ZIP from the
+   [vite-p5-starter repository](https://github.com/Teaching-HTL-Leonding/vite-p5-starter)
+   and unpack it there, or research git and use `git clone`. Both are fine, and
+   the ZIP is the quicker way.
+3. **Check the starter folder.** Open it and make sure you see `package.json`
+   and a folder `src` with `index.ts` in it. Unpacking a ZIP sometimes creates
+   a folder inside a folder with almost the same name, and if the files are one
+   level too deep, move the inner folder up so the files sit directly in your
+   starter folder. The unpacked folder may also carry a longer name like
+   `vite-p5-starter-main`, and renaming it to `vite-p5-starter` keeps your
+   course folder tidy.
+4. **Make your first exercise copy.** Copy the whole starter folder and name
+   the copy `shapes`. The next chapter starts exactly there.
+5. **Verify.** Your `shapes` folder contains `package.json` and `src/index.ts`.
+   When both are there, you're done.
+
+If a step goes wrong, ask a search engine or a general AI, and say which
+operating system you use and what you already tried.
+
+## Check your understanding {#sec-quiz-starter-code}
+
+When your folder structure stands, take the short quiz below. You answer six
+questions about this chapter in your own words, and an AI reads your answers
+and tells you what you already understand and what you should read again. The
+quiz is anonymous, and answering in German is fine too.
+
+{{< quiz starter-code title="Getting the starter code" >}}

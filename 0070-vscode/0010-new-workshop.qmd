@@ -1,0 +1,138 @@
+---
+title: "A new workshop: Visual Studio Code, Node.js, and npm"
+---
+
+Back in the first part, this book made you a promise (@sec-playground).
+Professional developers write their code in tools like Visual Studio Code, and
+this course started you in the web playground because those tools need a lot
+of setup first. Six parts later, you've earned that setup. When you're done with this
+chapter, Visual Studio Code and Node.js will be installed on your own computer
+and checked, and you'll know what each of these tools is for.
+
+## AI tutor {#sec-tutor-new-workshop}
+
+This part of the book has its own AI tutor, and it knows the tools you're
+about to install. The exercise below sends you to a search engine or to a
+general AI on the internet on purpose, because finding out how to install
+software is exactly the skill it trains. The tutor of this part helps you make
+sense of what you find out there and explains the pieces that belong to this
+course.
+
+{{< tutor tutor-vscode >}}
+
+## What Visual Studio Code is {#sec-vscode-new-workshop}
+
+Visual Studio Code, or VS Code for short, is a code editor made by Microsoft.
+It's free, and among professional developers it's the most widely used editor
+there is. VS Code runs on your own computer and edits the files that lie on
+your own hard drive, which is the big difference from the web playground.
+
+A lot of it will feel familiar right away. VS Code puts red squiggly lines
+under mistakes while you type, and when you hover your mouse over a command,
+a small tooltip shows its documentation. The playground editor behaves the
+same way, so you already know how to work with those two helpers.
+
+One thing is new. VS Code knows nothing about exercises, tasks, or the
+description of what you're supposed to build. It's a general tool that edits
+any code for any purpose, from a school program to the software of a bank.
+Your programs are yours now, and nobody prepared them for you.
+
+## Why you need Node.js {#sec-nodejs-new-workshop}
+
+A browser can run programs written in JavaScript, the close relative of
+TypeScript, but only inside a web page. Developer tools are programs too, and
+many of them are written in JavaScript as well. Two of them are waiting for
+you in the next chapters, a small web server that shows your program in the
+browser and the TypeScript compiler that translates your TypeScript code into
+JavaScript. Both have to run directly on your computer, outside any web page,
+and a browser can't do that.
+
+Node.js is the program that makes it possible. It runs JavaScript directly on
+your computer, with no browser around it. You won't write Node.js programs
+yourself in this course. You install Node.js because the tools of the next
+chapters need it to run at all.
+
+## What npm is {#sec-npm-new-workshop}
+
+npm is short for Node Package Manager. You don't install it separately,
+because it comes along automatically when you install Node.js.
+
+The Welcome chapter called p5.js a **library**, a collection of ready-made
+code that you use in your own programs. In the web playground, p5.js was
+simply there, prepared for you. On your own computer nothing is prepared, so
+something has to fetch that ready-made code from the internet. npm is that
+something.
+
+npm downloads **packages** from a huge public catalog on the internet. A
+package is a library or a tool, bundled up so that a computer can download and
+install it. The p5.js library arrives on your computer as a package, and so do
+the developer tools of the next chapters. How you actually run npm comes
+later, once you have a project that needs it.
+
+## The terminal {#sec-terminal-new-workshop}
+
+A terminal is a window in which you control your computer by typing commands
+instead of clicking. You type one line, press Enter, and the computer answers
+in text. That sounds old-fashioned, but professional developers use a terminal
+every day, and npm is a tool you give commands to exactly this way.
+
+VS Code has a terminal built into it, called the **integrated terminal**, so
+you don't need a separate program for it. In this chapter you need the
+terminal for one single job, the two commands that tell you whether your
+installation worked.
+
+## Research like a professional {#sec-research-new-workshop}
+
+This book gives you no click-by-click installation instructions, and that's a
+deliberate decision. Every operating system installs software differently,
+and download pages, buttons, and version numbers change every few months, so
+printed steps get old fast. Setting up software is also a skill you'll need
+for your whole working life. What the book gives you instead is the goal, the
+concepts behind the tools, the official sources, and a way to check that
+everything worked.
+
+Find the steps for your computer with a search engine, with a general AI like
+ChatGPT or Google Gemini, or with both. When you ask an AI, say which
+operating system you use (for example Windows 11, macOS, or Ubuntu Linux) and
+what you already tried. Without that, the answer is a guess about a computer
+the AI has never seen.
+
+Download the installers only from the official websites, never from a random
+download portal. You need the
+[official Visual Studio Code download page](https://code.visualstudio.com)
+and the [official Node.js download page](https://nodejs.org). The Node.js page
+offers more than one version. Choose the **LTS** version, short for long-term
+support, which is the one the page marks as recommended.
+
+## Your exercise: set up your workshop {#sec-exercise-new-workshop}
+
+Your task is the research itself, and there's no playground exercise for it.
+Work through these three steps on the computer you'll use for the rest of the
+course:
+
+1. **Install VS Code.** Find out how Visual Studio Code is installed on your
+   operating system, and install it.
+2. **Install Node.js.** Do the same for Node.js, and take the LTS version.
+3. **Check that both work.** Open VS Code, find out how to open its integrated
+   terminal, and type `node --version` there. Press Enter, then type
+   `npm --version` and press Enter again. Each command answers with a version
+   number. A `v` followed by numbers means the installation worked.
+
+If a command answers with an error message instead, don't worry. The most
+common trap is a terminal that was already open before Node.js was installed,
+because such a terminal never noticed the new program. Close VS Code
+completely, open it again, and try both commands once more.
+
+If the error is still there, treat it as research material. Copy the exact
+message into the search engine or into the AI, together with your operating
+system, and read what comes back. Reading error messages is what the rest of
+this part builds on.
+
+## Check your understanding {#sec-quiz-new-workshop}
+
+When your workshop is set up, take the short quiz below. You answer six
+questions about this chapter in your own words, and an AI reads your answers
+and tells you what you already understand and what you should read again. The
+quiz is anonymous, and answering in German is fine too.
+
+{{< quiz new-workshop title="A new workshop: Visual Studio Code, Node.js, and npm" >}}
