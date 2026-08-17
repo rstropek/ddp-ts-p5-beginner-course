@@ -92,8 +92,11 @@ still never call it directly; you call `redraw()` and p5.js calls
 ## Reacting to the keyboard {#sec-snowman-keys}
 
 Melting Snowman is played on the keyboard, so the program needs a
-third callback next to `setup` and `draw`. p5.js calls `keyPressed`
-once for every key the player presses:
+third callback next to `setup` and `draw`. You have met `keyPressed`
+and the variable `key` once before, in the research exercise at the
+end of the Variables part (@sec-keyboard-exercise). There you looked
+them up in the p5.js reference yourself; from here on they are a
+regular part of the course:
 
 ```typescript
 function keyPressed(): void {
@@ -104,15 +107,17 @@ function keyPressed(): void {
 }
 ```
 
-Inside `keyPressed`, the global variable `key` holds the character
-that was pressed, as a string. Pressing the A key makes `key` the
-string `"a"`, and holding shift makes it `"A"`. This first part of
-Melting Snowman ignores which key it was and only counts the
-presses, so every key melts the snowman a bit further. The letters
-start to matter when the guessing logic arrives.
+p5.js calls `keyPressed` once for every key the player presses, and
+inside it the global variable `key` holds the character that was
+pressed, as a string. Pressing the A key makes `key` the string
+`"a"`, and holding shift makes it `"A"`. This first part of Melting
+Snowman ignores which key it was and only counts the presses, so
+every key melts the snowman a bit further. The letters start to
+matter when the guessing logic arrives.
 
-The pairing of `keyPressed` and `redraw()` is the whole event loop
-of this program. A key changes a variable, `redraw()` repaints the
+What is new is the partner that `keyPressed` works with here. The
+pairing of `keyPressed` and `redraw()` is the whole event loop of
+this program. A key changes a variable, `redraw()` repaints the
 canvas once with the new value, and then the program waits again.
 
 ## A doc comment as a specification {#sec-snowman-spec}
