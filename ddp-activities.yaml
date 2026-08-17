@@ -110,6 +110,9 @@ activities:
     drawing-tools:
       file: 0020-variables/0080-drawing-tools-quiz.yaml
       note: "Creative Coding book: Circle tool and rect tool (0020/0080) — GitHub-hosted"
+    keyboard-and-characters:
+      file: 0020-variables/0090-keyboard-and-characters-quiz.yaml
+      note: "Creative Coding book: Characters, numbers, and bytes (0020/0090) — GitHub-hosted"
 
     color-areas:
       file: 0030-conditions/0010-color-areas-quiz.yaml

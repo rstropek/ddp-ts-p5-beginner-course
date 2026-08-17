@@ -1,0 +1,288 @@
+---
+title: "Back to the reference: a keyboard program of your own"
+---
+
+Every program you have written in this course waited for the mouse. The
+keyboard was sitting there the whole time, and p5.js can hear it just as well.
+Nobody is going to teach you how, though. At the end of part 1 you learned a
+p5.js command straight from the official reference, without the book explaining
+it first, and you can do that again. This time it is not one command but a whole
+family of them.
+
+This chapter gives you two tasks. First you research the keyboard commands of
+p5.js, invent a small program of your own that combines at least two of them,
+and present it in class. Then your own program raises a second question. It
+gives you a character and a number for the very same key press, and you will
+want to know which number belongs to which character, and who decided that. The
+quiz at the end of the chapter checks what you found out.
+
+## AI tutor {#sec-tutor-keyboard}
+
+Two AIs appear in this chapter, with different jobs. The AI tutor of this part
+answers your questions about the course material, exactly as in every other
+chapter of the Variables part. Both tasks in this chapter send you to a general
+AI on the internet instead, because working through material that nobody
+prepared for you is what this chapter trains.
+
+{{< tutor tutor-variables >}}
+
+## The keyboard section of the p5.js reference {#sec-keyboard-reference}
+
+The [p5.js reference](https://p5js.org/reference/) sorts its commands into
+groups, and the keyboard commands live in the group *Events*, in the section
+*Keyboard*. That section is small enough to read completely, and it holds three
+kinds of thing:
+
+- **Three event functions**, `keyPressed`, `keyReleased`, and `keyTyped`. They
+  work like `mouseClicked`, which you already know: you write the function, and
+  p5.js calls it when the matching thing happens.
+- **Four system variables**, `key`, `keyCode`, `code`, and `keyIsPressed`. They
+  work like `mouseX` and `mouseY`. You do not set them, you read them.
+- **One helper function**, `keyIsDown`.
+
+That list is all you get from this book. What each one does, when p5.js calls
+it, and what exactly it hands you is your research.
+
+Two warnings before you start. The examples on the reference pages are written
+in JavaScript on a canvas of 100 by 100 pixels, so read them and rebuild the
+idea in your own structure instead of copying them, exactly as the
+documentation chapter at the end of part 1 explained. And some sentences in the
+p5.js reference are left over from older versions of p5.js. If a page says one
+thing and your running program shows another, your program is right.
+
+## Two limits and one practical tip {#sec-scope}
+
+Two things you have not learned yet shape what you can build, and knowing them
+before you start saves you an hour of frustration.
+
+**You have no repeating drawing loop yet.** Your programs run `setup` once and
+then wait for events, exactly like the click protocol does. That fits
+`keyPressed`, `keyReleased`, and `keyTyped` perfectly, because p5.js calls them
+by itself when something happens. Two items in the keyboard section want a loop
+that runs again and again instead, so read what they do and then leave them for
+a later part of the course.
+
+**You have no conditions yet.** A condition is a statement that lets a program
+react *differently* depending on what happened, and the next part of this course
+is about nothing else. So the simplest plan is a program that reacts the *same
+way* to every key and lets the values do the varying. The character, the number,
+and the code of a key press are different for every key, and you can draw them
+or calculate with them without deciding anything.
+
+**And one practical tip.** Click on the canvas once before you type. The drawing
+area only receives key presses when it has the keyboard focus, and a keyboard
+program that looks completely dead is usually just not listening yet.
+
+## Your exercise: learn it, build it, present it {#sec-keyboard-exercise}
+
+Your task has three parts:
+
+1. **Learn the keyboard section from the reference.** Read the pages, run the
+   examples that sit on them, and experiment the way you learned with `arc`:
+   change one thing at a time, run, and watch what happens. Keep going until you
+   can predict the result before you press run.
+2. **Invent your own program and build it.** The rules are short. At least two
+   of the keyboard commands have to work together, something clearly visible has
+   to happen on the canvas, and the program is yours to think up. Sketch it on
+   paper first, as always, then write it in the playground: TypeScript,
+   `createCanvas` first, variables with explicit types, formatted before you hand
+   it in.
+3. **Present it in class.** About five minutes. Show the program running, say
+   which keyboard commands you combined and what each one does, and tell the
+   class one thing that surprised you while you were experimenting. Expect live
+   requests with everybody watching, like "make it react to the space bar too"
+   or "show the number instead of the letter".
+
+Everyone prepares a presentation, and your teacher decides who gives it. Your
+teacher will also tell you how to hand in your program.
+
+## Ideas, if you need one {#sec-ideas}
+
+Inventing the idea is part of the exercise, and a small program that nobody else
+thought of is worth more than a perfect copy of somebody else's. If you are
+staring at an empty canvas, here are some starting points.
+
+**Press and release.** Hold down any key and the canvas turns yellow. Let go and
+it is white again. Two keyboard commands, four lines, and it works:
+
+```typescript
+function keyPressed() {
+  background("yellow");
+}
+
+function keyReleased() {
+  background("white");
+}
+```
+
+That is an honest, complete answer to this exercise, and it shows how small the
+program is allowed to be. Start there and then make it yours. Draw a shape
+instead of a plain color, or pick colors that go well together, or let a third
+keyboard command add something on top.
+
+**A key inspector.** There is a website called keycode.info that does exactly
+one thing. You press a key, and it shows you every piece of information the
+browser has about that key press. Build your own version. p5.js hands you a
+character and two different codes for every key, so draw them on the canvas in
+big letters and watch what changes when you press the A key, the space bar, an
+arrow key, or shift.
+
+**A typewriter.** `keyTyped` gives you the character that was typed. Add it to a
+growing string, exactly the way the click protocol grew with every click, and
+draw the whole text into a wrapping text box. A second keyboard command can show
+something extra, for example how many keys have been pressed so far.
+
+**A color for every key.** The number of a key is just a number, so you can
+calculate with it. The color worm turned a growing number into a hue with `%`,
+and the same trick turns a key number into a color. Every key on your keyboard
+gets one of its own, and no condition is needed anywhere.
+
+Whatever you pick, at least two keyboard commands have to work together. That is
+where the interesting behavior comes from.
+
+## AI for your program: allowed, understanding required {#sec-keyboard-ai}
+
+You may use an AI for every part of this program, and the rules are the ones from
+the research exercise at the end of part 1. Use a general AI on the internet, for
+example ChatGPT, Google Gemini, or Claude, and not the tutor of this part, because
+meeting answers that nobody tailored to this course is part of the research. Paste
+your own working code into the prompt, so the AI answers in the language, the
+library, and the structure your playground expects. And say that you are a
+beginner whose code shows everything they have learned.
+
+One addition for this chapter. An AI will hand you conditions and a `draw` loop
+without being asked, because that is how it would write a keyboard program for
+somebody who knows them. Write in your prompt that you have not learned
+conditions or the `draw` loop yet. And the old test still decides what stays: a
+line you cannot explain in front of the class gets replaced, or you ask
+follow-up questions until you can explain it.
+
+## The character and the number {#sec-character-and-number}
+
+Once your keyboard program runs, you will notice something odd. For one single
+key press, p5.js gives you two different answers. One of them is a character, a
+string like `"a"`. The other one is a number.
+
+Press the A key, then B, then C, and watch that number. It goes up by one each
+time, in the order of the alphabet. That ordering was not invented for p5.js,
+and not for the web either. It is much older, and it comes from an agreement
+about which number stands for which character that people made in the 1960s. The
+agreement is called ASCII, and researching it is the second task of this chapter.
+
+Before you start, keep one thing apart in your head. The number that p5.js gives
+you for a key press identifies a **key on your keyboard**, not a character. That
+is why the arrow keys have numbers too, although they write nothing at all. For
+the letters and the digits the two happen to agree, and that is exactly the
+puzzle worth pulling on.
+
+## Bits, bytes, and the notation you will meet {#sec-bytes-recap}
+
+Your research will use three pieces of vocabulary from the first minute, so here
+they are before you start.
+
+A **bit** is the smallest thing a computer can store, a single switch that is
+either 0 or 1. Eight bits together are one **byte**, and one byte can hold 256
+different values, from 0 to 255. You have already used that fact. In the color
+chapter, each of the red, green, and blue values sits in one byte, which is why
+they run from 0 to 255 and stop there.
+
+You will also meet a notation that looks like `U+00E4` or `0xC3`. Those are
+numbers written in a number system called hexadecimal, and part 3 of this course
+teaches you to read and calculate with it. For this chapter you do not need any
+of that. Treat `U+00E4` as the name of a character and move on. If your AI starts
+converting numbers into binary and asks you to follow along bit by bit, stop it
+and say that you only want the idea, not the arithmetic.
+
+The third piece of vocabulary is a distinction that almost everybody gets wrong
+at first. The **number** of a character and the **picture** of a character are
+two different things. The number is what gets stored and sent. The picture comes
+from a font, and a font can be missing a character even when the number arrived
+perfectly. This book is a good example. The printed PDF you may be holding
+cannot show a single emoji, because the font used for printing has no picture
+for them, and nothing at all is wrong with the encoding.
+
+## Research: ASCII, Unicode, and UTF-8 {#sec-encoding-research}
+
+Research these three questions with a general AI on the internet, in this order,
+because each one builds on the one before it:
+
+1. **What is ASCII?** What is it, why was it necessary, and where does it stop?
+   You should be able to name characters from everyday German writing that ASCII
+   simply does not contain.
+2. **What is Unicode?** What is it, and why is it needed when ASCII already
+   exists? Pay attention to what exactly Unicode assigns to a character, and to
+   what Unicode deliberately says nothing about.
+3. **What is UTF-8?** What is it, and how does it relate to ASCII and to
+   Unicode? Collect four examples: a character that UTF-8 stores in one byte,
+   one that takes two bytes, one that takes three bytes, and one that takes four
+   bytes.
+
+ASCII, Unicode, and UTF-8 are three different kinds of thing. Understanding what
+kind of thing each one is matters more than any single number you can memorize.
+
+## Measure the bytes yourself {#sec-measure}
+
+An AI will give you byte counts for your examples, and it will sound confident.
+Check them. The playground can count the bytes of any character for you:
+
+```typescript
+function setup() {
+  createCanvas(400, 500);
+  background("white");
+  fill("black");
+
+  const character: string = "ä";
+  const byteCount: number = new TextEncoder().encode(character).length;
+  text(`${character} needs ${byteCount} bytes`, 20, 40);
+}
+```
+
+Two things in that program go beyond what this course has taught you, and that
+is fine here. `new TextEncoder()` builds a small helper that turns a string into
+its UTF-8 bytes, and `.length` asks how many bytes came out. Take the two lines
+as a measuring instrument. You put a character in, you get a byte count out.
+
+Now measure every character from your research. Put it between the quotation
+marks, run the program, and read the number. Try a plain `A`, try `ä` and `ß`,
+try the euro sign, try a letter from a language you speak or are learning, and
+type an emoji straight from your phone or with the emoji keyboard of your
+computer. When the AI said one number and your program shows another, your
+program is right.
+
+One warning, so that a surprise does not confuse you. Some emoji are not single
+characters at all but several characters glued together, for example flags or
+the ones with a skin tone. Those measure much more than four bytes. If that
+happens to you, either pick a simpler emoji or research what is going on.
+
+## AI for your research: how to ask {#sec-ai-research}
+
+A few habits make the difference between an hour of scrolling and an hour of
+learning:
+
+- **Say who you are and what you need it for.** Something like "I am 16, this is
+  my first year of programming, and I have to answer this in a quiz in my own
+  words" changes the whole answer. Without that sentence, an AI explains
+  encodings the way it would explain them to a software developer.
+- **Ask one question at a time**, and finish one of the three research questions
+  before you open the next.
+- **Keep asking until you can say it without the screen.** "Can you explain that
+  again with a simpler example" is a completely normal follow-up, and you can
+  send it as often as you need to. Then close the laptop and say the answer out
+  loud to yourself. If you cannot, you are not done.
+- **Let the AI test you.** Ask it to give you five questions about UTF-8 and to
+  tell you what you got wrong. That costs two minutes and it is the closest
+  thing you have to the quiz.
+- **Stop the AI when it goes too far.** UTF-16, surrogate pairs, byte order
+  marks, and normalization are real topics, and none of them are yours today.
+  Write "that is too advanced for me, please keep it simple" and go back to your
+  question.
+
+## Check your understanding {#sec-quiz-keyboard}
+
+This quiz is different from the others in the book. Its six questions are not
+about anything this chapter taught you. They are about what you researched
+yourself, so do the research first and then answer in your own words. An AI reads
+your answers and tells you what you already understand and what you should look
+up again. The quiz is anonymous, and answering in German is fine too.
+
+{{< quiz keyboard-and-characters title="Characters, numbers, and bytes" >}}

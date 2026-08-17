@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for the keyboard/encoding research quiz.
+# The risky boundaries here are different from a normal chapter quiz: the
+# students researched the material themselves, so their wording varies far
+# more than usual, and the grader must not reward fluent encoding jargon that
+# hides a decisive error (Unicode == UTF-8, byte count depends on the font).
+id: keyboard-and-characters-quiz-eval
+target: ./0090-keyboard-and-characters-quiz.yaml
+
+questions:
+  - question: key-versus-key-number
+    answers:
+      - expect: correct
+        answer: "the number says which key you pressed, not which letter, thats why arrows have one too"
+      - expect: correct
+        answer: "die zahl steht für die taste selbst, nicht für ein zeichen"
+      # Notices the symptom, never names what the number identifies instead.
+      - expect: partial
+        answer: "because the arrow keys dont type anything on the screen"
+      # The classic conflation the chapter warns about.
+      - expect: incorrect
+        answer: "the number is the ascii code of the character, and the arrow keys have hidden characters that you cannot see"
+      # Deliberately padded: lots of true, fluent, irrelevant detail and never
+      # a word about what the number identifies. Length must not buy credit.
+      - expect: partial
+        answer: |
+          When I tested my program I pressed all four arrow keys one after the other and I could
+          clearly see that the canvas reacted every single time, so p5.js definitely notices them.
+          They are used for scrolling in the browser and for moving the cursor in a text editor,
+          and in games people use them to steer, sometimes together with WASD. So even though
+          nothing appears on the screen when you press them, they are still very important keys
+          and the program can react to them just like it reacts to the letters.
+
+  - question: ascii-what-and-why
+    answers:
+      - expect: correct
+        answer: "a table where every letter and digit got a fixed number, so that all computers use the same numbers and text stays readable when you send it somewhere"
+      # Short and plain, still both halves.
+      - expect: correct
+        answer: "one agreed list of character numbers so text works on every machine"
+      # Definition without the reason.
+      - expect: partial
+        answer: "ascii gives every character a number, for example the letters and the digits"
+      # Reason without the definition.
+      - expect: partial
+        answer: "it was needed so that different computers could exchange text without getting garbage"
+      # Fluent, confident, and wrong about what kind of thing ASCII is.
+      - expect: incorrect
+        answer: "ASCII is the standard font that computers use for displaying text, which is why old terminals all looked identical"
+      # THE classic ASCII error: both halves right, size confidently wrong.
+      # The rubric names this branch explicitly; it must not pass as correct.
+      - expect: partial
+        answer: "ascii is a table with 256 characters that gives every letter a fixed number, so that all computers store text the same way and can exchange it"
+
+  - question: ascii-limits
+    answers:
+      - expect: correct
+        answer: "ö and ß are not in it. ascii only has 128 characters and they are all used up already, it was made for english"
+      - expect: correct
+        answer: "das € zeichen und das ü fehlen, weil ascii nur 128 zeichen hat und voll ist"
+      # Right characters, no reason at all.
+      - expect: partial
+        answer: "ö and €"
+      # Right reason, but the named characters are plain ASCII.
+      - expect: partial
+        answer: "the a and the 3 are missing because the ascii table is much too small for all languages"
+      - expect: incorrect
+        answer: "ASCII does contain them, but you need to switch your keyboard layout to German first, otherwise they stay hidden"
+
+  - question: unicode-is-not-storage
+    answers:
+      - expect: correct
+        answer: "no. unicode only gives the character a number, how that number becomes bytes in the file is decided by utf-8"
+      - expect: correct
+        answer: "nein, unicode ist nur die liste mit den nummern, das speichern macht dann eine kodierung wie utf-8"
+      # Correct verdict, but never gets to bytes or an encoding.
+      - expect: partial
+        answer: "no, storing it is a different thing than numbering it"
+      # Barely five words, but both required halves are there. Guards against
+      # the grader under-rewarding a terse answer.
+      - expect: correct
+        answer: "nein, das macht dann utf-8"
+      # Long, fluent, and confidently collapses the two ideas.
+      - expect: incorrect
+        answer: "Yes, it does. Unicode is the modern replacement for ASCII and it defines both the numbers and the storage, so once a character has its Unicode number the file layout follows automatically and every character ends up as two bytes."
+
+  - question: utf8-and-ascii
+    answers:
+      - expect: correct
+        answer: "utf-8 keeps them in one byte with the same numbers as ascii, so old ascii files are already correct utf-8 and nothing had to be converted"
+      - expect: correct
+        answer: "ein ascii zeichen bleibt ein byte und behält seine nummer, deshalb funktionieren alte dateien und programme einfach weiter"
+      # The fact without the payoff.
+      - expect: partial
+        answer: "ascii characters only need one byte in utf-8"
+      # The payoff without the fact.
+      - expect: partial
+        answer: "it was smart because everything that existed before kept working"
+      - expect: incorrect
+        answer: "UTF-8 renumbered the ASCII characters so that they fit into the new bigger table, which is why very old files have to be converted before you can open them"
+      # Padded with true but unasked history; the consequence is still missing,
+      # so length must not push this over the correct boundary.
+      - expect: partial
+        answer: |
+          UTF-8 was designed in 1992 by Ken Thompson and Rob Pike, who also worked on Unix, and
+          today it is used by well over 98 percent of all websites in the world, which is really
+          impressive when you think about how many other encodings existed before. In UTF-8 the
+          characters that ASCII already had are stored in a single byte, and all the other
+          characters of Unicode need more than one byte, sometimes two, three or even four.
+
+  - question: utf8-byte-counts
+    answers:
+      - expect: correct
+        answer: "ä takes two bytes and an emoji takes four. the bigger the unicode number of the character the more bytes utf-8 needs"
+      - expect: correct
+        answer: "ein griechischer buchstabe braucht 2 bytes, ein emoji 4. je seltener bzw je höher die nummer, desto mehr bytes"
+      # Both examples land, the deciding rule is missing.
+      - expect: partial
+        answer: "ö is two bytes and a smiley emoji is four bytes"
+      # Rule right, only one usable example.
+      - expect: partial
+        answer: "it depends on how high the unicode number is, emojis are four bytes"
+      # The misconception the rubric names explicitly.
+      - expect: incorrect
+        answer: "it depends on the font and on the language settings of your operating system, so the same character can be one byte on a German computer and four on an English one"
+      # Plain ASCII offered as the two-byte case: the boundary this rubric guards.
+      - expect: incorrect
+        answer: "the letter a needs two bytes and the letter z needs four, longer letters in the alphabet just take more space"
+      # Both groups known, both assigned the wrong way round, and the deciding
+      # rule inverted too. Recognising the vocabulary must not earn credit.
+      - expect: incorrect
+        answer: "an emoji is stored in two bytes and the letter ä needs four bytes, because the more common a character is the more bytes utf-8 reserves for it"

@@ -1,0 +1,227 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Back to the reference: a keyboard program of your
+# own" (0020-variables/0090-keyboard-and-characters.qmd in ts-ddp-first).
+#
+# SPECIAL CASE: this quiz does NOT test material the chapter teaches. The
+# chapter sends students to a general AI to research ASCII, Unicode, and UTF-8
+# themselves; the quiz is the check on that research. Only the first question
+# (key vs. key number) comes from chapter prose. The rubrics therefore carry
+# the factual anchors themselves, so the small judge model never has to supply
+# world knowledge about byte counts.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: keyboard-and-characters-quiz
+name: "Quiz: Characters, numbers, and bytes"
+
+title: "Check your understanding: characters, numbers, and bytes"
+description: |
+  Six short questions about the research task of the chapter *Back to the
+  reference: a keyboard program of your own*: ASCII, Unicode, and UTF-8.
+  Research those three first, then answer in your own words. There are no
+  answer options to pick from, and this quiz is anonymous: it's here for you,
+  so you can see what you already understand and what you should look up
+  again. One or two sentences are enough for most answers, and answering in
+  German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here.
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question"). The policy sentences live in the shared fragment; only the
+  # chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="const byteCount: number = new TextEncoder().encode(\"ä\").length;"
+      scope="after the keyboard research chapter at the end of the Variables part"
+      knows=(array
+        "drawing commands"
+        "the mouse events `mouseMoved` and `mouseClicked`"
+        "the p5.js keyboard events, researched from the reference"
+        "the system variables"
+        "constants and variables with explicit data types"
+        "template strings and string concatenation"
+        "that a byte holds 256 values, from the color chapter"
+        "ASCII, Unicode, and UTF-8, researched with an AI")
+      not_yet=(array
+        "conditions"
+        "loops"
+        "arrays"
+        "binary and hexadecimal arithmetic, which comes in the next part")}}
+questions:
+  - id: key-versus-key-number
+    title: "Two answers, one key press"
+    question: |
+      For one single key press, p5.js gives you a character (a string like
+      `"a"`) and also a number.
+
+      The arrow keys write no character at all, and yet they still have a
+      number. What does that tell you about what the number stands for?
+    evaluation: |
+      Expected: the number identifies a key on the keyboard, not a character.
+      Every key can be identified, including keys that produce no text, which
+      is why the arrow keys have numbers too.
+
+      - `correct`   - says the number names the key / the button on the
+                      keyboard rather than the written character ("which key
+                      was pressed" counts).
+      - `partial`   - notices only that arrow keys produce no text, without
+                      saying what the number identifies instead.
+      - `incorrect` - anything else, for example that the number is always
+                      the character's ASCII code, or that arrow keys have a
+                      secret invisible character.
+
+      Feedback: a character is text you could write on paper; the number is
+      the name of a physical key.
+
+  - id: ascii-what-and-why
+    title: "What ASCII is"
+    question: |
+      Computers store numbers, but people write letters.
+
+      What is ASCII, and which problem did it solve when it was agreed on?
+    evaluation: |
+      Expected: ASCII is a table (an agreement, a standard) that gives each
+      character a fixed number, for example the English letters, the digits,
+      the space, and basic punctuation. It solved the problem that different
+      machines used different numbers for the same character, so text written
+      on one computer was unreadable on another. One shared table made text
+      exchangeable.
+
+      - `correct`   - a table/list/standard mapping characters to numbers AND
+                      the reason that everyone needed to agree so text can be
+                      exchanged or stored the same way everywhere.
+      - `partial`   - describes the table correctly but gives no reason, or
+                      gives the reason without saying that ASCII assigns a
+                      number to each character, or gets both halves but
+                      states a wrong size for ASCII (256 characters, 8 bits).
+      - `incorrect` - anything else, for example that ASCII is a font, a
+                      programming language, or a way of compressing text.
+
+      Feedback: name the two halves separately, what ASCII *is* (a fixed
+      number per character) and what it was *for* (one agreement everybody
+      follows).
+
+  - id: ascii-limits
+    title: "Where ASCII stops"
+    question: |
+      ASCII is still in use today, but nobody could write this sentence with
+      ASCII alone: "Ich möchte eine große Tasse Kaffee für 3 €."
+
+      Name two characters in that sentence that ASCII does not have, and say
+      why ASCII cannot simply add them.
+    evaluation: |
+      Expected: the missing characters are `ö`, `ß`, `ü`, and `€` (any two of
+      those). ASCII cannot add them because it is a fixed, full table with
+      only 128 characters, built for English; the numbers are all taken and
+      the whole world's characters would never fit anyway.
+
+      - `correct`   - names two of `ö`, `ß`, `ü`, `€` AND says ASCII is full /
+                      limited to a small fixed set (128, or "only 7 bits",
+                      or "only English characters" all count).
+      - `partial`   - names two correct characters but gives no reason, or
+                      gives the "the table is too small" reason while naming
+                      only one character or naming characters that ASCII
+                      does have (a, e, 3, the space, the full stop).
+      - `incorrect` - anything else, for example that the umlauts are
+                      missing because German was invented later, or that
+                      ASCII has them but browsers hide them.
+
+      Feedback: the useful number here is 128, the total size of the ASCII
+      table.
+
+  - id: unicode-is-not-storage
+    title: "A number is not a file"
+    question: |
+      Unicode gives every character in the world its own number.
+
+      Does that already decide how a character is stored in a file? Explain
+      your answer.
+    evaluation: |
+      Expected: no. Unicode only says which number belongs to which
+      character; it says nothing about how that number is turned into bytes.
+      That second job belongs to an encoding such as UTF-8, and the same
+      Unicode number can be stored as different bytes by different encodings.
+
+      - `correct`   - answers no AND names the missing step: turning the
+                      number into bytes is the job of an encoding / of UTF-8
+                      ("Unicode is the list, UTF-8 is the storage" counts).
+      - `partial`   - answers no with a vague reason and never mentions bytes
+                      or an encoding, or explains the split correctly while
+                      answering yes.
+      - `incorrect` - anything else, for example that Unicode and UTF-8 are
+                      two words for the same thing, or that every Unicode
+                      character is stored in exactly two bytes.
+
+      Feedback: Unicode hands out the numbers, an encoding writes them down.
+
+  - id: utf8-and-ascii
+    title: "Why UTF-8 won"
+    question: |
+      UTF-8 was not the only way to store Unicode characters, but it is the
+      one the whole web uses today.
+
+      What does UTF-8 do with the characters that ASCII already had, and why
+      was that such a good decision?
+    evaluation: |
+      Expected: UTF-8 stores every ASCII character in a single byte, with
+      exactly the same number ASCII used. So every file that was already
+      written in ASCII is a valid UTF-8 file without any change, old programs
+      keep working, and plain English text takes no extra space.
+
+      - `correct`   - one byte, unchanged / same numbers as ASCII AND a
+                      consequence: old ASCII files and programs keep working,
+                      or no extra space for English text.
+      - `partial`   - says ASCII characters take one byte without any
+                      consequence, or names the compatibility benefit without
+                      the one-byte-unchanged fact.
+      - `incorrect` - anything else, for example that UTF-8 gave the ASCII
+                      characters new numbers, or that UTF-8 stores every
+                      character in exactly the same number of bytes.
+
+      Feedback: "an ASCII file already is a UTF-8 file" is the whole idea in
+      one sentence.
+
+  - id: utf8-byte-counts
+    title: "Two bytes, four bytes"
+    question: |
+      In UTF-8, different characters take a different number of bytes.
+
+      Name one character that UTF-8 stores in two bytes and one that it
+      stores in four bytes, and say what decides how many bytes a character
+      needs.
+    evaluation: |
+      Expected: two bytes covers accented and umlaut letters and non-Latin
+      alphabets (`ä`, `ö`, `ü`, `ß`, `é`, Greek, Cyrillic, Arabic, Hebrew);
+      four bytes covers emoji and rare historic scripts. Three bytes, not
+      asked for here, covers the euro sign and Chinese, Japanese, and Korean
+      characters. What decides the count is the character's Unicode number:
+      the larger that number, the more bytes UTF-8 needs.
+
+      - `correct`   - a plausible two-byte example (any umlaut or accented
+                      letter, `ß`, or a Greek/Cyrillic/Arabic/Hebrew letter)
+                      AND a four-byte example (any emoji) AND the rule that
+                      the size of the character's Unicode number decides
+                      ("rarer characters need more", "the higher the number
+                      the more bytes" both count).
+      - `partial`   - both examples right but no rule, or the rule right with
+                      only one usable example, or an emoji named as the
+                      two-byte case with everything else right.
+      - `incorrect` - anything else, for example an ordinary English letter
+                      given as the two-byte example, or the claim that the
+                      byte count depends on the font, the language setting,
+                      or the operating system.
+
+      Feedback: grade the two-byte and four-byte examples by the groups
+      above, not by the exact character the student picked.
