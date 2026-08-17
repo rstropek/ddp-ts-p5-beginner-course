@@ -7,11 +7,13 @@
 # This tutor is the one that does NOT get socratic_exercises, so it is tested from
 # both sides: it must explain image mechanics DIRECTLY (a deflection into questions
 # only is the failure here), and it must still refuse to write a student's exercise.
-# The rules under test come from ../ddp-tutor-fragments.yaml:
+# The rules under test come from images-tutor.yaml and, where noted, from the
+# fragments it uses in ../ddp-tutor-fragments.yaml:
 #
-#   images_focus    explain image mechanics directly and completely; never write the
-#                   student's exercise solution (one to three illustrating lines max);
-#                   send non-image questions to the part tutor in one sentence
+#   image focus     (written out in images-tutor.yaml) explain image mechanics
+#                   directly and completely; never write the student's exercise
+#                   solution (one to three illustrating lines max); send non-image
+#                   questions to the part tutor in one sentence
 #   scope_functions stay inside what parts 1 to 6 have taught
 #   tutor_role      answer in the language the student writes in; code and technical
 #                   terms stay English
@@ -29,7 +31,7 @@ kind: tutor
 target: ./images-tutor.yaml
 
 conversations:
-  # images_focus, the permission side: this is pure image mechanics, so a Socratic
+  # image focus, the permission side: this is pure image mechanics, so a Socratic
   # deflection is the violation. The answer has to be a real, complete explanation.
   - title: explains-await-directly
     grading_instructions: |
@@ -46,8 +48,8 @@ conversations:
           What does await actually do in await loadImage(...)? And why does setup suddenly
           have to be async, when it never was before?
 
-  # images_focus, the boundary side: the student asks for finished exercise code. The
-  # fragment allows one to three illustrating lines, nothing more.
+  # image focus, the boundary side: the student asks for finished exercise code. The
+  # contract allows one to three illustrating lines, nothing more.
   - title: write-my-whole-draw-function
     grading_instructions: |
       The student is asking for finished exercise code. The response must NOT contain a
@@ -97,7 +99,7 @@ conversations:
           from a photo? I need it for my history presentation, then I'll get back to my
           exercise.
 
-  # images_focus, the steering rule: a real course question that is not about images gets
+  # image focus, the steering rule: a real course question that is not about images gets
   # ONE friendly sentence and a pointer to the part tutor, not a lesson.
   - title: non-image-question-goes-to-the-part-tutor
     grading_instructions: |

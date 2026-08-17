@@ -113,11 +113,14 @@ There are two kinds of tutor, and keeping them apart is the point:
 | **Part tutor**, one per book part | `<part>/<part-name>-tutor.yaml` | Hints only. It never writes a finished program, it knows the cumulative scope of its part, and it refuses anything beyond it |
 | **Exercise AI**, only where an exercise calls for one | `0010-introduction/elephant-tutor.yaml`, `0030-conditions/dice-rewrite-tutor.yaml` | Generates complete code from the student's prompt, because writing that prompt *is* the exercise. Linked from inside the exercise section, not at the top of the chapter |
 
-All tutor behavior lives in `ddp-tutor-fragments.yaml` in the repo root, a shared
-prompt-fragment library the activities compose from. Each book part's knowledge scope is
-one static fragment in it, shared by that part's tutor **and** that part's exercise AI, so
-a concept moving between chapters is a one-line edit in one place. The header comment of
-that file is the contract: which fragments each kind of activity gets, and why.
+Rules that **several** activities share live in `ddp-tutor-fragments.yaml` in the repo
+root, a prompt-fragment library the activities compose from: the tutor and exercise-AI
+roles, the course habits, the topic and safety limits, and the knowledge scopes of the
+parts that have more than one activity, so a concept moving between chapters is a one-line
+edit in one place. Everything a single tutor alone needs — its specialty contract, its
+part's scope where no exercise AI shares it — is written out in that tutor's own YAML file,
+so one file tells a teacher what that tutor does. The header comment of the library is the
+contract: which fragments each kind of activity gets, and when text belongs there at all.
 
 One exercise deliberately does *not* use a tutor from this book: the reading-documentation
 chapter sends students to a general AI on the internet, so they meet material nobody
@@ -154,10 +157,10 @@ in the novedu repo.
 
 The repo root holds two shared prompt-fragment libraries, one per activity kind:
 `ddp-quiz-fragments.yaml`, from which every chapter quiz pulls the same student-context and
-grading preamble, and `ddp-tutor-fragments.yaml`, which holds every tutor's role, scope,
-and safety rules. Editing one file changes every activity of that kind at once, which cuts
-both ways: a broken fragment breaks them all, so validate the library and the activities
-that use it after every edit.
+grading preamble, and `ddp-tutor-fragments.yaml`, which holds the role, scope, and safety
+rules that two or more tutors share. Editing one file changes every activity that uses the
+fragment at once, which cuts both ways: a broken fragment breaks them all, so validate the
+library and the activities that use it after every edit.
 
 ## Repository layout
 
@@ -170,7 +173,7 @@ that use it after every edit.
 | `ddp-activities.yaml` | The activity registry: every quiz and tutor under a stable key. Hand-written |
 | `ddp-activities.lock.yaml` | Generated key → activity code map, read by the `quiz` and `tutor` shortcodes. Do not edit |
 | `ddp-quiz-fragments.yaml` | Shared novedu prompt fragments used by every chapter quiz |
-| `ddp-tutor-fragments.yaml` | Shared novedu prompt fragments used by every tutor and exercise AI, including the per-part knowledge scopes |
+| `ddp-tutor-fragments.yaml` | Novedu prompt fragments shared by two or more tutors or exercise AIs; single-use prompt text lives in the activity's own file |
 | `.agents/skills/` | Authoring skills for AI agents; see below |
 | `.github/workflows/` | CI: renders the book and uploads the PDF and the zipped website as artifacts |
 | `_output/`, `.quarto/` | Build output. Git-ignored |
@@ -210,9 +213,10 @@ Read the relevant one before writing; each is a contract, not a suggestion.
   catches it.
 
 Tutor prompts have no skill of their own. Their contract is the header comment of
-`ddp-tutor-fragments.yaml`, and the scope fragments there must stay in step with what the
+`ddp-tutor-fragments.yaml`, and every knowledge scope must stay in step with what the
 chapters actually teach, so a chapter that introduces a new command means editing that part's
-scope fragment too.
+scope too — in the library when the part has more than one activity, otherwise in the tutor's
+own file.
 
 Which repository does a change belong to? An **exercise** (task, starter code, solution,
 result image) is `ts-web-playground`. A **platform** change to how quizzes are graded or
