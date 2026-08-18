@@ -43,7 +43,7 @@ discussion:
         "callbacks: a function you write and somebody else calls for you"
         "`setInterval(name, ms)` with the bare function name, and `clearInterval(id)`"
         "global variables declared outside every function"
-        "`console.log` writing a message into the browser console")
+        "`console.log` writing a message into the playground's console")
       not_yet=(array
         "objects and classes"
         "images and programs split over several files"

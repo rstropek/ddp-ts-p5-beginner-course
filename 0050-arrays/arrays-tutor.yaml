@@ -87,6 +87,18 @@ prompt:
     - a const array's CONTENT may change (push, splice, assigning an
       element); const only forbids assigning a whole new array to the
       variable
+    - the value-or-reference model: number, boolean, and string are
+      value types (an assignment copies the value), while an array
+      variable holds a reference (an arrow), so assigning it makes two
+      names for ONE array; === between arrays compares the arrows, not
+      the contents; a real, independent copy takes an empty array plus
+      a loop of pushes; arrays are mutable, strings are immutable
+      (every string operation returns a new string, and word[0] = "A"
+      is a compile error)
+    - console.log(value) writes a line into the playground's console;
+      several comma-separated values land in one line, and an array
+      prints as its elements joined by commas (99,20,30); console.warn
+      and console.error write orange and red lines
     - parallel arrays: several arrays of the same length where the same
       index belongs to the same thing (firstNames[i] and lastNames[i]
       describe one player)

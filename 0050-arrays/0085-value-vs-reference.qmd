@@ -7,21 +7,45 @@ title: "Value or reference: what an assignment copies"
 This chapter paints no new picture on the canvas. Instead you play
 detective and look inside the boxes of your variables, with four
 small experiments that you type yourself. One of them ends with a
-result that surprises almost everybody the first time. And two
-loose ends from earlier chapters, the `const` array that happily
-grows and the `substring` that changes nothing, stop being magic
-along the way.
+result that surprises almost everybody the first time. For the
+detective work you pick up a new tool, `console.log`, a command
+that lets a program write plain lines of text into an output area
+of its own. And two loose ends from earlier chapters, the `const`
+array that happily grows and the `substring` that changes nothing,
+stop being magic along the way.
 
 ## AI tutor {#sec-tutor-value-reference}
 
 Predictions are the whole point of this chapter, and a prediction
-that misses is worth a question. When the canvas shows something
+that misses is worth a question. When the console shows something
 your paper did not, describe both sides to the tutor: what you
 expected, what appeared, and which lines you typed. "My two
 variables changed together and I don't know why" is exactly the
 kind of question this tutor is built for.
 
 {{< tutor tutor-arrays >}}
+
+## A window into the program: the console {#sec-console-log}
+
+Detectives need a way to look at values, and drawing every suspect
+with `text` on the canvas would be clumsy. The playground has a
+better tool for this. Below the drawing area sits the **console**,
+an output area for plain lines of text, and the command
+`console.log(...)` writes one line into it. Hand it any value you
+have, a number, a boolean, a string, and the value appears as a
+line in the console. You can even hand it several values,
+separated by commas, and they land in one line together:
+
+```typescript
+console.log("three times seven is", 3 * 7);
+```
+
+Two practical details. The console keeps the lines of earlier runs,
+and its Clear button wipes it empty again. And `console.log` has
+two louder siblings, `console.warn` for warnings in orange and
+`console.error` for errors in red; you will meet them properly in
+later programs, and for the detective work of this chapter, the
+plain log is all you need.
 
 ## Assignment copies the value {#sec-assignment-copies}
 
@@ -30,25 +54,23 @@ Open a fresh sketch in the playground and type this program:
 
 ```typescript
 function setup() {
-    createCanvas(400, 200);
-    background("black");
-    fill("white");
-
     let a: number = 10;
     let b: number = a;
     b = 99;
 
-    text(a, 50, 50);
-    text(b, 50, 80);
+    console.log(a);
+    console.log(b);
 }
 ```
 
-Before you press Run, write two numbers on your sheet of paper,
-the one you expect on the upper line of the canvas and the one you
-expect on the lower line. Every experiment in this chapter starts
+There is no `createCanvas` here and nothing is drawn; the program
+talks only through the console, and the canvas staying empty is
+fine. Before you press Run, write two numbers on your sheet of
+paper, the one you expect on the first console line and the one
+you expect on the second. Every experiment in this chapter starts
 that way.
 
-The canvas shows 10 and 99, and that is what everybody predicts.
+The console shows 10 and 99, and that is what everybody predicts.
 The interesting line is `let b: number = a;`. It reads the value
 in a's box, which is 10, and puts a copy of that value into b's
 box. From then on the two boxes have nothing to do with each
@@ -61,7 +83,7 @@ variable holds the value itself, and an assignment copies that
 value. Afterwards there are two independent boxes, always.
 
 **Vary it.** Replace the two numbers with `let a: boolean = true;`
-and `let b: boolean = a;`, then set `b = false;` and draw both.
+and `let b: boolean = a;`, then set `b = false;` and log both.
 Booleans behave exactly like numbers here.
 
 Hold on to that "obviously 10" for a minute. The next experiment
@@ -69,22 +91,22 @@ looks almost the same and does something else.
 
 ## The array experiment {#sec-shared-reference}
 
-Now the same shape with an array. Keep the `setup` scaffold with
-`createCanvas`, `background`, and `fill`, and replace only the
-middle part:
+Now the same shape with an array. Keep the `setup` frame and
+replace its body:
 
 ```typescript
 const first: number[] = [10, 20, 30];
 const second: number[] = first;
 second[0] = 99;
 
-text(first[0], 50, 50);
-text(second[0], 50, 80);
+console.log(first[0]);
+console.log(second[0]);
 ```
 
 Write the prediction down before you run it, and be honest with
 yourself. What does `first[0]` show, and what does `second[0]`
-show? Most people write 10 and 99. The canvas shows **99 and 99**.
+show? Most people write 10 and 99. The console shows **99 and
+99**.
 
 Here is what really happens. The box of an array variable is far
 too small for a whole row of values, and it never holds one. It
@@ -102,12 +124,16 @@ boxes. It follows the arrow and changes element 0 of the one array
 that exists. `first[0]` reads that same element through the other
 arrow, so it reads 99 as well.
 
+By the way, `console.log` also takes a whole array.
+`console.log(first);` prints `99,20,30`, every element in one
+line, which makes it a handy magnifying glass for the experiments
+below.
+
 **Vary it, twice.**
 
-1. Add `second.push(40);` after the assignment and draw
-   `text(first.length, 50, 110);`. The length is 4, because `push`
-   follows the arrow too. Growth is shared, not just element
-   changes.
+1. Add `second.push(40);` after the assignment and log
+   `first.length`. The length is 4, because `push` follows the
+   arrow too. Growth is shared, not just element changes.
 2. Change `first[1]` instead of `second[0]`, and read the value
    back through `second[1]`. It changed the same way. Neither
    variable is the original and neither is the copy; the two
@@ -160,9 +186,8 @@ and each of those elements is a number, a value type, so each
 `push` copies a value across. Two rows, two arrows, no connection.
 
 **Try it.** Put the loop into the array experiment, add
-`copy[0] = 0;` below it, and draw `first[0]` and `copy[0]` under
-each other. This time the two numbers differ, and now you can say
-exactly why.
+`copy[0] = 0;` below it, and log `first[0]` and `copy[0]`. This
+time the two numbers differ, and now you can say exactly why.
 
 ::: {.callout-note}
 ## Comparing arrays compares the arrows
@@ -182,19 +207,21 @@ boxes, the indexes start at 0, `word.length` counts them, and
 `word[i]` reads one of them. So does a string variable hold an
 arrow too?
 
-Replace the middle part of the scaffold once more, and write your
-prediction down before you run it:
+Replace the body of `setup` once more, and write your prediction
+down before you run it:
 
 ```typescript
 let word: string = "apple";
 let copy: string = word;
 word = word + "s";
 
-text(word, 50, 50);
-text(copy, 50, 80);
+console.log(word);
+console.log(copy);
 ```
 
-The canvas shows "apples" and "apple". The string behaved like the
+The console shows "apples" and "apple", without the quotes,
+because the console prints a string's characters and nothing
+else. The string behaved like the
 two numbers at the start of this chapter (@sec-assignment-copies),
 not like the shared array (@sec-shared-reference).
 
@@ -242,7 +269,7 @@ difference whether an arrow is there.
 
 ## Check your understanding {#sec-quiz-value-reference}
 
-When your predictions and the canvas agree, and you can say out
+When your predictions and the console agree, and you can say out
 loud what `second = first` copies, take the short quiz below. You
 answer six questions about this chapter in your own words, and an
 AI reads your answers and tells you what you already understand

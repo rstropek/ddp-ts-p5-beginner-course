@@ -40,6 +40,7 @@ discussion:
         "strings as rows of characters with zero-based indexes, `.length`, `word[i]`, and `substring`"
         "array literals, the type annotations `string[]` and `number[]`, reading and writing elements by index"
         "`push`, `splice`, and empty arrays that grow while the program runs"
+        "`console.log` (also `console.warn` and `console.error`) writing lines into the playground's console"
         "that number and boolean variables hold the value itself, so assignment copies the value"
         "that an array variable holds a reference (an arrow to the array), so assignment makes two names for one array"
         "that `const` forbids reassigning the variable, not changing the array it points to"

@@ -410,6 +410,12 @@ fragments:
         variable, arrays with length/push/splice (loop backwards when
         removing) and random(myArray), parallel arrays, millis() for
         scheduling, and a bare return; that ends an event function early
+      - the value-or-reference model from the Arrays part: number, boolean,
+        and string are value types (assignment copies the value; strings are
+        immutable), an array variable holds a reference, so assignment and
+        argument passing share ONE array (call by value vs call by
+        reference); a real copy takes an empty array plus a loop of pushes;
+        console.log/warn/error write lines into the playground's console
       - writing their own functions: a name, a parameter list, a body in
         braces, and a call that runs the body. Course rule for every function
         the student writes: EVERY parameter has a type, and the function has

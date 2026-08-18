@@ -106,12 +106,13 @@ have several intervals running at the same time and the browser
 has to know which one you mean. After that call, the circles stop
 appearing.
 
-The second line is a new tool with a small job. `console.log`
-writes a message into the browser's developer console, which you
-open with the F12 key. Nothing of it appears on the canvas. It is
-a way to check that a piece of code really ran, and you will reach
-for it whenever a program does nothing and you want to know how
-far it got.
+The second line is an old friend with a new job. `console.log`
+writes its message into the playground's console, as in the
+value-or-reference experiments (@sec-console-log), and nothing of
+it appears on the canvas. Here it works as a debugging tool: the
+message proves that this piece of code really ran, and you will
+reach for that trick whenever a program does nothing and you want
+to know how far it got.
 
 ## The function that gets called {#sec-interval-callback}
 

@@ -59,8 +59,9 @@ read the `substring` page, you can read them all:
   example and its output below. You can change the code and run it
   again, directly on the page, which makes it perfect for quick
   experiments. The examples print their results with
-  `console.log(...)`, a command that writes a line of text into the
-  output area under the code.
+  `console.log`, the same command you used for the experiments in
+  the value-or-reference chapter (@sec-console-log); here its
+  lines appear in the output area under the code.
 - **Syntax** shows each allowed way to call the method on its own
   line. For `substring` you see both `substring(indexStart)` and
   `substring(indexStart, indexEnd)`, which is MDN's way of saying
@@ -89,11 +90,13 @@ already know, you are reading it correctly.
 ## MDN examples are not playground programs {#sec-mdn-adapting}
 
 The warning from part 1 applies here too, in a new costume. MDN
-examples are written in JavaScript and print their results with
-`console.log`, but your playground programs are TypeScript and draw
-on a canvas. So don't paste examples; read them, understand the
-idea, and rebuild it in the structure you know. Store the method's
-result in a typed variable, then show it with `text(...)`. And when
+examples are written in JavaScript, without type annotations and
+without the rules this course follows. Don't paste examples; read
+them, understand the idea, and rebuild it in the structure you
+know. Store the method's
+result in a typed variable, then look at it with `console.log`,
+like in the value-or-reference experiments, or draw it with
+`text(...)`. And when
 a page mentions something you have never seen (several string
 methods accept so-called *regular expressions*, a pattern language
 for text that comes much later), don't push through; pick a

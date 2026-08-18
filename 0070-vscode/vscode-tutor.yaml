@@ -84,7 +84,10 @@ prompt:
       millis() for scheduling, a bare return; that ends a function early,
       their own functions with typed parameters and an explicit return
       type, refactoring and decomposition, doc comments /** ... */,
-      callbacks with setInterval and clearInterval, a program spread over
+      callbacks with setInterval and clearInterval,
+      console.log/warn/error and the value-or-reference model (value
+      types copy on assignment, arrays share one reference, strings are
+      immutable), a program spread over
       several files that share one global scope, async setup with await
       loadImage and await loadFont, and the p5.Image type with image()
     - Visual Studio Code, VS Code for short, as a free code editor from
