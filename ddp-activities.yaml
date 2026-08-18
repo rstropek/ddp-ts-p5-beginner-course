@@ -201,6 +201,9 @@ activities:
     silos:
       file: 0050-arrays/0080-silos-quiz.yaml
       note: "Creative Coding book: Silos (0050-arrays/0080) — GitHub-hosted"
+    value-vs-reference:
+      file: 0050-arrays/0085-value-vs-reference-quiz.yaml
+      note: "Creative Coding book: Value or reference (0050-arrays/0085) — GitHub-hosted"
 
     face-function:
       file: 0060-functions/0010-face-function-quiz.yaml

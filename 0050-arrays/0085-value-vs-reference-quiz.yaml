@@ -1,0 +1,231 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Value or reference: what an assignment copies"
+# (0050-arrays/0085-value-vs-reference.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: assignment
+# copies the value for numbers and booleans (value types), an array variable
+# holds only a reference so assignment makes two names for one array
+# (reference type), why const allows push but not reassignment, building a
+# real copy with a loop, and strings as immutable values that behave like
+# numbers in assignments.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: value-vs-reference-quiz
+name: "Quiz: Value or reference"
+
+title: "Check your understanding: value or reference"
+description: |
+  Six short questions about the chapter *Value or reference: what an
+  assignment copies*. Answer in your own words. There are no answer
+  options to pick from, and this quiz is anonymous: it's here for you,
+  so you can see what you already understand and what you should read
+  again. One or two sentences are enough for most answers, and
+  answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="const second: number[] = first;"
+      scope="after the value-or-reference chapter of the Arrays part"
+      knows=(array
+        "drawing commands, styling, conditions, loops, and the `draw` animation loop"
+        "strings as rows of characters with zero-based indexes, `.length`, `word[i]`, and `substring`"
+        "array literals, the type annotations `string[]` and `number[]`, reading and writing elements by index"
+        "`push`, `splice`, and empty arrays that grow while the program runs"
+        "that number and boolean variables hold the value itself, so assignment copies the value"
+        "that an array variable holds a reference (an arrow to the array), so assignment makes two names for one array"
+        "that `const` forbids reassigning the variable, not changing the array it points to"
+        "building an independent copy of an array with an empty array, a for loop, and push"
+        "the words mutable and immutable, and that strings are immutable: every string operation returns a new string")
+      not_yet=(array
+        "writing their own functions with parameters or return values (that starts in the Functions part)"
+        "the words call by value and call by reference"
+        "array methods like `slice`, `concat`, or `map`"
+        "objects and classes")}}
+
+questions:
+  - id: number-copy
+    title: "Two number boxes"
+    question: |
+      A program runs these three lines:
+
+      ```typescript
+      let a: number = 10;
+      let b: number = a;
+      b = 99;
+      ```
+
+      What value does `a` hold after the last line, and why?
+    evaluation: |
+      Expected: `a` holds 10. The assignment `b = a` copied the value
+      into b's own box, so afterwards the two variables are
+      independent and changing `b` cannot touch `a`.
+
+      - `correct`   - says 10 AND gives the reason: the value was
+                      copied / a and b are separate boxes ("b bekommt
+                      nur eine kopie" counts).
+      - `partial`   - says 10 without a reason, or explains the copy
+                      idea without clearly answering with the value.
+      - `incorrect` - anything else, especially 99, or the claim that
+                      a and b stay connected.
+
+      Feedback: if the student wrote 99, point at the moment of the
+      assignment: what exactly travels from a to b in `b = a`?
+
+  - id: array-share
+    title: "Two names, one array"
+    question: |
+      A program runs these three lines:
+
+      ```typescript
+      const first: number[] = [10, 20, 30];
+      const second: number[] = first;
+      second[0] = 99;
+      ```
+
+      What value does `first[0]` hold after the last line, and why?
+    evaluation: |
+      Expected: `first[0]` holds 99. The variable holds only a
+      reference (an arrow to the array), so `second = first` copied
+      the arrow, not the row of values. Both names point at the same
+      array, and a change through one is visible through the other.
+
+      - `correct`   - says 99 AND gives the reason: both variables
+                      point to / share the same array ("beide zeigen
+                      auf dasselbe array" counts; "arrow", "address",
+                      or "reference" all count).
+      - `partial`   - says 99 without a reason, or explains the shared
+                      array without committing to the value.
+      - `incorrect` - anything else, especially 10 with the claim
+                      that second got its own copy.
+
+      Feedback: if the student wrote 10, ask what an array variable's
+      box really holds: the row of values, or an arrow that says
+      where the row lives?
+
+  - id: const-push
+    title: "const allows push?"
+    question: |
+      `numbers` is declared as `const numbers: number[] = [1, 2];`.
+      The line `numbers.push(3);` compiles fine, but the line
+      `numbers = [1, 2, 3];` gets a red squiggle. Why does `const`
+      allow the first line and forbid the second?
+    evaluation: |
+      Expected: const forbids reassigning the variable, and the
+      variable holds the reference (the arrow). `numbers = [1, 2, 3]`
+      would put a new arrow into the box, so it is forbidden. `push`
+      never touches the arrow; it changes the array the arrow points
+      to, and that is allowed.
+
+      - `correct`   - says const only locks the variable/box/arrow,
+                      not the array's contents ("const verbietet nur
+                      die neuzuweisung" counts; "the box is nailed
+                      down, the content is not" counts).
+      - `partial`   - repeats the rule (push ok, reassignment not)
+                      without the reason, or says "const means the
+                      reference can't change" without connecting it
+                      to why push is fine.
+      - `incorrect` - anything else, e.g. push is an exception in
+                      TypeScript, or const arrays can't be changed at
+                      all.
+
+      Feedback: separate the two things that could change: the arrow
+      in the box, and the row the arrow points to. Which one does
+      const protect?
+
+  - id: real-copy
+    title: "A copy you can change"
+    question: |
+      `const values: number[] = [4, 8, 15];` holds important data.
+      You want a copy you can change freely without touching
+      `values`. Writing `const copy: number[] = values;` does not
+      work, as you know. Describe, in words or in code, how you build
+      a real copy with the tools from this part.
+    evaluation: |
+      Expected: create a new empty array, then loop over `values` and
+      push every element into the new array, for example
+      `const copy: number[] = []; for (let i: number = 0; i < values.length; i++) { copy.push(values[i]); }`.
+      A new array literal listing the elements one by one also counts.
+
+      - `correct`   - describes or writes: new/empty array plus a
+                      loop that pushes each element (small code slips
+                      like a missing type annotation are fine).
+      - `partial`   - the right idea in half: "make a new array and
+                      put the values in" without saying how, or a
+                      loop that reads values but pushes into the old
+                      array.
+      - `incorrect` - anything else, e.g. `copy = values` with a
+                      different keyword, or claiming const is the
+                      problem and let would make it a copy.
+
+      Feedback: the copy needs its own row of boxes. Which command
+      from the bubbles chapter fills an empty array one element at a
+      time?
+
+  - id: string-copy
+    title: "The string experiment"
+    question: |
+      A program runs these three lines:
+
+      ```typescript
+      let word: string = "apple";
+      let copy: string = word;
+      word = word + "s";
+      ```
+
+      What does `copy` hold after the last line, and why?
+    evaluation: |
+      Expected: `copy` holds "apple". `word + "s"` does not change
+      the existing string; it builds a NEW string "apples", and the
+      assignment puts that new string into word's box. The old string
+      is untouched, so copy still holds it. (Strings are immutable /
+      behave like values in assignments.)
+
+      - `correct`   - says "apple" AND gives the reason: strings
+                      never change / + builds a new string / strings
+                      behave like values ("strings sind unveränderbar"
+                      counts).
+      - `partial`   - says "apple" without a reason, or explains
+                      immutability without committing to the value.
+      - `incorrect` - anything else, especially "apples" with the
+                      claim that word and copy share one string that
+                      changed.
+
+      Feedback: if the student wrote "apples", ask what `word + "s"`
+      does to the string "apple" itself: change it, or build
+      something new next to it?
+
+  - id: substring-claim
+    title: "substring did nothing?"
+    question: |
+      A classmate writes `word.substring(1);` on its own line to cut
+      the first character off `word`, but the drawn text still shows
+      the whole word. What does `substring` really do, and how does
+      your classmate get the shortened word into `word`?
+    evaluation: |
+      Expected: substring never changes the string it is called on;
+      it returns a new, shorter string, and here that result is
+      thrown away. The fix is to assign the result back:
+      `word = word.substring(1);`.
+
+      - `correct`   - both: substring returns a new string / does not
+                      change the original, AND the fix assigns the
+                      result to word (code or words).
+      - `partial`   - one half only: explains that substring returns
+                      a copy without giving the fix, or writes the
+                      assignment fix without saying why the original
+                      line did nothing.
+      - `incorrect` - anything else, e.g. substring(1) is the wrong
+                      index, or the string must be declared with let
+                      first (true but not the missing piece).
+
+      Feedback: the shortened word exists for a moment as the return
+      value. Where does it go if no assignment catches it?

@@ -79,6 +79,7 @@ book:
         - 0050-arrays/0060-soccer-field.qmd
         - 0050-arrays/0070-bubbles.qmd
         - 0050-arrays/0080-silos.qmd
+        - 0050-arrays/0085-value-vs-reference.qmd
         - 0050-arrays/0090-reading-mdn.qmd
     - part: "Functions"
       chapters:

@@ -65,6 +65,34 @@ same thing, so they have no parameters. The fourth one is
 different. `drawTemperatures` takes an array of numbers, which
 means the same function draws the bars for any city you hand it.
 
+## The array travels as a reference {#sec-call-by-reference}
+
+A parameter is a variable, and handing an argument over to a
+function fills that variable exactly the way an assignment fills
+one. So everything the arrays part said about assignments applies
+to function calls too (@sec-shared-reference).
+
+For numbers and booleans, the parameter gets a copy of the value.
+The function may do whatever it likes with that copy, and the
+caller never notices. The `happy` parameter of the `smile`
+function (@sec-happy-or-sad) was such a copy. This kind of
+handover is called **call by value**.
+
+`drawTemperatures(AVG_TEMP_JOHANNESBURG)` behaves differently. It
+hands over the arrow, not twelve copied numbers, so the parameter
+`temperatures` points at the very same array as the constant. That
+is efficient, and it has a consequence. If the function wrote
+`temperatures[0] = 0;`, Johannesburg's real data would be changed
+for the rest of the program. This kind of handover is called
+**call by reference**.
+
+`drawTemperatures` only reads its array, so all is well here. From
+now on, though, remember that a function which receives an array
+holds the caller's data and not a private copy. A function that
+really has to change things builds a real copy first, with the
+empty array and the loop from the arrays part (@sec-real-copy),
+and works on that one.
+
 ## Plan it on paper {#sec-temperature-plan}
 
 Take your sheet of paper and write the plan down before you open

@@ -1,0 +1,168 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden-answer regression cases for the value-or-reference chapter quiz
+# (0050-arrays/0085-value-vs-reference.qmd). Probes the value-copy vs
+# shared-reference boundary, the const/push reasoning, the real-copy recipe,
+# and string immutability. Teacher-only test data; never publish as an
+# activity.
+
+id: value-vs-reference-quiz-eval
+target: ./0085-value-vs-reference-quiz.yaml
+
+questions:
+  - question: number-copy
+    answers:
+      - expect: correct
+        answer: |
+          a is still 10. b only got a copy of the value, so changing b
+          does nothing to a.
+      # German correct answer, everyday wording.
+      - expect: correct
+        answer: |
+          10, weil bei b = a nur der wert kopiert wird. a und b sind
+          danach zwei getrennte boxen.
+      # Right value, no reason at all — the declared partial branch.
+      - expect: partial
+        answer: |
+          a is 10
+      # Fluent, confident, decisively wrong: the "stay connected" misconception.
+      - expect: incorrect
+        answer: |
+          a is 99. b = a links the two variables together, so when b
+          changes, a changes with it.
+
+  - question: array-share
+    answers:
+      - expect: correct
+        answer: |
+          99, because second = first doesn't copy the array. both
+          variables point to the same array, so second[0] = 99 also
+          changes what first sees.
+      # Terse but complete: value + "same array" reason in few words.
+      - expect: correct
+        answer: |
+          99, same array, two names.
+      # Explains sharing but never commits to the value — declared partial branch.
+      - expect: partial
+        answer: |
+          first and second are the same array under the hood, so changes
+          show up in both of them.
+      # The value-type intuition carried over — the misconception the chapter kills.
+      - expect: incorrect
+        answer: |
+          first[0] is 10. second got its own copy of the numbers when it
+          was assigned, so the 99 only lands in second.
+      # Verbose padding around a wrong core must not earn credit.
+      - expect: incorrect
+        answer: |
+          Arrays are very important in programming and we used them for
+          the bubbles and the silos. In this code the array [10, 20, 30]
+          is created and then second is declared. first[0] stays 10
+          because const protects the first array from being changed by
+          other variables.
+
+  - question: const-push
+    answers:
+      - expect: correct
+        answer: |
+          const only forbids putting a new array into the variable. the
+          variable just holds the arrow to the array, and push doesn't
+          touch the arrow, it changes the array itself.
+      # German, uses the book's box image.
+      - expect: correct
+        answer: |
+          const nagelt nur die box fest, also die referenz. push ändert
+          nur den inhalt vom array, nicht die referenz, darum ist es
+          erlaubt. numbers = [1, 2, 3] wäre eine neue referenz.
+      # Restates the rule without the reference reasoning — declared partial branch.
+      - expect: partial
+        answer: |
+          with const you can push but you can't assign the variable
+          again, that's just how const works for arrays.
+      # Confident technical error: push as a language exception.
+      - expect: incorrect
+        answer: |
+          push is a special method that is allowed to ignore const.
+          TypeScript makes an exception for the array methods so that
+          programs can still add data.
+
+  - question: real-copy
+    answers:
+      - expect: correct
+        answer: |
+          const copy: number[] = [];
+          for (let i: number = 0; i < values.length; i++) {
+              copy.push(values[i]);
+          }
+      # Words instead of code, everyday phrasing, still the full recipe.
+      - expect: correct
+        answer: |
+          make a new empty array and then go through values with a for
+          loop and push every element into the new one.
+      # Right idea, missing the how — declared partial branch.
+      - expect: partial
+        answer: |
+          you have to make a new array and put the values in there, then
+          it is independent.
+      # Loop reads the values but pushes into the original — the declared broken-loop branch.
+      - expect: partial
+        answer: |
+          const copy: number[] = [];
+          for (let i: number = 0; i < values.length; i++) {
+              values.push(values[i]);
+          }
+      # The let/const misconception named in the rubric.
+      - expect: incorrect
+        answer: |
+          use let instead of const. let copy: number[] = values makes a
+          changeable copy, const was what stopped you from changing it.
+
+  - question: string-copy
+    answers:
+      - expect: correct
+        answer: |
+          copy is still "apple". word + "s" builds a brand new string
+          and word gets that new one. the old string never changes, so
+          copy keeps it.
+      # German correct answer with the immutability word.
+      - expect: correct
+        answer: |
+          "apple", strings sind unveränderbar. word + "s" erzeugt einen
+          neuen string, copy behält den alten.
+      # Value without reason — declared partial branch.
+      - expect: partial
+        answer: |
+          copy shows apple
+      # Array intuition wrongly applied to strings — the decisive misconception.
+      - expect: incorrect
+        answer: |
+          copy is "apples". like with arrays, copy and word point to the
+          same string, so adding the s changes it for both variables.
+
+  - question: substring-claim
+    answers:
+      - expect: correct
+        answer: |
+          substring doesn't change word, it returns a new shorter string
+          and here nobody stores it. they have to write
+          word = word.substring(1);
+      # German, both halves present.
+      - expect: correct
+        answer: |
+          substring verändert den string nie, es gibt einen neuen string
+          zurück. man muss das ergebnis zuweisen: word =
+          word.substring(1);
+      # Only the explanation half — declared partial branch.
+      - expect: partial
+        answer: |
+          substring only gives back a copy of the piece, the original
+          string always stays like it is.
+      # Only the fix half — the other declared partial branch.
+      - expect: partial
+        answer: |
+          word = word.substring(1);
+      # Confident wrong diagnosis: blames the index.
+      - expect: incorrect
+        answer: |
+          substring(1) starts at the wrong place, to cut off the first
+          character you need substring(0) because strings start counting
+          at 0.
