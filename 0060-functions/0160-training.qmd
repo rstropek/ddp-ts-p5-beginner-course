@@ -69,6 +69,36 @@ return value must be, and what should happen in the awkward cases,
 for example when the input string is empty. Two of the checks feed
 in an empty string on purpose.
 
+## Good to know: those comments are JSDoc {#sec-training-jsdoc}
+
+The comments above the five functions are not ordinary comments.
+A comment that starts with `/**` is a **doc comment**, written in
+a format called **JSDoc**, and editors read it. You saw one in the
+Return Values chapter (@sec-doc-comments), and the ones in this
+exercise follow the same three-part pattern.
+
+```typescript
+/**
+ * Find the index of a number in an array
+ * @param array - An array of numbers (e.g. [1, 2, 30, 4, 5])
+ * @param number - The number to find the index of (e.g. 30)
+ * @returns The index of the number, -1 if the number is not found
+ */
+```
+
+A summary line first, then one `@param` per parameter using the
+parameter's exact name, then `@returns` for the answer. A function
+that ends in `: void` gets no `@returns`, because it hands nothing
+back.
+
+Two things make JSDoc worth the typing. It holds the part of the
+truth that types cannot say, such as the format of the string or
+what comes back when nothing is found, and the editor shows it to
+you in a small box the moment you type the function's name and the
+opening parenthesis. Those boxes you have been reading all course
+for `random` and `circle` come from doc comments too. You should
+write them for every function that might not be obvious to a reader.
+
 ## What the five functions do {#sec-training-five-functions}
 
 The five functions come in a deliberate order, from a plain loop to

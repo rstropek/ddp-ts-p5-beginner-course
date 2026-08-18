@@ -29,12 +29,12 @@ also the starting point of this chapter's first exercise. Read it
 slowly; every line has a job:
 
 ```typescript
-let y = 0;
+let y: number = 0;
 while (y <= SIZE) {
     // Save the current origin (start of the current row)
     push();
 
-    let x = 0;
+    let x: number = 0;
     while (x <= SIZE) {
         circle(0, 0, CIRCLE_DIAMETER);
         translate(CIRCLE_DIAMETER, 0); // move one step right
@@ -119,7 +119,7 @@ sides the same length), and an equilateral triangle with side
 length `s` has the height `s * sqrt(3) / 2`:
 
 ```typescript
-const HEIGHT = SIDE_LENGTH * sqrt(3) / 2;
+const HEIGHT: number = SIDE_LENGTH * sqrt(3) / 2;
 ```
 
 `sqrt` is the square root, a p5.js helper like `floor` and `round`.

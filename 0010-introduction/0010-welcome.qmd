@@ -110,6 +110,45 @@ bring it to life exactly the way you pictured it (or in a surprising way
 that's even better). In this course that feeling comes quickly, because your
 programs draw, move, and react from the very first lessons.
 
+## A coding assistant from your teacher {#sec-coding-assistant}
+
+Besides the tutor, this course has a second AI, and your teacher decides when
+you get it. It's a **coding assistant**, and it differs from the tutor in one
+important way. The tutor explains and asks questions, while the coding
+assistant writes real code together with you.
+
+Access works with a **Coding Activity Code**, a short code your teacher hands
+out for a homework assignment, a workshop day at school, or a project week.
+The code costs you nothing, and it works only for the time your teacher set,
+so it stops working once that time is over.
+
+### Why not just any AI from the internet {#sec-coding-assistant-why}
+
+The coding assistant knows this course. The coding rules of this book are
+built into it, so it writes the kind of code you can read, explain, and defend
+in class, and it stays with the commands you've already learned instead of
+jumping ahead.
+
+A general AI on the internet knows nothing about your course. It writes code
+the way it would for a professional, full of things nobody has shown you yet.
+Code like that might run, but you can't explain it, and you can't repair it
+when it breaks. You're the one who hands the program in, so you're the one who
+has to understand every line of it.
+
+### Where the coding assistant works {#sec-coding-assistant-where}
+
+In the first parts of this course you write your programs in a web playground,
+an editor that runs in your browser (@sec-playground). With a Coding Activity
+Code, the coding assistant is there with you. It reads your program, explains
+it, and shows you new code in the chat. Typing that code into your program
+stays your job, and that's exactly how it ends up in your head.
+
+Later in the course you'll move to Visual Studio Code on your own computer.
+There you enter a Coding Activity Code in a free, open source coding agent
+such as [pi.dev](https://pi.dev) or [OpenCode](https://opencode.ai), and the
+assistant works directly with the files of your project. Your teacher tells
+you which agent your class uses and how to set it up.
+
 ## Check your understanding {#sec-quiz-welcome}
 
 Before you move on to the next chapter, take the short quiz below. You

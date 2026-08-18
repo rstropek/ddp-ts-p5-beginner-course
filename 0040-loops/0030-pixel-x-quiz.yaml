@@ -125,7 +125,7 @@ questions:
       `STRIPE_THICKNESS` = 50:
 
       ```typescript
-      let i = 0;
+      let i: number = 0;
       while (i * STRIPE_THICKNESS < SIZE) {
           rect(0, i * STRIPE_THICKNESS, width, STRIPE_THICKNESS);
           i++;

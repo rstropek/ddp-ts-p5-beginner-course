@@ -83,7 +83,7 @@ prompt:
       myArray.length, myArray.push(value) appends at the end,
       myArray.splice(i, 1) removes the element at index i (loop
       backwards when removing while iterating), and the standard loop
-      for (let i = 0; i < myArray.length; i++)
+      for (let i: number = 0; i < myArray.length; i++)
     - a const array's CONTENT may change (push, splice, assigning an
       element); const only forbids assigning a whole new array to the
       variable

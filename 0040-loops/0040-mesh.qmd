@@ -32,9 +32,9 @@ points to a *single* point on the right edge. The left points sit at
 and the target sits at `(width - MARGIN, right)`:
 
 ```typescript
-let left = MARGIN;
+let left: number = MARGIN;
 while (left <= SIZE - MARGIN) {
-    let right = MARGIN;
+    let right: number = MARGIN;
     line(MARGIN, left, width - MARGIN, right);
 
     left += MARGIN;
@@ -58,9 +58,9 @@ loop is a statement. So the whole inner loop moves into the outer
 body:
 
 ```typescript
-let left = MARGIN;
+let left: number = MARGIN;
 while (left <= SIZE - MARGIN) {
-    let right = MARGIN;
+    let right: number = MARGIN;
     while (right <= SIZE - MARGIN) {
         line(MARGIN, left, width - MARGIN, right);
         right += MARGIN;

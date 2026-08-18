@@ -98,7 +98,7 @@ into lines, then each line into fields:
 ```typescript
 function splitInput(): void {
     const words: string[] = crossword.split('\n');
-    for (let i = 0; i < words.length; i++) {
+    for (let i: number = 0; i < words.length; i++) {
         const parts: string[] = words[i].split(',');
         animals.push(parts[0]);
         startPos.push(parseInt(parts[1]));
@@ -130,10 +130,10 @@ the column by the cell width and the row by the cell height for the
 position on the canvas, a job `translate` can do for you:
 
 ```typescript
-for (let i = 0; i < animals.length; i++) {
+for (let i: number = 0; i < animals.length; i++) {
     push();
     translate(0, i * letterHeight);
-    for (let j = 0; j < animals[i].length; j++) {
+    for (let j: number = 0; j < animals[i].length; j++) {
         push();
         translate((4 + startPos[i] + j) * letterWidth, 0);
         // draw the cell border, and the letter if it is known
@@ -169,7 +169,7 @@ animal name and has not been guessed before:
 
 ```typescript
 function isValidGuess(key: string): boolean {
-    for (let i = 0; i < animals.length; i++) {
+    for (let i: number = 0; i < animals.length; i++) {
         if (animals[i].includes(key) && !guessedCharacters.includes(key)) {
             return true;
         }

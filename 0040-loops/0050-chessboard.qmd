@@ -117,8 +117,8 @@ systems chapter, splitting a number into digits with `%` and `floor`
 in base 8:
 
 ```typescript
-const row = floor(i / 8);
-const col = i % 8;
+const row: number = floor(i / 8);
+const col: number = i % 8;
 ```
 
 `floor(i / 8)` counts how many *complete* rows of eight fit below

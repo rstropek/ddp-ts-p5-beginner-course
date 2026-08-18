@@ -208,7 +208,7 @@ questions:
       negative value:
 
       ```typescript
-      for (let x = -SIDE_LENGTH / 2; x <= SIZE; x += SIDE_LENGTH) {
+      for (let x: number = -SIDE_LENGTH / 2; x <= SIZE; x += SIDE_LENGTH) {
       ```
 
       What does the negative start achieve for the picture?

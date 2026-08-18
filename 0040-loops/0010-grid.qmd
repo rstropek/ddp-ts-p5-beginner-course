@@ -71,7 +71,7 @@ Here is that sentence in TypeScript. `SIZE` is the canvas size (400)
 and `GRID` is the distance between lines (25), both constants:
 
 ```typescript
-let i = GRID;            // STEP 1: Initialize the loop variable
+let i: number = GRID;    // STEP 1: Initialize the loop variable
 while (i < SIZE) {       // STEP 2: Check the loop condition
     line(i, 0, i, SIZE); // STEP 3: Do whatever you want to do repeatedly
     i += GRID;           // STEP 4: Update the loop variable
@@ -108,6 +108,16 @@ One detail of the picture deserves a second look. The check comes
 very first check, the body never runs at all. A while loop can run
 zero times, and sometimes that is exactly right: on a canvas smaller
 than one grid step, the correct number of lines is none.
+
+::: {.callout-important}
+## Course rule: the loop variable gets a data type too
+`let i: number = GRID;` declares a variable like every other
+declaration, so it carries its data type. The rule from the
+Variables part (@sec-data-types) has no exception for loops, and
+that stays true for every loop shape in this book. Code you find on
+the web often leaves the type out in a loop, because TypeScript can
+work it out on its own. In this course you write it, every time.
+:::
 
 ::: {.callout-note}
 ## Why is the variable called i?
@@ -164,7 +174,7 @@ and beyond.
 What happens when step 4 is missing?
 
 ```typescript
-let i = GRID;
+let i: number = GRID;
 while (i < SIZE) {
     line(i, 0, i, SIZE);
     // the update is missing

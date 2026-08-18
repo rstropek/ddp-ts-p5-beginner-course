@@ -43,7 +43,7 @@ discussion:
   # shared fragment; only the chapter-specific arguments belong here.
   instructions: |
     {{fragment "shared.discussion_frame"
-      example="while (left <= SIZE - MARGIN) { let right = MARGIN; ... }"
+      example="while (left <= SIZE - MARGIN) { let right: number = MARGIN; ... }"
       scope="after the mesh chapter"
       knows=(array
         "drawing commands and styling"
@@ -67,9 +67,9 @@ questions:
       A program contains this nested loop:
 
       ```typescript
-      let y = 0;
+      let y: number = 0;
       while (y < 3) {
-          let x = 0;
+          let x: number = 0;
           while (x < 4) {
               circle(x * 50, y * 50, 20);
               x++;
@@ -103,8 +103,8 @@ questions:
       the first fan of lines appears:
 
       ```typescript
-      let left = MARGIN;
-      let right = MARGIN;
+      let left: number = MARGIN;
+      let right: number = MARGIN;
       while (left <= SIZE - MARGIN) {
           while (right <= SIZE - MARGIN) {
               line(MARGIN, left, width - MARGIN, right);
@@ -119,8 +119,8 @@ questions:
       Expected: `right` is initialized only once, outside the outer
       loop. After the first fan it is past 350 (the inner condition
       is false), and nothing resets it, so in every later outer round
-      the inner loop runs zero times. The fix is `let right = MARGIN;`
-      inside the outer loop's body.
+      the inner loop runs zero times. The fix is
+      `let right: number = MARGIN;` inside the outer loop's body.
 
       - `correct`   - right is never reset / keeps its big value, so
                       the inner loop doesn't run again ("the

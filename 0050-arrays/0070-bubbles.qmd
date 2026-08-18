@@ -67,7 +67,7 @@ push into *each* of them; the size comes first, drawn up to a
 constant `maxDiameter`:
 
 ```typescript
-const d = random(10, maxDiameter);
+const d: number = random(10, maxDiameter);
 circlesDiameter.push(d);
 circlesCenterX.push(random(d / 2, width - d / 2));
 circlesCenterY.push(random(d / 2, height - d / 2));
@@ -107,8 +107,11 @@ frame, `draw` checks the clock against the deadline. As long as the
 bubble is not due, nothing happens. Once it is due, the code
 creates the bubble and sets a new deadline half a second to two
 seconds into the future. The wall clock keeps
-running; the program just compares against it. You will use this
-deadline pattern for every "every so often" behavior from now on.
+running; the program just compares against it. The deadline pattern
+is a good fit whenever the pause changes from round to round and the
+work belongs to the drawing anyway, and both are true here. A later
+chapter adds a second way to say "every so often", for jobs that
+need a fixed rhythm instead.
 
 ## The arrays are the truth {#sec-arrays-are-truth}
 
@@ -124,7 +127,7 @@ function draw() {
     }
 
     noStroke();
-    for (let i = 0; i < circlesDiameter.length; i++) {
+    for (let i: number = 0; i < circlesDiameter.length; i++) {
         fill(circlesFill[i]);
         circle(circlesCenterX[i], circlesCenterY[i], circlesDiameter[i]);
     }
@@ -187,7 +190,7 @@ Every frame, a loop checks which bubbles are overdue and splices
 them out of **all five** arrays, so the columns stay aligned:
 
 ```typescript
-for (let i = circlesLifetime.length - 1; i >= 0; i--) {
+for (let i: number = circlesLifetime.length - 1; i >= 0; i--) {
     if (millis() >= circlesLifetime[i]) {
         circlesCenterX.splice(i, 1);
         circlesCenterY.splice(i, 1);

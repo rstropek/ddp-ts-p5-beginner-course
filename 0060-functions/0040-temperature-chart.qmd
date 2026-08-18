@@ -146,7 +146,7 @@ For the temperature scale, the loop counts in degrees, not in
 pixels:
 
 ```typescript
-for (let t = -5; t <= 35; t += 5) {
+for (let t: number = -5; t <= 35; t += 5) {
   let y: number = 225 - t * 5;
   // a short line across the axis, and the number t next to it
 }

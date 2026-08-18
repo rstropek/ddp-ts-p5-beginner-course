@@ -179,7 +179,7 @@ With that function in place, four symbols side by side are a loop:
 function draw(): void {
     p.background("white");
 
-    for (let i = 0; i < 4; i++) {
+    for (let i: number = 0; i < 4; i++) {
         drawSymbol(i, i * SPRITE_SIZE, 20);
     }
 }

@@ -57,7 +57,7 @@ time:
 ```typescript
 fill("yellow");
 textAlign(LEFT);
-for (let i = 0; i < firstNames.length; i++) {
+for (let i: number = 0; i < firstNames.length; i++) {
     text(`${firstNames[i]} ${lastNames[i]}`, 33, 12 + i * 5);
 }
 ```

@@ -35,8 +35,8 @@ must be *kept*, and where do parsed values live? In an array:
 ```typescript
 const silos: number[] = [];
 
-let num = 0;
-for (let i = 0; i < INITIAL_FILL.length; i++) {
+let num: number = 0;
+for (let i: number = 0; i < INITIAL_FILL.length; i++) {
     if (INITIAL_FILL[i] === ",") {
         silos.push(num);
         num = 0;
@@ -97,8 +97,8 @@ positions never change, so the program computes them **once** in
 setup and stores them in three more parallel arrays:
 
 ```typescript
-for (let i = 0; i < silos.length; i++) {
-    const x = SILO_GAP + i * (SILO_WIDTH + SILO_GAP);
+for (let i: number = 0; i < silos.length; i++) {
+    const x: number = SILO_GAP + i * (SILO_WIDTH + SILO_GAP);
     silosX.push(x);
     upX.push(x);
     downX.push(x + SILO_WIDTH - BUTTON_SIZE);

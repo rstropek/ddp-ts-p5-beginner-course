@@ -48,6 +48,16 @@ Defining and calling are two separate things, and the order on the
 page does not matter. A definition anywhere in your file can be called
 from anywhere else, even from a line above it.
 
+A function also changes what you do when a program needs the same
+work twice. Back in the cat chapter, copying a line and changing its
+numbers was the fastest way to draw a second ear (@sec-clipboard),
+and the clipboard stays a useful typing tool for that. Copying a
+whole *block* of statements is a different story. Ten pasted lines
+are ten places to fix when the drawing changes, and the reader of
+your program has to compare them character by character to see what
+is different. From this part on, work that repeats gets a name and
+becomes a function, and the copies become calls.
+
 ## The anatomy of a function {#sec-function-anatomy}
 
 A function definition and a function call look similar, and they have
@@ -99,8 +109,9 @@ parameter and a type for the result. That is the "every variable gets
 a type" rule from the Variables part, applied to functions. Now you
 can also read the line you have typed a hundred times without
 understanding it, because `function setup(): void` says exactly that:
-no parameters, nothing given back. Loop heads stay as they are, so
-`for (let i = 0; i < 10; i++)` still needs no type annotation.
+no parameters, nothing given back. Loop variables carry their type
+in the same spirit (@sec-while-four-steps), so a for header reads
+`for (let i: number = 0; i < 10; i++)`.
 :::
 
 ## One function, two faces {#sec-happy-or-sad}

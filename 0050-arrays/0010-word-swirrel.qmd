@@ -140,11 +140,11 @@ letter of the word, append it to the scrambled result, remove it
 from the bag, and repeat until the bag is empty.
 
 ```typescript
-let wordToScramble = wordToGuess;
-let scrambledWord = "";
+let wordToScramble: string = wordToGuess;
+let scrambledWord: string = "";
 
 while (wordToScramble.length > 0) {
-    let letterIndex = floor(random(wordToScramble.length));
+    let letterIndex: number = floor(random(wordToScramble.length));
     scrambledWord += wordToScramble[letterIndex];
     wordToScramble = wordToScramble.substring(0, letterIndex)
         + wordToScramble.substring(letterIndex + 1);

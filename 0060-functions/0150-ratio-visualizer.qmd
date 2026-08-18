@@ -88,7 +88,7 @@ sketches below use made-up names, `drawTile` for your drawing
 function and `CELL` for the distance between two neighbors:
 
 ```typescript
-for (let col = 0; col < 10; col++) {
+for (let col: number = 0; col < 10; col++) {
     drawTile();
     translate(CELL, 0);
 }

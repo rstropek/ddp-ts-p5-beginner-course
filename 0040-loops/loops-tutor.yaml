@@ -84,7 +84,7 @@ prompt:
     - turning a row-and-column pair into one loop and back: from index i,
       row is floor(i / COLUMNS) and column is i % COLUMNS
     - the for loop as the compact form of the while loop:
-      for (let i = 0; i < n; i += step) { ... } packs initialize,
+      for (let i: number = 0; i < n; i += step) { ... } packs initialize,
       condition, and update into the header; a let in the header belongs
       to that loop only
     - translate(x, y) moves the origin of the coordinate system, RELATIVE

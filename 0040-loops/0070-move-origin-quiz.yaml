@@ -95,7 +95,7 @@ questions:
       The origin starts in the top left corner, then this loop runs:
 
       ```typescript
-      for (let i = 0; i < 3; i++) {
+      for (let i: number = 0; i < 3; i++) {
           translate(50, 50);
           circle(0, 0, 20);
       }

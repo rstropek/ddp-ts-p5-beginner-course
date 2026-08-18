@@ -98,7 +98,7 @@ style is more natural: let the variable simply count the stripes,
 it. Stripe number `i` starts at `y = i * STRIPE_THICKNESS`:
 
 ```typescript
-let i = 0;
+let i: number = 0;
 while (i * STRIPE_THICKNESS < SIZE) {
     // draw stripe number i
     i += 1;

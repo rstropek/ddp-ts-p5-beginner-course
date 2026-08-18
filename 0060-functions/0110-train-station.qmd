@@ -29,7 +29,7 @@ starter code: the array `imageUrls` with the file names, the constant
 with the counting loop you know it looks like this.
 
 ```typescript
-for (let i = 0; i < imageUrls.length; i++) {
+for (let i: number = 0; i < imageUrls.length; i++) {
     const wagonImage: p5.Image = await loadImage(`${BASE_URL}/${imageUrls[i]}`);
     trainCars.push(wagonImage);
 }
@@ -56,6 +56,17 @@ Use the classic `for` when the position itself matters, for example to
 count, to walk backwards, or to compare two arrays position by
 position.
 
+::: {.callout-note}
+## The one declaration that stays without a type
+Every declaration in this course carries its data type, and the head
+of a `for...of` loop is the single place where TypeScript refuses
+one. `for (const imageUrl: string of imageUrls)` is a syntax error,
+so the head keeps the short form you see above. TypeScript still
+knows the type, because it reads it off the array. The counter of a
+classic `for` loop is a normal declaration and keeps its
+`: number` (@sec-while-four-steps).
+:::
+
 Inside the loop, `await` waits for one image before the next one
 starts. When the loop ends, `trainCars` holds as many images as
 `imageUrls` holds names, in the same order.
@@ -81,7 +92,7 @@ the top, compare, and stop at the first match.
 
 ```typescript
 function getWagonIndex(wagonAbbreviation: string): number {
-    for (let i = 0; i < abbreviations.length; i++) {
+    for (let i: number = 0; i < abbreviations.length; i++) {
         if (wagonAbbreviation === abbreviations[i]) {
             return i;
         }
@@ -124,7 +135,7 @@ function parseTrain(trainString: string): p5.Image[] {
     const result: p5.Image[] = [];
 
     let wagon: string = "";
-    for (let i = 0; i < trainString.length; i++) {
+    for (let i: number = 0; i < trainString.length; i++) {
         if (trainString[i] === ",") {
             result.push(trainCars[getWagonIndex(wagon)]);
             wagon = "";
@@ -154,7 +165,7 @@ images and `draw` only walks through it. That loop is already in the
 starter code.
 
 ```typescript
-for (let ix = 0; ix < train.length; ix++) {
+for (let ix: number = 0; ix < train.length; ix++) {
     drawTrainWagon(train[ix], ix);
 }
 ```
@@ -195,7 +206,7 @@ function parseTracks(tracksString: string): p5.Image[][] {
     const result: p5.Image[][] = [];
 
     let track: string = "";
-    for (let i = 0; i < tracksString.length; i++) {
+    for (let i: number = 0; i < tracksString.length; i++) {
         if (tracksString[i] === ";") {
             result.push(parseTrain(track));
             track = "";
@@ -216,7 +227,7 @@ exercise.
 
 ```typescript
 for (const track of trains) {
-    for (let i = 0; i < 5; i++) {
+    for (let i: number = 0; i < 5; i++) {
         drawRailroad(i);
     }
 

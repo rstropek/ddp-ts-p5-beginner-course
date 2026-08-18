@@ -60,11 +60,11 @@ itself waits in a constant named `circles`, holding exactly the
 goal picture's `"50,50 50,100 100,50 100,100"`.
 
 ```typescript
-let x = 0;
-let y = 0;
-let coordinates = "";   // the buffer
+let x: number = 0;
+let y: number = 0;
+let coordinates: string = "";   // the buffer
 
-for (let ix = 0; ix < circles.length; ix++) {
+for (let ix: number = 0; ix < circles.length; ix++) {
     switch (circles[ix]) {
         case ",":
             x = parseInt(coordinates);

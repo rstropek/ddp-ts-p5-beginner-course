@@ -186,7 +186,7 @@ questions:
     title: "Why backwards?"
     question: |
       The removal loop runs
-      `for (let i = circlesLifetime.length - 1; i >= 0; i--)`. Why
+      `for (let i: number = circlesLifetime.length - 1; i >= 0; i--)`. Why
       must a loop that splices elements walk backwards through the
       array?
     evaluation: |

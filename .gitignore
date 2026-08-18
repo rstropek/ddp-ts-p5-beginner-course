@@ -13,4 +13,4 @@
 *.toc
 
 # Evaluation results
-/eval-result*/
+/eval-results/

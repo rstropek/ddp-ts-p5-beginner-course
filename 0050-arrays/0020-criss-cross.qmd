@@ -30,7 +30,7 @@ needs something gentler: visit every character once, in order, and
 draw it. That is a for loop over the indexes:
 
 ```typescript
-for (let i = 0; i < wordToGuess.length; i++) {
+for (let i: number = 0; i < wordToGuess.length; i++) {
     // wordToGuess[i] is the character of this round
 }
 ```
@@ -89,12 +89,12 @@ Now the loop and the transformation team up. One round of the loop
 places one letter, and everything about the letter is random:
 
 ```typescript
-for (let i = 0; i < wordToGuess.length; i++) {
-    const x = random(MARGIN, WIDTH - MARGIN);
-    const y = random(MARGIN, HEIGHT - MARGIN);
-    const charSize = random(50, 150);
-    const textColor = random(0, 360);
-    const angle = random(-90, 90);
+for (let i: number = 0; i < wordToGuess.length; i++) {
+    const x: number = random(MARGIN, WIDTH - MARGIN);
+    const y: number = random(MARGIN, HEIGHT - MARGIN);
+    const charSize: number = random(50, 150);
+    const textColor: number = random(0, 360);
+    const angle: number = random(-90, 90);
 
     push();
     translate(x, y);

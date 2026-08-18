@@ -32,7 +32,7 @@ instructions: |
 discussion:
   instructions: |
     {{fragment "shared.discussion_frame"
-      example="for (let i = 0; i < wordToGuess.length; i++) { ... }"
+      example="for (let i: number = 0; i < wordToGuess.length; i++) { ... }"
       scope="after the criss-cross chapter of the Arrays part"
       knows=(array
         "drawing commands, styling, mouse events, and the `draw` animation loop"
@@ -57,7 +57,7 @@ questions:
     title: "The loop's end"
     question: |
       The letter loop runs
-      `for (let i = 0; i < wordToGuess.length; i++)`. Why is the
+      `for (let i: number = 0; i < wordToGuess.length; i++)`. Why is the
       condition `i < wordToGuess.length` and not
       `i <= wordToGuess.length`?
     evaluation: |

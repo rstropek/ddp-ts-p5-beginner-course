@@ -30,7 +30,7 @@ Here is the horizontal-line loop of the grid, first as the while
 loop you wrote, then as a for loop:
 
 ```typescript
-let i = GRID;            // STEP 1: Initialize the loop variable
+let i: number = GRID;    // STEP 1: Initialize the loop variable
 while (i < SIZE) {       // STEP 2: Check the loop condition
     line(0, i, SIZE, i); // STEP 3: Do whatever you want to do repeatedly
     i += GRID;           // STEP 4: Update the loop variable
@@ -38,11 +38,11 @@ while (i < SIZE) {       // STEP 2: Check the loop condition
 ```
 
 ```typescript
-//   +--------------------------- STEP 1: Initialize the loop variable
-//   |             +------------- STEP 2: Check the loop condition
-//   |             |         +--- STEP 4: Update the loop variable
-//   v             v         v
-for (let i = GRID; i < SIZE; i += GRID) {
+//   +----------------------------------- STEP 1: Initialize the loop variable
+//   |                     +------------- STEP 2: Check the loop condition
+//   |                     |         +--- STEP 4: Update the loop variable
+//   v                     v         v
+for (let i: number = GRID; i < SIZE; i += GRID) {
     line(0, i, SIZE, i);       // STEP 3: Do whatever you want to do repeatedly
 }
 ```
@@ -82,11 +82,11 @@ worry disappears. Two loops in a row may each declare their own
 two variables never exist at the same time:
 
 ```typescript
-for (let i = GRID; i < SIZE; i += GRID) {
+for (let i: number = GRID; i < SIZE; i += GRID) {
     line(i, 0, i, SIZE);
 }
 
-for (let i = GRID; i < SIZE; i += GRID) {
+for (let i: number = GRID; i < SIZE; i += GRID) {
     line(0, i, SIZE, i);
 }
 ```
@@ -100,8 +100,8 @@ The conversion works for nested loops too, and there it pays off
 double. Here is the mesh with both loops converted:
 
 ```typescript
-for (let left = MARGIN; left <= SIZE - MARGIN; left += MARGIN) {
-    for (let right = MARGIN; right <= SIZE - MARGIN; right += MARGIN) {
+for (let left: number = MARGIN; left <= SIZE - MARGIN; left += MARGIN) {
+    for (let right: number = MARGIN; right <= SIZE - MARGIN; right += MARGIN) {
         line(MARGIN, left, width - MARGIN, right);
     }
 }
@@ -127,9 +127,9 @@ advance how many rounds it takes. You'll meet loops like that later
 in the course.
 
 The counting-style loops convert nicely too: the zebra's counter
-becomes `for (let i = 0; i * STRIPE_THICKNESS < SIZE; i++)`, with
-the `++` shortcut (@sec-counter) sitting naturally in the update
-slot.
+becomes `for (let i: number = 0; i * STRIPE_THICKNESS < SIZE; i++)`,
+with the `++` shortcut (@sec-counter) sitting naturally in the
+update slot.
 
 ## Your exercise: While to For {#sec-while-to-for-exercise}
 

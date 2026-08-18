@@ -72,7 +72,7 @@ questions:
       A program contains this loop:
 
       ```typescript
-      let i = 10;
+      let i: number = 10;
       while (i < 40) {
           circle(i, 50, 8);
           i += 10;
@@ -102,7 +102,7 @@ questions:
       A classmate wrote this loop and now the browser tab freezes:
 
       ```typescript
-      let y = 25;
+      let y: number = 25;
       while (y < 400) {
           line(0, y, 400, y);
       }
@@ -135,7 +135,7 @@ questions:
       A program contains this loop:
 
       ```typescript
-      let i = 500;
+      let i: number = 500;
       while (i < 400) {
           circle(i, 200, 20);
           i += 25;
@@ -166,14 +166,14 @@ questions:
       like this and gets a red squiggle on the first line:
 
       ```typescript
-      let i = GRID;
+      let i: number = GRID;
       while (i < SIZE) {
           line(0, i, SIZE, i);
           i += GRID;
       }
       ```
 
-      The first loop above already used `let i = GRID;`. What must
+      The first loop above already used `let i: number = GRID;`. What must
       change to fix the error?
     evaluation: |
       Expected: remove the `let`: the variable `i` already exists, so
@@ -203,7 +203,7 @@ questions:
       Expected code (names and formatting may differ):
 
       ```
-      let x = 100;
+      let x: number = 100;
       while (x < 400) {
           circle(x, 50, 20);
           x += 100;
@@ -211,7 +211,8 @@ questions:
       ```
 
       Any condition that stops after 300 counts (`x < 400`,
-      `x <= 300`, `x < 301`, ...).
+      `x <= 300`, `x < 301`, ...). A missing `: number` on the loop
+      variable is not a flaw here.
 
       - `correct`   - all four steps present and right: initialize to
                       100, a condition that stops after 300, a
@@ -236,7 +237,7 @@ questions:
       so on:
 
       ```typescript
-      let i = GRID;
+      let i: number = GRID;
       while (i < SIZE) {
           line(i, 0, i, SIZE);
           i += GRID;
