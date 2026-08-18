@@ -60,6 +60,13 @@ activities:
       file: 0030-conditions/dice-rewrite-tutor.yaml
       note: "Creative Coding book: exercise AI, dice rewrite (0030-conditions/0030) — GitHub-hosted"
 
+  # Coding endpoints an external coding agent (little-coder) connects to.
+  # The code IS the API key, so it is handed out, not embedded in the book.
+  coding:
+    coding-buddy:
+      file: ddp-coding-buddy.yaml
+      note: "Creative Coding book: coding buddy with the course coding guidelines built in (VS Code part on) — GitHub-hosted"
+
   quizzes:
     welcome:
       file: 0010-introduction/0010-welcome-quiz.yaml
