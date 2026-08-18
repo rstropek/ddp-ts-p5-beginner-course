@@ -68,6 +68,7 @@ book:
         - 0040-loops/0060-for-loop.qmd
         - 0040-loops/0070-move-origin.qmd
         - 0040-loops/0080-patterns.qmd
+        - 0040-loops/0090-bezier.qmd
     - part: "Arrays"
       chapters:
         - 0050-arrays/0010-word-swirrel.qmd

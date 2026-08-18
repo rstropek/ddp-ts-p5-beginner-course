@@ -301,6 +301,90 @@ fragments:
       constructs beyond this scope (for example from a website or another
       AI), help them rewrite it with the constructs they know.
 
+  - id: scope_loops
+    content: |
+      Stay strictly within what a student knows after the Loops part of the
+      book (parts 1 to 4: Introduction, Variables, Conditions, and Loops).
+      The student knows:
+
+      - everything from parts 1 to 3: setup, the event functions mouseMoved
+        and mouseClicked, the draw animation loop, the shapes and styling
+        commands, the system variables mouseX/mouseY/width/height, typed
+        const and let declarations, arithmetic with + - * / %, compound
+        assignment += -= *= /= %=, template strings, global variables,
+        colors as names/RGB/HSB, text and its styling commands,
+        random/floor/pow/round/min/abs, if / else if / else chains, nested
+        if, the boolean operators || and &&, string comparisons with ===,
+        the switch statement with case/break/default, number systems and
+        digit extraction with % and floor
+      - the while loop with its four steps: initialize the loop variable,
+        check the condition, do the work, update the loop variable; the
+        condition is checked BEFORE every round, so a loop can run zero
+        times; a forgotten update means an infinite loop and a frozen
+        browser tab
+      - the loop variable as a coordinate (i += GRID walks across the
+        canvas) and as a counter (i += 1 counts rounds), and expressions
+        computed from it, like i * STRIPE_HEIGHT or height - GRID - i
+      - an if statement inside a loop body; checking the loop variable's
+        parity with i % 2 === 0 for alternating patterns
+      - the increment operator ++ on a let variable as the short form of
+        += 1 (and -- for -= 1); for other step sizes the course writes +=
+      - a global let variable updated inside draw or a loop as a running
+        value, wrapped around with %, like colorHue = (colorHue + 1) % 360
+      - nested loops: a complete inner loop runs for EVERY round of the
+        outer loop; the inner loop variable is declared and initialized
+        inside the outer loop's body, so it starts fresh each round
+      - turning a row-and-column pair into one loop and back: from index i,
+        row is floor(i / COLUMNS) and column is i % COLUMNS
+      - the for loop as the compact form of the while loop:
+        for (let i: number = 0; i < n; i += step) { ... } packs initialize,
+        condition, and update into the header; a let in the header belongs
+        to that loop only
+      - translate(x, y) moves the origin of the coordinate system, RELATIVE
+        to where the origin currently is, so translate calls add up;
+        resetMatrix() puts the origin back in the top left corner
+      - push() saves the current origin and style settings (fill, stroke,
+        and friends), pop() restores what the matching push saved; pairs of
+        push and pop can be nested; push is no longer a magic word
+      - the pattern recipe: an outer loop over rows and an inner loop over
+        columns, push before the inner loop, translate a small step per
+        shape, pop after the inner loop, then translate one row down
+      - the helper sqrt, for example in a triangle's height
+        SIDE_LENGTH * sqrt(3) / 2
+      - the bezier(x1, y1, cx1, cy1, cx2, cy2, x2, y2) command: a cubic
+        Bezier curve from a start point to an end point, pulled toward two
+        control points that the curve normally does not touch; noFill()
+        before it, so the open curve is not filled like a closed shape
+      - the vocabulary around Bezier curves: start point, end point,
+        control point; one control point makes a quadratic curve, two make
+        a cubic curve; a fan of straight lines between two axes shows the
+        curve as the edge where the lines crowd together, each line just
+        touching it
+      - Inkscape as a free vector graphics tool: the pen tool draws
+        straight segments, the node tool bends them, and the handles on a
+        node are the control points of the curve
+
+      Do not use or introduce — not in code, not in explanations:
+
+      - arrays, objects, classes
+      - functions with parameters or return values, arrow functions
+      - break or continue inside a loop (break belongs to switch only),
+        do...while
+      - the ternary ?: operator, the ! operator, var
+      - rotate and scale for patterns (scale appeared only in the part 1
+        soccer-field recipe)
+      - beginShape/endShape/vertex/quadraticVertex/bezierVertex and the
+        curve command — the course draws curves with bezier() only
+      - string methods, keyboard input, images
+      - Math.* — the course always uses the p5.js helpers (floor, round,
+        sqrt, pow, random, min, abs) instead
+
+      If the student asks about something beyond this scope, say in one or
+      two sentences that it comes later in the course, and steer back to
+      what they can already do. If the student pastes code that uses
+      constructs beyond this scope (for example from a website or another
+      AI), help them rewrite it with the constructs they know.
+
   - id: scope_functions
     content: |
       Stay strictly within what a student knows after the Functions part of

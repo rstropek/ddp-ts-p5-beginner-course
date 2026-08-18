@@ -4,7 +4,7 @@ title: "Patterns: repeat, move, repeat"
 
 ![A grid of overlapping yellow circles covering the whole canvas, drawn by nested loops that never name a coordinate: the origin wanders, row by row.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/push-pop-pattern.png){width=400}
 
-This closing chapter of the Loops part brings everything together:
+This chapter brings the loop tools together:
 nested for loops, `translate`, and the `push`/`pop` pair combine
 into one recipe that draws wallpapers, tilings, and textile
 patterns. The recipe is worth learning by heart, because you will
@@ -169,7 +169,7 @@ level 2 goal; that fiddling *is* the exercise.
 
 ## Check your understanding {#sec-quiz-patterns}
 
-The row recipe is the finish line of the Loops part: with it, you
+The row recipe is the summit of the loop toolbox: with it, you
 can repeat, decide inside loops, nest loops, and move the paper
 under the pen. Take the short quiz below. You answer six questions
 about this chapter in your own words, and an AI reads your answers

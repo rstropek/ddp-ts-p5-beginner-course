@@ -1,0 +1,169 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0090-bezier-quiz.yaml ("Curves from straight lines").
+# Teacher-only test data — never publish as an activity, never mint a code.
+
+id: bezier-quiz-eval
+target: ./0090-bezier-quiz.yaml
+
+questions:
+  - question: curve-from-lines
+    answers:
+      - expect: correct
+        answer: |
+          no line is curved, the curve is just the edge where all the
+          lines pile up. every line touches it once and your eye connects
+          that into a curve.
+      - expect: correct
+        answer: |
+          die kurve wird von keiner linie gezeichnet. sie entsteht am rand,
+          wo sich die vielen geraden linien drängen, je mehr linien desto
+          glatter sieht sie aus.
+      # Effect without the shared-edge idea.
+      - expect: partial
+        answer: |
+          the lines together make the curve, with more points it gets
+          smoother
+      # Confident but wrong mechanism.
+      - expect: incorrect
+        answer: |
+          p5 bends the lines a tiny bit when there are many of them, so
+          the outer ones become curved.
+      - expect: incorrect
+        answer: |
+          it is an optical illusion of the screen pixels, there is no
+          curve in the drawing.
+
+  - question: fan-line-trace
+    answers:
+      - expect: correct
+        answer: |
+          line(46, 0, 0, 234)
+      - expect: correct
+        answer: |
+          deltaX is 46 and deltaY is 26, so the line goes from (46, 0) to
+          (0, 260 - 26) which is (0, 234)
+      # Forgot the subtraction from yHeight — the rubric's named slip.
+      - expect: partial
+        answer: |
+          46, 0, 0, 26
+      # Started the trace at i = 0 — the loop starts at 1.
+      - expect: incorrect
+        answer: |
+          0, 0, 0, 260
+      - expect: incorrect
+        answer: |
+          line(460, 0, 0, 260) because i times deltaX is 460 in the first
+          round.
+
+  - question: control-point-job
+    answers:
+      - expect: correct
+        answer: |
+          it pulls the curve towards itself like a magnet, but the curve
+          never actually reaches it. only start and end are on the curve.
+      - expect: correct
+        answer: |
+          er zieht die kurve zu sich hin und verbiegt sie, aber die kurve
+          geht nicht durch ihn durch, nur durch start- und endpunkt.
+      # Half: shaping without the pass-through question.
+      - expect: partial
+        answer: |
+          it changes the shape of the curve, you drag it and the curve
+          bends
+      # Half: pass-through without the pulling job.
+      - expect: partial
+        answer: |
+          the curve doesn't touch that point
+      # The classic misconception.
+      - expect: incorrect
+        answer: |
+          the curve goes through all four points one after the other, the
+          control points are just the middle stations.
+      - expect: incorrect
+        answer: |
+          it controls the thickness and color of the curve.
+
+  - question: bezier-points
+    answers:
+      - expect: correct
+        answer: |
+          through (50, 200) and (350, 200), the first and the last pair.
+          the middle ones only pull.
+      - expect: correct
+        answer: |
+          durch den startpunkt (50, 200) und den endpunkt (350, 200). die
+          beiden mittleren paare sind kontrollpunkte.
+      # Right rule, no values picked out of the call.
+      - expect: partial
+        answer: |
+          through the start point and the end point
+      # One right pair, one control pair.
+      - expect: partial
+        answer: |
+          through (50, 200) and (250, 350)
+      - expect: incorrect
+        answer: |
+          through (150, 50) and (250, 350), those are the two points in
+          the middle of the curve.
+      # Verbose and fluent, but decisively wrong.
+      - expect: incorrect
+        answer: |
+          A bezier curve is a smooth mathematical curve that is used in
+          cars and fonts, and because it is smooth it has to pass through
+          all four of the given points, otherwise the shape would not be
+          defined by them.
+
+  - question: mouse-on-line
+    answers:
+      - expect: correct
+        answer: |
+          the curve becomes a straight line from (5, 205) to (505, 205).
+          abs(205 - 205) is 0, so both control points are on the middle
+          line too and nothing pulls the curve up or down.
+      - expect: correct
+        answer: |
+          eine gerade linie. der abstand ist 0, also liegen beide
+          kontrollpunkte genau auf der linie zwischen start und ende.
+      # Picture without reason.
+      - expect: partial
+        answer: |
+          it just looks like a straight flat line
+      # Computation without picture.
+      - expect: partial
+        answer: |
+          upperY and lowerY are both 205 then
+      - expect: incorrect
+        answer: |
+          the curve disappears because a bezier with distance 0 cannot be
+          drawn.
+      - expect: incorrect
+        answer: |
+          the curve flips upside down when you cross the middle line.
+
+  - question: nofill-bezier
+    answers:
+      - expect: correct
+        answer: |
+          the inside of the curve gets painted gold, like the curve was a
+          closed shape. a gold area shows up between the curve and its end
+          points.
+      - expect: correct
+        answer: |
+          p5 behandelt die kurve wie eine form, die fläche innerhalb der
+          kurve wird gold ausgemalt. die vier kleinen kreise werden auch
+          gold gefüllt.
+      # Terse but carries the fill-the-inside idea — must count as correct.
+      - expect: correct
+        answer: |
+          the curve gets filled with gold
+      # Only the circles, misses the curve's area.
+      - expect: partial
+        answer: |
+          the four small dots turn gold
+      # The classic stroke/fill confusion.
+      - expect: incorrect
+        answer: |
+          the red line of the curve turns gold now.
+      - expect: incorrect
+        answer: |
+          nothing changes, noFill was unnecessary anyway.

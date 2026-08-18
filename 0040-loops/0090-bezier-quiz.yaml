@@ -1,0 +1,247 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Curves from straight lines"
+# (0040-loops/0090-bezier.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: the fan of
+# straight lines whose crowding edge shows a curve, tracing the fan loop's
+# line arguments, what a control point does, reading the eight arguments of
+# bezier(), predicting the mouse-on-the-middle-line case, and why noFill
+# comes before an open curve.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: bezier-quiz
+name: "Quiz: Curves from straight lines"
+
+title: "Check your understanding: curves from straight lines"
+description: |
+  Six short questions about the chapter *Curves from straight lines*.
+  Answer in your own words. There are no answer options to pick from,
+  and this quiz is anonymous: it's here for you, so you can see what
+  you already understand and what you should read again. One or two
+  sentences are enough for most answers, and answering in German is
+  fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+# The shared context for BOTH the grader and the discussion chat (the app
+# prepends the rendered `instructions:` to both system prompts) comes from
+# the shared fragment library. Edit the text in ddp-quiz-fragments.yaml,
+# never inline here. Chapter-specific limits belong in
+# discussion.instructions below (that field does not travel into compound
+# quizzes).
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  # Appended AFTER the app's built-in discussion prompt (which already sets
+  # the role, the available context, and "concise, encouraging, stay on this
+  # question") — so only what the default doesn't cover goes here. The policy
+  # sentences (reveal the answer, keep it tiny, German is fine) live in the
+  # shared fragment; only the chapter-specific arguments belong here.
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="bezier(5, 205, mouseX, upperY, mouseX, lowerY, 505, 205);"
+      scope="after the Bezier chapter at the end of the Loops part"
+      knows=(array
+        "drawing commands and styling, including noFill"
+        "variables and constants with explicit data types"
+        "while and for loops, nested loops, and the row recipe with `translate`, `push`, and `pop`"
+        "the fan of straight lines whose crowding edge shows a curve"
+        "Bezier vocabulary: start point, end point, control point; one control point makes a quadratic curve, two make a cubic curve"
+        "the `bezier(x1, y1, cx1, cy1, cx2, cy2, x2, y2)` command with start point, two control points, and end point"
+        "the `abs` helper as the distance from zero"
+        "Inkscape's pen tool and node tool, where the node handles are control points")
+      not_yet=(array
+        "arrays"
+        "functions with parameters or return values"
+        "`beginShape`, `vertex`, and the `curve` command"
+        "`rotate` and `scale` for patterns")}}
+
+questions:
+  - id: curve-from-lines
+    title: "A curve without a curve command"
+    question: |
+      The fan program only ever calls `line`, and every line it draws
+      is perfectly straight. Still, you see a curve in the picture.
+      Where does that curve come from?
+    evaluation: |
+      Expected: no single line draws the curve. It appears along the
+      edge where the many straight lines crowd together; each line
+      just touches the curve. With more lines, the edge looks
+      smoother.
+
+      - `correct`   - the curve is formed by the edge of the many
+                      lines together / where the lines bunch up or
+                      overlap, no line is the curve itself ("your eye
+                      sees the border of all the lines as a curve"
+                      counts).
+      - `partial`   - says the lines "make" the curve or that more
+                      lines make it smoother, without saying that the
+                      curve is the shared edge and no single line
+                      draws it.
+      - `incorrect` - anything else, e.g. one of the lines is bent, or
+                      p5 draws a hidden curve command, or the curve is
+                      an optical error of the screen.
+
+      Feedback: ask where exactly the curve sits in the fan; is any
+      single drawn line curved?
+
+  - id: fan-line-trace
+    title: "The first line of the fan"
+    question: |
+      The fan is drawn by this code:
+
+      ```typescript
+      const xWidth: number = 460;
+      const yHeight: number = 260;
+      const points: number = 10;
+      const deltaX: number = xWidth / points;
+      const deltaY: number = yHeight / points;
+      for (let i: number = 1; i < points; i++) {
+          line(deltaX * i, 0, 0, yHeight - (deltaY * i));
+      }
+      ```
+
+      Which four arguments does `line` get in the first round of the
+      loop, when `i` is 1?
+    evaluation: |
+      Expected: deltaX is 46 and deltaY is 26, so the call is
+      line(46, 0, 0, 234). The four arguments: 46, 0, 0, 234.
+
+      - `correct`   - the four numbers 46, 0, 0, 234 (in this order,
+                      or clearly labeled as start and end point).
+      - `partial`   - computes deltaX = 46 and deltaY = 26 and gets
+                      one endpoint right but slips on the other, for
+                      example writing 26 instead of 234 (forgetting
+                      the subtraction from yHeight).
+      - `incorrect` - anything else, e.g. starting the trace at i = 0
+                      and answering 0, 0, 0, 260 (the loop starts at
+                      1), or dividing wrongly.
+
+      Feedback: if the y value is wrong, point at
+      yHeight - (deltaY * i): 260 minus 26 is the missing step.
+
+  - id: control-point-job
+    title: "What a control point does"
+    question: |
+      A Bezier curve has a start point, an end point, and one or two
+      control points. What does a control point do to the curve, and
+      does the curve pass through it?
+    evaluation: |
+      Expected: a control point pulls or bends the curve toward
+      itself, like a magnet. The curve normally does not pass through
+      a control point; only the start and end points lie on the
+      curve.
+
+      - `correct`   - pulls/attracts/bends the curve toward it AND
+                      the curve does not go through it ("the curve
+                      chases it but never touches it" counts, as does
+                      the magnet comparison).
+      - `partial`   - one half only: says it shapes or bends the
+                      curve without answering whether the curve
+                      passes through it, or only says the curve does
+                      not touch it without the pulling job.
+      - `incorrect` - anything else, e.g. the curve passes through
+                      all points, or the control point is the middle
+                      of the curve, or it sets the color or
+                      thickness.
+
+      Feedback: if the student says the curve goes through the
+      control point, name the rule: only start and end lie on the
+      curve.
+
+  - id: bezier-points
+    title: "Eight numbers, four points"
+    question: |
+      Look at this call:
+
+      ```typescript
+      bezier(50, 200, 150, 50, 250, 350, 350, 200);
+      ```
+
+      Which two of the four points does the drawn curve actually pass
+      through?
+    evaluation: |
+      Expected: the curve passes through (50, 200) and (350, 200),
+      the start point (first pair) and the end point (last pair). The
+      two middle pairs, (150, 50) and (250, 350), are the control
+      points that only pull the curve.
+
+      - `correct`   - names (50, 200) and (350, 200), or says the
+                      first and the last pair / the start and end
+                      points ("the first two and last two numbers"
+                      counts).
+      - `partial`   - says start and end point without picking them
+                      out of the eight numbers, or names one right
+                      pair and one control point pair.
+      - `incorrect` - anything else, e.g. the two middle pairs, or
+                      all four points, or the two points with the
+                      biggest numbers.
+
+      Feedback: the order is start, control, control, end; read the
+      eight numbers in pairs from the left.
+
+  - id: mouse-on-line
+    title: "The mouse on the middle line"
+    question: |
+      This is the curve program from the chapter:
+
+      ```typescript
+      const upperY: number = 205 - abs(mouseY - 205);
+      const lowerY: number = 205 + abs(mouseY - 205);
+      bezier(5, 205, mouseX, upperY, mouseX, lowerY, 505, 205);
+      ```
+
+      Predict: you put the mouse exactly on the middle line, so
+      `mouseY` is 205. What does the curve look like now, and why?
+    evaluation: |
+      Expected: a straight horizontal line from (5, 205) to
+      (505, 205). abs(205 - 205) is 0, so both control points land
+      exactly on the middle line (upperY and lowerY are both 205).
+      All four points lie on one line, and nothing pulls the curve up
+      or down.
+
+      - `correct`   - straight (horizontal) line AND the reason: the
+                      distance/abs becomes 0, so the control points
+                      sit on the same line as start and end ("nothing
+                      pulls anymore" counts as the reason).
+      - `partial`   - says the curve becomes straight or flat without
+                      the control-points-on-the-line reason, or works
+                      out upperY = lowerY = 205 without saying what
+                      the picture shows.
+      - `incorrect` - anything else, e.g. the curve disappears, an
+                      error occurs, or the curve flips to the other
+                      side.
+
+      Feedback: what is abs(205 - 205), and where do the two control
+      points land then?
+
+  - id: nofill-bezier
+    title: "noFill before the curve"
+    question: |
+      The curve program calls `noFill()` near the top of `draw`. A
+      classmate replaces that line with `fill("gold")`. What does
+      the canvas show now?
+    evaluation: |
+      Expected: p5 treats the curve like a shape, so the area the
+      curve encloses is painted gold: a gold blob appears between
+      the curve and the straight connection of its end points. The
+      four little circles get a gold filling too; mentioning them
+      is fine but not required.
+
+      - `correct`   - the area inside / enclosed by the curve is
+                      painted gold, like a filled shape ("the curve
+                      gets filled with gold" and "a gold blob under
+                      the curve" count).
+      - `partial`   - names only the gold filling of the four
+                      circles, or says gold appears without saying
+                      where.
+      - `incorrect` - anything else, e.g. the red curve line itself
+                      turns gold (that would be stroke), the
+                      background turns gold, or nothing changes.
+
+      Feedback: fill paints the inside of shapes, stroke colors the
+      line itself. Which of the two did the classmate change?
