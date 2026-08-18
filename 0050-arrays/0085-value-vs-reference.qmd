@@ -2,8 +2,6 @@
 title: "Value or reference: what an assignment copies"
 ---
 
-![Two variables named first and second, and only one array. Each of the two boxes holds an arrow, and both arrows lead to the same row of numbers.](images/shared-reference.svg){width=400}
-
 This chapter paints no new picture on the canvas. Instead you play
 detective and look inside the boxes of your variables, with four
 small experiments that you type yourself. One of them ends with a
@@ -113,7 +111,9 @@ too small for a whole row of values, and it never holds one. It
 holds a **reference**, an arrow that says where the array lives.
 The array itself lies somewhere else, on its own.
 
-Look at the picture at the top of this chapter again.
+![Two variables named first and second, and only one array. Each of the two boxes holds an arrow, and both arrows lead to the same row of numbers.](images/shared-reference.svg){width=400}
+
+The picture shows the situation after the experiment's assignment.
 `second = first` copies what sits in first's box, and what sits in
 first's box is the arrow. So `second` gets an arrow to the very
 same row. One array, two names for it. Arrays are **reference
