@@ -2,6 +2,7 @@
 # Regenerate with: novedu-cli codes sync ddp-activities.yaml
 activity-codes:
   arcs-smiley: 4apvb2639v
+  bezier: vlyafn57qx
   binary-hex-conversions: a8x26bojrp
   bouncing-ball: plle66s4sn
   bubble-buster: 6qtc6q9xuv
@@ -61,6 +62,7 @@ activity-codes:
   temperature-chart: 0zppwvzha1
   train-station: kehrpd5sjs
   tutor-arrays: 6yl97qktby
+  tutor-bezier-patterns: kgeyrkbe5r
   tutor-conditions: qmqpi3bvvo
   tutor-dice-rewrite: 2p865y1o6f
   tutor-elephant: d9oc1sinyd
