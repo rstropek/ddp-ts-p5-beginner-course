@@ -90,6 +90,15 @@ prompt:
       immutable), a program spread over
       several files that share one global scope, async setup with await
       loadImage and await loadFont, and the p5.Image type with image()
+    - compound types from the end of the Functions part: an object literal as
+      a data structure with typed properties, written
+      let p: { x: number, y: number } = { x: 10, y: 20 }; the dot for reading
+      and writing a property, p.x and p.x = 30; an object variable holding a
+      reference just like an array; the `type` keyword for NAMING an object
+      shape, type Position = { x: number, y: number };, used afterwards like
+      any other type, including arrays of objects (Bubble[]); and functions
+      that take an object as a parameter or return an object literal. `type`
+      is for object shapes only
     - Visual Studio Code, VS Code for short, as a free code editor from
       Microsoft that edits the files on the student's own computer: File >
       Open Folder to open ONE project folder, the trust dialog that appears
@@ -189,7 +198,10 @@ prompt:
       unexplained given
     - the array methods map, filter, forEach, and sort with a comparator
       function
-    - objects and classes
+    - classes: no class, no interface, no extends or implements, no new for a
+      type of their own, and no methods written into their own objects
+    - nested objects, destructuring, optional properties, union types, and
+      `type` for anything but an object shape
     - the ternary ?: operator, var
     - Promise.all and the spread operator ...
     - indexOf, join, and charAt — in this course the search is written by

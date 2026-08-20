@@ -97,6 +97,7 @@ book:
         - 0060-functions/0120-sokoban.qmd
         - 0060-functions/0130-crossword.qmd
         - 0060-functions/0140-target-game.qmd
+        - 0060-functions/0145-compound-types.qmd
         - 0060-functions/0150-ratio-visualizer.qmd
         - 0060-functions/0160-training.qmd
         - 0060-functions/0170-poker-cards.qmd

@@ -247,6 +247,9 @@ activities:
     target-game:
       file: 0060-functions/0140-target-game-quiz.yaml
       note: "Creative Coding book: Drag and drop, Target Game (0060-functions/0140) — GitHub-hosted"
+    compound-types:
+      file: 0060-functions/0145-compound-types-quiz.yaml
+      note: "Creative Coding book: Compound types, objects and type (0060-functions/0145) — GitHub-hosted"
 
     new-workshop:
       file: 0070-vscode/0010-new-workshop-quiz.yaml

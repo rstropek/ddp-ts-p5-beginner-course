@@ -1,0 +1,285 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# Quiz for the book chapter "Compound types: values that belong together"
+# (0060-functions/0145-compound-types.qmd in ts-ddp-first).
+# Students check their understanding of the chapter's NEW ideas: why parallel
+# arrays leave the belonging to the index, an object literal with a typed
+# shape and the compile error when a property is missing, objects as
+# reference types (the 99/99 experiment), the `type` keyword that closes the
+# "a function returns one value" loose end, one array of compound values with
+# `bubbles[i].x`, and the word refactoring.
+# Part of the "Creative Coding" course (TypeScript + p5.js, students 15-17).
+
+id: compound-types-quiz
+name: "Quiz: Compound types"
+
+title: "Check your understanding: compound types"
+description: |
+  Six short questions about the chapter *Compound types: values that
+  belong together*. Answer in your own words. There are no answer
+  options to pick from, and this quiz is anonymous: it's here for you,
+  so you can see what you already understand and what you should read
+  again. One or two sentences are enough for most answers, and
+  answering in German is fine too.
+
+llm:
+  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+
+fragment_files:
+  - id: shared
+    url: "../ddp-quiz-fragments.yaml" # repo root, resolves on GitHub and locally
+instructions: |
+  {{fragment "shared.quiz_context"}}
+
+discussion:
+  instructions: |
+    {{fragment "shared.discussion_frame"
+      example="const p: Position = { x: 10, y: 20 };"
+      scope="after the compound types chapter of the Functions part"
+      knows=(array
+        "drawing commands, styling, mouse and key events, and the `draw` animation loop"
+        "variables, conditions, loops, arrays, and strings"
+        "writing functions with parameters, with `void` or a return value, and `boolean` answers"
+        "value types and reference types, and that an array variable holds an arrow to the array"
+        "parallel arrays and the bugs that come with keeping several rows in step by hand"
+        "objects: named properties inside braces, a typed shape like `{ x: number, y: number }`, and the dot for reading and writing"
+        "that objects are reference types too, so `const b = a` makes two names for one object, and a real copy is a new object like `{ x: a.x, y: a.y }`"
+        "the `type` keyword for naming a shape, written with a capital letter and usable as a variable, parameter, or return type"
+        "arrays of compound types, `Bubble[]`, one `push` of one object, and `bubbles[i].x`"
+        "the word refactoring: the same behavior with a different structure")
+      not_yet=(array
+        "classes, and methods that live on an object"
+        "objects nested inside other objects, optional properties, and interfaces"
+        "arrow functions"
+        "array methods beyond `push`, `splice`, `length`, and `includes`"
+        "the content of the later training and exam chapters")}}
+
+questions:
+  - id: index-is-the-only-tie
+    title: "What holds a bubble together"
+    question: |
+      The old Bubble Buster keeps its bubbles in three arrays:
+
+      ```typescript
+      const circlesX: number[] = [];
+      const circlesY: number[] = [];
+      const circlesDiameter: number[] = [];
+      ```
+
+      What is the only thing that ties the three values of one bubble
+      together here, and what changes when one bubble becomes one
+      compound value?
+    evaluation: |
+      Expected: only the index ties them together. Nothing in the
+      program says that `circlesX[3]` and `circlesY[3]` describe the
+      same bubble, so the connection is a rule the programmer keeps and
+      the compiler cannot check. With a compound type the three values
+      sit inside one value with named parts, so the belonging becomes
+      part of the value instead of a promise.
+
+      - `correct`   - both: names the index (same position in each row)
+                      as the only connection AND says that a compound
+                      type puts the values into one value, so the
+                      belonging is written down in the code ("der index
+                      ist das einzige band" counts; "they are in one
+                      object now" counts).
+      - `partial`   - only one half, for example names the index
+                      without saying what a compound type changes, or
+                      says everything sits in one value without naming
+                      the index as today's only tie.
+      - `incorrect` - anything else, for example the arrays are tied
+                      together by their names or by having the same
+                      length, or the compiler already checks that the
+                      three rows match.
+
+      Feedback: point at `circlesX[3]` and `circlesY[3]` and ask what
+      line of the program states that these two numbers belong to the
+      same bubble.
+
+  - id: missing-property
+    title: "One property missing"
+    question: |
+      A position is written with a typed shape:
+
+      ```typescript
+      let position: { x: number, y: number } = { x: 10, y: 20 };
+      ```
+
+      A classmate deletes `y: 20`, so the braces hold only `x: 10`.
+      What does the editor do, and why is that check something parallel
+      arrays never gave you?
+    evaluation: |
+      Expected: a red squiggle appears before anything runs, saying the
+      property `y` is missing, and the program does not compile. An
+      object either has everything its type promises or it is an error.
+      Parallel arrays could never check that: one forgotten push into
+      one row compiles fine and shows up much later as a wrong picture.
+
+      - `correct`   - both: says the editor reports an error or red
+                      squiggle because `y` is missing and the program
+                      does not compile ("es kompiliert nicht" counts),
+                      AND says that a missing value in parallel arrays
+                      goes unnoticed by the compiler.
+      - `partial`   - only one half, for example the error without the
+                      comparison to parallel arrays, or "arrays cannot
+                      be checked" without saying that the object gives
+                      an error here.
+      - `incorrect` - anything else, for example `y` simply becomes 0
+                      or undefined and the program runs, or the error
+                      shows up only when the line is executed.
+
+      Feedback: say what happens when one `push` into `circlesY` is
+      forgotten (nothing complains at all) and hold that next to the
+      red squiggle here.
+
+  - id: two-names-one-object
+    title: "Two names, one object"
+    question: |
+      A program runs these lines:
+
+      ```typescript
+      const a: { x: number, y: number } = { x: 10, y: 20 };
+      const b: { x: number, y: number } = a;
+      b.x = 99;
+
+      console.log(a.x);
+      console.log(b.x);
+      ```
+
+      Which two numbers appear in the console, and why?
+    evaluation: |
+      Expected: 99 and 99. An object is too big for a variable box, so
+      the box holds an arrow that says where the object lives.
+      `const b = a` copies that arrow, so two boxes point at one single
+      object. `b.x = 99` follows an arrow and changes that one object,
+      and `a.x` reads the same property through the other arrow.
+
+      - `correct`   - says 99 and 99 (or "both 99") AND gives the
+                      reason: both variables point at the same object /
+                      only the arrow was copied ("beide zeigen auf
+                      dasselbe objekt" counts; "reference", "arrow", or
+                      "address" all count).
+      - `partial`   - says 99 and 99 without a reason, or explains the
+                      shared object without committing to the two
+                      numbers.
+      - `incorrect` - anything else, especially 10 and 99 with the
+                      claim that `b` got an object of its own.
+
+      Feedback: if the student wrote 10 for `a.x`, ask what a
+      variable's box really holds for an object: the whole object, or
+      an arrow that says where it lives.
+
+  - id: one-value-return
+    title: "Handing back a whole position"
+    question: |
+      The target game chapter warned you that a function returns one
+      value and not two, so a position finder could not hand back an x
+      and a y. After `type Position = { x: number, y: number };` this
+      function compiles:
+
+      ```typescript
+      function randomPosition(): Position {
+          return { x: random(width), y: random(height) };
+      }
+      ```
+
+      Has the rule about one return value changed? Say what
+      `type Position` made possible.
+    evaluation: |
+      Expected: the rule has not changed. The function still returns
+      exactly one value, one object. The `type` keyword added a new
+      type to the language, and one value of that type carries both
+      numbers, so what one value can be got wider.
+
+      - `correct`   - both: says the one-value rule still holds (the
+                      `return` hands back a single object) AND says
+                      that `Position` names a shape whose single value
+                      holds x and y together ("es ist trotzdem nur ein
+                      wert, aber der wert enthält beides" counts).
+      - `partial`   - only one half, for example "now you can return x
+                      and y together" without stating that it is still
+                      one value, or "the rule is unchanged" without
+                      saying what the one returned value contains.
+      - `incorrect` - anything else, for example a function can return
+                      two values now, `type` turns the result into two
+                      separate returns, or `Position` is really an
+                      array of two numbers.
+
+      Feedback: count what stands behind `return`: one pair of braces,
+      so one value, and then name the two numbers packed inside it.
+
+  - id: bubble-array-access
+    title: "Reaching into one bubble"
+    question: |
+      The rebuilt Bubble Buster keeps everything in one array:
+
+      ```typescript
+      type Bubble = { x: number, y: number, diameter: number };
+      const bubbles: Bubble[] = [];
+      ```
+
+      A classmate writes the drawing loop like this:
+
+      ```typescript
+      for (let i: number = 0; i < bubbles.length; i++) {
+          circle(bubbles.x[i], bubbles.y[i], bubbles.diameter[i]);
+      }
+      ```
+
+      Why does `bubbles.x[i]` not work, and how do you reach the x of
+      bubble i instead?
+    evaluation: |
+      Expected: `bubbles` is one array whose elements are bubbles, not
+      an object holding three arrays, so `bubbles` has no property `x`.
+      Read it in the other order: element i first, then its property,
+      which is `bubbles[i].x` (and `bubbles[i].y`,
+      `bubbles[i].diameter`).
+
+      - `correct`   - both: says `bubbles` is an array of bubbles and
+                      has no property `x` (the old three-row picture is
+                      still in that line) AND gives `bubbles[i].x`
+                      ("erst das element, dann den punkt" with the code
+                      counts).
+      - `partial`   - only one half, for example writes `bubbles[i].x`
+                      without saying why the classmate's version is
+                      wrong, or explains the array of objects without
+                      giving the correct expression.
+      - `incorrect` - anything else, for example the loop condition or
+                      `bubbles.length` is the problem, or the fix is
+                      `bubbles[i][x]` or `bubbles.x(i)`.
+
+      Feedback: read `bubbles[i].x` out loud in order, element i of
+      `bubbles` first and then its `x`, and hold it next to what the
+      classmate wrote.
+
+  - id: refactoring-meaning
+    title: "Same game, new engine"
+    question: |
+      You rebuilt Bubble Buster on one array of objects, and the
+      finished game plays exactly as before: same bubbles, same
+      popping, same score. That kind of rewrite has a name, it is a
+      **refactoring**.
+
+      What does a refactoring change, and what has to stay the same?
+    evaluation: |
+      Expected: a refactoring changes how the program is built inside,
+      its structure, for example one array of bubbles instead of three
+      parallel rows and one `push` instead of three. What the program
+      does stays exactly the same, so a player notices nothing. The
+      payoff is fewer ways for the program to break.
+
+      - `correct`   - both: says the inner structure or the code
+                      changes AND says the behavior stays the same
+                      ("innen anders, außen gleich" counts; naming the
+                      fewer-bugs payoff is a welcome bonus, not
+                      required).
+      - `partial`   - only one half, for example "the code gets shorter
+                      and nicer" without the unchanged behavior, or
+                      "the game plays the same" without saying that the
+                      structure changed.
+      - `incorrect` - anything else, for example a refactoring adds
+                      features, makes the program run faster, or is
+                      just another word for fixing a bug.
+
+      Feedback: put the two sides next to each other, what a player
+      would notice (nothing) and what a reader of the code would notice
+      (one array of bubbles instead of three rows).

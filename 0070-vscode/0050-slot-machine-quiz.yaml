@@ -46,7 +46,7 @@ discussion:
       not_yet=(array
         "sprite sheets whose sprites have different sizes, and data files that describe them"
         "p5 image commands like `tint`, `get`, or `copy`"
-        "writing your own classes and objects"
+        "writing your own classes"
         "`npm run build` and publishing a finished program")}}
 
 questions:

@@ -416,6 +416,24 @@ fragments:
         argument passing share ONE array (call by value vs call by
         reference); a real copy takes an empty array plus a loop of pushes;
         console.log/warn/error write lines into the playground's console
+      - compound types, from the chapter "Compound types" LATE in the Functions
+        part: an object literal as a data structure with typed properties,
+        written let p: { x: number, y: number } = { x: 10, y: 20 }; reading and
+        writing a property with the dot, p.x and p.x = 30; an object variable
+        holds a reference, exactly like an array (assignment and argument
+        passing share ONE object, and const forbids only reassigning the
+        variable, not changing its properties)
+      - the `type` keyword for giving an object shape a NAME, written
+        type Position = { x: number, y: number }; and then used as a type like
+        any other, also for arrays of objects (Bubble[]) and as a parameter or
+        return type. `type` is for object shapes only
+      - functions that TAKE an object as a parameter and functions that RETURN
+        an object literal, with the object type written in the signature
+      - NOTE on the order: compound types arrive only near the end of the
+        Functions part, so every exercise BEFORE that chapter is still solved
+        with parallel arrays. Only when the student is working on the compound
+        types chapter or later do objects become the better answer for several
+        values that belong to one thing
       - writing their own functions: a name, a parameter list, a body in
         braces, and a call that runs the body. Course rule for every function
         the student writes: EVERY parameter has a type, and the function has
@@ -473,7 +491,10 @@ fragments:
       - arrow functions
       - the array methods map, filter, forEach, and sort with a comparator
         function
-      - objects and classes
+      - classes: no class, no interface, no extends or implements, no new for
+        a type of their own, and no methods written into their own objects
+      - nested objects, destructuring, optional properties, union types, and
+        `type` for anything but an object shape
       - the ternary ?: operator, var
       - Promise.all and the spread operator ...
       - indexOf, join, and charAt — in this course the search is written by

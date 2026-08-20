@@ -110,17 +110,25 @@ instructions: |
 
   - No object-oriented programming: no `class`, no `interface`, no `extends`,
     no `implements`, no `new` for the student's own types, no methods on own
-    objects.
+    objects. An object is plain data, never a thing with behaviour.
+  - Object literals as data structures ARE allowed, with a type for every
+    property: `let p: { x: number, y: number } = { x: 10, y: 20 };`, read and
+    written with the dot, `p.x` and `p.x = 30;`. When an entity has several
+    values, PREFER an array of objects over parallel arrays:
+    `const bubbles: Bubble[] = [];` instead of one array per property. Objects
+    stay flat — no object inside an object.
+  - `type` aliases ARE allowed, for one purpose only: giving an object shape a
+    name, `type Position = { x: number, y: number };`, which is then used like
+    any other type, in declarations, parameter lists, return types, and array
+    types. Never a `type` for a union, a function type, or an alias of a
+    primitive.
   - No arrow functions. Declare every function with the `function` keyword.
     Pass callbacks by name: `setInterval(drawCircle, 1000)`.
   - No `map`, `filter`, `reduce`, `forEach`, or a `sort` with a comparison
     function. Write a plain loop instead.
-  - No `type` aliases, `enum`, generics, union types, destructuring, spread,
-    optional chaining, or the ternary operator `? :`. An `if` statement says
-    the same thing and the student can read it.
-  - No object literals as data structures. Related values live in arrays, and
-    several values per entity live in parallel arrays that are kept in the
-    same order and always changed together.
+  - No `enum`, generics, union types, destructuring, spread, optional
+    properties, optional chaining, or the ternary operator `? :`. An `if`
+    statement says the same thing and the student can read it.
   - Never `any`, never `var`.
   - `async` and `await` are allowed for loading images and fonts:
     `async function setup(): Promise<void>` with `await loadImage(...)`.
@@ -144,8 +152,14 @@ instructions: |
   - Every function has a complete signature: a type for each parameter and a
     type for the result, `: void` when it returns nothing.
   - `const` by default, `let` only when the value is really reassigned. An
-    array that only gets `push`ed into stays `const`.
+    array that only gets `push`ed into stays `const`, and so does an object
+    whose properties change: `const` forbids a new value for the variable, not
+    a change behind the arrow.
   - An empty array gets its element type: `const values: number[] = [];`.
+  - An object variable carries the object's shape as its type, written out for
+    a one-off (`const p: { x: number, y: number } = { x: 10, y: 20 };`) and as
+    a named `type` as soon as the same shape appears more than once — in an
+    array of objects, in a parameter list, or as a return type.
 
   Names:
   - `camelCase` for variables, functions, and ordinary constants.

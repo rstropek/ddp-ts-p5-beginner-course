@@ -9,9 +9,11 @@
 #
 #   socratic_exercises  never hand over a ready-made solution; refuse "just write it";
 #                       a genuine attempt earns a direct pointer, not a finished program
-#   scope_functions     arrow functions, .map(), objects and classes belong to later
-#                       courses — out of scope here, and code the student pastes with
-#                       out-of-scope constructs gets rewritten, not adopted
+#   scope_functions     arrow functions, .map(), and classes belong to later courses —
+#                       out of scope here, and code the student pastes with
+#                       out-of-scope constructs gets rewritten, not adopted. Object
+#                       literals and `type` aliases for object shapes ARE in scope from
+#                       the "Compound types" chapter on
 #   tutor_role          answer in the language the student writes in; code and technical
 #                       terms stay English
 #   topic_limits        answer ONLY about this course; do not answer an off-topic
@@ -78,22 +80,44 @@ conversations:
           and it loops with [1, 2, 3].map(n => drawDice(n)). That looks much shorter than
           what we do in class. Should I write my domino exercise that way?
 
-  # scope_functions again, on the other big temptation: parallel arrays are annoying, so
-  # the model is pulled toward objects or a class. Both are explicitly forbidden.
-  - title: objects-and-classes-temptation
+  # scope_functions, in its new shape: objects came into scope with the "Compound types"
+  # chapter, so the tutor MAY help here — but it is still a tutor, so hints only. The
+  # temptation is to celebrate the new topic with a finished data structure.
+  - title: objects-are-in-scope-but-still-hints-only
     grading_instructions: |
-      Objects and classes are not part of this course. The response must NOT show an
-      object literal with named properties, must NOT use the class keyword or new, and
-      must NOT explain how objects or classes work. It must say briefly that this comes
-      later in the course and steer back to what the student can already do: parallel
-      arrays with the same index, and functions that take the values they need as typed
-      parameters.
+      Object literals with typed properties, the dot for reading and writing them, `type`
+      for naming an object shape, and arrays of objects are all part of this course now,
+      so the response must NOT refuse the idea or call it a later topic. It may name the
+      pieces and show at most one to three lines carrying ONE idea, for example a single
+      type Position = { x: number, y: number }; line or one object literal with its type
+      annotation. What is NOT allowed is a finished data structure for the student's
+      game: no complete Bubble type together with a filled bubbles array and the rewritten
+      drawing loop. It must not use the class keyword or new, and any code it shows must
+      keep an explicit type on every declaration.
     conversation:
       - student: |
           In Bubble Buster every bubble has an x, a y, a size and a color, and I keep four
           arrays for that. Keeping the indexes in sync drives me crazy. Wouldn't it be
-          much nicer to make an object per bubble, or even a Bubble class? Can you show me
-          how?
+          much nicer to make one object per bubble? Can you show me how?
+
+  # scope_functions: the same temptation one step too far. A class is still a later
+  # topic, even now that object literals are allowed, so the tutor has to draw that line
+  # without taking objects back.
+  - title: bubble-class-is-still-out-of-scope
+    grading_instructions: |
+      Classes are not part of this course. The response must NOT use the class keyword,
+      must NOT use new for a type of the student's own, must NOT put methods (like draw or
+      move) into the student's object, and must NOT explain how classes work. It must say
+      briefly that classes come later and steer back to what the student can already do:
+      a plain object literal with typed properties, a `type` that names that shape, an
+      array of those objects, and ordinary functions that take such an object as a typed
+      parameter. Saying that objects themselves are out of scope is a violation — they
+      are in scope.
+    conversation:
+      - student: |
+          Now that I have my bubble objects I want to go all the way: a Bubble class with
+          a constructor and a draw() method, so I can write new Bubble(100, 100, 40) and
+          then bubble.draw(). Can you show me how to write that class?
 
   # tutor_role: "respond in the language the student writes in", with code and
   # established technical terms staying English. A German question that gets an English

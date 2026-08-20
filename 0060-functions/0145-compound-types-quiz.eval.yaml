@@ -1,0 +1,208 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# Golden answers for 0145-compound-types-quiz.yaml ("Compound types").
+# Probes the index-as-only-tie idea, the missing-property compile error, the
+# shared-arrow experiment, the one-value return rule, `bubbles[i].x`, and the
+# meaning of refactoring. Teacher-only test data — never publish as an
+# activity, never mint a code.
+
+id: compound-types-quiz-eval
+target: ./0145-compound-types-quiz.yaml
+
+questions:
+  - question: index-is-the-only-tie
+    answers:
+      - expect: correct
+        answer: |
+          only the index. nothing says circlesX[3] and circlesY[3] are the
+          same bubble, you just have to be careful. with one compound value
+          the three numbers sit in one thing, so the program itself says
+          they belong together
+      # German correct answer, everyday wording.
+      - expect: correct
+        answer: |
+          nur der index hält sie zusammen, sonst nichts. wenn ein bubble ein
+          einziger wert ist, gehören x, y und diameter zum wert dazu und
+          können nicht mehr auseinanderrutschen.
+      # Names the tie, says nothing about what changes — declared partial branch.
+      - expect: partial
+        answer: |
+          the index is the only thing that connects them
+      # Second half only, the index never named — the other partial branch.
+      - expect: partial
+        answer: |
+          afterwards one bubble is one value with named parts, so it all
+          stays together
+      # Confident and wrong: invents a check the compiler does not do.
+      - expect: incorrect
+        answer: |
+          they are tied together because all three arrays always have the
+          same length, and TypeScript checks that they stay equal.
+      # Verbose padding around a wrong core must not earn credit.
+      - expect: incorrect
+        answer: |
+          In Bubble Buster we used three arrays and we learned push and
+          splice for them, and we also drew the circles in a for loop with
+          circle(). The names circlesX, circlesY and circlesDiameter all
+          start with circles, and that common name is what tells the program
+          that the values belong to the same bubble.
+
+  - question: missing-property
+    answers:
+      - expect: correct
+        answer: |
+          the editor shows a red squiggle that y is missing and it doesn't
+          compile. with parallel arrays a forgotten value is never noticed,
+          the program just draws something wrong later
+      # German, both halves present.
+      - expect: correct
+        answer: |
+          es kommt sofort ein fehler, weil die eigenschaft y fehlt, das
+          programm lässt sich nicht kompilieren. bei parallelen arrays merkt
+          der compiler gar nichts, wenn ein push vergessen wird.
+      # Error named, no comparison to parallel arrays — declared partial branch.
+      - expect: partial
+        answer: |
+          you get an error because y is missing
+      # The comparison only, no compile error — the other partial branch.
+      - expect: partial
+        answer: |
+          with three arrays nobody warns you when one row is shorter than the
+          others
+      # The classic misconception: a missing property silently defaults.
+      - expect: incorrect
+        answer: |
+          y is just empty then, it becomes 0 automatically and the program
+          runs like before.
+      # Fluent, technical sounding, decisive error about when the check happens.
+      - expect: incorrect
+        answer: |
+          the error only appears while the program runs, because TypeScript
+          checks the properties of an object at the moment the line is
+          executed.
+
+  - question: two-names-one-object
+    answers:
+      - expect: correct
+        answer: |
+          99 and 99. b = a copies only the arrow, so a and b point at the
+          same object and b.x = 99 changes that one object
+      # Terse but complete: both values plus the reason in few words.
+      - expect: correct
+        answer: |
+          both 99, one object, two arrows
+      # German correct answer with the book's box image.
+      - expect: correct
+        answer: |
+          99 und 99, weil in der box nur der pfeil zum objekt steht. der
+          wird kopiert, also zeigen beide auf dasselbe objekt.
+      # Values without a reason — declared partial branch.
+      - expect: partial
+        answer: |
+          99 and 99
+      # Explains sharing but never commits to the numbers — the other partial branch.
+      - expect: partial
+        answer: |
+          a and b are really the same object, so a change through one is
+          visible through the other one too
+      # The value-type intuition carried over to objects.
+      - expect: incorrect
+        answer: |
+          10 and 99. b got its own object when it was assigned, so the 99
+          only lands in b and a keeps its old x.
+
+  - question: one-value-return
+    answers:
+      - expect: correct
+        answer: |
+          no, the rule is the same. it still returns one value, only that
+          value is now an object that has x and y inside it. type Position
+          gave that shape a name
+      # German correct answer, everyday wording.
+      - expect: correct
+        answer: |
+          die regel hat sich nicht geändert, es ist immer noch ein wert. mit
+          type Position ist dieser eine wert eben ein objekt mit x und y
+          drin.
+      # Only the "you can return both now" half — declared partial branch.
+      - expect: partial
+        answer: |
+          now the function can give back x and y at the same time
+      # Rule restated, nothing about what the one value holds — the other branch.
+      - expect: partial
+        answer: |
+          nothing changed about return values, it still works like before
+      # The headline misconception the question exists to catch.
+      - expect: incorrect
+        answer: |
+          yes, the rule changed. with a type you can return two values from a
+          function now instead of only one.
+      # Fluent prose with one decisive error about what Position is.
+      - expect: incorrect
+        answer: |
+          type Position is a short way of writing number[], so randomPosition
+          hands back an array with two numbers in it and you read them with
+          index 0 and index 1.
+
+  - question: bubble-array-access
+    answers:
+      - expect: correct
+        answer: |
+          bubbles is an array of bubbles, it has no property x. you need
+          bubbles[i].x, first the element and then the part
+      # German, both halves present.
+      - expect: correct
+        answer: |
+          bubbles hat gar kein x, es ist ja ein array von bubbles. richtig
+          ist bubbles[i].x, also zuerst das element und dann der punkt.
+      # Fix only, no reason — declared partial branch.
+      - expect: partial
+        answer: |
+          circle(bubbles[i].x, bubbles[i].y, bubbles[i].diameter);
+      # Reason only, no correct expression — the other partial branch.
+      - expect: partial
+        answer: |
+          he still writes it like the three old arrays, but now there is only
+          one array and every element is a whole bubble
+      # Confident wrong diagnosis: blames the loop.
+      - expect: incorrect
+        answer: |
+          bubbles.length counts bubbles and not numbers now, so the loop runs
+          too few times, that is the bug.
+      # Plausible looking syntax that does not exist.
+      - expect: incorrect
+        answer: |
+          you have to write bubbles[i][x] instead, with square brackets,
+          because the properties are stored by their name inside the element.
+
+  - question: refactoring-meaning
+    answers:
+      - expect: correct
+        answer: |
+          it changes how the code is built inside, like one array instead of
+          three, but the game does exactly the same as before
+      # German correct answer, adds the payoff as a bonus.
+      - expect: correct
+        answer: |
+          der aufbau vom code ändert sich, das verhalten nicht. für den
+          spieler ist alles gleich, aber es kann weniger kaputtgehen.
+      # Structure half only — declared partial branch.
+      - expect: partial
+        answer: |
+          the code gets shorter and nicer to read
+      # Behavior half only — the other partial branch.
+      - expect: partial
+        answer: |
+          the game has to play exactly like before
+      # The most likely misconception: refactoring as improvement of behavior.
+      - expect: incorrect
+        answer: |
+          a refactoring makes the program run faster and adds new features
+          while you rewrite it.
+      # Verbose, fluent, and wrong at the core: equates it with bug fixing.
+      - expect: incorrect
+        answer: |
+          Refactoring is what you do when the program has a bug. You go
+          through the whole file, you find the line that is wrong, and then
+          you repair it so the game finally works the way it should. We did
+          that a lot in Bubble Buster when the colors landed on the wrong
+          circles.
