@@ -23,21 +23,21 @@ this part is the place to ask about it.
 Think back to the crosshairs: p5.js runs `mouseMoved` again and again,
 once for every movement of the mouse. Any constant you declare inside
 `mouseMoved` is created fresh in every run and forgotten the moment the
-run ends. For the crosshairs that was perfectly fine, because every run
+run ends. For the crosshairs that was fine, because every run
 computed everything it needed from `mouseX` and `mouseY`.
 
 The color worm needs something more. Its hue should move along the hue
 scale step by step: 0 in the first run of `mouseMoved`, then 5, then 10,
 and so on. Each run must know where the previous run stopped, and a
-`const` can't provide that: its value is set once and never changes, and
-inside a function it doesn't even survive to the next call. You need a
-box whose content can be replaced, and one that stays alive between
-calls.
+`const` can't provide that, because its value is set once and never
+changes, and inside a function it doesn't even survive to the next call.
+You need a box whose content can be replaced, and one that stays alive
+between calls.
 
 ## `let` declares a variable {#sec-let}
 
 In the snapping chapter you read that TypeScript has a keyword for values
-that must change: `let`. Here it is in action:
+that must change. Here `let` is in action:
 
 ```typescript
 let colorHue: number = 0;
@@ -47,8 +47,8 @@ let colorHue: number = 0;
 declaration names its data type.](images/let-declaration.svg){width=460}
 
 The pattern is exactly the pattern of a `const` declaration; only the
-keyword changed, and with it the promise: `const` says "this value never
-changes", `let` says "this value may be replaced later". A named place
+keyword changed, and with it the promise. `const` says "this value never
+changes", and `let` says "this value may be replaced later". A named place
 whose value can change while the program runs is a **variable**, and
 unlike `mouseX` and `mouseY`, which p5.js manages for you, this one is
 entirely yours.
@@ -56,8 +56,8 @@ entirely yours.
 ::: {.callout-note}
 ## You may also meet var
 Old JavaScript code declares variables with a third keyword, `var`. It
-comes from the language's early days, and in this course it is not
-used: declare every value with `const` or `let`, never with `var`.
+comes from the language's early days, and this course doesn't use
+it: declare every value with `const` or `let`, never with `var`.
 :::
 
 Replacing the value is called an **assignment**, and it's just the name,
@@ -67,7 +67,7 @@ an equals sign, and the new value:
 colorHue = 90;
 ```
 
-No `let` here: the variable is declared exactly once, and every later
+No `let` here. The variable is declared exactly once, and every later
 assignment only uses its name. The assignment the worm needs looks
 stranger:
 
@@ -80,14 +80,14 @@ then the result replaces the value in the
 box.](images/assignment.svg){width=440}
 
 In math class, `colorHue = colorHue + 5` would be nonsense: no number
-equals itself plus five. But an assignment is not an equation, it's an
+equals itself plus five. But an assignment is not an equation; it's an
 order, carried out in the two steps of the picture. If `colorHue` holds
 40, the right side gives 45, and 45 replaces the 40. Run the line again
 and 50 replaces the 45. That's the stepping-forward you were missing.
 
 ## Global variables {#sec-global-variables}
 
-Where should the declaration go? Not inside `mouseMoved`: there the
+The declaration must not go inside `mouseMoved`. There the
 variable would be newly created, set to 0, in every single run, and the
 hue would be stuck at the start of the scale forever. The declaration has
 to sit **outside of every function**, at the top of your program:
@@ -105,7 +105,7 @@ function mouseMoved() {
 ```
 
 A variable declared outside of every function is called a **global
-variable**. It's created once, when the program starts, every function in
+variable**. It's created once, when the program starts. Every function in
 your program can read and change it, and, most importantly here, it keeps
 its value between function calls. When one run of `mouseMoved` sets
 `colorHue` to 45, the next run finds the 45 still in the box.
@@ -114,7 +114,7 @@ That power comes with a warning. In a large program, a global variable
 can be changed from anywhere, and finding out who changed it when becomes
 detective work. So professionals follow a clear rule, and you should too:
 prefer `const`, prefer local declarations inside functions, and reach for
-a global variable only when a value truly must survive between function
+a global variable only when a value must survive between function
 calls. The color worm is exactly such a case.
 
 ## Counting in circles: the % operator {#sec-modulo}
@@ -122,21 +122,21 @@ calls. The color worm is exactly such a case.
 One problem is left. `colorHue + 5` grows without end: 350, 355, 360,
 365, and up and up, right past the end of the hue scale. What the worm
 wants instead is a counter that runs in circles, like the hue scale
-itself: after 355 it should return to 0 and start the rainbow again.
+itself. After 355 it should return to 0 and start the rainbow again.
 
 TypeScript has an operator for exactly that. The **`%` operator** (called
 **modulo**) gives the remainder of a division: `7 % 3` is 1, because 7
-divided by 3 is 2 with a remainder of 1. Two properties make it perfect
+divided by 3 is 2 with a remainder of 1. Two properties make it right
 for the worm. As long as a value is smaller than 360, `% 360` changes
-nothing: `355 % 360` is simply 355. But the moment the value reaches 360,
-the remainder wraps around to the start: `360 % 360` is 0.
+nothing, so `355 % 360` is simply 355. But the moment the value reaches 360,
+the remainder wraps around to the start, and `360 % 360` is 0.
 
 ```typescript
 colorHue = (colorHue + 5) % 360;
 ```
 
-The parentheses matter: they make sure the addition happens before the
-`%` is applied. Follow the line through the interesting spot: `colorHue`
+The parentheses matter, because they make sure the addition happens before
+the `%` is applied. Follow the line through the interesting spot: `colorHue`
 holds 355, the right side computes 355 + 5 = 360, then 360 % 360 = 0, and
 0 lands in the box. The next circle is red again, and the rainbow starts
 over.
@@ -166,7 +166,7 @@ predict what the program will do before you run it. If the screen later
 matches your notes, you know you understood the code. If it doesn't,
 you've found a bug or a misunderstanding, and both are worth finding.
 
-The hue counter is a perfect first case. On screen, the wrap from 355
+The hue counter is a good first case. On screen, the wrap from 355
 back to 0 flashes by in a single mouse movement, far too fast to see. On
 paper, you can slow it down: put 355 into the formula and watch the
 modulo do its work.
@@ -204,8 +204,8 @@ Time to grow the worm:
    the assignment that moves the hue forward and wraps it at 360.
 5. **Test and play.** Move the mouse slowly, then quickly: fast movements
    leave gaps between the circles, because `mouseMoved` runs once per
-   movement event, not once per pixel. Then check your paper prediction:
-   does the rainbow really repeat? To finish, change the step of 5 to 1
+   movement event, not once per pixel. Then check your paper prediction.
+   Does the rainbow really repeat? To finish, change the step of 5 to 1
    and then to 20, and watch what happens to the worm's stripes.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/color_worm.yaml >}}

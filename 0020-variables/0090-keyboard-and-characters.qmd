@@ -37,7 +37,7 @@ kinds of thing:
   work like `mouseClicked`, which you already know: you write the function, and
   p5.js calls it when the matching thing happens.
 - **Four system variables**, `key`, `keyCode`, `code`, and `keyIsPressed`. They
-  work like `mouseX` and `mouseY`. You do not set them, you read them.
+  work like `mouseX` and `mouseY`. You read them; you never set them.
 - **One helper function**, `keyIsDown`.
 
 That list is all you get from this book. What each one does, when p5.js calls
@@ -173,7 +173,7 @@ Before you start, keep one thing apart in your head. The number that p5.js gives
 you for a key press identifies a **key on your keyboard**, not a character. That
 is why the arrow keys have numbers too, although they write nothing at all. For
 the letters and the digits the two happen to agree, and that is exactly the
-puzzle worth pulling on.
+puzzle worth looking into.
 
 ## Bits, bytes, and the notation you will meet {#sec-bytes-recap}
 

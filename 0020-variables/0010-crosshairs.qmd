@@ -4,13 +4,14 @@ title: "Variables: values with a name"
 
 ![The finished crosshairs, resting in the middle of the canvas and ready to take aim.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/crosshairs.png){width=360}
 
-This is your first interactive program. You'll build a set of crosshairs, two thin lines (one horizontal, one vertical) crossing at a single point, wrapped by two circles like an aiming reticle in a game. And they won't sit still: as you slide the pointer around the canvas, the whole crosshairs glides along with it, always centred right where you're pointing.
+This is your first interactive program. You'll build a set of crosshairs, two thin lines (one horizontal, one vertical) crossing at a single point, wrapped by two circles like an aiming reticle in a game. And they won't sit still: as you slide the pointer around the canvas, the whole crosshairs glides along with it, always centered right where you're pointing.
 
 Every program you've written so far draws one picture, and that picture never
-changes. The house stands still, the rings don't move, the smiley keeps
-smiling. In this part of the course your programs come alive: they react to
-the mouse, values change while the program runs, and the picture changes with
-them. The idea that makes all of this possible is the **variable**.
+changes. The house stands still. The rings don't move, and the smiley keeps
+smiling. In this part of the course your programs come alive. They react to
+the mouse, and when a value changes while the program runs, the picture
+changes with it. The idea that makes all of this possible is the
+**variable**.
 
 ## AI tutor {#sec-tutor-crosshairs}
 
@@ -24,13 +25,13 @@ teaches, so from now on you can ask it about variables too.
 
 A variable is a place in the computer's memory where a value is stored, with
 a name attached to it. Think of a small box with a label: the label is the
-name, and inside the box lies the current value. Whenever your code uses the
+name, and inside the box sits the current value. Whenever your code uses the
 name, the computer opens the box and takes out whatever is inside *right
-now*. The word "variable" comes from *vary*: the content of the box can
-change while the program runs.
+now*. The word "variable" comes from *vary*, because the content of the box
+can change while the program runs.
 
 You've already met a close relative. In the soccer field project you used
-`SCALE` and `MARGIN`: named values that are set once and never change.
+`SCALE` and `MARGIN`, named values that are set once and never change.
 Those are **constants**. A variable works the same way, with one difference:
 its value may be replaced while the program is running. That difference
 sounds small, but it's exactly what a still picture needs to become an
@@ -44,7 +45,7 @@ create them and you never change them yourself: p5.js does that, and your
 code just reads them by name.
 
 The two system variables you'll use today are `mouseX` and `mouseY`. They
-always contain the current position of the mouse on the canvas: `mouseX` is
+always contain the current position of the mouse on the canvas. `mouseX` is
 the distance from the left edge, `mouseY` the distance from the top edge.
 Move the mouse, and p5.js immediately puts the new position into the two
 boxes. So this statement draws a circle wherever the mouse is at the moment
@@ -54,10 +55,9 @@ the statement runs:
 circle(mouseX, mouseY, 20);
 ```
 
-One more thing worth noticing: the value inside `mouseX` is always a
-*number*. Every value in a program has a **data type**, the kind of value it
-is, and for `mouseX` and `mouseY` that type is `number`. You'll learn more
-about data types in the next chapter.
+The value inside `mouseX` is always a *number*. Every value in a program has
+a **data type**, the kind of value it is, and for `mouseX` and `mouseY` that
+type is `number`. You'll learn more about data types in the next chapter.
 
 ## Code that runs when something happens {#sec-mouse-moved}
 
@@ -66,8 +66,8 @@ Reading `mouseX` is only half the story. All your code so far lives in the
 starts. If you draw a circle at `mouseX` inside `setup`, you get one circle
 at the mouse's starting position, and nothing ever moves again.
 
-To follow the mouse, you need code that runs again and again. p5.js has an
-elegant solution: write a function called `mouseMoved`, and p5.js calls it
+To follow the mouse, you need code that runs again and again. p5.js gives you
+a way to do that. Write a function called `mouseMoved`, and p5.js calls it
 automatically **every time the mouse moves across the canvas**. You write that
 function exactly like `setup`, with the word `function`, a name, and the
 statements between curly braces. Only the name is different, and the name is
@@ -84,12 +84,12 @@ function mouseMoved() {
 }
 ```
 
-A function like `mouseMoved` is called an **event function**: the movement
-of the mouse is an *event*, and p5.js reacts to the event by running your
-function. The program now works like this: `setup` runs once and creates the
-canvas. Then the program waits. Every time you move the mouse even one pixel,
-p5.js runs `mouseMoved` once, and your drawing code runs with the fresh
-values in `mouseX` and `mouseY`.
+A function like `mouseMoved` is called an **event function**, because the
+movement of the mouse is an *event*, and p5.js reacts to the event by running
+your function. The program now works like this: `setup` runs once and
+creates the canvas. Then the program waits. Every time you move the mouse
+even one pixel, p5.js runs `mouseMoved` once, and your drawing code runs
+with the fresh values in `mouseX` and `mouseY`.
 
 Exactness matters here in a sneaky new way. The name `mouseMoved` is an
 agreement between you and p5.js. If you type `mousemoved` or `MouseMoved`,
@@ -97,7 +97,7 @@ you don't get an error message: you simply get a function that p5.js never
 calls, and nothing happens when you move the mouse. If your program stays
 silent, check the spelling of the function name first.
 
-Did you spot the `background("lightblue")` at the top of `mouseMoved`? It
+Look at the `background("lightblue")` at the top of `mouseMoved`. It
 repaints the whole canvas on every mouse movement, and that erases the
 circle from the previous position. Without that line, every position leaves
 its circle behind and the canvas fills up with smears. Try removing the line
@@ -113,9 +113,10 @@ the canvas.
 
 ## Calculating inside a parameter {#sec-offset-calculations}
 
-Crosshairs are more than a dot at the mouse position: a horizontal line, a
-vertical line, and two circles, all centered on the mouse. The horizontal
-line should start 15 pixels left of the mouse and end 15 pixels right of it.
+Crosshairs are more than a dot at the mouse position. You draw a horizontal
+line, a vertical line, and two circles, all centered on the mouse. The
+horizontal line should start 15 pixels left of the mouse and end 15 pixels
+right of it.
 The command `line` takes four parameters, the x and y of its starting point
 followed by the x and y of its end point. You don't need to know the mouse
 position in advance for either of them, because a parameter can contain a
@@ -128,7 +129,7 @@ line(mouseX - 15, mouseY, mouseX + 15, mouseY);
 When the statement runs, the computer takes the current value of `mouseX`,
 subtracts 15 for the starting point, adds 15 for the end point, and draws
 the line. Say the mouse is at (120, 80): the line runs from (105, 80) to
-(135, 80), exactly 30 pixels wide and perfectly centered. The vertical line
+(135, 80), exactly 30 pixels wide and centered on the mouse. The vertical line
 works the same way, with the calculation on `mouseY`.
 
 ![The two lines of the crosshairs. Every end point is a small calculation
@@ -162,7 +163,7 @@ you as a model:
 
 The second column is the important one: you can't write a plain number there,
 because the center moves. The formula *is* the coordinate. The last two
-columns are practice at reading a formula: you play the part of the computer,
+columns are practice at reading a formula. You play the part of the computer,
 put a value into `mouseX` and `mouseY`, and work out what the parameter
 becomes.
 
@@ -177,7 +178,7 @@ Then head to the playground:
    design your own crosshairs, as long as everything stays centered on the
    mouse.
 4. Test what you can actually see. Nobody can place a mouse on the pixel
-   (120, 80) by hand, so test the *behavior* instead: move the pointer
+   (120, 80) by hand, so test the *behavior* instead. Move the pointer
    slowly all over the canvas and check that the crossing point stays right
    under the tip of the pointer, that the arms keep the same length in all
    four directions, and that the circles stay centered on the crossing

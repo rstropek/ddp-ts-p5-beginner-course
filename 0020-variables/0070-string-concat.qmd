@@ -57,7 +57,7 @@ function mouseClicked() {
 }
 ```
 
-Look closely at the assignment: it's the exact same pattern as
+Look closely at the assignment. It's the exact same pattern as
 `colorHue = (colorHue + 5) % 360` in the color worm, just with text
 instead of a number. The computer first builds the string on the right
 side, starting with whatever `clickPositions` holds right now, and then
@@ -68,8 +68,8 @@ into `0/0, 120/80, 30/190`. The string grows with every click.
 
 And like the worm's hue, the protocol must survive between event calls,
 so `clickPositions` has to be a global variable, declared with `let`
-outside of every function. Its data type is `string`: variables aren't
-limited to numbers, a variable can hold a value of any type.
+outside of every function. Its data type is `string`, because a variable
+isn't limited to numbers. It can hold a value of any type.
 
 ## A text box that wraps {#sec-text-wrapping}
 
@@ -103,10 +103,10 @@ top still lists *every* click since the program started.
 
 The two behaviors don't contradict each other. Whatever you draw on the
 canvas is just paint: repaint the background and it's gone. The protocol
-survives because it's not stored on the canvas at all, it's stored in the
+survives because it isn't stored on the canvas at all. It's stored in the
 variable `clickPositions`, and it's drawn onto the canvas again, freshly
 and completely, after every click. Drawing something is not the same as
-remembering it: variables remember, the canvas only shows.
+remembering it. Variables remember, and the canvas only shows.
 
 ## Your exercise: String concat {#sec-string-concat-exercise}
 

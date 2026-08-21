@@ -4,13 +4,13 @@ title: "Build your own color picker"
 
 ![The finished color picker: the top half previews colors while the mouse moves, the bottom half keeps the color chosen with the last click, and the corner lists its HSB values.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0020-Variables/color_picker.png){width=360}
 
-In the chapter about mixing colors you used an online color picker: point
-at a color, read off its numbers. By now you know enough to build one
-yourself. The project brings together almost everything from this part:
-mouse events, the HSB color model, the system variables `width` and
+In the chapter about mixing colors you used an online color picker, where
+you point at a color and read off its numbers. By now you know enough to
+build one yourself. The project brings together almost everything from this
+part: mouse events, the HSB color model, the system variables `width` and
 `height`, constants with explicit types, and text output with a template
-string. And it hides a small surprise: the program remembers your chosen
-color without a single variable of your own.
+string. And it hides a small surprise, because the program remembers your
+chosen color without a single variable of your own.
 
 ## AI tutor {#sec-tutor-color-picker}
 
@@ -37,10 +37,10 @@ program.
 
 Look at the measurements in the layout picture. The canvas is 360 pixels
 wide, and the hue scale runs from 0 to 360. The top half is 100 pixels
-tall, and saturation runs from 0 to 100. That is no coincidence, it's the
-whole trick of this program: the mouse position doesn't have to be
-converted at all, it *is* the color. `mouseX` is the hue, `mouseY` is the
-saturation, and the brightness simply stays at 100:
+tall, and saturation runs from 0 to 100. That is no coincidence. It's the
+whole trick of this program. The mouse position doesn't have to be
+converted at all, because it *is* the color. `mouseX` is the hue, `mouseY`
+is the saturation, and the brightness simply stays at 100:
 
 ```typescript
 function mouseMoved() {
@@ -51,7 +51,7 @@ function mouseMoved() {
 
 The `rect` statement covers exactly the top half: its corner is (0, 0),
 its width is the canvas width, and its height is half the canvas height.
-Notice what is *not* here: no `background` call. The rectangle repaints
+Notice what is *not* here. There is no `background` call. The rectangle repaints
 the whole preview by itself, and the bottom half must not be erased
 anyway, because it holds the chosen color.
 
@@ -90,11 +90,11 @@ A saturation of 200 doesn't exist; the scale ends at 100. The function
 `min` from the responsive robot chapter solves that: `min(a, b)` returns
 the smaller of the two values, so `min(100, mouseY)` caps the saturation
 at 100. In the top half, where `mouseY` is at most 100, `min` changes
-nothing. Used like this, `min` is a guard: it keeps a value inside its
+nothing. Used like this, `min` is a guard that keeps a value inside its
 allowed range.
 
 With the two constants in hand, the rest of `mouseClicked` is drawing you
-know: set `fill(colorHue, colorSaturation, 100)`, cover the bottom half
+already know. Set `fill(colorHue, colorSaturation, 100)`, cover the bottom half
 with a `rect`, then switch the fill to black and write the values with a
 template string:
 
@@ -112,7 +112,7 @@ The program remembers the chosen color between events, across hundreds of
 `mouseMoved` calls, and yet it declares no global variable. The memory is
 the paint itself: nothing ever repaints the bottom half except the next
 click, so the color simply stays on the canvas. That works here because
-the program only has to remember one single thing, and that thing is
+the program only has to remember one thing, and that thing is
 literally a color. In the next chapter, a program has to remember a
 growing list of values, and there paint alone won't be enough.
 

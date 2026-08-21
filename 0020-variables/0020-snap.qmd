@@ -6,13 +6,14 @@ title: "Your first formula: snapping to a grid"
 
 You'll build a little marker that chases your mouse across the canvas. But it won't glide there smoothly: instead it jumps in fixed steps, clicking into place at the points of an invisible grid. As it moves, a small label in the corner shows its position, always landing on neat, round numbers.
 
-Open a presentation program and drag a shape around: it doesn't move
-smoothly, it jumps in small steps, so that shapes line up neatly without
-fiddling. This behavior is called **snapping**: the shape snaps to an
+Open a presentation program and drag a shape around. Instead of moving
+smoothly, the shape jumps in small steps, so that shapes line up neatly
+without fiddling. This behavior is called **snapping**: the shape snaps to an
 invisible grid. In this chapter you build exactly that. A marker follows the
 mouse, but instead of following it pixel by pixel, it jumps from grid corner
 to grid corner, every 40 pixels. To get there, you'll declare your own
-constants, meet data types properly, and write your first real formula.
+constants and meet data types properly. Then you'll write your first real
+formula.
 
 ## AI tutor {#sec-tutor-snap}
 
@@ -43,13 +44,13 @@ statement, as always.
 
 You saw the advantages of constants in the soccer field project: a name like
 `snap` tells the reader what the number *means*, and the value lives in one
-single place. Change the 40 to 50 and the whole program uses the new grid
-size. TypeScript also protects a constant: if a later line tries to give
+place. Change the 40 to 50 and the whole program uses the new grid
+size. TypeScript also protects a constant. If a later line tries to give
 `snap` a new value, you get a red squiggle immediately.
 
 ## Every value has a data type {#sec-data-types}
 
-Every value in a program has a data type: the kind of value it is. Three
+Every value in a program has a data type, the kind of value it is. Three
 types matter most in this course:
 
 - **`number`** is any numeric value: 40, 3.25, -10, 0. Every coordinate,
@@ -58,7 +59,7 @@ types matter most in this course:
   strings since your very first program: every color name like
   `"lightblue"` is a string.
 - **`boolean`** is the smallest type of all: its only values are `true` and
-  `false`. Booleans answer yes/no questions, and they'll take the stage in a
+  `false`. Booleans answer yes/no questions, and you'll meet them in a
   few chapters.
 
 The data type in a declaration is a promise: `const snap: number = 40;`
@@ -70,8 +71,8 @@ line immediately, because text is not a number.
 ## Course rule: every declaration gets a data type
 In this course, **every constant and every variable you declare must have an
 explicit data type**, like `: number` or `: string`. Honestly, this is not
-technically necessary: TypeScript can usually figure out the type on its own
-(it sees the 40 and knows it's a number). But you are here to learn, and
+technically necessary, because TypeScript can usually figure out the type on
+its own (it sees the 40 and knows it's a number). But you are here to learn, and
 writing the type out forces you to think, every single time, about what kind
 of value you're working with. That habit will pay off for years. Like
 showing your work in math class: the shortcut exists, but not while you're
@@ -80,9 +81,9 @@ learning.
 
 ## Two kinds of constants, two kinds of names {#sec-const-naming}
 
-Look at the names `SCALE` and `snap`. Both are constants, so why is one
-written in capital letters and the other one not? Because programmers use
-constants for two different jobs, and the name shows the job:
+Look at the names `SCALE` and `snap`. Both are constants, but one is written
+in capital letters and the other one is not. Programmers use constants for
+two different jobs, and the name shows the job:
 
 - **Global configuration constants** like `SCALE` and `MARGIN` in the soccer
   field project sit at the top of the program, outside every function. They
@@ -95,8 +96,8 @@ constants for two different jobs, and the name shows the job:
   camelCase: first word lowercase, every further word capitalized.
 
 The computer doesn't care about these conventions, but people reading your
-code do: an ALL_CAPS name signals "program setting, tweak me here", a
-camelCase `const` just signals "this value won't change". Make `const` your
+code do. An ALL_CAPS name signals "program setting, tweak me here". A
+camelCase `const` signals "this value won't change". Make `const` your
 default choice. For the rare value that must change while the program runs,
 TypeScript has the keyword `let`, and you'll meet it soon.
 
@@ -115,7 +116,7 @@ You can find it in three steps, and each step is simple:
 3. **Multiply** back by the grid size: 3 × 40 = 120. That's the corner's
    position in pixels.
 
-Rounding is done by the p5.js function `round`: `round(3.25)` returns 3,
+The p5.js function `round` does the rounding for you. `round(3.25)` returns 3,
 `round(3.6)` returns 4, and `round(3.5)` rounds up to 4, just like in math
 class. Put the three steps together and you get your first formula, written
 in one line and stored in a constant:
@@ -129,11 +130,11 @@ const y: number = round(mouseY / snap) * snap;
 squares from the edge and snaps back to 120; 145 is 3.625 squares and snaps
 forward to 160.](images/snap-number-line.svg){width=460}
 
-Why store the result in a constant instead of writing the formula directly
-into every parameter? Three reasons: you need the value several times (for
-both marker lines and for a text output), the computer calculates it only
-once, and `x` with a formula next to it is much easier to read than the same
-formula repeated four times. Note the names: `x` and `y` are camelCase
+Storing the result in a constant beats writing the formula into every
+parameter. You need the value several times, for both marker lines and for
+the text output, and the computer then calculates it only once. A name like
+`x` with the formula next to it also reads better than the same formula
+repeated four times. Note the names: `x` and `y` are camelCase
 constants inside a function, computed fresh on every mouse movement, and
 never changed after that.
 
@@ -150,12 +151,12 @@ position you choose:
 text("hello", 5, 195);
 ```
 
-The first parameter is a string, the two numbers are the position of the
+The first parameter is a string, and the two numbers are the position of the
 text on the canvas. Text is drawn in the current `fill` color, so set
 `fill` before drawing it, and use `noStroke()`, which switches the outline
 off, so the letters don't get one.
 
-The second tool solves this puzzle: `x` and `y` are numbers, but `text`
+The second tool solves this puzzle. `x` and `y` are numbers, but `text`
 wants a string. A **template string** builds one from the other:
 
 ```typescript
@@ -167,8 +168,8 @@ Inside it, `${...}` is a window: the computer inserts the current value of
 whatever is between the braces. If `x` is 120 and `y` is 160, the result is
 the string `120/160`.
 
-![The template string piece by piece: each window is replaced by a current
-value, the character between them is copied as it
+![The template string piece by piece. Each window is replaced by a current
+value, and the character between them is copied as it
 is.](images/template-string.svg){width=440}
 
 ::: {.callout-tip}
@@ -176,21 +177,21 @@ is.](images/template-string.svg){width=440}
 On an Austrian or German keyboard, the backtick `` ` `` hides on the key
 right of the ß: press Shift together with that key, then press the space
 bar once. The extra space is needed because it's an accent key
-(*Akzenttaste*): the keyboard waits to see if you want to put the accent on
+(*Akzenttaste*). The keyboard waits to see if you want to put the accent on
 a letter, and the space bar says "no letter, just the character itself".
 :::
 
 One detail in that statement deserves a close look: `height - 5`. Where
 `mouseX` and `mouseY` were your first system variables, `width` and
-`height` are your next two: they always hold the size of the canvas, as set
+`height` are your next two. They always hold the size of the canvas, as set
 by `createCanvas`. So `height - 5` means "5 pixels above the bottom edge",
-no matter how big the canvas is. Remember these two variables: they play
-the main role in the next chapter.
+no matter how big the canvas is. Remember these two variables, because they
+play the main role in the next chapter.
 
 ## Seeing the exact mouse position {#sec-position-readout}
 
-Here is a practical problem that shows up the moment you test a program with
-your paper notes in hand: you cannot put the mouse on the pixel (130, 45) by
+A practical problem shows up the moment you test a program with your paper
+notes in hand. You cannot put the mouse on the pixel (130, 45) by
 hand. The canvas has no ruler, one pixel is far smaller than the tip of the
 pointer, and nothing on the screen tells you where you actually are.
 
@@ -206,8 +207,8 @@ left corner and updates as you move. Hitting an exact position is easy now:
 move roughly to where you want to be, watch the numbers, and nudge the mouse
 until they read what your paper says. Then check the rest of the picture.
 
-One thing to watch: text is paint like everything else, so debug output that
-is never erased turns into a smeared blob after a few movements. In a
+Watch out for one thing. Text is paint like everything else, so debug output
+that is never erased turns into a smeared blob after a few movements. In a
 function that repaints the canvas anyway, like `mouseMoved` in this program,
 the old numbers disappear with everything else. In a function that doesn't
 repaint, clear just the spot you write in: draw a small filled rectangle
@@ -232,7 +233,7 @@ Time to build the snapping marker. Work in this order:
 * **Calculate by hand.** Five mouse positions on the 200 by 200 canvas are
   waiting in the table below. Run the formula on paper for each one: divide,
   round, multiply. The first row is filled in as a model. Watch the last row
-  closely: 2.5 rounds up, just like in math class.
+  closely, because 2.5 rounds up, just like in math class.
 
     | Mouse position | Snap | x / Snap          | y / Snap          | Snapped position              |
     |--------------------|------|----------------|----------------|-----------------------------|

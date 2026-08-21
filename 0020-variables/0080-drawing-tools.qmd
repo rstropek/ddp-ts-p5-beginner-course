@@ -4,7 +4,7 @@ title: "Practice projects: circle tool and rect tool"
 
 ![The finished circle tool: colored quadrants, helper lines, both diameters as labels, and the area in the corner.](images/circle-tool-final.png){width=380}
 
-This part closes the way the last one did: with practice projects written
+This part closes the way the last one did, with practice projects written
 as job briefings. Imagine you are part of a team building a graphical
 design application, and your job is to implement two drawing tools, one
 for ellipses and one for rectangles. Between them, the two tools use
@@ -59,7 +59,7 @@ a height of their own, and that is exactly what the tool needs.
 of the center, and a width of -140 makes no sense. The helper function
 `abs` returns the absolute value of a number: `abs(-70)` is 70, and
 `abs(70)` is also 70. It belongs to the same family of calculating
-functions as `round` and `min`: it draws nothing, it computes something
+functions as `round` and `min`. It draws nothing and only computes a value
 for you.
 
 **`PI` is $\pi$, ready to use.** For the area you need $\pi$, and p5.js provides
@@ -128,11 +128,11 @@ Work the way you've practiced all through this part:
 
 ## The transfer: a rect tool {#sec-rect-tool}
 
-The second briefing comes from the same team: the users also want a
+The second briefing comes from the same team. The users also want a
 rectangle tool. The rules match the circle tool almost line for line. The
-rectangle stays centered on the canvas, responsive as always. Its width
-and height are controlled by the mouse exactly as before: distance to the
-center, times two. The lower left corner shows `Area: 123`, and a
+rectangle stays centered on the canvas, responsive as always. The mouse
+controls its width and height exactly as before, distance to the
+center times two. The lower left corner shows `Area: 123`, and a
 rectangle makes that easier: width times height, no $\pi$ needed.
 
 ![The basic rect tool: a centered rectangle sized by the mouse, with its area in the corner.](images/rect-tool-basic.png){width=420}
@@ -151,9 +151,9 @@ color.
 
 ![The finished rect tool: colored sides, diagonals, dimension labels, and the area.](images/rect-tool-final.png){width=420}
 
-Here is the real challenge of this second project: you have already
-solved every single sub-problem once. So try to build the rect tool with
-as few looks at the sample solution as possible, best with none at all.
+The real challenge of this second project is that you have already
+solved every sub-problem once. So try to build the rect tool with
+as few looks at the sample solution as possible, ideally none at all.
 When you get stuck, don't open the solution first; open your own circle
 tool code, find the matching piece, and ask yourself what has to change
 for a rectangle.

@@ -5,7 +5,7 @@ title: "Mixing colors with numbers"
 Pick any color you can imagine: the deep orange of a sunset, the pale green
 of mint ice cream, the exact blue of your favorite hoodie. By the end of
 this chapter you can put every one of them on the canvas. There's no big
-program to build this time: this chapter is a series of short color
+program to build this time. This chapter is a series of short color
 experiments, and what you take away from it is a skill you'll use in every
 project from now on.
 
@@ -25,10 +25,10 @@ part for another explanation and another example.
 
 ## A color name is a string {#sec-color-names}
 
-You've been using colors since your very first program: every
+You've been using colors since your very first program. Every
 `background("lightblue")` and every `fill("red")` hands a **string** to
 p5.js, and the browser looks up the color behind the name. The browser
-knows about 150 such names, and some of them are wonderfully specific:
+knows about 150 such names, and some of them are wonderfully specific, like
 `"papayawhip"`, `"lemonchiffon"`, or `"mediumspringgreen"`. You can browse
 the [complete list of color names](https://htmlcolorcodes.com/color-names/)
 and try them right away:
@@ -60,7 +60,7 @@ Each of the three values runs from 0 (light off) to 255 (light at full
 power). The odd-looking maximum has a simple reason: the computer stores
 each value in one **byte** of memory, and a byte can hold exactly 256
 different values, from 0 to 255. Three values with 256 steps each give
-256 × 256 × 256 combinations: the 16.7 million colors from the beginning
+256 × 256 × 256 combinations, the 16.7 million colors from the beginning
 of the chapter.
 
 ```typescript
@@ -90,18 +90,18 @@ In art class, mixing all colors gives a muddy brown, and yellow comes
 straight from the tube. Light behaves differently: red and green light
 together make yellow, all three lights at full power make white, and all
 three switched off make black. Try `background(255, 255, 0)` and
-`background(255, 255, 255)` to see both effects. Your screen mixes light,
-your paint box mixes pigment; keep the two rule sets apart.
+`background(255, 255, 255)` to see both effects. Your screen mixes light and
+your paint box mixes pigment, so keep the two rule sets apart.
 :::
 
-One RGB pattern is worth knowing by heart: when all three values are
+One RGB pattern is worth knowing by heart. When all three values are
 equal, the result is a shade of gray, from `(0, 0, 0)` (black) over
 `(128, 128, 128)` (medium gray) to `(255, 255, 255)` (white). Gray is so
 common that p5.js offers a shortcut: a single number is read as a gray
 value. `background(0)` paints the canvas black, `background(255)` paints
 it white.
 
-How do you find the three values for a color you have in mind? You use a
+To find the three values for a color you have in mind, you use a
 **color picker**, a tool where you point at a color and read off its
 numbers. Try the [online color picker at
 colorpicker.me](https://colorpicker.me/): it shows the RGB values of every
@@ -128,7 +128,7 @@ the colors would simply come around again.
 The other two values both run from 0 to 100. Saturation is the intensity
 of the color: 100 is the full color, and the closer you get to 0, the more
 washed out and gray it becomes. Brightness is how much light is in the
-color: 100 is the brightest version, and 0 is always black, whatever the
+color, so 100 is the brightest version, and 0 is always black, whatever the
 other two values say.
 
 ```typescript
