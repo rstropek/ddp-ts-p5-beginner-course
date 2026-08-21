@@ -4,7 +4,7 @@ title: "Fixing code you didn't write"
 
 ![What the program you're handed already draws: close to the real symbol, but the interlocking isn't quite right yet.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/olympic_rings_advanced.png){width=360}
 
-This time you won't write the program from scratch. You'll be handed one that someone else already wrote, where the five Olympic rings don't quite link up, and your job is to spot why and repair it, until each ring weaves over one neighbour and under the other the way it does on the real symbol.
+This time you won't write the program from scratch. You get one that someone else already wrote, where the five Olympic rings don't quite link up, and your job is to spot why and repair it, until each ring weaves over one neighbor and under the other the way it does on the real symbol.
 
 So far, every program in this course started with you (or your AI) writing
 the code. This exercise turns the situation around: you get a program that
@@ -86,8 +86,8 @@ and a fix that breaks something else is not a fix. Comparing the picture
 with the target after every run is your safety net.
 
 When the five rings finally weave like the original, take a moment: you've
-just read a foreign program, understood a genuinely tricky idea in it, and
-repaired it without breaking the rest. That's real programming work.
+just read a program you didn't write, understood a genuinely tricky idea in
+it, and repaired it without breaking the rest.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/olympic_rings_advanced.yaml >}}
 

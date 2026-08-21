@@ -17,8 +17,8 @@ Welcome to this course! Over the next months you'll learn how to program a
 computer, and you'll do it in a creative way. Instead of only printing text on
 a black screen, you'll draw shapes, build animations, and create small
 interactive artworks and games. That's why the course is called *Creative
-Coding*: you learn programming by making things you can see, change, and show
-to your friends.
+Coding*: you learn programming by making things you can see and change, then
+show to your friends.
 
 You don't need any programming experience to start. The course begins at zero
 and builds up step by step. If you can use a computer and you're curious, you
@@ -35,8 +35,8 @@ write real, professional-style code and see the results on screen right away.
 TypeScript is one of the most popular programming languages in the world.
 Many well-known websites and apps are built with it, and professional
 developers use it every day. So you're not learning a toy language made only
-for classrooms: the skills you pick up here are the same skills used in real
-software teams.
+for classrooms: the skills you pick up here are the same skills real software
+teams use.
 
 At the same time, TypeScript is friendly to beginners. It watches your code
 while you type and warns you about many mistakes before you even run the
@@ -74,10 +74,9 @@ four reasons.
 When you program, the typing is the smallest part. The real work is thinking:
 you take a big, fuzzy problem, break it into small clear steps, and put those
 steps in a logical order. You also make creative decisions, because there is
-almost never just one way to solve a problem. These skills, breaking problems
-down, thinking logically, and finding creative solutions, help you far beyond
-programming: in school, in any job, and whenever you face something
-complicated.
+almost never just one way to solve a problem. Breaking problems down, thinking
+logically, and finding creative solutions help you far beyond programming: in
+school, in any job, and whenever you face something complicated.
 
 ### AI is like a genie in a lamp {#sec-genie}
 
@@ -104,7 +103,7 @@ assistant instead of your replacement.
 
 ### Programming is fun {#sec-fun}
 
-Last but definitely not least: programming is fun. There's a special feeling
+The last reason is the simplest: programming is fun. There's a special feeling
 when you imagine something, write the code for it, and watch the computer
 bring it to life exactly the way you pictured it (or in a surprising way
 that's even better). In this course that feeling comes quickly, because your
@@ -119,8 +118,7 @@ assistant writes real code together with you.
 
 Access works with a **Coding Activity Code**, a short code your teacher hands
 out for a homework assignment, a workshop day at school, or a project week.
-The code costs you nothing, and it works only for the time your teacher set,
-so it stops working once that time is over.
+The code costs you nothing, and it works only for the time your teacher set.
 
 ### Why not just any AI from the internet {#sec-coding-assistant-why}
 

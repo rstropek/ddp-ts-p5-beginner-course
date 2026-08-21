@@ -3,7 +3,7 @@ title: "Reading the documentation: a command of your own"
 ---
 
 Every command you know so far, `rect`, `circle`, `arc`, and the others, was
-handed to you: the book explained the parameters, and an exercise showed a
+handed to you. The book explained the parameters, and an exercise showed a
 working example. That's how learning starts, but it's not how it continues.
 p5.js has hundreds of commands, and no book and no teacher will ever walk
 you through all of them. Professionals learn a new command by reading its
@@ -29,9 +29,9 @@ this chapter trains.
 
 The official documentation of p5.js is called the
 [p5.js reference](https://p5js.org/reference/). It's a large catalog with
-one page per command, grouped by topic: shapes, colors, text, and much
-more. Every page follows the same pattern, and once you can read one, you
-can read them all:
+one page per command, grouped by topics like shapes, colors, and text. Every
+page follows the same pattern, and once you can read one, you can read them
+all:
 
 - **The description** says in a few sentences what the command does.
 - **Example programs** show the command in action. You can run them right
@@ -40,7 +40,7 @@ can read them all:
 - **The syntax and the parameter list** show what goes between the
   parentheses: the name of each parameter, its order, and what it means.
 
-One detail in the syntax is worth knowing: parameters in square brackets
+One detail in the syntax matters: parameters in square brackets
 are **optional**. You can leave them out, and the command picks a sensible
 value on its own. For example, the syntax of `rect` is written as
 `rect(x, y, w, [h])`. Call it with all four values and you set the width
@@ -125,17 +125,19 @@ page, to help with your example, or to improve your text. This time,
 don't use the tutor from this book. Pick a general AI on the internet
 instead, for example ChatGPT or Google Gemini. An AI like that doesn't
 know what you've learned, and its answers will sometimes contain things
-you've never seen. That's on purpose: you're doing research now, and
+you've never seen. That's on purpose. You're doing research now, and
 meeting the unknown is part of research. When something new shows up, ask
 follow-up questions until you understand it, or leave it out of your
-program. Because of that, the two rules you already know matter more than
-ever. Paste your own working code into the prompt, so the AI answers in
-the language, library, and structure your playground expects. And say
+program.
+
+Because of that, the two rules you already know matter even more here. Paste
+your own working code into the prompt, so the AI answers in the language,
+library, and structure your playground expects. And say
 that you're a beginner and that your code shows everything you've
 learned, so the answer stays inside what you can explain.
 
-Here's why that matters this time more than ever: **you'll present your
-work in class.** You'll show your picture, explain what your command does
+There's a second reason to stay inside what you understand: **you'll present
+your work in class.** You'll show your picture, explain what your command does
 and what each parameter means, and answer questions. Expect live requests
 too, like "make it bigger" or "let it bend the other way", with the class
 watching. An AI can write text for you, but it can't stand in front of the
@@ -145,6 +147,7 @@ can. Code you don't understand is code you can't control, and a
 description you can't defend isn't yours yet.
 
 There's a nice reward at the end. Everyone presents a different command,
-so after the presentations the whole class has seen more new
-commands, each one explained by someone who really understands it. That's
+so after the presentations the class knows many more commands than any one
+of you learned alone, each one explained by someone who really understands
+it. That's
 your class's own little reference, and you wrote one page of it.

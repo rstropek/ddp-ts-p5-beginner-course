@@ -2,7 +2,7 @@
 title: "Your first program"
 ---
 
-By the end of this chapter you'll have written your very first real program and watched a small arrangement of shapes appear on the canvas in front of you. You'll get there by typing the code exactly as it's given, one character at a time, and seeing for yourself how a program comes to life. It's a small result, but it's entirely yours, and it's the moment programming stops being an idea and starts being something you do.
+By the end of this chapter you'll have written your very first real program and watched a small arrangement of shapes appear on the canvas. You'll get there by typing the code exactly as it's given, one character at a time, and seeing for yourself how a program comes to life. It's a small result, but it's entirely yours.
 
 ## AI tutor {#sec-tutor-first-program}
 
@@ -74,7 +74,7 @@ write one statement per line, and each statement ends with a semicolon `;`.
 The computer runs your statements **in order, from top to bottom**, like
 steps in a recipe. The order matters. For example, a statement like
 `background("pink")` paints the whole canvas pink. If you draw a circle
-first and paint the background afterwards, the pink paint covers your
+first and paint the background afterward, the pink paint covers your
 circle, and you'll see an empty pink canvas.
 
 ::: {.callout-important}
@@ -138,10 +138,10 @@ functions with other names, and functions that run at other moments.
 
 ## Red squiggly lines show you your mistakes {#sec-squiggles}
 
-While you type, the editor constantly checks your code. When something is
-wrong, a mistyped name, a missing parenthesis, a lost curly brace, it
-underlines the problem with a **red squiggly line**, just like a spell
-checker underlines a typo in a text document.
+While you type, the editor checks your code. When something is wrong, a
+mistyped name, a missing parenthesis, a lost curly brace, it underlines the
+problem with a **red squiggly line**, just like a spell checker underlines a
+typo in a text document.
 
 When you see a red squiggle:
 
@@ -169,8 +169,8 @@ code carefully:
 
 In the exercise, copy the formatting exactly as you see it in the example,
 including the spaces at the beginning of the lines. Well-formatted code is
-much easier to read, and mistakes like a missing curly brace are much easier
-to find.
+much easier to read, and mistakes like a missing curly brace are easier to
+find.
 
 ## Your first exercise: Shapes {#sec-shapes}
 

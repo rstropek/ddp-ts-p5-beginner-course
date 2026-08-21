@@ -111,6 +111,6 @@ Save your cat code somewhere before you replace it, for example in a text
 file, so you can always go back.
 
 One more thing: read the code the AI gives you. You know every command in
-it, `rect`, `circle`, `triangle`, `fill`, and friends, so you can follow
-what it does. You are the programmer here. The AI types faster than you,
-but you decide what is good enough, and you are responsible for the result.
+it, `rect`, `circle`, `triangle`, and `fill`, so you can follow what it does.
+You are the programmer here. The AI types faster than you, but you decide
+what is good enough, and you are responsible for the result.

@@ -4,7 +4,7 @@ title: "From copying to creating"
 
 ![A house with a tree beside it, drawn entirely from simple shapes.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/house.png){width=360}
 
-This is the first time you invent the picture instead of copying it. You'll design your own house on paper and then bring it to life on the canvas, with a tree standing beside it, built entirely from the shapes you already know. It won't be anyone else's house but yours.
+This is the first time you invent the picture instead of copying it. You'll design your own house on paper and then bring it to life on the canvas, with a tree standing beside it, built entirely from the shapes you already know. It'll be your house and nobody else's.
 
 In the Shapes exercise you typed code that was given to you. Now comes the
 step that makes programming exciting: you write your own program. Your task
@@ -53,8 +53,8 @@ of your toolkit, just like the editor.
 Experienced programmers can sometimes skip the sketch because they can paint
 the picture in their head. That's a skill they built through years of
 practice, and you'll get there too. You build it by writing things down:
-sketches, coordinates, notes. So for now, the rule for you is: first the
-paper, then the keyboard.
+sketches, coordinates, notes. So for now, the rule for you is simple. First
+the paper, then the keyboard.
 :::
 
 Sketch your house on paper and treat the sheet like your canvas: the origin
@@ -103,9 +103,9 @@ comes back.
 
 You already know the color commands from the Shapes exercise: `fill` sets the
 color inside shapes, `stroke` sets the line color, and `strokeWeight` sets
-the line thickness. The key thing to understand is that these commands are
-**settings, not actions**. They don't draw anything themselves. They change
-how every shape *after* them is drawn, until you change the setting again:
+the line thickness. These commands are **settings, not actions**. They don't
+draw anything themselves. They change how every shape *after* them is drawn,
+until you change the setting again:
 
 ```typescript
 fill("red");
@@ -116,9 +116,8 @@ fill("saddlebrown");
 rect(180, 330, 40, 70);     // now the door is brown
 ```
 
-Looking for nice colors? The page
-[HTML color names](https://htmlcolorcodes.com/color-names/) lists all the
-color names you can use, from `"skyblue"` to `"saddlebrown"`.
+The page [HTML color names](https://htmlcolorcodes.com/color-names/) lists all
+the color names you can use, from `"skyblue"` to `"saddlebrown"`.
 
 ## Your exercise: House {#sec-house}
 
@@ -132,8 +131,8 @@ A good way to work:
 2. Create the canvas and paint the background.
 3. Add one shape at a time. Run the program after every shape, look at the
    result, and adjust the numbers until it fits. Changing coordinates again
-   and again is completely normal; professional programmers work exactly
-   like this: try, look, adjust.
+   and again is completely normal. Professional programmers work exactly like
+   this: try, look, adjust.
 4. Keep your code well formatted while you go: indent the statements inside
    the curly braces and write one statement per line. Tidy code makes it much
    easier to find the shape you want to change.
@@ -141,7 +140,7 @@ A good way to work:
 The example picture in the exercise is only an idea, not a template. Add
 whatever you like: a sun, a fence, clouds, a second tree, a cat on the roof.
 When your program runs and the picture on the screen matches the picture in
-your head, you've just experienced what programming is really about.
+your head, you've built exactly what you planned.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/house.yaml >}}
 

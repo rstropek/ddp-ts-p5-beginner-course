@@ -2,14 +2,14 @@
 title: "Practice projects: flowers and a soccer field"
 ---
 
-![A broadcast-ready soccer field, drawn true to a real pitch](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/soccer-field-basics.png){width=360}
+![A soccer field, drawn true to the measurements of a real one](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/soccer-field-basics.png){width=360}
 
-Two projects close out this part, both written like real job briefings. First you'll grow a small field of flowers, two of them side by side, each petal placed exactly where a designer's figure says it belongs. Then you'll draw the soccer field above, a proper pitch with its penalty areas, center circle, and corner arcs, sized to match a real field down to the meter.
+Two projects close out this part, both written like real job briefings. First you'll draw two flowers side by side, each petal placed exactly where a designer's figure says it belongs. Then you'll draw the soccer field above, with its penalty areas, center circle, and corner arcs, sized to match a real field down to the meter.
 
 You now know everything you need for bigger tasks: shapes, arcs, colors,
 coordinates, planning on paper, and a careful way of working. Time to put
 it all together. This chapter contains two larger practice projects. Both
-are written like real job briefings: in one you're part of a game
+are written like real job briefings. In one you're part of a game
 development team, in the other you work for a TV station.
 
 Take these projects seriously. They are practice for exactly the kind of

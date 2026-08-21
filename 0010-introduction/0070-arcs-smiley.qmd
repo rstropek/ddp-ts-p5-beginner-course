@@ -4,17 +4,17 @@ title: "Arcs: drawing parts of a circle"
 
 ![The friendly smiley face you'll draw in this chapter.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0010-Basics/arcs_face.png){width=360}
 
-This chapter adds a new shape to your kit: a piece of a circle. You'll use it to draw a cheerful smiley face grinning out from the middle of the canvas, its two eyes simple shapes you already know and its mouth a real curved smile, a single slice of a circle rather than a full one. That curve is the piece you couldn't draw before.
+This chapter adds a new shape to your kit: a piece of a circle. You'll use it to draw a smiley face in the middle of the canvas, with two eyes made from shapes you already know and a mouth that is a real curved smile, a single slice of a circle rather than a full one. That curve is the piece you couldn't draw before.
 
 Rectangles, circles, triangles, and lines got you a long way: a house, a
 cat, the Olympic rings. But some pictures need a shape you can't build from
-those: a *part* of a circle. Think of a smiling mouth. It's not a full
+those, a *part* of a circle. Think of a smiling mouth. It's not a full
 circle, it's just the lower piece of one. In p5.js, that shape is called an
 **arc**, and it comes with a new command: `arc`.
 
 In this exercise you'll type in a given program again, exactly as it's
 shown, like you did in the very first exercise. It draws a smiley face, and
-its mouth is an arc. Typing first and experimenting afterwards is on
+its mouth is an arc. Typing first and experimenting afterward is on
 purpose: `arc` is the trickiest command you've met so far, and the best way
 to understand it is to see it work and then start turning its knobs.
 
@@ -74,8 +74,8 @@ outline: a smile.
 ## Learn commands by experimenting {#sec-experiment}
 
 Understanding the parameters of `arc` from a description alone is hard.
-Nobody does it that way, professionals included. The way to really
-understand a command like this is to experiment with it:
+Nobody does it that way, professionals included. The way to understand a
+command like this is to experiment with it:
 
 1. Type in the program and run it, so you have a working starting point.
 2. Change **one parameter at a time**, run again, and watch what happens.
@@ -86,7 +86,7 @@ understand a command like this is to experiment with it:
 Changing one thing at a time is the important part. If you change three
 numbers at once and the picture jumps, you can't tell which change did
 what. One change, one run, one observation: that's how programmers explore
-every unfamiliar command, and it never stops being useful.
+every unfamiliar command.
 
 And remember the tooltips: hover your mouse over `arc` in the editor, and
 the playground shows you the documentation of the command, including the
