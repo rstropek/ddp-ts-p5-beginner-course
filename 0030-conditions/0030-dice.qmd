@@ -7,7 +7,7 @@ title: "Rolling dice: random numbers and exact comparisons"
 This program is a die you can roll as often as you like. Every time it
 runs, the computer picks a number from 1 to 6 that nobody, not even you
 as the programmer, knows in advance, and then draws the matching dice
-face: one centered point for a one, two corner points for a two, and so
+face. One centered point for a one, two corner points for a two, and so
 on up to six. To pull that off, you need two new tools: a way to produce
 random numbers, and a comparison that asks "is it exactly this value?".
 
@@ -23,39 +23,38 @@ the improvement apart.
 
 ## A number nobody knows in advance {#sec-random}
 
-Everything your programs computed so far was predictable: the same
-input always led to the same picture. Games need the opposite, dice
-rolls, shuffled cards, surprise positions, and p5.js provides it with
+Everything your programs computed so far was predictable. The same
+input always led to the same picture. Games need the opposite: dice
+rolls, shuffled cards, surprise positions. p5.js provides it with
 the function `random`. A call like `random(1, 7)` returns a random
-number that is at least 1 and *less than* 7: the lower bound is
+number that is at least 1 and *less than* 7. The lower bound is
 included, the upper bound is not. Every call produces a fresh number,
 so running your program again means rolling again.
 
-There is a catch, and it's the reason this section has a second half:
-`random` returns a *decimal* number. A call to `random(1, 7)` might
-give 3.874 or 6.999, and there is no die in the world that shows 3.874
-points.
+There is a catch. `random` returns a *decimal* number, and a call to
+`random(1, 7)` might give 3.874 or 6.999. There is no die in the world
+that shows 3.874 points.
 
 ## Rounding down with floor {#sec-floor}
 
 To turn 3.874 into a proper dice value, you need to cut off the decimal
 part, and that's a kind of rounding you haven't used yet. You know
 `round` from the snapping exercise; its sibling `floor` always rounds
-**down** to the next whole number: `floor(3.874)` is 3, and
+**down** to the next whole number. `floor(3.874)` is 3, and
 `floor(6.999)` is 6. Combined with `random`, the roll becomes one line:
 
 ```typescript
 const dice: number = floor(random(1, 7));
 ```
 
-Follow a value through: `random(1, 7)` produces something between 1 and
+Follow a value through. `random(1, 7)` produces something between 1 and
 6.999..., and `floor` maps everything from 1 up to 1.999... onto
 1, everything from 2 up to 2.999... onto 2, and so on up to 6. Six
 equally wide ranges, six equally likely results: a fair die.
 
 ::: {.callout-note}
 ## Why not round(random(1, 6))?
-It looks tempting, but play computer with it: `round` sends everything
+It looks tempting, but play computer with it. `round` sends everything
 from 1 to 1.499... to 1, a range of width 0.5, while 2 gets everything
 from 1.5 to 2.499..., a range of width 1. The same squeeze happens at
 the top for the 6. With `round`, the 1 and the 6 would appear only half
@@ -69,7 +68,7 @@ whole-number randomness, worth memorizing.
 The comparisons you've used so far, `<`, `>`, `<=`, and `>=`, ask
 about order. The dice program needs a different question: did I roll
 exactly a 1? The comparison table in the color areas chapter has the
-operator for it: the **equality operator** `===` asks "are the two
+operator for it. The **equality operator** `===` asks "are the two
 values exactly equal?", and its counterpart `!==` asks "are they
 different?". Both produce a boolean, like every comparison.
 
@@ -85,11 +84,11 @@ if (dice === 1) {
 ```
 
 The count of equals signs matters. A single `=` is an *assignment*, an
-order: "put this value into the box". The triple `===` is a
+order that says "put this value into the box". The triple `===` is a
 *comparison*, a question: "are these equal?". Writing `if (dice = 1)`
 instead of `if (dice === 1)` is one of the most classic mistakes in
 programming. TypeScript catches many of these slips with a red
-squiggle, but not all of them, so train your eyes now: inside a
+squiggle, but not all of them, so train your eyes now. Inside a
 condition, an `=` alone is almost always wrong. You may also spot a
 two-character `==` in code on the web; in this course, we always
 compare with `===` and `!==`.
@@ -113,7 +112,7 @@ if (dice === 1) {
 }
 ```
 
-Look at the last branch: it's a plain `else`, without a condition.
+Look at the last branch. It's a plain `else`, without a condition.
 That's safe reasoning, not laziness: `dice` can only hold 1 to 6, and
 if five questions have been answered with no, only the 6 is left. The
 final `else` in a chain is the "everything else" branch, and here
@@ -121,7 +120,7 @@ final `else` in a chain is the "everything else" branch, and here
 
 ## The geometry of a dice face {#sec-dice-geometry}
 
-Now for the creative half. Look closely at a real die: all six faces
+Now for the creative half. Look closely at a real die. All six faces
 place their points on the same invisible grid of three columns and
 three rows. On your 200 by 200 canvas, the columns sit at `width / 4`,
 `width / 2`, and `3 * width / 4`, and the rows at the matching heights:
@@ -132,7 +131,7 @@ canvas size.](images/dice-grid.svg){width=440}
 
 Each face is just a selection of these nine anchors: the 1 uses only
 the center, the 2 takes two opposite corners, the 4 takes all four
-corners. And the faces reuse each other: a 3 is a 2 plus the center, a
+corners. And the faces reuse each other. A 3 is a 2 plus the center, a
 5 is a 4 plus the center, and a 6 is a 4 plus the two middle anchors of
 the left and right columns. Spotting this reuse on paper first will
 save you a lot of typing and a lot of mistakes.
@@ -171,13 +170,13 @@ Your job is the cases 3 to 6.
 3. **Add the cases 3 to 6** to the chain, one `circle` call per point.
    Work on one case at a time.
 4. **Test each case deliberately.** A random program is awkward to
-   test: you can't tell it what to roll. So force the roll: replace the
-   right side of the `dice` declaration with a fixed value, for example
-   `const dice: number = 3;`, check the face, then test 4, 5, and 6 the
-   same way. When every face is right, put the `random` line back and
-   roll a few times for the joy of it. Professionals test exactly like
-   this: make the random part predictable for a moment, check every
-   case, then switch the randomness back on.
+   test, because you can't tell it what to roll. So force the roll:
+   replace the right side of the `dice` declaration with a fixed value,
+   for example `const dice: number = 3;`, check the face, then test 4,
+   5, and 6 the same way. When every face is right, put the `random`
+   line back and roll a few times for the joy of it. Professionals test
+   exactly like this. Make the random part predictable for a moment,
+   check every case, then switch the randomness back on.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/dice.yaml >}}
 
@@ -185,7 +184,7 @@ Your job is the cases 3 to 6.
 
 Get your paper sketches of the six faces out again and look at them as
 a group instead of one by one. The dot in the upper left corner
-appears on the 2, the 3, the 4, the 5, and the 6: five faces share it,
+appears on the 2, the 3, the 4, the 5, and the 6. Five faces share it,
 and your finished chain draws it with five separate `circle`
 statements. The center dot appears on the 1, the 3, and the 5. Count
 all the calls in your chain and you land at 21 `circle` statements for

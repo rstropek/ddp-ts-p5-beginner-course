@@ -8,9 +8,9 @@ The second decision program looks like a close relative of the first
 one, and it is: the canvas is now split into four colored quadrants, and
 a click anywhere makes a black box in the center announce the color's
 name. But there is a twist hiding in the geometry. Three stripes could
-be sorted with questions about `mouseX` alone. Four quadrants can't:
-this time, no single question about one coordinate can tell all four
-areas apart.
+be sorted with questions about `mouseX` alone. Four quadrants can't,
+because no single question about one coordinate can tell all four areas
+apart.
 
 ## AI tutor {#sec-tutor-color-quadrants}
 
@@ -25,22 +25,21 @@ you, condition by condition.
 Think about how you would decide as a human. Someone points at a spot on
 the canvas, and you want to name the quadrant. You'd naturally ask two
 questions, one after the other: is the spot in the left half or the
-right half? And is it in the upper half or the lower half? Two
-questions, each with two possible answers, gives two times two, four
-combinations, and that's exactly one combination per quadrant.
+right half? And is it in the upper half or the lower half? Each of the
+two questions has two possible answers, so two times two makes four
+combinations. That's exactly one combination per quadrant.
 
 The first question is a comparison you could write immediately:
-`mouseX < width / 2`. The second one is its twin on the other axis:
+`mouseX < width / 2`. The second one is its twin on the other axis,
 `mouseY < height / 2`. What's new is how the two questions work
-together: the second question is only asked *after* the first one is
+together. The second question is only asked *after* the first one is
 answered, inside the branch that the first answer picked.
 
 ## An if statement inside an if statement {#sec-nested-if}
 
-Here's the key insight that makes this possible: the block of an if
-statement can contain *any* statements, and that includes other if
-statements. Putting one if statement inside another is called
-**nesting**. The whole decision looks like this:
+The block of an if statement can contain *any* statements, and that
+includes other if statements. Putting one if statement inside another
+is called **nesting**. The whole decision looks like this:
 
 ```typescript
 if (mouseX < width / 2) {
@@ -84,7 +83,7 @@ see the structure of the decision at a glance.
 ::: {.callout-note}
 ## Couldn't I ask both questions at once?
 You might feel that "left half *and* upper half" should be a single
-condition, and you're right: TypeScript can combine two comparisons
+condition, and you're right. TypeScript can combine two comparisons
 into one question. Those combining operators are worth their own
 chapters, and they're coming: the first one appears with the bouncing
 ball, the second one in the binary guesser project.
@@ -92,14 +91,15 @@ ball, the second one in the binary guesser project.
 
 ## The message box in the center {#sec-center-box}
 
-One more difference to the color areas: the message box now sits in the
-middle of the canvas, on top of the quadrant boundaries. Its position
-is a centering job, and you know the formula from the responsive robot:
-the box's corner sits half the box's width left of the canvas center,
-and half its height above it. Give the box its size as two constants,
-for example `textAreaWidth` and `textAreaHeight`, and use them both for
-drawing the box in `setup` and for clearing it in `mouseClicked`, so
-the previous message disappears before the new one is written.
+One more difference to the color areas is the message box. It now sits
+in the middle of the canvas, on top of the quadrant boundaries. Its
+position is a centering job, and you know the formula from the
+responsive robot: the box's corner sits half the box's width left of
+the canvas center, and half its height above it. Give the box its size
+as two constants, for example `textAreaWidth` and `textAreaHeight`, and
+use them both for drawing the box in `setup` and for clearing it in
+`mouseClicked`, so the previous message disappears before the new one
+is written.
 
 ## Your exercise: Color quadrants {#sec-quadrants-exercise}
 

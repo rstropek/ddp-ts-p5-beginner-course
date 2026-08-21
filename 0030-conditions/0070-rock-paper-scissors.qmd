@@ -4,10 +4,10 @@ title: "Rock, paper, scissors: your first game"
 
 ![A finished round: the player picked paper, the computer rolled scissors, and the program announces the winner.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0030-Conditions/rps.png){width=360}
 
-*Schere, Stein, Papier*: you've almost certainly played it in the
+*Schere, Stein, Papier*. You've almost certainly played it in the
 schoolyard. Two players choose a symbol at the same time, and three
 simple rules decide who wins. In this chapter the game becomes a
-program, and your opponent is the computer: you pick rock, paper, or
+program, and your opponent is the computer. You pick rock, paper, or
 scissors with the mouse, the computer picks by chance, and the program
 announces the winner. It's the biggest program of this part, and
 everything you've built so far plays a role in it: event functions,
@@ -61,18 +61,17 @@ const ICON_HEIGHT: number = 100;
 ```
 
 Constants and their two naming styles are old friends from the snapping
-chapter (@sec-const-naming): the names are written in ALL_CAPS because
+chapter (@sec-const-naming). The names are written in ALL_CAPS because
 these are global configuration constants, settings for the whole
 program, meant to be found and tweaked easily. Read them against the
-design picture:
-each one is a red measurement with a name. One naming detail so you
-don't stumble: the starter says *stone* where this chapter says *rock*;
-they mean the same symbol.
+design picture, where each one is a red measurement with a name. One
+naming detail so you don't stumble: the starter says *stone* where this
+chapter says *rock*; they mean the same symbol.
 
 ## Emoji live in strings {#sec-rps-emoji}
 
 The three symbols on the canvas are emoji, the same little pictures you
-know from chats. For your program, an emoji is nothing special: it's a
+know from chats. For your program, an emoji is nothing special. It's a
 character, and characters live in strings. A string can hold an emoji
 alone, and `text` draws it like any other text. The bigger the text
 size, the bigger the picture:
@@ -104,7 +103,7 @@ it into your code works everywhere.
 Strings can also do something you've so far only done with numbers:
 they can be compared. In the dice chapter (@sec-equality) you compared
 numbers with `===` and `!==`. The same two operators work on strings,
-and they are just as exact: two strings are equal when they match
+and they are just as exact. Two strings are equal when they match
 character for character. So `"🪨" === "🪨"` is `true`, but
 `"rock" === "Rock"` is `false`, because `r` and `R` are different
 characters. Asking "did the player pick the rock?" will be one string
@@ -115,11 +114,11 @@ comparison.
 The yellow frame that follows the mouse is the first thing the game
 needs, and the right function slot for it is one of your oldest: p5.js
 calls `mouseMoved` on every movement of the mouse across the canvas.
-Inside it, the program must answer: is the mouse over a symbol right
-now?
+Inside it, the program must answer whether the mouse is over a symbol
+right now.
 
 That's a box test, and you wrote one in the binary guesser
-(@sec-binary-guesser): the mouse is inside a box when the horizontal
+(@sec-binary-guesser). The mouse is inside a box when the horizontal
 position is in the box's x range *and* the vertical position is in its
 y range, two questions joined by `&&`. The design gives all three
 symbols the same vertical band, from `ICON_TOP` down `ICON_HEIGHT`
@@ -139,9 +138,9 @@ all use it instead of asking the same vertical question three times.
 
 The second new idea is how the frame disappears again. A condition
 alone can put the yellow frame on, but when the mouse slides off a
-symbol, something must take the frame off. The trick: always draw the
-frame, and let the condition choose only the pen color. Yellow when the
-mouse is inside; black, the background color, when it isn't. A black
+symbol, something must take the frame off. The trick is to always draw
+the frame, and let the condition choose only the pen color. Yellow when
+the mouse is inside; black, the background color, when it isn't. A black
 frame on a black canvas is invisible, so drawing it erases the
 highlight:
 
@@ -191,8 +190,8 @@ computer's choice and the winner come in part 2.
    constant, then one `if`/`else` plus one `rect` per symbol.
 5. **Test with your table.** Glide the mouse slowly across all three
    symbols and watch the frame follow. Then check the gaps: between the
-   boxes, for example at x values from 150 to 175, no frame may light
-   up.
+   boxes, for example at x values from 150 to 175, no frame should
+   light up.
 
 One warning before you start: the second part of this exercise contains
 a sample solution for this part. Don't look at part 2 until your part 1
@@ -236,9 +235,10 @@ is a pattern you'll meet in every game you ever write.
 ## The computer's choice {#sec-rps-computer}
 
 The computer picks one of three symbols, with equal chances. Rolling a
-fair whole number is the dice recipe (@sec-random): `floor(random(0, 3))`
-gives 0, 1, or 2. But the roll is a *number*, and the game works with
-symbol *strings*, so the roll must be translated. A number-to-symbol
+fair whole number is the dice recipe (@sec-random), and
+`floor(random(0, 3))` gives 0, 1, or 2. But the roll is a *number*, and
+the game works with symbol *strings*, so the roll must be translated.
+A number-to-symbol
 translation with exact cases is an `if`/`else if` chain, the same move
 as the hex letters (@sec-hex):
 
@@ -268,7 +268,7 @@ to exactly one.](images/rps-beats.svg){width=440}
 
 Count the possibilities before writing any code. The player has three
 choices, the computer has three, so a round has 3 times 3, or nine
-combinations. In three of them both picked the same symbol: a tie. In
+combinations. In three of them both picked the same symbol, a tie. In
 three others the player's symbol beats the computer's: the player wins.
 The remaining three go to the computer.
 
@@ -339,7 +339,7 @@ Now finish the game: the click, the computer's roll, and the winner.
    which symbol was clicked, and store that symbol in `selected`. A
    click that hits no symbol must leave the game unchanged, so
    everything that follows, the roll and the result, runs only when
-   `selected !== ""`. Test it: clicking the empty canvas may do
+   `selected !== ""`. Test it: clicking the empty canvas must do
    nothing.
 4. **Make the choice final.** Guard the two event functions with the
    state, as described in @sec-rps-state: hover only while
@@ -362,7 +362,7 @@ Now finish the game: the click, the computer's roll, and the winner.
 ## For fast finishers: rock, paper, scissors, lizard, Spock {#sec-rps-lizard-spock}
 
 Maybe you know the series *The Big Bang Theory*, where Sheldon Cooper
-plays a five-symbol variant of the game:
+plays a five-symbol variant of the game. You can
 [watch him explain it](https://www.youtube.com/watch?v=_PUEoDYpUyQ)
 ([German version](https://youtu.be/4I3d9gKx_e4?t=20)). The rules:
 
@@ -375,8 +375,8 @@ plays a five-symbol variant of the game:
 Every symbol beats two others and loses to two others.
 
 If the game left you wanting more, rebuild it with five symbols. There
-is no walkthrough and no sample solution for this stage, on purpose:
-this time you are the designer. Plan on paper before you code, the way
+is no walkthrough and no sample solution for this stage, on purpose.
+This time you are the designer. Plan on paper before you code, the way
 this course always does, and let these questions guide you: which emoji
 will you use for lizard and Spock? Where do five boxes sit, when the
 current canvas comfortably fits three? How many combinations does a

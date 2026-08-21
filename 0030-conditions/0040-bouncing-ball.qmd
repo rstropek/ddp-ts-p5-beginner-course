@@ -24,7 +24,7 @@ expected instead.
 
 Every movie ever made is a trick: a rapid series of still pictures,
 each slightly different from the one before. Show about 60 of them per
-second and human eyes perceive motion. Computer animation works exactly
+second and your eyes see motion. Computer animation works exactly
 the same way, and each still picture is called a **frame**.
 
 ::: {.callout-note}
@@ -41,17 +41,17 @@ action, watch the video
 
 p5.js has a function slot ready for this, and it's the last of the big
 ones: `draw`. You know the pattern from `mouseMoved` and
-`mouseClicked`: you write a function with the agreed name, and p5.js
+`mouseClicked`. You write a function with the agreed name, and p5.js
 calls it at the right moments. For `draw`, the right moment is *every
-frame*: p5.js calls it around 60 times per second, from program start
+frame*. p5.js calls it around 60 times per second, from program start
 until you close the page, no events needed. Whatever `draw` paints is
 one frame of your movie.
 
 Compare your three kinds of functions: `setup` runs exactly once, at
 the start. Event functions like `mouseClicked` run when the user does
-something. And `draw` runs constantly, on its own. Between a frame and
+something. And `draw` runs constantly, on its own. From one frame to
 the next, your global variables keep their values, and that's the whole
-secret of animation: change a variable a little every frame, and the
+secret of animation. Change a variable a little every frame, and the
 picture it controls comes alive.
 
 ![The life of a p5.js program: `setup` runs exactly once, then `draw`
@@ -61,7 +61,7 @@ acts.](images/program-lifecycle.svg){width=440}
 
 ## A ball that moves itself {#sec-moving-ball}
 
-Here is the recipe in its smallest form: a single ball on a 300 by 200
+Here is the recipe in its smallest form. One ball on a 300 by 200
 canvas, flying from left to right at half the canvas height. Three
 global variables carry it. The ball's horizontal position and its
 current travel direction change from frame to frame, so both are
@@ -88,8 +88,8 @@ function draw() {
 }
 ```
 
-The `background` call first: it repaints the whole canvas and erases
-the previous frame. You know this decision from the crosshairs and the
+The `background` call comes first. It repaints the whole canvas and
+erases the previous frame. You know this decision from the crosshairs and the
 color worm: without it, every frame leaves its ball behind and the path
 smears across the screen. Then the ball is drawn at its current
 position, halfway up the canvas.
@@ -123,7 +123,7 @@ division.
 Now the animation adds up. With `direction` holding 2, every frame
 shifts the ball 2 pixels to the right. At 60 frames per second, that's
 about 120 pixels per second of smooth flight. The value of `direction`
-is nothing less than the ball's speed, in pixels per frame.
+is the ball's speed, in pixels per frame.
 
 ## Turning around at the wall {#sec-bounce}
 
@@ -137,8 +137,8 @@ the two: `direction *= -1` turns 2 into -2 and, at the other wall,
 -2 back into 2. The same line bounces off both walls.
 
 And when should it run? When the ball has reached the right wall *or*
-the left wall. That little word "or" is a new operator: `||` (the
-**OR operator**) combines two boolean questions into one, and the
+the left wall. That little word "or" is a new operator, `||`. The
+**OR operator** combines two boolean questions into one, and the
 combined result is `true` when at least one of the two parts is true:
 
 ```typescript
@@ -155,10 +155,10 @@ One detail deserves a professional's eye: the comparisons are `>=` and
 `<=`, not `===`. Play computer to see why. With a speed of 2 starting
 at 0, the positions are 0, 2, 4, ..., and on the 300 pixel wide canvas
 the ball lands exactly on 300, so `=== width` would happen to work. Now
-change the speed to 7: the positions jump 294, 301, and the ball is
+change the speed to 7. The positions jump 294, 301, and the ball is
 never *exactly* at 300. An `===` condition would never fire, and the
 ball would sail off the canvas forever. Conditions that guard a border
-should ask "at or beyond", not "exactly at": then even a fast ball
+should ask "at or beyond", not "exactly at", so even a fast ball
 that overshoots gets caught.
 
 ::: {.callout-tip}
@@ -211,7 +211,7 @@ give that ball a partner.
 
 ::: {.callout-tip}
 ## A ball with more manners
-Look closely at a bounce: the ball's center reaches the wall, so half
+Look closely at a bounce. The ball's center reaches the wall, so half
 the ball sinks into it before turning around. If that bothers your
 designer's eye, refine the conditions so the ball's *edge* touches the
 wall instead: the center then must stay `circleDiameter / 2` away from
@@ -227,13 +227,13 @@ diagonally, bouncing off all four walls.
 Diagonal flight sounds new, but it's only the two motions you just
 built, happening to one ball at the same time: the x position changes
 by a horizontal direction, the y position by a vertical one, every
-frame. So the ball needs four global variables: two for its position,
-two for the two directions.
+frame. So the ball needs four global variables, two for its position
+and two for the two directions.
 
-Two insights from planning this on paper before you code:
+Two things to work out on paper before you code:
 
 - **The starting position is random**, so the position variables can't
-  get their values in the declaration: `random(0, width)` needs the
+  get their values in the declaration. `random(0, width)` needs the
   canvas, and the canvas exists only after `createCanvas` has run.
   You know the pattern from the color areas' `message`: declare the
   globals without a value, `let circleCenterX: number;`, and assign
@@ -249,7 +249,7 @@ Two insights from planning this on paper before you code:
 
 Build it in this order: canvas and random start in `setup`; in `draw`
 repaint, draw the ball, move both coordinates, then the two bounce
-conditions. Test by simply watching a while: the ball should visit all
+conditions. Test by watching for a while. The ball should visit all
 four walls and leave each one at the mirrored angle. If you kept the
 edge refinement from part 1, carry it over here too.
 

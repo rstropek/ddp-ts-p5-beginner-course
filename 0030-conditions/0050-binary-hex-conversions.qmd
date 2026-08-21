@@ -202,7 +202,7 @@ Read the remainders from bottom to top: decimal 26 is binary 11010.
 
 ### No answer key needed {#sec-reverse-check}
 
-Here's the best thing about conversions: you never have to wonder whether
+Here's the best thing about conversions. You never have to wonder whether
 your result is right, because you can always convert it back. Take the
 11010 from the last example and send it in the opposite direction,
 multiplying bits by place values:
@@ -290,11 +290,11 @@ to 9 cover the first ten values, and the letters A to F cover the values
 | 6 | 0110 | 6 | 14 | 1110 | E |
 | 7 | 0111 | 7 | 15 | 1111 | F |
 
-The counting continues past F the same way it does in decimal past 9: the
-next number after hex F is hex 10, which has the decimal value 16. The
-place values of hex are the powers of 16: 1, 16, 256, 4096, and so on.
-The calculation rule itself never changes: multiply each digit by its
-place value, then add the contributions. Only the base is different.
+The counting continues past F the same way it does in decimal past 9.
+The next number after hex F is hex 10, which has the decimal value 16.
+The place values of hex are the powers of 16: 1, 16, 256, 4096, and so
+on. The calculation rule itself never changes. Multiply each digit by
+its place value, then add the contributions. Only the base is different.
 
 The binary column in the digit table shows why programmers love hex.
 Exactly four bits can represent the values 0 to 15, so one hex digit
@@ -339,8 +339,8 @@ filled in as a model.
 | 11111111 | | |
 
 The results, for after your own attempt: F, 2D, CA, and FF. The last row
-is an old friend by now: 11111111, 255, FF, three ways to write one full
-color channel.
+is an old friend by now. 11111111, 255, and FF are three ways to write
+one full color channel.
 
 ## Convert hexadecimal to binary {#sec-hex-to-binary}
 
@@ -425,11 +425,11 @@ Hex 2D7 is decimal 727.
 
 On the web, colors are usually written as hex codes such as `#FF8800`.
 That code is three bytes side by side, two hex digits each: `FF` for red,
-`88` for green, `00` for blue. With this chapter, you can decode it: FF is
+`88` for green, `00` for blue. With this chapter, you can decode it. FF is
 15 × 16 + 15 = 255, red at full power. 88 is 8 × 16 + 8 = 136, a medium
 green. 00 is no blue at all. In p5.js, the same color is
-`fill(255, 136, 0)`, a strong orange. Every color code you meet on the
-web is now readable for you, two hex digits per channel.
+`fill(255, 136, 0)`, a strong orange. You can now read every color code
+you meet on the web, two hex digits per channel.
 :::
 
 ## The conversion map {#sec-conversion-paths}
@@ -485,7 +485,7 @@ To finish, treat yourself to a real-world conversion: the web color
 `#40E0D0`. Decode its three channels to decimal, then check your result
 in the playground with a quick `background` call using your three
 numbers. If a friendly turquoise fills the canvas, your conversion was
-right. Enjoy the moment: you just read a color the way a computer does.
+right. Enjoy the moment. You just read a color the way a computer does.
 
 ## Check your understanding {#sec-quiz-conversions}
 

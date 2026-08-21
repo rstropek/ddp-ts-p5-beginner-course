@@ -16,8 +16,8 @@ statements from top to bottom, one after the other, every single time.
 The crosshairs always drew the same two lines, the color worm always
 moved its hue forward by the same step. Your programs could already react
 *when* something happened, thanks to event functions like `mouseMoved`.
-But they could not yet react differently to *what* happened. That
-changes now: in this part of the course, your programs learn to make
+But they could not yet react differently to *what* happened, and that
+changes now. In this part of the course, your programs learn to make
 decisions.
 
 ## AI tutor {#sec-tutor-color-areas}
@@ -35,8 +35,8 @@ one of them was still waiting for its moment: `boolean`, the type with
 only two values, `true` and `false`. That moment is now.
 
 A decision always starts with a question, and in a program a question is
-written as a **comparison**. A comparison takes two values, compares
-them, and its result is a boolean: `true` if the answer is yes, `false`
+written as a **comparison**. A comparison takes two values and compares
+them. The result is a boolean, `true` if the answer is yes and `false`
 if the answer is no. You write comparisons with **comparison operators**:
 
 | Operator | Question it asks |
@@ -53,15 +53,15 @@ if the answer is no. You write comparisons with **comparison operators**:
 ::: {.callout-note}
 ## Three equals signs are no mistake
 Equality really is written with three equals signs, `===`, and "not
-equal" with an exclamation mark and two of them, `!==`. That's simply
-how TypeScript spells these two questions. A single `=` wouldn't do,
+equal" with an exclamation mark and two of them, `!==`. That's how
+TypeScript spells these two questions. A single `=` wouldn't do,
 because that character is already taken: it performs an assignment, as
 in `colorHue = 90`. The two equality operators get their first real job
 in the dice chapter (@sec-equality).
 :::
 
-A comparison is a calculation like any other, it just produces a boolean
-instead of a number. Take `mouseX < width / 3`: the computer first works
+A comparison is a calculation like any other. It just produces a boolean
+instead of a number. Take `mouseX < width / 3`. The computer first works
 out `width / 3`, then compares. If the canvas is 400 pixels wide and the
 mouse sits at 95, the comparison asks "is 95 smaller than 133.33?", and
 the result is `true`. At `mouseX = 250`, the same comparison produces
@@ -85,17 +85,17 @@ Read it piece by piece:
 parentheses, and the block in braces.](images/if-statement.svg){width=460}
 
 The question inside the parentheses is called the **condition**. When the
-program reaches the if statement, it evaluates the condition once. Is the
-result `true`, the block between the braces runs. Is it `false`, the
+program reaches the if statement, it evaluates the condition once. If the
+result is `true`, the block between the braces runs. If it's `false`, the
 whole block is skipped as if it weren't there, and the program continues
 after the closing brace.
 
 Notice how the statement inside the block is indented one step further
 than the `if` itself. That indentation is not decoration: it shows the
 reader at a glance which statements belong to the block. From now on,
-code has *structure*, blocks inside functions, and soon blocks inside
-blocks, and correct indentation is how you keep that structure visible.
-Exactness, as always.
+code has *structure*, with blocks inside functions and soon blocks
+inside blocks. Correct indentation is how you keep that structure
+visible. Exactness, as always.
 
 ::: {.callout-important}
 ## Course rule: every block gets its braces
@@ -113,8 +113,9 @@ condition at all.
 
 One stripe down, two to go. For the color areas you need three answers,
 and you get them by chaining questions. The keyword `else` means
-"otherwise": it adds a second block that runs exactly when the condition
-was `false`. And `else if` attaches the next question to that otherwise:
+"otherwise", and it adds a second block that runs exactly when the
+condition was `false`. And `else if` attaches the next question to that
+otherwise:
 
 ```typescript
 if (mouseX < width / 3) {
@@ -134,7 +135,7 @@ questions above it.
 
 That "first true wins" rule is doing quiet work in the second condition.
 Shouldn't the green branch check that `mouseX` is between `width / 3` and
-`2 * width / 3`? It doesn't have to: the program only *reaches* the
+`2 * width / 3`? It doesn't have to. The program only *reaches* the
 `else if` when the first condition was `false`, so at that point `mouseX`
 is guaranteed to be at least `width / 3`. One comparison per branch is
 enough:
@@ -150,7 +151,7 @@ several, like a switch yard sorting a train onto one of three tracks.
 
 ## A variable that gets its value in a branch {#sec-declare-then-assign}
 
-Look at the chain again: every branch assigns to `message`, so the
+Look at the chain again. Every branch assigns to `message`, so the
 variable must be declared *before* the chain. The declaration looks
 slightly new:
 
@@ -160,7 +161,7 @@ let message: string;
 
 There is no `=` and no value: the variable is declared empty, and the if
 chain fills it a moment later. That's allowed, with one strict rule
-attached: you must assign the variable a value before you *read* it.
+attached. You must assign the variable a value before you *read* it.
 TypeScript enforces the rule. Delete the `else` branch and the line
 `text(message, ...)` further down gets a red squiggle, because now there
 is a path through the program on which `message` never received a value.
@@ -169,7 +170,7 @@ you might miss.
 
 Why collect the answer in a variable at all, instead of calling `text`
 three times, once in each branch? Because the three branches differ in
-one single thing: the text. Everything else, where the text goes and how
+one thing only: the text. Everything else, where the text goes and how
 it looks, is the same. So the chain decides only the *what*, and a single
 `text` statement after the chain does the *drawing*. Less repeated code,
 and if you later move the message bar, you change one line instead of
@@ -177,9 +178,9 @@ three.
 
 ## Dressing up text {#sec-text-formatting}
 
-Speaking of how the text looks: so far, output from `text` was small and
-plain. The message bar deserves better, and three formatting commands
-help. Like `fill` or `stroke`, you call them before drawing, and they
+Speaking of how the text looks, so far the output from `text` was small
+and plain. The message bar deserves better, and three formatting
+commands help. Like `fill` or `stroke`, you call them before drawing, and they
 stay active until changed:
 
 - `textSize(30)` sets the height of the letters in pixels.

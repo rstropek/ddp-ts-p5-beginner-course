@@ -10,12 +10,12 @@ hexadecimal numbers apart digit by digit, and the chapter ends with a game
 you can challenge your friends with: the program shows a decimal number,
 the player clicks together its binary representation, and when the guess
 is right, the display flashes green. Three smaller exercises prepare you
-for the game: first you take an ordinary decimal number apart, then a
+for the game. First you take an ordinary decimal number apart, then a
 binary number, and finally a hexadecimal number.
 
 These number systems are everyday tools in programming, not just theory.
-Bits represent switches, flags, and pixel data; hex codes such as
-`#FF8800` name colors on the web; and debugging tools show memory
+Bits represent switches, flags, and pixel data. Hex codes such as
+`#FF8800` name colors on the web, and debugging tools show memory
 addresses in hex. Whenever you meet them, the digit-by-digit thinking from
 this chapter is what makes them readable.
 
@@ -47,7 +47,7 @@ remainder when dividing by 10, which is exactly the last digit.
 digit remover: `floor(num / 10)` chops off the last digit.
 `4711 / 10` is 471.1, and flooring it leaves 471.
 
-Chain the two and you can reach every digit: divide first to shift the
+Chain the two and you can reach every digit. Divide first to shift the
 digit you want to the last place, then `% 10` to grab it:
 
 ```typescript
@@ -57,14 +57,14 @@ const digit3: number = floor(num / 100) % 10;   // hundreds
 ```
 
 Why 10, 100, and their bigger siblings? Because that's how our number
-system is built: the digits of 352 are worth their face value times a
+system is built. The digits of 352 are worth their face value times a
 **place value**, and the place values are the powers of ten:
 
 ![The number 352 taken apart: each digit is worth its face value times
 its place value, and the place values are the powers of
 ten.](images/place-value.svg){width=380}
 
-Check the recipe against the picture: dividing 352 by 100 and flooring
+Check the recipe against the picture. Dividing 352 by 100 and flooring
 gives 3, the hundreds digit. Dividing by 10 and flooring gives 35, and
 `35 % 10` is 5, the tens digit. The recipe works for any place: divide
 by the place value, floor, take `% 10`.
@@ -143,7 +143,7 @@ own yellow box.
 
 ## Apply binary in code {#sec-binary}
 
-You already practiced the conversion: binary uses the digits 0 and 1, and
+You already practiced the conversion. Binary uses the digits 0 and 1, and
 its place values are 1, 2, 4, 8, 16, 32, and so on. A single binary digit is
 called a **bit**. The binary number 1101 means one 8, one 4, no 2, and one 1:
 
@@ -199,17 +199,17 @@ random number in binary.
 
 You also practiced the hexadecimal system in the previous chapter. Hex uses
 16 digits, with A to F standing for the values 10 to 15. Its place values are
-1, 16, 256, and so on. One hex digit represents four bits. Two hex digits can
-therefore represent one byte, from 00 to FF.
+1, 16, 256, and so on. One hex digit represents four bits, so two hex
+digits represent one byte, from 00 to FF.
 
-Now apply those facts in code. The program must extract three hex digits as
-numbers. It must then translate the values 10 to 15 into the visible letters
-A to F. This is where number conversion meets the `if` and `else if` chains
-from this part.
+Now apply those facts in code. The program must extract three hex digits
+as numbers, and then translate the values 10 to 15 into the visible
+letters A to F. This is where number conversion meets the `if` and
+`else if` chains from this part.
 
 Extracting hex digits is the same recipe a third time, with the
 divisors 1, 16, and 256, and `% 16` at the end. Typing those place
-values by hand gets tiring, so here is one more p5.js function: `pow`.
+values by hand gets tiring, so here is one more p5.js function, `pow`.
 A call to `pow(base, exponent)` computes a power, so `pow(16, 0)` is
 1, `pow(16, 1)` is 16, and `pow(16, 2)` is 256. Written that way, the
 place number stays visible in the code instead of hiding inside a
@@ -221,12 +221,11 @@ const digit2: number = floor(num / pow(16, 1)) % 16;
 const digit3: number = floor(num / pow(16, 2)) % 16;
 ```
 
-One thing is genuinely new: such a digit is a *number* from 0 to 15,
+One thing is genuinely new. Such a digit is a *number* from 0 to 15,
 but on the screen, 10 to 15 must appear as the letters A to F. A
-number-to-symbol translation with exact cases: that's an
-`if`/`else if` chain, like the dice faces. The two position arguments
-of `text` are the center of the box the digit belongs in, from your
-layout formula:
+number-to-symbol translation with exact cases is an `if`/`else if`
+chain, like the dice faces. The two position arguments of `text` are
+the center of the box the digit belongs in, from your layout formula:
 
 ```typescript
 if (digit1 < 10) {
@@ -266,8 +265,8 @@ Three boxes this time, showing the random number in hex.
 
 ## The project: Binary guesser {#sec-binary-guesser}
 
-Time to put everything from this part into one program: a game. The
-computer shows a number from 1 to 15 and four boxes holding 0000. The
+Time to put everything from this part into one game. The computer
+shows a number from 1 to 15 and four boxes holding 0000. The
 player clicks boxes to flip their bits between 0 and 1 until the four
 bits show the number in binary. After every click the program checks
 the guess, and when it's right, the display turns lime green and
@@ -280,7 +279,7 @@ things must *both* be true: the horizontal position must be in the
 box's x range *and* the vertical position in its y range. The **AND
 operator** `&&` combines two boolean questions and is `true` only
 when both parts are true. Keep the box layout from the digits exercise
-(@sec-digit-boxes) and the vertical test writes itself: the row of
+(@sec-digit-boxes) and the vertical test writes itself. The row of
 boxes starts 100 pixels below the top edge and the boxes are 75 pixels
 high, so their lower edge sits at 175.
 
@@ -290,11 +289,11 @@ if (mouseY >= 100 && mouseY <= 175) {
 }
 ```
 
-Compare the two siblings: `||` is satisfied by *at least one* true
-part, `&&` insists on *both*. For the boxes, that means two `&&`
+Compare the two siblings. `||` is satisfied by *at least one* true
+part; `&&` insists on *both*. For the boxes, that means two `&&`
 checks per click: first whether `mouseY` is in the boxes' row, then,
 for each box, whether `mouseX` lies between the box's left and right
-edge. The box-position formula gives you those edges too: box `i`
+edge. The box-position formula gives you those edges too. Box `i`
 starts at `50 + i * 75` and, being 50 pixels wide, ends at
 `50 + i * 75 + 50`.
 
@@ -308,7 +307,7 @@ looked at. `||` does the mirror image. In the bouncing ball's
 `circleCenterX >= width || circleCenterX <= 0`, a ball past the right
 wall makes the first part `true`, one true part is already enough, and
 the second comparison is skipped. Programmers call this
-**short-circuit evaluation**. It never changes the result, it only
+**short-circuit evaluation**. It never changes the result and only
 saves work, so it costs you nothing to put the question that decides
 most often on the left.
 :::
@@ -338,9 +337,9 @@ guessedNumber += guessedDigit1 * 1;
 Then one `===` comparison against the target number decides between
 yellow and lime.
 
-The playground gives you an almost empty file for this project: the
-roll and the canvas, nothing else. Build the game in five steps,
-testing after each:
+The playground gives you an almost empty file for this project, just
+the roll and the canvas. Build the game in five steps, testing after
+each:
 
 1. **The start screen.** The starter already rolls the target number
    into a global variable, because that number has to survive from

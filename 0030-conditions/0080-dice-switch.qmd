@@ -9,12 +9,12 @@ out of six with a chain of `===` comparisons. The hex exercise
 translated the digit values 10 to 15 into the letters A to F with a
 chain (@sec-hex). The rock-paper-scissors game turned the computer's
 roll into a symbol, with a chain again (@sec-rps-computer). Three
-programs, one shape: a single variable, compared against one exact
+programs share one shape, a single variable compared against one exact
 value after another. Programmers meet this shape so often that
 TypeScript has a statement built just for it: `switch`. This closing
 chapter of the Conditions part teaches you nothing new to compute,
 only a tidier way to write decisions you already make. And you'll
-practice it on an old friend: the dice.
+practice it on an old friend, the dice.
 
 ## AI tutor {#sec-tutor-switch}
 
@@ -45,11 +45,12 @@ else { message = "Sechs"; }
 
 Nothing in this chain is new: exact comparisons with `===`
 (@sec-equality), a final `else` that is safe because `dice` can only
-hold 1 to 6, and every branch with its braces, even on one line. But
-read the chain out loud and you'll hear the repetition: "dice equals,
-dice equals, dice equals", five times the same variable, five times
-the same question. The **switch statement** says the repeated part
-once:
+hold 1 to 6, and every branch with its braces, even on one line.
+
+But read the chain out loud and you'll hear the repetition, "dice
+equals, dice equals, dice equals", five times the same variable, five
+times the same question. The **switch statement** says the repeated
+part once:
 
 ```typescript
 switch (dice) {
@@ -122,7 +123,7 @@ color areas cannot be a case, and neither can the `||` conditions of
 the bouncing ball or the `&&` box tests of your games. Those decisions
 stay with `if`.
 
-The rule of thumb: when you catch yourself writing three or more
+Here's the rule of thumb. When you catch yourself writing three or more
 `else if` lines that compare the *same* variable with `===`, the
 chain is a switch candidate. The compared value doesn't have to be a
 number, by the way: a switch can also ask about a string, with the
@@ -131,7 +132,7 @@ strings with `===`.
 
 One more reason to learn the shape by heart: a similar `switch` exists
 in C, Java, and C#, the languages your semicolon habit is already
-preparing you for. Some languages even grow the idea further: C# and
+preparing you for. Some languages grow the idea further. C# and
 Rust, for example, offer more powerful variants that can match whole
 patterns, not just single values. The shape you learn here is the
 foundation for all of them.
@@ -166,7 +167,7 @@ The second exercise is a program you have already built once: the dice
 with its six faces from the dice exercise (@sec-dice-exercise). The
 roll, the anchors, and the `circle` calls all stay as they were; only
 the decision around them changes from a chain to a switch. Get your
-paper table of the nine anchor points out again, it is still the plan.
+paper table of the nine anchor points out again; it is still the plan.
 
 1. **Read the starter code.** The switch is started, and the cases for
    the 1 and the 2 are done. Compare the case for the 2 with your own
@@ -187,7 +188,7 @@ paper table of the nine anchor points out again, it is still the plan.
 
 ## For fast finishers: one more chain {#sec-switch-transfer}
 
-One switch candidate from this part is still out there: the
+One switch candidate from this part is still out there. The
 rock-paper-scissors game translates the computer's roll into a symbol
 with an `if`/`else if` chain (@sec-rps-computer), three exact cases on
 one variable. Open your finished game and rewrite that chain as a
