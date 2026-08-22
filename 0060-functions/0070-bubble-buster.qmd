@@ -7,7 +7,7 @@ title: "A game from functions: Bubble Buster"
 Bubbles are back. In the Arrays part you built a program where
 bubbles appeared, waited, and burst on their own
 (@sec-bubbles-exercise); this chapter turns the same bubbles into a
-game you play with the mouse. The bubbles have not changed, the
+game you play with the mouse. The bubbles have not changed; the
 engine underneath them has. Everything the program does now lives in
 a function with a name, and each of those functions has exactly one
 job.

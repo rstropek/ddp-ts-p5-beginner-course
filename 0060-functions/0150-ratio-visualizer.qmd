@@ -152,9 +152,9 @@ and the grid of 10 rows with 10 groups stands for 500. The two
 functions split the work exactly like in the Ratio Visualizer, only
 the deciding function now returns a number instead of a boolean,
 because a group can be empty, full, or anything in between. The
-exercise text comes in English and in German, it offers a smaller
-minimum version if the full grid feels too big at first, and it was
-a real exam in an earlier year of this course.
+exercise text comes in English and in German, and it offers a
+smaller minimum version if the full grid feels too big at first. It
+was a real exam in an earlier year of this course.
 
 There is no walkthrough for this one, and there will not be one. You
 have everything you need. Read the task, plan your two functions on

@@ -25,8 +25,8 @@ how many images your loading loop pushed into the array.
 This exercise needs 41 wagon images. Three things come with the
 starter code: the array `imageUrls` with the file names, the constant
 `BASE_URL` with the address they hang on, and the empty array
-`trainCars` for the loaded pictures. A loop fills the last one, and
-with the counting loop you know it looks like this.
+`trainCars` for the loaded pictures. A loop fills the last one. With
+the counting loop you already know, it looks like this.
 
 ```typescript
 for (let i: number = 0; i < imageUrls.length; i++) {

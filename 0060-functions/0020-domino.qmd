@@ -9,8 +9,8 @@ The starter code draws a single dice face with the right number of
 dots, and it works. Your job is to change how the program is *built*
 while the picture stays the same, and only then to grow it into a
 domino piece with two faces. Programmers do this every day and they
-have a name for it, refactoring, and it is the move that turns one
-long program into named building blocks.
+have a name for it, refactoring. It is the move that turns one long
+program into named building blocks.
 
 ## AI tutor {#sec-tutor-domino}
 
@@ -142,10 +142,10 @@ now land in the right half.
 You met this habit in the face function chapter, and here it does real
 work. A function that draws with fixed numbers can draw anywhere,
 because the `translate` in front of it decides where those numbers
-land. The dividing line proves it from the other side, since it is
-drawn at `x = 0` and still lands in the middle of the tile, because
-after the translate the origin *is* the middle. The `push` and `pop`
-around everything put the coordinate system back, so whoever called
+land. The dividing line proves it from the other side. It is drawn at
+`x = 0` and still lands in the middle of the tile, because after the
+translate the origin *is* the middle. The `push` and `pop` around
+everything put the coordinate system back, so whoever called
 `drawDomino` never notices that the origin moved.
 
 ## Values flow down the call chain {#sec-arguments-flow}

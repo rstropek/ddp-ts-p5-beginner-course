@@ -17,8 +17,7 @@ In the Arrays part, Word Swirrel handed you a finished line,
 `function guess(textInput: string)`, and asked you to fill in nothing
 but the body (@sec-guess-function). The book left that line
 unexplained on purpose and promised a later part for it. This is that
-part. Back then the signature was given to you; today you write your
-own.
+part. Back then you got the signature; today you write your own.
 
 ## AI tutor {#sec-tutor-face-function}
 

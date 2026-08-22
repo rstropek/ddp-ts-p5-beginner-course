@@ -96,8 +96,8 @@ truth that types cannot say, such as the format of the string or
 what comes back when nothing is found, and the editor shows it to
 you in a small box the moment you type the function's name and the
 opening parenthesis. Those boxes you have been reading all course
-for `random` and `circle` come from doc comments too. You should
-write them for every function that might not be obvious to a reader.
+for `random` and `circle` come from doc comments too. Write them for
+every function that might not be obvious to a reader.
 
 ## What the five functions do {#sec-training-five-functions}
 

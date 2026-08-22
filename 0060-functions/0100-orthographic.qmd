@@ -23,11 +23,11 @@ if the picture looks wrong, describe what you passed to `image`.
 
 ## Pictures your program loads {#sec-load-image}
 
-An image is not part of your code. It lives somewhere on the internet,
-under an address, and your program has to fetch it before it can draw
-it. Fetching takes time, a few milliseconds on a good connection and
-much longer on a bad one, so p5 gives you a command that waits for the
-picture and hands it over when it has arrived.
+An image is not part of your code. The picture file lives somewhere on
+the internet, under an address, and your program has to fetch it before
+it can draw it. Fetching takes time, a few milliseconds on a good
+connection and much longer on a bad one, so p5 gives you a command that
+waits for the picture and hands it over when it has arrived.
 
 ```typescript
 const BASE_URL: string = "https://cddataexchange.blob.core.windows.net/images/trains";
@@ -197,7 +197,7 @@ asks you to put a train on it.
 Images bring failure modes that shapes never had. A typo in the URL,
 a forgotten `await`, a size that squashes the picture, and the canvas
 stays empty or looks wrong with no error message to read. That is
-worth its own helper, and here it is.
+worth its own helper.
 
 {{< tutor tutor-images title="Your image helper" text="Images bring new failure modes: a typo in the URL, a forgotten await, a distorted size. This AI helper specializes in images and helps you in every exercise from now on." cta="Open the image helper on novedu.at" >}}
 

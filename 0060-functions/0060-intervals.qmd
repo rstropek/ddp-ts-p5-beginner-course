@@ -6,10 +6,10 @@ title: "Callbacks: a function you hand over"
 
 A circle appears every second, without a draw loop and without
 anybody clicking. The program behind it fits on one screen, and it
-rests on an idea that changes how you see functions. A function
-is not only something you call. It is also a value you can hand to
-somebody else, so that they call it for you, at a moment you never
-have to think about again.
+rests on an idea that changes how you see functions. A function is
+not only something you call. You can also hand it to somebody else
+as a value, so that they call it for you, at a moment you never have
+to think about again.
 
 ## AI tutor {#sec-tutor-intervals}
 
@@ -135,8 +135,8 @@ function drawCircle(): void {
 Nothing in this function knows that it is a callback. It has no
 parameters, returns nothing, and would work exactly the same if
 you called it yourself from `mouseClicked`. Being a callback is
-not a property of the function. It is a property of the way it is
-used.
+not a property of the function; it is a property of the way the
+function is used.
 
 ::: {.callout-note}
 ## Whole pixels are not needed here

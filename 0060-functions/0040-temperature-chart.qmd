@@ -86,12 +86,12 @@ is efficient, and it has a consequence. If the function wrote
 for the rest of the program. This kind of handover is called
 **call by reference**.
 
-`drawTemperatures` only reads its array, so all is well here. From
-now on, though, remember that a function which receives an array
-holds the caller's data and not a private copy. A function that
-really has to change things builds a real copy first, with the
-empty array and the loop from the arrays part (@sec-real-copy),
-and works on that one.
+`drawTemperatures` only reads its array, so nothing goes wrong
+here. From now on, though, remember that a function which receives
+an array holds the caller's data and not a private copy. A function
+that really has to change things builds a real copy first, with the
+empty array and the loop from the arrays part (@sec-real-copy), and
+works on that one.
 
 ## Plan it on paper {#sec-temperature-plan}
 

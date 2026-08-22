@@ -124,7 +124,7 @@ canvas once with the new value, and then the program waits again.
 
 The file `snowman.ts` already contains a complete `drawSnowman`
 function that draws the snowman with all its parts, and above it
-sits a doc comment. That comment is not decoration. It is the
+sits a doc comment. That comment is not decoration; it is the
 specification of what the function is supposed to do, and your task
 is to make the code match it:
 

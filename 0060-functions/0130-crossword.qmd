@@ -182,7 +182,7 @@ The loop stops at the first animal that contains the character,
 because `return true` leaves the function immediately, and only
 when no animal matched does the program reach the last line and
 answer `false`. Return early on a hit, return the opposite after
-the loop: that shape fits every "is there any element with ..."
+the loop. That shape fits every "is there any element with ..."
 question. The win check is the same shape upside down, because one
 missing letter is enough to answer `false`:
 

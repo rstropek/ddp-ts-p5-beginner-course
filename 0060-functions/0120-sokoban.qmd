@@ -2,7 +2,7 @@
 title: "The earned shortcut: split"
 ---
 
-![A Sokoban level on the canvas: a wall of grey blocks around a brown floor, two red crates, and two target markers. The whole picture is built from five image files and one string of characters.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/sokoban_levels.png){width=400}
+![A Sokoban level on the canvas: a wall of gray blocks around a brown floor, two red crates, and two target markers. The whole picture is built from five image files and one string of characters.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/sokoban_levels.png){width=400}
 
 Sokoban is a puzzle game from the early 1980s. You push crates through
 a warehouse until every crate stands on a marked spot, and you can
@@ -241,10 +241,11 @@ run after every step.
 
 ## Build the whole game {#sec-sokoban-advanced}
 
-Here is the big optional challenge of this part. You have a board on
-the screen, and the game is what happens when the player presses a
-key. Nobody walks you through this one, which is the point. You know
-every construct it needs, so here is a sketch of the steps, no more.
+The big optional challenge of this part is the game itself. You have a
+board on the screen, and the game is what happens when the player
+presses a key. Nobody walks you through this one, which is the point.
+You know every construct it needs, so the steps below are a sketch and
+no more.
 
 - **Read the keys.** `keyPressed` and the variable `key` tell you
   which key was pressed. Turn a key into a direction, one step in x

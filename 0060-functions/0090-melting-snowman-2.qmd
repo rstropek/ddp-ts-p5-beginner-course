@@ -96,9 +96,9 @@ three underscores, and every row shows one key press:
 
 : Four guesses on the word "ice". The second row is a wrong guess. {#tbl-guess-key-run}
 
-Look at the second row. A wrong guess is not reported by the
-function; it simply produces a string identical to the one that went
-in. The caller in `index.ts` uses precisely that:
+Look at the second row. The function does not report a wrong guess;
+it simply produces a string identical to the one that went in. The
+caller in `index.ts` uses precisely that:
 
 ```typescript
 const newCurrentWordStatus: string = guessKey(key, wordToGuess, currentWordStatus);

@@ -91,8 +91,8 @@ finished and marked as untouchable. It asks your functions, in order
 from the strongest hand to the weakest, what this hand is, and it
 prints the verdict under the cards. That is why every function you
 have to write starts with a placeholder line that returns a wrong
-value, because without those lines `draw` could not run at all.
-Delete a placeholder when you implement its function.
+value. Without those lines, `draw` could not run at all. Delete a
+placeholder when you implement its function.
 
 ::: {.callout-note}
 ## The helpers file is given code

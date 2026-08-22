@@ -73,7 +73,7 @@ is allowed. It behaves like a number:
 const diameter: number = getRandomInt(10, 50);
 ```
 
-The right side of the assignment is not "a function", it is
+The right side of the assignment is not "a function"; it is
 whatever `getRandomInt` handed back, so `diameter` ends up holding
 a plain number like 27. The same call could sit inside a `circle`
 call or inside a calculation, in every place where you could have

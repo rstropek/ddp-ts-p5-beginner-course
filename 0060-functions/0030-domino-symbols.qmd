@@ -41,8 +41,7 @@ switch (symbol) {
 }
 ```
 
-Three things are worth having in your head before you write six cases
-in a row.
+Keep three things in your head before you write six cases in a row.
 
 - `switch (symbol)` names the value once, and every `case` below asks
   about that same value. The line `case 3:` means the same as
@@ -100,13 +99,12 @@ corners half a `size` to the left and to the right, both at height
 `centerY + size / 2`.
 
 Cases 4, 5, and 6 work differently. A star, a heart, and a four leaf
-clover are not shape commands, they are characters, so they are
-printed with `text`. Set `textAlign(CENTER, CENTER)` so the character
-sits centered on the point instead of starting there, set
-`textSize(size)` so it comes out as large as the other symbols, and
-then call `text` with the character and the center point. The three
-characters are hard to type, so copy them out of the exercise
-description.
+clover are not shape commands; they are characters, so you print them
+with `text`. Set `textAlign(CENTER, CENTER)` so the character sits
+centered on the point instead of starting there, set `textSize(size)`
+so it comes out as large as the other symbols, and then call `text`
+with the character and the center point. The three characters are hard
+to type, so copy them out of the exercise description.
 
 ::: {.callout-warning}
 ## Put the drawing settings back
@@ -192,11 +190,11 @@ all identical. Two lines in the body differ, and in both of them only
 a name changed from `drawDice` to `drawSymbol`.
 
 That is the point of this chapter. `drawDomino` never knew what a dice
-face is, and it does not know what a star is either. It knows that a
-tile has two halves and that something gets drawn in each of them.
-Programs are built out of such skeletons, and once you have one, you
-can hang a new body on it in minutes. Look for that shape whenever two
-of your programs feel similar.
+face is, and it does not know what a star is either. All it knows is
+that a tile has two halves and that something gets drawn in each of
+them. You build programs out of such skeletons, and once you have one,
+you can hang a new body on it in minutes. Look for that shape whenever
+two of your programs feel similar.
 
 ## Your exercise, part 2: Domino With Symbols {#sec-domino-symbols-exercise}
 
