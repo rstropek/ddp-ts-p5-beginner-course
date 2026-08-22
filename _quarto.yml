@@ -108,6 +108,7 @@ book:
         - 0070-vscode/0030-first-program-again.qmd
         - 0070-vscode/0040-craftsmanship.qmd
         - 0070-vscode/0050-slot-machine.qmd
+        - 0070-vscode/0060-closing.qmd
   page-footer:
     left: "© 2026 — Creative Coding"
     right: "Made with [Quarto](https://quarto.org)"

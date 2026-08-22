@@ -1,0 +1,100 @@
+---
+title: "Where you are now"
+---
+
+Your first program was one line. You typed `circle(200, 260, 360);`
+into a playground in your browser, pressed Run, and a circle appeared.
+The same chapter showed you the line with a capital C, which draws
+nothing, and that was the lesson every other chapter has quietly relied
+on since: the computer takes you literally. Your last program was a
+slot machine with a picture sheet, a spinning animation, credits, and a
+check that passes, written in a folder of your own with nothing prepared
+for you.
+This short chapter is the pause between those two programs and whatever
+you build next.
+
+## What you carry out of this book {#sec-what-you-have}
+
+Look at the chapter list once more, from the top. Every part added one
+idea, and each idea only made sense because the one before it was
+already yours.
+
+- **Values with a name.** A variable is a box with a name and a type,
+  and a program is a story of values moving between boxes.
+- **Decisions.** An if statement asks a question and runs one branch or
+  the other. A switch asks the same question six times at once.
+- **Repetition.** A loop lets you say "again" without typing it again,
+  and a loop inside a loop gave you grids, meshes, and chessboards.
+- **Many values under one name.** An array holds a whole row, and you
+  know the difference between copying a number and copying the arrow
+  to an array, which many people who program for a living never quite
+  learned.
+- **Commands of your own.** A function takes parameters, may answer
+  with a return value, and can even be handed to somebody else to call
+  later.
+- **A workshop of your own.** VS Code, Node.js, npm, and Biome. You can
+  unpack a project, install its packages, format it, check it, and run
+  it without a playground preparing any of it for you.
+
+None of these are toy versions. `let`, `if`, `for`, arrays, functions,
+and `npm install` are the same words a professional types on a Monday
+morning. The programs were small so that you could see every part of
+them, and that is the only difference.
+
+## Two habits that matter more than any command {#sec-habits}
+
+The command list above is easy to look up again. Two things from this
+book are harder to find in a reference, and they are the ones you should
+keep.
+
+The first is **pen and paper before the keyboard**. You played computer
+with a table of `mouseX` values, you drew a silo with its constants
+labeled before you drew it in code, and you predicted what
+`console.log` would print before you ran it. Every time your prediction
+was wrong, you learned something the running program alone would have
+hidden. Keep doing that. A sketch on paper is the cheapest debugging
+tool you'll ever own.
+
+The second is **only what you can explain**. You may look anything up,
+and you may ask an AI for help, and that stays true next year and in
+every job after it. The rule is that whatever ends up in your file, you
+can walk through line by line and say why it's there. Code you can
+explain is yours. Code you can't explain is borrowed, and borrowed
+code fails you at the worst moment, usually in an exam or in front of a
+customer.
+
+## Keep making things {#sec-keep-going}
+
+The folder on your computer doesn't go away when the course ends, and
+neither does what you know. Until the next part of this course starts,
+make something. It doesn't have to be big, and it doesn't have to be
+good. Take the bouncing ball and give it gravity. Give the slot machine
+a sound, or a second player. Draw the flag of a country you'd like to
+visit, with a loop for the stripes. Redo Word Swirrel with a word that
+means something to you. The point isn't the result; the point is that
+you open VS Code without anyone telling you to, and that your fingers
+remember `npm start`.
+
+When something breaks, and it will, read the error message from the
+beginning, the way you learned in the very first part. Then sketch.
+Then ask. That order has not changed since your first circle, and it
+won't change next year either.
+
+## What comes next {#sec-next-book}
+
+This book drew on a canvas. The next book, *Creative Coding 2*, keeps
+the language and the tools you have now and changes the world they
+work in. Instead of painting pixels, your program builds a web page out
+of elements, styles them with CSS, draws with SVG, and reacts to clicks
+and keystrokes on that page. A web page turns out to be full of
+**objects**, things that have properties and can do things, and by
+working with the page's objects you learn what an object is. Later you
+write your own, with classes, and you test them so that you can prove
+they work instead of hoping. Every one of those chapters stands on a
+variable, a loop, an array, and a function, so you already have the
+ground it's built on.
+
+That is the whole plan. You came in with no programming experience, and
+you leave with a workshop, a slot machine, and the habit of predicting
+before you run. Close the laptop, take a walk, and be a little proud of
+that. See you in the next book.
