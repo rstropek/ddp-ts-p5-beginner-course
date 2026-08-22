@@ -62,7 +62,7 @@ for (let i: number = 0; i < firstNames.length; i++) {
 }
 ```
 
-Three details carry the section. First, `firstNames.length` is 11,
+Three details matter here. First, `firstNames.length` is 11,
 so the loop visits each player once; add a twelfth player to all
 three arrays and the loop follows without a change. Second, the
 template string glues the two name parts of the *same index*
@@ -92,9 +92,9 @@ translate(MARGIN, MARGIN);
 rect(0, 0, 100, 70);   // the field, in meters
 ```
 
-This is the part 1 soccer recipe, and after the last chapter it
-reads like an open book: `scale(SCALE)` multiplies everything drawn
-afterwards by 5, so one "meter" becomes 5 pixels; `translate`
+This is the part 1 soccer recipe, and after the last chapter you
+can read every line of it: `scale(SCALE)` multiplies everything
+drawn afterwards by 5, so one "meter" becomes 5 pixels; `translate`
 shifts the field by the margin, *in meters*, because the translate
 happens after the scale. From then on, every measurement from the
 real world goes into the code unchanged; the penalty box is 16.5

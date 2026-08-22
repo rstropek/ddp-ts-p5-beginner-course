@@ -16,7 +16,7 @@ page, build an example, and describe it in your own words.
 
 ## AI tutor {#sec-tutor-reading-mdn}
 
-Like in the research exercise of part 1, two AIs play different
+As in the research exercise of part 1, two AIs play different
 roles here. The AI tutor of this part answers questions about the
 course material, as in every chapter. The exercise itself sends you
 to a general AI on the internet on purpose, because handling
@@ -34,7 +34,7 @@ developer has it open in a tab. When they wonder what a method does,
 they search for "mdn" plus its name, land on the matching page, and
 read.
 
-Your entry point is the
+Your starting point is the
 [String reference page](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String).
 The sidebar on the left lists everything a string can do, with all
 the string methods collected under *Instance methods*; three of
@@ -77,13 +77,13 @@ read the `substring` page, you can read them all:
 - **Examples** collects longer, copyable examples with
   explanations.
 
-Further down follow sections like *Specifications* and *Browser
+Further down you find sections like *Specifications* and *Browser
 compatibility*. They matter to professionals who must support old
 browsers; you can skip them.
 
 Now do the check. The return value of `substring` is described as a
 new string containing the specified part of the given string. That
-matches what you learned: `substring` copies, it never changes the
+matches what you learned: `substring` copies; it never changes the
 string it is called on. When a documentation page confirms what you
 already know, you are reading it correctly.
 
@@ -108,7 +108,7 @@ Pick **one method** from the *Instance methods* list of the String
 reference. The firm rules match part 1, with one addition:
 
 - Choose a method you haven't used in this course yet, so
-  `substring` is off the table. So is `charAt`, because it does
+  `substring` is not an option. So is `charAt`, because it does
   exactly what the square brackets already do for you.
 - The page must make sense without regular expressions. If the
   syntax section talks about patterns or `RegExp`, choose

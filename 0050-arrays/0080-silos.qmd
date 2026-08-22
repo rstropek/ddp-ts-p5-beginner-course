@@ -7,9 +7,9 @@ title: "Silos: the array runs the show"
 The last chapter of this part is a real little application. A
 factory wants a dashboard for its silos. It should show every fill
 level, warn in red when one runs critical, and let the operator add
-or remove material with buttons. Every idea of the part reports for
-duty: the fill levels arrive as a string and are parsed into an
-array, the array decides how many silos exist, the mouse *changes*
+or remove material with buttons. Every idea of this part comes
+together here: the fill levels arrive as a string and are parsed into
+an array, the array decides how many silos exist, the mouse *changes*
 the array, and the canvas repaints whatever the array says, frame
 after frame. When this program runs, you have built your first
 interactive data application.
@@ -26,11 +26,12 @@ the canvas shows.
 
 ## From string to array {#sec-parse-into-array}
 
-The fill levels arrive as configuration text:
+The fill levels arrive as configuration text,
 `const INITIAL_FILL = "3,7,8,3,10,2";`. You wrote a parser like
-this in the parsing chapter, with one difference; back then, every
-parsed value was drawn immediately and thrown away. Now the values
-must be *kept*, and where do parsed values live? In an array:
+this in the parsing chapter, with one difference; back then, the
+program drew every parsed value immediately and threw it away. Now
+the values must be *kept*, and where do parsed values live? In an
+array:
 
 ```typescript
 const silos: number[] = [];
@@ -47,8 +48,8 @@ for (let i: number = 0; i < INITIAL_FILL.length; i++) {
 silos.push(num);   // the flush: the last value has no comma
 ```
 
-The digits grow the number differently this time, with no buffer
-string, but arithmetic. `num * 10 + digit` shifts the number one
+The digits grow the number differently this time, with arithmetic
+instead of a buffer string. `num * 10 + digit` shifts the number one
 decimal place left and drops the new digit in. For `"10"`, first
 `0 * 10 + 1 = 1`, then `1 * 10 + 0 = 10`. Recognize it? It is
 digit extraction from the number systems chapter, run backwards:
@@ -74,13 +75,13 @@ about to build:
   array skill this part teaches. Square brackets work on both
   sides of an assignment; `silos[i]` is a variable like any other.
 
-The drawing itself follows the bubbles mantra: `draw` wipes the
+The drawing itself follows the bubbles rule: `draw` wipes the
 canvas and repaints every silo from the array, sixty times a
 second. Nobody redraws "the changed silo"; the click changes the
 *data*, and the next frame shows the new truth automatically.
-This split, events write the state and draw paints the state, is
-how real user interfaces work, from this dashboard up to the apps
-on your phone.
+That split, where events write the state and `draw` paints the
+state, is how real user interfaces work, from this dashboard up to
+the apps on your phone.
 
 ::: {.content-visible unless-format="pdf"}
 ![A close-up of two silos in action: clicking the buttons raises and lowers the bars, and a triangle lights up red while the mouse hovers over its button.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/silos.gif){width=170}

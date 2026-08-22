@@ -70,8 +70,8 @@ your indexes first; the largest valid one is `word.length - 1`.
 ## Growing a string piece by piece {#sec-string-grow}
 
 You have built strings before, with template strings like
-`` `Clicks: ${clickCount}` ``. This chapter adds the second way:
-gluing strings together with `+`, and growing a variable with `+=`,
+`` `Clicks: ${clickCount}` ``. This chapter adds the second way. You
+glue strings together with `+`, and you grow a variable with `+=`,
 exactly like adding numbers to a running total:
 
 ```typescript
@@ -100,7 +100,7 @@ and variables in one sentence.
 ## Cutting pieces out: substring {#sec-substring-cut}
 
 The opposite of gluing is cutting. Every string has the method
-`substring(start, end)`: it copies the part that begins at index
+`substring(start, end)`. It copies the part that begins at index
 `start` and ends just *before* index `end`. The character at `end`
 is not included:
 
@@ -112,9 +112,9 @@ const flower: string = "flower";
 
 ![substring(2, 4) copies from the start index up to, but not including, the end index: the characters at indexes 2 and 3.](images/substring.svg){width=260}
 
-If you leave the second number away, `substring(start)` copies
+If you leave out the second number, `substring(start)` copies
 everything from `start` to the end of the string. And here is the
-trick this chapter is built on: combining two cuts removes a single
+trick this chapter is built on. Combining two cuts removes a single
 character. Everything before index `i`, glued to everything after
 index `i`, is the string without the character at `i`:
 
@@ -125,10 +125,10 @@ word = word.substring(0, i) + word.substring(i + 1);
 // word is now "ape"
 ```
 
-One thing `substring` never does: it never changes the string it is
-called on. It hands you a copy of the piece, and the original stays
-as it is. To keep the shorter word, you assign the result back to
-the variable, as in the line above.
+One thing `substring` never does is change the string it is called
+on. It hands you a copy of the piece, and the original stays as it
+is. To keep the shorter word, you assign the result back to the
+variable, as in the line above.
 
 ## The scramble recipe {#sec-scramble-recipe}
 
@@ -182,7 +182,7 @@ taken from the data instead of written as a number.
 
 ## A function you fill in: guess {#sec-guess-function}
 
-Word Swirrel needs one more piece: the player types a guess and
+Word Swirrel needs one more piece. The player types a guess and
 clicks a button. The playground page for this exercise has a text
 box and a Guess button above the canvas, and the starter code
 contains this:
@@ -195,16 +195,17 @@ function guess(textInput: string) {
 }
 ```
 
-This works like `mouseClicked`; you do not call `guess` yourself,
-the playground calls it for you when the button is clicked. New is
-the part between the parentheses: `textInput` is a **parameter**, a
-variable that the playground fills with the typed text before your
-code runs. Inside the braces you use `textInput` like any string
-variable. Treat this as a cliffhanger, left open on purpose. What a
-function really is, what the line with the parentheses means, and
-how you write functions of your own is a big enough story that a
-later part of this book is dedicated to it. Until then, signatures
-like this one are always given, and your job is only the body:
+This works like `mouseClicked`. You do not call `guess` yourself;
+the playground calls it for you when the button is clicked. The
+part between the parentheses is new. `textInput` is a
+**parameter**, a variable that the playground fills with the typed
+text before your code runs. Inside the braces you use `textInput`
+like any string variable. Treat this as a cliffhanger, left open on
+purpose. What a function really is, what the line with the
+parentheses means, and how you write functions of your own is a big
+enough story that a later part of this book covers it in full.
+Until then, signatures like this one are always given, and your job
+is only the body:
 
 ```typescript
 if (textInput === wordToGuess) {
@@ -216,7 +217,7 @@ if (textInput === wordToGuess) {
 }
 ```
 
-Comparing strings with `===` you know from rock, paper, scissors,
+You know comparing strings with `===` from rock, paper, scissors,
 including the catch that capitalization matters. The only new
 character is `\n` inside the template string: it is not shown as
 text but stands for a **line break**, so "Wrong!" and the solution
@@ -242,7 +243,7 @@ type it, run it, and understand every line.
    `undefined` appear, so you recognize it when it happens by
    accident.
 4. **Read the sample solution.** It is the same program with long
-   explaining comments, including a picture of how the two
+   comments that explain it, including a picture of how the two
    substring calls split the word. Read it line by line.
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/word-swirrel.yaml title="Word Swirrel" >}}

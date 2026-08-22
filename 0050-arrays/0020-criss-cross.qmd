@@ -5,7 +5,7 @@ title: "Letters criss-cross: rotate"
 ![Word Swirrel, level 2: the letters of the secret word scattered across the canvas, each one at a random position, in a random size, a random color, and tilted at a random angle.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0060-Arrays/word-swirrel-1.png){width=440}
 
 In the first Word Swirrel, the scrambled word sat in the middle of
-the canvas as one block of text. Level 2 makes it look the part.
+the canvas as one block of text. Level 2 makes it look scrambled too.
 Every letter gets its own place, its own size, its own color, and
 its own tilt. Two ideas carry the whole chapter. First, a for loop
 that visits a string one character at a time; you will write this
@@ -26,7 +26,7 @@ the letter lands.
 ## One letter at a time {#sec-letter-loop}
 
 The scramble loop of the last chapter ate the word up. This chapter
-needs something gentler: visit every character once, in order, and
+needs something gentler. Visit every character once, in order, and
 draw it. That is a for loop over the indexes:
 
 ```typescript
@@ -39,7 +39,7 @@ Read the header with the indexes in mind: `i` starts at 0, the first
 index. The loop runs while `i < wordToGuess.length`, and stops
 exactly when `i` reaches the length, which is one past the last
 index. For `"apple"` (length 5), `i` takes the values 0, 1, 2, 3,
-and 4, every index once, none twice, no `undefined`. The `<` does the
+and 4, every index once and no `undefined`. The `<` does the
 off-by-one thinking for you; with `<=` the loop would run once too
 often and read past the end.
 
@@ -56,10 +56,10 @@ The angle is in degrees, clockwise, as long as `angleMode(DEGREES)`
 stands in `setup`, the same setting you used for `arc` in part 1.
 Every program in this chapter sets it.
 
-The catch: `rotate` turns the paper **around the current origin**,
-the point (0, 0). A shape close to the origin tilts almost in place;
-a shape far from the origin swings around it like a hammer thrower.
-That is why rotation almost always comes as a team of three:
+The catch is that `rotate` turns the paper **around the current
+origin**, the point (0, 0). A shape close to the origin tilts almost
+in place; a shape far from the origin swings around it like a hammer
+thrower. That is why rotation almost always comes as a team of three:
 
 ```typescript
 translate(x, y);   // 1. move the origin to where the shape belongs
@@ -79,7 +79,7 @@ Like `translate`, `rotate` does not touch any shape that is already
 drawn. It changes the coordinate system for everything that comes
 after it, and a second `rotate` adds to the first. That is also why
 the order matters: translate-then-rotate pins the letter to its
-spot, rotate-then-translate makes the move itself happen in a tilted
+spot; rotate-then-translate makes the move itself happen in a tilted
 direction.
 :::
 

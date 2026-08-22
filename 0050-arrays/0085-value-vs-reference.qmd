@@ -259,7 +259,7 @@ and JavaScript indeed files strings with the value types, next to
 
 ::: {.callout-note}
 ## Strings in other languages
-Other languages model strings differently under the hood. In C#
+Other languages model strings differently. In C#
 and in Java, a string variable does hold an arrow, and the thing
 at the end of the arrow is immutable. A running program cannot
 tell the two models apart, and immutability is the reason: when

@@ -25,7 +25,7 @@ tutor to walk through one example with you, step by step.
 
 ## Scale multiplies everything {#sec-scale-multiplies}
 
-`scale(2)` tells the canvas: from now on, multiply everything by 2.
+`scale(2)` tells the canvas to multiply everything by 2 from now on.
 Like `translate` and `rotate`, it changes the coordinate system for
 everything drawn after it, and `pop` undoes it. But "everything"
 really means everything:
@@ -118,7 +118,7 @@ multiplies its diameter, but its center, 0 away from the origin in
 both directions, stays put. Translate once, draw everything at the
 origin, and scaling changes only the size. That is precisely how
 the part 1 soccer field recipe worked; `translate` placed the
-field, and `scale` blew up meters into pixels around it.
+field, and `scale` turned meters into pixels around it.
 
 ## Your exercise, part 2: Scaled Circles (Centered) {#sec-scaled-centered-exercise}
 

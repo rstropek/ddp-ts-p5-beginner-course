@@ -16,8 +16,8 @@ but the idea is one of the biggest in programming. From now on,
 
 Arrays bring new syntax: brackets, commas, a strange type
 annotation. If the red squiggles pile up when you type your first
-array, show the tutor your lines; a lost comma or bracket is found
-in seconds.
+array, show the tutor your lines; the tutor finds a lost comma or
+bracket in seconds.
 
 {{< tutor tutor-arrays >}}
 
@@ -54,7 +54,7 @@ carry the soccer players' shirt numbers in a later chapter.
 
 ## Picking one at random {#sec-random-element}
 
-You know `random` as a number machine: `random(6)` returns a random
+You know `random` as a number machine. `random(6)` returns a random
 decimal number. Hand it an array instead, and it does something much
 friendlier:
 

@@ -32,7 +32,7 @@ array of numbers that holds nothing yet:
 const circlesDiameter: number[] = [];
 ```
 
-The type annotation `number[]` now really earns its place: with no
+The type annotation `number[]` now really earns its place. With no
 elements between the brackets, the annotation is the only clue
 about what the array will hold. From an empty start, `push`
 appends elements at the end:
@@ -51,7 +51,7 @@ index.
 ::: {.callout-note}
 ## A const that changes?
 `const circlesDiameter` and then `push` into it, without a red
-squiggle? Yes: `const` forbids *reassigning the variable*, like
+squiggle? Yes. `const` forbids *reassigning the variable*, like
 `circlesDiameter = [1, 2, 3];`. What is stored *inside* the array
 may change freely. The box is nailed down; the content is not.
 This is normal TypeScript style: an array variable is `const`
@@ -61,8 +61,8 @@ unless you plan to replace the whole array.
 ## Four arrays, one bubble {#sec-bubble-arrays}
 
 A bubble has a position, a size, and a color, so the program keeps
-four parallel arrays: `circlesCenterX`, `circlesCenterY`,
-`circlesDiameter`, `circlesFill`. Creating one bubble means one
+four parallel arrays, `circlesCenterX`, `circlesCenterY`,
+`circlesDiameter`, and `circlesFill`. Creating one bubble means one
 push into *each* of them; the size comes first, drawn up to a
 constant `maxDiameter`:
 
@@ -91,7 +91,7 @@ you push, push into all parallel arrays, in one place, together.
 ## The program's clock: millis {#sec-millis}
 
 New bubbles should appear every half second to two seconds, not
-sixty times a second. For that, the program needs a clock:
+sixty times a second. For that, the program needs a clock.
 `millis()` returns the number of milliseconds since the program
 started. The scheduling trick is to store a *deadline*:
 
@@ -171,16 +171,16 @@ every bracket themselves.
 
 ## Removing elements: splice {#sec-splice}
 
-Bubbles should burst. The removing tool is `splice`:
+Bubbles should burst. The removing tool is `splice`.
 `myArray.splice(i, 1)` removes one element at index `i`. The
 elements after it slide one index to the left, and `length` shrinks
 by one:
 
 ![splice(1, 1) removes the element at index 1. Everything behind it slides one index to the left, and the array gets shorter.](images/splice-shift.svg){width=280}
 
-For bursting, every bubble gets a lifetime: a *fifth* parallel
-array, filled at creation with its personal deadline, the same
-pattern as `nextCircle`:
+For bursting, every bubble gets a lifetime. A *fifth* parallel
+array holds it, filled at creation with its personal deadline, the
+same pattern as `nextCircle`:
 
 ```typescript
 circlesLifetime.push(millis() + random(2000, 4000));
@@ -202,7 +202,7 @@ for (let i: number = circlesLifetime.length - 1; i >= 0; i--) {
 ```
 
 Look at the loop header: it runs **backwards**, from the last index
-down to 0. That is not a stylistic whim. When `splice` removes
+down to 0. That is not a matter of taste. When `splice` removes
 index 2, the old index 3 *becomes* index 2. A forward loop would
 step on to index 3 next and never look at the element that just
 slid into position 2. It skips a bubble, every time it removes one.
