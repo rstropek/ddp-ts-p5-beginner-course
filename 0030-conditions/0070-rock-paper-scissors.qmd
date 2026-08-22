@@ -349,7 +349,7 @@ Now finish the game: the click, the computer's roll, and the winner.
    "Computer:" at text size 30, the symbol at text size 75.
 6. **Announce the winner** with the logic from @sec-rps-winner, at
    text size 50 near the bottom edge.
-7. **Test all nine combinations.** Chance won't show you all four
+7. **Test all nine combinations.** Chance won't show you all three
    messages quickly, so force the roll like you forced the dice:
    replace `floor(random(0, 3))` with 0, 1, or 2 for a moment and play
    against a computer whose move you know. Check your play-computer
