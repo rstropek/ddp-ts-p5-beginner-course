@@ -32,8 +32,8 @@ mistakes, and tidy code shows them.
 
 That's why this course has demanded formatted code before you hand anything in
 since the very first weeks, and why unformatted submissions cost you points.
-It's not pedantry. It's the same care the carpenter puts into the surface, and
-in your new workshop you have tools that do most of that work for you.
+It's not pedantry but the same care the carpenter puts into the surface. In
+your new workshop you have tools that do most of that work for you.
 
 ## The formatter {#sec-formatter-craft}
 
@@ -108,11 +108,11 @@ leftover of a typo or of code you started and never finished.
 
 ## Biome, and the two commands {#sec-biome-craft}
 
-**Biome** is the tool that is both formatter and linter for TypeScript in this
-course. One program, two jobs, and it's already installed in your exercise
-folder because it came along with the starter and `npm install`. Remember that
-name, because from now on Biome is the tool behind every formatting and every
-rule message you see in this course.
+**Biome** is both the formatter and the linter for TypeScript in this course.
+One program, two jobs, and it's already installed in your exercise folder
+because it came along with the starter and `npm install`. Remember that name,
+because from now on Biome is the tool behind every formatting and every rule
+message you see in this course.
 
 Biome is also the successor of **Format Document** from the playground
 (@sec-format). What the playground website quietly did for you, a tool in your
@@ -145,9 +145,9 @@ Open the `shapes` folder from the last chapter in VS Code, open the integrated
 terminal, and work through these five steps:
 
 1. **Format the whole project.** Type `npm run format`. Most likely you'll see
-   "No fixes applied", and that's success, not a dud. Your files were already
-   formatted, because saving formats them for you. Clean is the normal state
-   here.
+   "No fixes applied", and that's success, not a failure. Your files were
+   already formatted, because saving formats them for you. Clean is the normal
+   state here.
 2. **Run the full check.** Type `npm run check`. On an untouched starter with
    your shapes program in it, this is probably quiet too.
 3. **Provoke the linter on purpose.** Now break the rules deliberately. Add
@@ -173,9 +173,9 @@ terminal, and work through these five steps:
 5. **Remove the experiment.** Delete the lines you added in step 3, save, and
    run `npm run check` one last time. Your program is clean again.
 
-From now on this is a habit, not an exercise. Before you hand something in,
-before you present it, and before you show it to anybody, run `npm run format`
-or `npm run check` over your project.
+From now on this is a habit, not an exercise. Before you hand something in and
+before you show it to anybody, run `npm run format` or `npm run check` over
+your project.
 
 That completes your workshop. You have the editor, Node.js, and npm, you have
 the starter project and a folder rule that keeps a whole year of exercises

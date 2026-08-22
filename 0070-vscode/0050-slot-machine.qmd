@@ -100,12 +100,12 @@ async function setup(): Promise<void> {
 }
 ```
 
-Two details are worth checking in your own file. The starter's `setup` is
-written as `function setup(): void`, and `await` only works inside an `async`
-function, so you change the line to `async function setup(): Promise<void>`.
-The starter even has a comment above `setup` that says so. And the variable
-`sheet` stands outside `setup` with `let`, because `draw` needs it too and it
-gets its value only when the picture has arrived.
+Two details matter in your own file. The starter's `setup` is written as
+`function setup(): void`, and `await` only works inside an `async` function, so
+you change the line to `async function setup(): Promise<void>`. The starter
+even has a comment above `setup` that says so. And the variable `sheet` stands
+outside `setup` with `let`, because `draw` needs it too and it gets its value
+only when the picture has arrived.
 
 ## Cutting one picture out: image with nine arguments {#sec-nine-arguments-slot-machine}
 

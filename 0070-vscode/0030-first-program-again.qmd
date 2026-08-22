@@ -47,11 +47,11 @@ puts all of it into a new folder called `node_modules`. Expect a progress
 display and a short wait, because p5.js and the developer tools together are a
 lot of files.
 
-Run `npm install` once per exercise copy. `node_modules` is big, it is
+Run `npm install` once per exercise copy. `node_modules` is big, it's
 generated, and you never edit anything in it by hand. You can delete the whole
 folder and get it back with another `npm install`. That's also why your download
-was so small, because a list of package names ships much cheaper than the
-packages themselves.
+was so small. A list of package names takes far less space than the packages
+themselves.
 
 ## npm start gives you your own web server {#sec-npm-start-first-again}
 
@@ -110,11 +110,10 @@ const p = new p5((sketch: p5): void => {
 });
 ```
 
-Those lines are a **fixed frame**. They connect your functions to p5.js, they
-come to you type for type, and you never change them. Some of the syntax in
-there belongs to a later course, so treat the frame the way you treated `push`
-for a long time. It's a recipe that works, and the details come when you need
-them.
+Those lines are a **fixed frame**. They connect your functions to p5.js, and
+you never change them. Some of the syntax in there belongs to a later course,
+so treat the frame the way you treated `push` for a long time. It's a recipe
+that works, and the details come when you need them.
 
 Below the frame, familiar friends are waiting:
 

@@ -93,7 +93,7 @@ territory, exactly like the installations in the previous chapter, so look it
 up with a search engine or a general AI.
 
 Choose honestly. The ZIP download is completely fine for the whole course. git
-is the tool you'll meet in every programming job, it's worth the research if
+is the tool you'll meet in every programming job. It's worth the research if
 you're curious, and it pays off every time the starter gets an update. If you
 took the ZIP, an update simply means downloading the ZIP again.
 
