@@ -1,0 +1,95 @@
+% ---------------------------------------------------------------------------
+% Compact print layout — PDF output ONLY (loaded from `format: pdf` in
+% _quarto.yml, so the HTML book is untouched).
+%
+% The handout is printed and handed to students, so every saved page is real
+% paper. Everything below buys pages back from *whitespace*, never from the
+% text itself: the body font, the line length and the leading stay in the
+% comfortable range, and only the padding around headings, lists, code blocks,
+% callouts and figures gets trimmed.
+%
+% This file is loaded through `include-in-header`, which lands in the preamble
+% AFTER pandoc's syntax-highlighting setup (fvextra) and after Quarto's own
+% tcolorbox definitions for code blocks and callouts — so `\fvset` and
+% `\tcbset` below can safely re-tune both.
+% ---------------------------------------------------------------------------
+
+% --- Justification ---------------------------------------------------------
+% A compact page has long lines, and long lines are where justification goes
+% wrong: TeX stretches the spaces of one line and squeezes the next.
+% microtype lets punctuation hang a hair into the margin and tunes the space
+% around it, which evens the grey of the text out again. It also happens to
+% fit a few more words per line.
+\usepackage{microtype}
+
+% --- Paragraph spacing -----------------------------------------------------
+% Pandoc's KOMA branch sets `parskip=half`: no first-line indent, half a blank
+% line between paragraphs. The `-` variant drops KOMA's extra requirement that
+% the last line of a paragraph must leave a visible gap, which alone removes a
+% forced line here and there. The explicit length then goes from half a line
+% to about a third — still an obvious break between paragraphs, but roughly
+% two lines per page cheaper.
+\KOMAoptions{parskip=half-}
+\AtBeginDocument{\setlength{\parskip}{.35\baselineskip plus .1\baselineskip}}
+
+% --- Heading spacing -------------------------------------------------------
+% KOMA is generous above and below every heading. The values below keep a
+% clear visual break (a heading must still "belong" to the text under it) at
+% about two thirds of the original space.
+%
+% `beforeskip` is negative on purpose for the section levels: the minus sign
+% is KOMA's flag for "do not indent the first paragraph after this heading",
+% not a negative distance.
+%
+% A chapter always starts on a fresh page, so the 2.3 blank lines KOMA puts
+% *above* the chapter title are pure loss — dropping them saves a few lines in
+% each of the ~45 chapters.
+\RedeclareSectionCommand[beforeskip=0pt,afterskip=1\baselineskip]{chapter}
+\RedeclareSectionCommand[
+  beforeskip=-2.2ex plus -.5ex minus -.2ex,
+  afterskip=.9ex plus .1ex]{section}
+\RedeclareSectionCommand[
+  beforeskip=-1.9ex plus -.5ex minus -.2ex,
+  afterskip=.7ex plus .1ex]{subsection}
+\RedeclareSectionCommand[
+  beforeskip=-1.7ex plus -.5ex minus -.2ex,
+  afterskip=.6ex plus .1ex]{subsubsection}
+
+% --- Lists -----------------------------------------------------------------
+% The chapters use a lot of numbered exercise steps and bullet lists. Pandoc's
+% \tightlist already removes the space *between* items of a tight list, but
+% not the space above and below the list itself, and it cannot: that space is
+% consumed before \tightlist runs. enumitem sets it for every list at once.
+\usepackage{enumitem}
+\setlist{topsep=2pt,partopsep=0pt,itemsep=2pt,parsep=3pt}
+
+% --- Code blocks and callouts ----------------------------------------------
+% Both are tcolorbox environments (Quarto builds them that way), so one
+% \tcbset tightens all of them. Quarto sets `left` itself for callouts, so
+% that value is left alone here and only the vertical padding shrinks.
+% \fvset controls the verbatim text inside a code block: one step smaller than
+% the body text, and without the extra leading the body text gets — code is
+% read line by line, so it does not need the same open spacing.
+\AtBeginDocument{%
+  \tcbset{%
+    boxsep=0mm,
+    top=1mm, bottom=1mm,
+    before skip=1.2ex, after skip=1.2ex,
+  }%
+  \fvset{fontsize=\small,baselinestretch=1}%
+}
+
+% --- Figures ---------------------------------------------------------------
+% LaTeX defaults are conservative: it refuses to put a figure on a page that
+% is more than 70% text, and happily banishes a big figure to a page of its
+% own. The diagrams in this book are small enough to sit inside the text, so
+% allow much fuller pages and only fall back to a float page when a figure
+% really fills one.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.8}
+\setlength{\intextsep}{6pt plus 2pt minus 2pt}
+\setlength{\textfloatsep}{8pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{4pt}
+\setlength{\belowcaptionskip}{0pt}

@@ -155,10 +155,21 @@ format:
     # full scrbook — a good fit for course handouts.
     documentclass: scrreprt
     papersize: a4
-    fontsize: 11pt
-    linestretch: 1.15         # a touch more leading -> easier to read
+    # The handout gets printed and handed out, so it is laid out for paper:
+    # 10pt body text with 1.1 leading on a page with narrow margins. Every
+    # further page saving comes from `pdf-compact.tex` (see include-in-header
+    # below), which trims whitespace and never the text.
+    fontsize: 10pt
+    linestretch: 1.1          # a touch more leading -> easier to read
     geometry:
-      - margin=2.5cm
+      # A4 with narrow margins. Top and bottom are tighter than the sides:
+      # nothing is printed in them except the page number, which sits in the
+      # bottom margin (`footskip` is its distance below the last text line).
+      - top=18mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+      - footskip=11mm
     toc-depth: 1              # TOC shows parts + chapters only, not `##` sections
     number-sections: true
     colorlinks: true          # clickable, colored links (not ugly boxed ones)
@@ -167,24 +178,27 @@ format:
     highlight-style: github   # nicer, lighter code coloring than the default
     code-block-bg: true       # subtle grey background behind code blocks
     # A custom hex colour must be *defined* before xcolor can use it by name.
+    # The second entry, pdf-compact.tex, holds the print layout (spacing around
+    # headings, lists, code blocks, callouts and figures) — see that file.
     include-in-header:
-      text: |
-        \definecolor{tsblue}{HTML}{3178C6}
-        % scrreprt numbers parts with Roman numerals by default (Part I);
-        % switch to arabic so it reads "Part 1: Introduction".
-        \renewcommand*{\thepart}{\arabic{part}}
-        % Number chapters *within* their part: reset the chapter counter at
-        % each new part and prefix it with the part number. So the chapters
-        % under part 1 (Introduction) read 1.1, 1.2, ...; part 2's read 2.1, ...
-        \counterwithin{chapter}{part}
-        % Don't bold chapter entries in the table of contents (KOMA bolds them
-        % by default). With many top-level parts, a lighter TOC reads better.
-        \setkomafont{chapterentry}{\normalfont}
-        % Chapter entries in the TOC:
-        %   numwidth   - KOMA reserves only 1.5em for the number, too narrow
-        %                once a part has ten or more chapters ("1.10" then
-        %                runs into the title). Widen it for two-digit numbers.
-        %   beforeskip - KOMA adds ~1em above every chapter entry, which makes
-        %                a chapter list read as loose, disconnected rows. Drop
-        %                it so a part's chapters form one compact block.
-        \DeclareTOCStyleEntry[numwidth=3em,beforeskip=0pt]{tocline}{chapter}
+      - text: |
+          \definecolor{tsblue}{HTML}{3178C6}
+          % scrreprt numbers parts with Roman numerals by default (Part I);
+          % switch to arabic so it reads "Part 1: Introduction".
+          \renewcommand*{\thepart}{\arabic{part}}
+          % Number chapters *within* their part: reset the chapter counter at
+          % each new part and prefix it with the part number. So the chapters
+          % under part 1 (Introduction) read 1.1, 1.2, ...; part 2's read 2.1, ...
+          \counterwithin{chapter}{part}
+          % Don't bold chapter entries in the table of contents (KOMA bolds them
+          % by default). With many top-level parts, a lighter TOC reads better.
+          \setkomafont{chapterentry}{\normalfont}
+          % Chapter entries in the TOC:
+          %   numwidth   - KOMA reserves only 1.5em for the number, too narrow
+          %                once a part has ten or more chapters ("1.10" then
+          %                runs into the title). Widen it for two-digit numbers.
+          %   beforeskip - KOMA adds ~1em above every chapter entry, which makes
+          %                a chapter list read as loose, disconnected rows. Drop
+          %                it so a part's chapters form one compact block.
+          \DeclareTOCStyleEntry[numwidth=3em,beforeskip=0pt]{tocline}{chapter}
+      - file: pdf-compact.tex
