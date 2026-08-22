@@ -5,8 +5,9 @@ title: "Pixel X and zebra stripes: the loop variable works harder"
 ![An X made of yellow and lime squares, like giant pixels: one diagonal runs from the top left down to the bottom right, the other from the bottom left up to the top right.](https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0050-Loops/pixel-x.png){width=400}
 
 The grid gave you a finished loop to copy, and the rays came with a
-scaffold. This chapter takes the training wheels off: two exercises,
-two empty canvases, and you write every loop yourself. Both drawings
+half-written program. This chapter takes the training wheels off:
+two exercises, two empty canvases, and you write every loop
+yourself. Both drawings
 look simple, and both hide a new skill. The pixel X teaches you to
 *compute* with the loop variable, so that one variable places two
 squares in one round. The zebra stripes teach you a second style of
@@ -93,9 +94,9 @@ only the canvas setup and `noStroke()`.
 
 All your loops so far measured pixels; `i` was an x or y coordinate,
 and the update jumped one grid step. For the zebra stripes, a second
-style is more natural: let the variable simply count the stripes,
-0, 1, 2, 3, and compute the position from the count when you need
-it. Stripe number `i` starts at `y = i * STRIPE_THICKNESS`:
+style is more natural: let the variable count the stripes, 0, 1, 2,
+3, and compute the position from the count when you need it. Stripe
+number `i` starts at `y = i * STRIPE_THICKNESS`:
 
 ```typescript
 let i: number = 0;
@@ -107,8 +108,8 @@ while (i * STRIPE_THICKNESS < SIZE) {
 
 Both styles are correct, and you will use both. The measuring style
 is direct: the variable *is* the position. The counting style keeps
-the round number, and that is worth money here, because the stripe's
-number decides its color.
+the round number, and that is what you need here, because the
+stripe's number decides its color.
 
 Counting up by one is so common that TypeScript has an extra-short
 form for it: `i++` does exactly what `i += 1` does. Until now the
@@ -158,10 +159,10 @@ and you may use only a **single** while loop.
 ## Make it smarter: draw only half the stripes {#sec-zebra-smarter}
 
 Look at your finished zebra once more. The loop draws eight stripes,
-and four of them are the same color. Here is a thought worth pausing
-on: if the whole canvas were lime *before* the loop starts, the lime
-stripes would already be there. One `background("lime")` paints the
-canvas, and the loop only has to add the yellow stripes on top.
+and four of them are the same color. If the whole canvas were lime
+*before* the loop starts, the lime stripes would already be there.
+One `background("lime")` paints the canvas, and the loop only has to
+add the yellow stripes on top.
 
 That changes the loop, and for the better. It no longer needs to
 visit every stripe; it can jump straight from one yellow stripe to

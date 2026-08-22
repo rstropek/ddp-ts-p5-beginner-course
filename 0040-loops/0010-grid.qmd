@@ -24,7 +24,7 @@ expected and what you got.
 
 {{< tutor tutor-loops >}}
 
-One danger is worth knowing before you write your very first loop. A
+Watch out for one danger before you write your very first loop. A
 loop repeats until its condition says stop, and it is surprisingly
 easy to write a loop whose condition never says stop. Such a loop is
 called an **endless loop** (programmers also say *infinite loop*),
@@ -125,10 +125,9 @@ work it out on its own. In this course you write it, every time.
 variable; programmers have used it for generations, and everyone
 reads `i` as "the loop is counting here". For a loop variable with a
 clear meaning, a speaking name like `x` or `diameter` is just as
-good. What stays forbidden are meaningless names like `temp`,
-`helper`, `thing`, or `stuff` for everything else, because the
-naming rules from the Variables part (@sec-const-naming) still
-apply.
+good. Meaningless names like `temp`, `helper`, `thing`, or `stuff`
+stay forbidden for everything else, because the naming rules from
+the Variables part (@sec-const-naming) still apply.
 :::
 
 ## Play computer: the loop table {#sec-loop-table}
@@ -165,8 +164,8 @@ shows you the first value, the last value, and the number of rounds.
 Most loop bugs, wrong start, wrong condition, forgotten update, are
 visible on paper before the browser ever sees the code. The
 following chapters won't repeat this instruction every time; the
-technique is yours now, and it helps with every loop in this part
-and beyond.
+technique is yours now, and it helps with every loop you write from
+now on.
 :::
 
 ## The loop that never stops {#sec-infinite-loop}
@@ -181,7 +180,7 @@ while (i < SIZE) {
 }
 ```
 
-Play computer: `i` is 25, the check says `true`, a line is drawn, and
+Play computer: `i` is 25, the check says `true`, a line appears, and
 `i` is... still 25. Check `true`, line, still 25. The condition can
 never become `false`, so the loop never ends. This is the endless
 loop from the start of the chapter (@sec-tutor-grid), and now you

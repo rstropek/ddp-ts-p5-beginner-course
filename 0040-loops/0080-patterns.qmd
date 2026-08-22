@@ -7,9 +7,9 @@ title: "Patterns: repeat, move, repeat"
 This chapter brings the loop tools together:
 nested for loops, `translate`, and the `push`/`pop` pair combine
 into one recipe that draws wallpapers, tilings, and textile
-patterns. The recipe is worth learning by heart, because you will
-use it every time a drawing repeats in rows and columns. You meet it
-twice, first in a finished program that you study and convert, then
+patterns. Learn the recipe by heart, because you will use it every
+time a drawing repeats in rows and columns. You meet it twice,
+first in a finished program that you study and convert, then
 in a triangle pattern that you build yourself, including the
 professional touch of letting the pattern run over the edges.
 
@@ -96,22 +96,21 @@ understand it, then convert it.
 ## Triangles in local coordinates {#sec-local-coords}
 
 The second exercise tiles the canvas with triangles, and you build
-the recipe yourself. One new skill is needed: drawing a shape
-*around* the origin. The triangle of the pattern is described like
-this:
+the recipe yourself. You need one new skill, drawing a shape
+*around* the origin. The pattern's triangle looks like this:
 
 ```typescript
 triangle(0, 0, SIDE_LENGTH / 2, -HEIGHT, SIDE_LENGTH, 0);
 ```
 
-All three corners are measured from the current origin: the left
+You measure all three corners from the current origin: the left
 corner of the base sits *on* the origin at (0, 0), the right corner
 one side length further at (SIDE_LENGTH, 0), and the tip above the
 middle of the base, at (SIDE_LENGTH / 2, -HEIGHT). The y value of
-the tip is negative, and that is no trick: negative coordinates
-simply lie left of or above the origin. Since the origin moves with
-every translate, "above the origin" is exactly where a tip should
-be.
+the tip is negative, and that is no trick, because negative
+coordinates lie left of or above the origin. Since the origin moves
+with every translate, "above the origin" is exactly where a tip
+should be.
 
 The height of the triangle comes from geometry. The pattern uses
 equilateral triangles (in German: gleichseitiges Dreieck, all three
@@ -169,7 +168,7 @@ level 2 goal; that fiddling *is* the exercise.
 
 ## Check your understanding {#sec-quiz-patterns}
 
-The row recipe is the summit of the loop toolbox: with it, you
+The row recipe pulls the whole loop toolbox together: with it, you
 can repeat, decide inside loops, nest loops, and move the paper
 under the pen. Take the short quiz below. You answer six questions
 about this chapter in your own words, and an AI reads your answers

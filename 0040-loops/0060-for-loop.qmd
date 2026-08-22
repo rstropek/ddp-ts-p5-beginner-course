@@ -55,7 +55,7 @@ in the body. Read the header as a sentence: "starting with `i` at
 Nothing about the *execution* changes. The computer still
 initializes once, then checks, works, updates, checks, works,
 updates, exactly like the while loop. Your loop tables work
-unchanged, an infinite loop is still possible (leave the update slot
+unchanged, an endless loop is still possible (leave the update slot
 empty and nothing moves), and the condition is still checked before
 every round. The for loop is packaging, not new machinery.
 
@@ -91,7 +91,7 @@ for (let i: number = GRID; i < SIZE; i += GRID) {
 }
 ```
 
-Each loop brings its own variable and cleans it up afterwards. No
+Each loop brings its own variable and cleans it up afterward. No
 leftovers, no accidental reuse, one reason less for a red squiggle.
 
 ## Nested loops love for {#sec-nested-for}

@@ -9,10 +9,9 @@ the 64 squares, the parity trick for the two colors, `text` for the
 markings in the margin, and a `switch` to turn the numbers 1 to 8
 into the letters a to h. Every one of those tools is already in your
 toolbox; this chapter is about making them work together. And at the
-end, for the ambitious, the board reveals a clever connection: a
-chessboard can be drawn with a *single* loop, using the same
-arithmetic you used to take numbers apart in the number systems
-chapter.
+end, for the ambitious, comes a clever connection: you can draw a
+chessboard with a *single* loop, using the same arithmetic you used
+to take numbers apart in the number systems chapter.
 
 ## AI tutor {#sec-tutor-chessboard}
 
@@ -29,8 +28,8 @@ The board is a grid of cells, and for grids of cells the counting
 style of loop (@sec-counter) is the natural choice: an outer loop
 counts the rows 0 to 7, an inner loop counts the columns 0 to 7.
 The size of one square gets a constant, `SQUARE_SIZE`, worth 50
-pixels here. Positions are then computed from the counts, like the
-zebra stripes, only in two directions:
+pixels here. You then compute the positions from the counts, like
+the zebra stripes, only in two directions:
 
 ```typescript
 x = SQUARE_SIZE + col * SQUARE_SIZE
@@ -78,9 +77,9 @@ work the expression out before you type it, and test it with
 `i = 1` and `i = 8` like you tested the mirror expression of the
 pixel X.
 
-The letters are a translation: 1 becomes "a", 2 becomes "b", and so
-on, one exact case per value. That is the `switch` statement's home
-game (@sec-switch-from-chain):
+The letters are a translation, where 1 becomes "a", 2 becomes "b",
+and so on, one exact case per value. That is exactly what the
+`switch` statement is for (@sec-switch-from-chain):
 
 ```typescript
 let file: string = "";
@@ -107,9 +106,8 @@ once, before the loop; they apply to every marking.
 
 ## Advanced: one loop for the whole board {#sec-one-loop}
 
-Now the clever part that the chapter's introduction promised, for
-the ambitious. Number the squares 0 to
-63, row by row: squares 0 to 7 form the top row, 8 to 15 the next,
+Now the clever part, for the ambitious. Number the squares 0 to 63,
+row by row, so squares 0 to 7 form the top row, 8 to 15 the next,
 and so on. Can one loop over `i` from 0 to 63 recover the row and
 column from the number alone? You did exactly this in the number
 systems chapter, splitting a number into digits with `%` and `floor`
@@ -122,7 +120,7 @@ const col: number = i % 8;
 ```
 
 `floor(i / 8)` counts how many *complete* rows of eight fit below
-`i`, and `i % 8` is what's left over: the position inside the row.
+`i`, and `i % 8` is what's left over, the position inside the row.
 Check it with a small table:
 
 | `i` | `floor(i / 8)` | `i % 8` | square |

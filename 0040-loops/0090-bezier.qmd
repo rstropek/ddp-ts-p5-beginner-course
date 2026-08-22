@@ -30,8 +30,8 @@ in it is one you already know. Two `line` calls draw an axis to
 the right and an axis downward, `translate` moves the origin away
 from the canvas corner so the drawing gets some air around it,
 and a for loop with a typed loop variable draws the fan lines.
-Both endpoints of every fan line are computed from the counter
-`i`.
+The loop computes both endpoints of every fan line from the
+counter `i`.
 
 This chapter has no prepared exercise, so you type the program
 into the Empty Playground yourself:
@@ -101,8 +101,8 @@ vector graphics program, and many animations in games. Look at a
 letter with round shapes, an S or an R, and follow its outline
 with your eyes. Somebody once placed the points of those curves.
 
-Your fan's curve is described by three points, and you can point
-at all three in your own program:
+Three points describe your fan's curve, and you can point at all
+three in your own program:
 
 - It starts at the lower end of the vertical axis.
 - It ends at the right end of the horizontal axis.
@@ -120,8 +120,8 @@ is called a **quadratic** Bezier curve. Give it two control
 points instead, one pulling near the start and one pulling near
 the end, and it is a **cubic** Bezier curve. Cubic curves can do
 more, an S shape for example, and most programs use them. The
-p5.js command further down in this chapter draws cubic curves,
-and so does the design program in the next section.
+p5.js `bezier` command draws cubic curves, and so does the design
+program Inkscape.
 
 ![A geometry program showing three Bezier curves side by side. Top left is a straight line with a moving point on it, top middle is a red curve with a single control point pulling it upward, and the large red S curve below is shaped by two control points. The dashed and dotted lines show how each curve is constructed from its points.](images/bezier-math.png){width=400}
 
@@ -198,7 +198,7 @@ start point, the first control point, the second control point,
 and the end point. Two control points means this is a cubic
 Bezier curve, the same kind a design program draws.
 
-Two details are worth knowing before you type the next program.
+Two details matter before you type the next program.
 First, p5.js treats a curve like a shape: with a fill color set,
 it paints the area the curve encloses. `noFill()` switches that
 off, and one of the experiments below switches it back on so you
@@ -278,7 +278,7 @@ Read the program point by point.
 
 ## Your exercise: curve patterns with an AI {#sec-bezier-ai-pattern}
 
-Here is the finale of the Loops part. You take the row recipe
+This is the finale of the Loops part. You take the row recipe
 from the patterns chapter (@sec-row-recipe), where an outer loop
 notes its position with `push`, an inner loop draws across, and
 `pop` brings the origin home again, and you combine it with
@@ -295,7 +295,7 @@ real work.
    woven ribbons, a snake of S curves? Settle on a rough number
    of rows and columns and on your colors.
 2. **Write the prompt.** Describe your pattern precisely, because
-   the AI grants what you say, not what you mean. Say that you
+   the AI gives you what you say, not what you mean. Say that you
    are a beginner and that the code you paste shows everything
    you have learned. Ask it to keep the structure of your
    playground, so p5.js and TypeScript, `setup` and `draw`, and

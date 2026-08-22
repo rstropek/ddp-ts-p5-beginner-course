@@ -22,7 +22,7 @@ changes is where it lives and what happens around it.
 
 ## AI tutor {#sec-tutor-rays}
 
-Two programs meet in this chapter: a loop and an event. If your rays
+Two ideas meet in this chapter: a loop and an event. If your rays
 don't show up, smear across the canvas, or wear the wrong colors,
 tell the tutor which of the chapter's two exercises you are in and
 show it your loop.
@@ -73,7 +73,7 @@ top-and-bottom pair. In the grid, the color was set once before the
 loop, because every line looked the same. Here two colors take turns
 inside every round, so the `stroke` calls move into the body.
 
-One more difference to the grid loop is easy to miss: the condition.
+One more difference from the grid loop is easy to miss: the condition.
 The grid stopped with `i < SIZE`, keeping the last line off the
 border. The rays want anchor points *on* the last position,
 `SIZE - MARGIN`, so the loop runs while `i <= SIZE - MARGIN`. Whether

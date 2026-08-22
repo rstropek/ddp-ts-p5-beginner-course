@@ -10,10 +10,9 @@ left edge, seven on the right, and a line from *every* left point to
 single loop won't do it either, because a single loop can only walk
 one row of points. This chapter introduces the tool for
 "every-with-every" drawings: the **nested loop**, a loop inside
-another loop. Nested loops are the workhorse of graphics, grids,
-game boards, and patterns, and they come with one famous beginner
-bug that you'll meet in a controlled experiment before it can meet
-you.
+another loop. Nested loops draw grids, game boards, and patterns,
+and they come with one famous beginner bug that you'll meet in a
+controlled experiment before it can meet you.
 
 ## AI tutor {#sec-tutor-mesh}
 
@@ -81,7 +80,7 @@ second fan appears. Seven fans of seven lines: 49.
 ![Every round of the outer loop runs the complete inner loop: left takes one step, and right runs its whole range, again and again.](images/nested-loop-rounds.svg){width=560}
 
 Watch the two variables move: `right` runs fast, a full lap per fan,
-while `left` moves slow, one step per lap. You have seen this
+while `left` moves slowly, one step per lap. You have seen this
 rhythm before, in the number systems chapter, where the ones digit
 turns fast and the tens digit slow (@sec-decimal-place-values).
 Nested loops count exactly like digits do.
@@ -92,9 +91,9 @@ Imagine the line `let right = MARGIN;` moved above the *outer* loop.
 Only the first fan would appear. Why? The inner loop runs once,
 leaves `right` at 400, and nothing ever resets it. In every later
 outer round, the inner check `right <= 350` is false immediately,
-and the inner loop runs zero times. The rule: the inner loop
-variable is initialized *inside* the outer loop's body, so every fan
-starts fresh. Once your own mesh runs, produce this bug on purpose;
+and the inner loop runs zero times. The rule: initialize the inner
+loop variable *inside* the outer loop's body, so every fan starts
+fresh. Once your own mesh runs, produce this bug on purpose;
 you will recognize the "only the first row shows up" picture
 forever.
 :::

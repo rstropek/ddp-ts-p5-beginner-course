@@ -17,7 +17,7 @@ which you uncomment code line by line, predict, and watch.
 
 ## AI tutor {#sec-tutor-move-origin}
 
-Transformations confuse everyone at first, because the code names
+Moving the origin confuses everyone at first, because the code names
 one position and the shape appears at another. When that happens to
 you, tell the tutor which line you uncommented and where the circle
 landed; the tutor knows the way of thinking that untangles it.
@@ -59,8 +59,8 @@ you discover each one:
 ## Drawing without coordinates {#sec-cumulative}
 
 Now combine `translate` with a loop. The goal picture at the top of
-the chapter shows a diagonal of circles, and the rule of the game
-is that every circle is drawn with the very same command,
+the chapter shows a diagonal of circles, and the rule is that you
+draw every circle with the very same command,
 `circle(0, 0, CIRCLE_DIAMETER)`, no other coordinates allowed.
 `SIZE` is the canvas size and `CIRCLE_DIAMETER` the diameter of one
 circle, both constants:
@@ -82,9 +82,9 @@ that the loop runs often enough to cross the canvas. A loop that
 just counts rounds is perfectly normal from now on.
 
 You could draw this diagonal with the pixel X technique instead,
-computing `circle(i, i, ...)`. Same picture, two philosophies: move
-the pen, or move the paper. For a single diagonal, both are fine.
-For the patterns of the next chapter, moving the paper wins, and
+computing `circle(i, i, ...)`. Same picture, two ways of thinking:
+move the pen, or move the paper. For a single diagonal, both are
+fine. For the patterns of the next chapter, moving the paper wins, and
 you'll see why.
 
 ## A note before you wander: push and pop {#sec-push-pop}
@@ -96,13 +96,13 @@ wander, then bring me back". That is exactly what `push` and `pop`
 do:
 
 - `push()` writes a note: it saves the current origin **and** the
-  current style settings (`fill`, `stroke`, `strokeWeight`, and
-  friends).
+  current style settings (`fill`, `stroke`, `strokeWeight`, and the
+  other style commands).
 - `pop()` takes the most recent note and restores everything on it.
 
 One concrete timeline shows the note-taking at work:
 
-| statement | origin afterwards |
+| statement | origin afterward |
 |--------------------|-------------------|
 | `translate(100, 100);` | (100, 100) |
 | `push();` | (100, 100), and a note saves this spot |
@@ -143,7 +143,7 @@ the `push`, then fill the middle.
 2. **Task 2: write the loop.** The goal is a diagonal of circles:
    diameter 50, the first centered at the corner (0, 0), each next
    one 50 right and 50 down. One circle at (0, 0) before the loop,
-   then a for loop whose body is exactly two statements: the
+   then a for loop whose body is exactly two statements, the
    translate and the circle, as in the section above
    (@sec-cumulative). No computed coordinates allowed.
 3. **Experiment.** Change the translate to `(CIRCLE_DIAMETER, 0)`
