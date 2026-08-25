@@ -63,8 +63,10 @@ activities:
       file: 0040-loops/bezier-patterns-tutor.yaml
       note: "Creative Coding book: exercise AI, curve patterns (0040-loops/0090) — GitHub-hosted"
 
-  # Coding endpoints an external coding agent (little-coder) connects to.
-  # The code IS the API key, so it is handed out, not embedded in the book.
+  # Coding endpoints an external coding agent connects to. The code is NOT the
+  # API key: a student opens <base>/<code>, signs in, and the page mints them a
+  # personal `nvk-` key for their tool. So the code is safe to print, and the
+  # chapters link it with {{< coding <key> >}} like any quiz or tutor.
   coding:
     coding-buddy:
       file: ddp-coding-buddy.yaml

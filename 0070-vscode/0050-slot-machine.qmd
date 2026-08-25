@@ -208,6 +208,16 @@ the canvas, so learn to read it there.
   as pixel values.
 :::
 
+## Your coding assistant {#sec-coding-slot-machine}
+
+The slot machine is the biggest program in this book, and the coding assistant
+may help you build it. Connect it the way you did in @sec-coding-first-again,
+with the key you already have. Then read what it gives you before you keep it,
+because the craftsmanship requirements below apply to every line in your file,
+whoever typed it first.
+
+{{< coding coding-buddy >}}
+
 ## Your challenge: build the slot machine {#sec-challenge-slot-machine}
 
 A slot machine is a gambling device. Reels with symbols spin, they stop one

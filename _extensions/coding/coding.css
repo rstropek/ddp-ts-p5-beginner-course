@@ -1,0 +1,26 @@
+/* Styling for {{< coding >}} callouts — HTML output only.
+   (PDF gets equivalent styling automatically from Quarto's callout support.)
+   Mirrors the button in _extensions/tutor/tutor.css, but amber to match the
+   `caution` callout (the tutor and example buttons are green to match their
+   `tip`, the quiz button blue to match its `note`). A chapter can carry a
+   tutor box, a coding box, and a quiz box, so each gets its own color. */
+
+.coding-cta p {
+  margin: 0;
+}
+
+.coding-cta a {
+  display: inline-block;
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.4rem;
+  background: var(--bs-orange, #fd7e14);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.coding-cta a:hover,
+.coding-cta a:focus {
+  filter: brightness(1.08);
+  text-decoration: none;
+}

@@ -221,6 +221,28 @@ workshop that can build any exercise in this book. The playground carried you
 through six parts and did its job well. From here on, the tools on your own
 computer take over.
 
+## Your coding assistant {#sec-coding-first-again}
+
+In the playground the coding assistant sat in a chat panel next to your code,
+if your teacher opened one for your class. In your own workshop it moves
+closer, because here it works inside a **coding agent**, a program that reads
+and writes the files of your project while you chat with it. Your teacher
+decides which agent your class uses. Two free ones are [pi.dev](https://pi.dev)
+and [OpenCode](https://opencode.ai), and both connect the same way.
+
+The box below is where you connect. Open the link, sign in with your school
+account, and the page shows a server address and a model name, plus a personal
+key of your own. Copy all three into your coding agent, and it talks to the
+assistant of this course instead of a general AI. The key doesn't change, so
+you do this once per computer.
+
+{{< coding coding-buddy >}}
+
+The assistant knows this course, so it writes TypeScript with p5.js in the
+style you've been taught and stays with the commands you already have. That
+doesn't move the responsibility. You have to be able to explain every line you
+hand in, and that counts double for a line an AI wrote for you.
+
 ## Check your understanding {#sec-quiz-first-again}
 
 When your picture is back on the screen, take the short quiz below. You answer

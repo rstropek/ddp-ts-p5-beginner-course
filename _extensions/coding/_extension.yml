@@ -1,0 +1,15 @@
+title: Coding
+author: CS Basics Course
+version: 1.0.0
+quarto-required: ">=1.4.0"
+# When the project has this extension installed (i.e. the `_extensions/coding/`
+# folder exists), Quarto makes the `{{< coding ... >}}` shortcode available in
+# any .qmd.
+contributes:
+  shortcodes:
+    - coding.lua
+
+# PDF output needs the LaTeX packages `qrcode` (the printed QR code),
+# `inconsolata` (the font the printed address is set in), and `needspace`
+# (keeps the complete card away from a page boundary). TinyTeX installs them
+# on the first render; a full TeX Live already has them.

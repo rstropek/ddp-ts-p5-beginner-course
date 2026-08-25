@@ -116,9 +116,17 @@ you get it. It's a **coding assistant**, and it differs from the tutor in one
 important way. The tutor explains and asks questions, while the coding
 assistant writes real code together with you.
 
-Access works with a **Coding Activity Code**, a short code your teacher hands
-out for a homework assignment, a workshop day at school, or a project week.
-The code costs you nothing, and it works only for the time your teacher set.
+Access runs through a **Coding Activity Code**, a short code that opens the
+assistant's page on novedu.at. Your teacher hands one out for a project week or
+a workshop day, and the part of this book about Visual Studio Code prints one
+you can use yourself. On that page you sign in with your school account, and the
+page gives you a **key** of your own. The code opens the page. The key is what
+goes into your coding tool. Both cost you nothing, and both work only while your
+teacher keeps the activity open.
+
+Asking for that key puts your name on a list your teacher can see. The quizzes
+in this book are anonymous, and this one step is not. What you ask the
+assistant afterwards is not stored, so nobody reads your conversations.
 
 ### Why not just any AI from the internet {#sec-coding-assistant-why}
 
@@ -136,16 +144,17 @@ has to understand every line of it.
 ### Where the coding assistant works {#sec-coding-assistant-where}
 
 In the first parts of this course you write your programs in a web playground,
-an editor that runs in your browser (@sec-playground). With a Coding Activity
-Code, the coding assistant is there with you. It reads your program, explains
-it, and shows you new code in the chat. Typing that code into your program
-stays your job, and that's exactly how it ends up in your head.
+an editor that runs in your browser (@sec-playground). The playground has a
+chat panel for the coding assistant. Paste your key into it, and the assistant
+reads your program, explains it, and shows you new code in the chat. Typing
+that code into your program stays your job, and that's exactly how it ends up
+in your head.
 
 Later in the course you'll move to Visual Studio Code on your own computer.
-There you enter a Coding Activity Code in a free, open source coding agent
-such as [pi.dev](https://pi.dev) or [OpenCode](https://opencode.ai), and the
-assistant works directly with the files of your project. Your teacher tells
-you which agent your class uses and how to set it up.
+There you enter the same key in a free, open source coding agent such as
+[pi.dev](https://pi.dev) or [OpenCode](https://opencode.ai), and the assistant
+works directly with the files of your project. Your teacher tells you which
+agent your class uses and how to set it up.
 
 ## Check your understanding {#sec-quiz-welcome}
 

@@ -55,8 +55,9 @@ where it appears (for example, "a `char`, short for a _character_").
 ## Links
 
 Link text is descriptive and makes sense on its own, never "click here" or a bare
-URL. Exercises, quizzes, and tutors are linked through the book's shortcodes
-(`{{< example >}}`, `{{< quiz >}}`, `{{< tutor >}}`), never by pasted URL.
+URL. Exercises, quizzes, tutors, and the coding assistant are linked through the
+book's shortcodes (`{{< example >}}`, `{{< quiz >}}`, `{{< tutor >}}`,
+`{{< coding >}}`), never by pasted URL.
 
 ## Related skills
 

@@ -175,7 +175,8 @@ terminal, and work through these five steps:
 
 From now on this is a habit, not an exercise. Before you hand something in and
 before you show it to anybody, run `npm run format` or `npm run check` over
-your project.
+your project. That includes code a coding assistant wrote for you, because the
+linter judges the file, not the person who typed it.
 
 That completes your workshop. You have the editor, Node.js, and npm, you have
 the starter project and a folder rule that keeps a whole year of exercises
