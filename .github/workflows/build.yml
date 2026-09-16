@@ -1,11 +1,14 @@
 # ---------------------------------------------------------------------------
 # Builds the Quarto book on every push / pull request and publishes two build
 # artifacts:
-#   * creative-coding-pdf     -> the single combined PDF (Creative-Coding.pdf)
+#   * creative-coding-pdf     -> the single combined PDF (book.pdf)
 #   * creative-coding-website -> the HTML book, zipped
 #
 # Both formats come out of ONE `quarto render` into `_output/`, so the HTML
 # book's "Download PDF" link points at a PDF that really exists in the zip.
+#
+# Pushes to main (not pull requests) also deploy `_output/` to GitHub Pages:
+# the book at the site root, the PDF at /book.pdf.
 # ---------------------------------------------------------------------------
 name: Build book
 
@@ -77,7 +80,7 @@ jobs:
         uses: actions/upload-artifact@v5
         with:
           name: creative-coding-pdf
-          path: _output/Creative-Coding.pdf
+          path: _output/book.pdf
           if-no-files-found: error
 
       - name: Zip website
@@ -91,3 +94,26 @@ jobs:
           name: creative-coding-website
           path: creative-coding-website.zip
           if-no-files-found: error
+
+      # Pull requests build the book but never publish it.
+      - name: Upload Pages artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _output
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    # Only this job may write to Pages; the build job stays read-only.
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

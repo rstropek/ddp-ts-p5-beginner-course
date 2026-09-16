@@ -20,6 +20,11 @@ book:
   subtitle: "Learning to program by making things you can see"
   author: "Rainer Stropek"
   date: 2026-08-02
+  # Base name of the PDF: `_output/book.pdf`, which GitHub Pages serves at
+  # /book.pdf (see .github/workflows/build.yml).
+  output-file: book
+  downloads: [pdf]      # "Download PDF" button in the HTML book's sidebar
+  site-url: https://rstropek.github.io/ddp-ts-p5-beginner-course/
   # The reading order. index.qmd is the preface; the rest are grouped into
   # parts. Each chapter file's front-matter `title:` becomes its heading —
   # no `# Heading` needed in the body, and no include/stitching machinery.

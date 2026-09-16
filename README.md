@@ -11,7 +11,11 @@ It contains no exercise code and no runnable playground. One `quarto render` pro
 outputs from the same sources:
 
 * an HTML book (chapter sidebar, prev/next navigation) in `_output/`
-* one combined PDF handout, `_output/Creative-Coding.pdf`, laid out for print
+* one combined PDF handout, `_output/book.pdf`, laid out for print
+
+Every push to `main` publishes both to GitHub Pages: the book at
+<https://rstropek.github.io/ddp-ts-p5-beginner-course/> and the PDF at
+<https://rstropek.github.io/ddp-ts-p5-beginner-course/book.pdf>.
 
 ## The three-repository system
 
@@ -208,7 +212,7 @@ library and the activities that use it after every edit.
 | `ddp-quiz-fragments.yaml` | Shared novedu prompt fragments used by every chapter quiz |
 | `ddp-tutor-fragments.yaml` | Novedu prompt fragments shared by two or more tutors or exercise AIs; single-use prompt text lives in the activity's own file |
 | `.agents/skills/` | Authoring skills for AI agents; see below |
-| `.github/workflows/` | CI: renders the book and uploads the PDF and the zipped website as artifacts |
+| `.github/workflows/` | CI: renders the book, uploads the PDF and the zipped website as artifacts, and deploys to GitHub Pages |
 | `_output/`, `.quarto/` | Build output. Git-ignored |
 
 Chapters are ordered by the `book.chapters` list in `_quarto.yml`, not by file name. Adding
@@ -229,7 +233,7 @@ quarto preview         # live-reloading HTML while writing
 You need Quarto (CI pins the version), a LaTeX distribution for the PDF, `rsvg-convert` so
 the SVG diagrams survive the LaTeX pass, and internet access for the hot-linked goal
 images. CI builds the book on every push and pull request to `main` and publishes the PDF
-and the website as artifacts.
+and the website as artifacts; pushes to `main` also deploy them to GitHub Pages.
 
 ## Authoring conventions
 
