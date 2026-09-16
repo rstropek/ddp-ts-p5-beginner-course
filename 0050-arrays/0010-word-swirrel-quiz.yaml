@@ -20,7 +20,7 @@ description: |
   is fine too.
 
 llm:
-  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+  model: Qwen/Qwen3.8-27B-FP8
 
 # The shared context for BOTH the grader and the discussion chat comes from
 # the shared fragment library. Edit ddp-quiz-fragments.yaml, never inline

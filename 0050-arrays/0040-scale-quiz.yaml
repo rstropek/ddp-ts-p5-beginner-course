@@ -21,7 +21,7 @@ description: |
   fine too.
 
 llm:
-  model: RedHatAI/gemma-4-31B-it-FP8-Dynamic
+  model: Qwen/Qwen3.8-27B-FP8
 
 fragment_files:
   - id: shared

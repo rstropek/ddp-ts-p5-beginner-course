@@ -41,8 +41,8 @@ exampleQuestions:
     question: "Ask me three short questions about functions so I can check whether I understood this part."
 
 llm:
-  model: gpt-5.4-mini
-  provider: Azure Foundry
+  model: Qwen/Qwen3.8-27B-FP8
+  provider: SCCH
 
 prompt:
   fragment_files:

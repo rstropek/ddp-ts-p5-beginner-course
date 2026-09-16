@@ -23,8 +23,8 @@ description: |
   could have written it yourself. English or German, both are fine.
 
 llm:
-  model: gpt-5.4-mini
-  provider: Azure Foundry
+  model: Qwen/Qwen3.8-27B-FP8
+  provider: SCCH
 
 prompt:
   fragment_files:

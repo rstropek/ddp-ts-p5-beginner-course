@@ -25,8 +25,8 @@ exampleQuestions:
     question: "Give me one conversion problem. Let me show each step before you check it."
 
 llm:
-  model: gpt-5.4-mini
-  provider: Azure Foundry
+  model: Qwen/Qwen3.8-27B-FP8
+  provider: SCCH
 
 tools:
   - random_number

@@ -40,8 +40,8 @@ exampleQuestions:
     question: "Two of my pictures overlap. What decides which one covers the other?"
 
 llm:
-  model: gpt-5.4-mini
-  provider: Azure Foundry
+  model: Qwen/Qwen3.8-27B-FP8
+  provider: SCCH
 
 prompt:
   fragment_files:
