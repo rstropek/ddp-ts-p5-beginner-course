@@ -159,9 +159,12 @@ Two consequences the prose has to carry, so they are the box's fixed body text i
   code's window kills every key issued for it on the next request, which is what makes a
   coding code a good fit for bounding AI help to a project day.
 
-Boxes appear only in part 7, where the book prints a code every reader can use. In parts 1
-to 6 the assistant is reachable through the playground's chat panel, but only with a code
-a teacher hands out, so the welcome chapter describes it and prints nothing.
+Boxes appear only in part 7, on purpose. The assistant waits until students have shown the
+attention to detail that parts 1 to 6 train, because it only helps someone who can read
+what it writes. The welcome chapter says so, explains why a general internet AI hurts a
+beginner, and prints nothing. The prompt in `ddp-coding-buddy.yaml` keeps its playground
+branch (read-only tools, no terminal) so a teacher who mints their own code for an earlier
+project week still gets a working assistant, but the book does not describe that path.
 
 #### The activity registry
 

@@ -109,52 +109,33 @@ bring it to life exactly the way you pictured it (or in a surprising way
 that's even better). In this course that feeling comes quickly, because your
 programs draw, move, and react from the very first lessons.
 
-## A coding assistant from your teacher {#sec-coding-assistant}
+## Your coding assistant comes later {#sec-coding-assistant}
 
-Besides the tutor, this course has a second AI, and your teacher decides when
-you get it. It's a **coding assistant**, and it differs from the tutor in one
-important way. The tutor explains and asks questions, while the coding
-assistant writes real code together with you.
+Two AIs belong to this course, and you meet them at different times. The
+first one is the **AI tutor** at the top of every chapter. It explains things
+and helps you read an error message, but it never writes your program for
+you. That's the AI you use from today on.
 
-Access runs through a **Coding Activity Code**, a short code that opens the
-assistant's page on novedu.at. Your teacher hands one out for a project week or
-a workshop day, and the part of this book about Visual Studio Code prints one
-you can use yourself. On that page you sign in with your school account, and the
-page gives you a **key** of your own. The code opens the page. The key is what
-goes into your coding tool. Both cost you nothing, and both work only while your
-teacher keeps the activity open.
-
-Asking for that key puts your name on a list your teacher can see. The quizzes
-in this book are anonymous, and this one step is not. What you ask the
-assistant afterwards is not stored, so nobody reads your conversations.
+The second one is a **coding assistant**. It writes real TypeScript with p5.js
+together with you, and it waits until the last part of the book, where you
+move from the web playground to Visual Studio Code (@sec-coding-first-again).
+It waits because a coding assistant only helps someone who can read what it
+writes and spot the line that's wrong. By the last part you can, because every
+line you typed yourself on the way there is a line you know how to check.
 
 ### Why not just any AI from the internet {#sec-coding-assistant-why}
 
-The coding assistant knows this course. The coding rules of this book are
-built into it, so it writes the kind of code you can read, explain, and defend
-in class, and it stays with the commands you've already learned instead of
-jumping ahead.
+Between now and then you'll be tempted to ask a general AI on the internet for
+code, so you should know what you'd get. That AI knows nothing about your
+course. It writes code the way it would for a professional, full of things
+nobody has shown you yet. Code like that might run, but you can't explain it,
+and you can't repair it when it breaks. You're the one who hands the program
+in, so you're the one who has to understand every line of it.
 
-A general AI on the internet knows nothing about your course. It writes code
-the way it would for a professional, full of things nobody has shown you yet.
-Code like that might run, but you can't explain it, and you can't repair it
-when it breaks. You're the one who hands the program in, so you're the one who
-has to understand every line of it.
-
-### Where the coding assistant works {#sec-coding-assistant-where}
-
-In the first parts of this course you write your programs in a web playground,
-an editor that runs in your browser (@sec-playground). The playground has a
-chat panel for the coding assistant. Paste your key into it, and the assistant
-reads your program, explains it, and shows you new code in the chat. Typing
-that code into your program stays your job, and that's exactly how it ends up
-in your head.
-
-Later in the course you'll move to Visual Studio Code on your own computer.
-There you enter the same key in a free, open source coding agent such as
-[pi.dev](https://pi.dev) or [OpenCode](https://opencode.ai), and the assistant
-works directly with the files of your project. Your teacher tells you which
-agent your class uses and how to set it up.
+The coding assistant of this course is different, because the coding rules of
+this book are built into it. It writes the kind of code you can read and
+explain in class, and it stays with the commands you've already learned
+instead of jumping ahead.
 
 ## Check your understanding {#sec-quiz-welcome}
 

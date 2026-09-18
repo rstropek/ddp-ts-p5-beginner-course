@@ -223,12 +223,12 @@ computer take over.
 
 ## Your coding assistant {#sec-coding-first-again}
 
-In the playground the coding assistant sat in a chat panel next to your code,
-if your teacher opened one for your class. In your own workshop it moves
-closer, because here it works inside a **coding agent**, a program that reads
-and writes the files of your project while you chat with it. Your teacher
-decides which agent your class uses. Two free ones are [pi.dev](https://pi.dev)
-and [OpenCode](https://opencode.ai), and both connect the same way.
+The welcome chapter promised you a coding assistant for the last part of the
+book (@sec-coding-assistant), and this is where you get it. It works inside a
+**coding agent**, a program that reads and writes the files of your project
+while you chat with it. Your teacher decides which agent your class uses. Two
+free ones are [pi.dev](https://pi.dev) and [OpenCode](https://opencode.ai), and
+both connect the same way.
 
 The box below is where you connect. Open the link, sign in with your school
 account, and the page shows a server address and a model name, plus a personal
