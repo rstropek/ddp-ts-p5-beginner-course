@@ -250,7 +250,7 @@ end
 -- boxes link a code generator, not a tutor.
 local BODY_TEXT = "Hints and questions instead of finished programs, "
   .. "in English or German."
-local CTA_TEXT = "Ask your AI tutor on novedu.at"
+local CTA_TEXT = "Ask your AI tutor on app.novedu.at"
 
 local function tutor(args, kwargs, meta)
   if not args[1] then

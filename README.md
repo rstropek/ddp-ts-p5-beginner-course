@@ -28,7 +28,7 @@ the moment the sibling changes, so the book stores a URL or an activity key inst
 | --- | --- | --- |
 | **this repo** | Chapter prose, illustrations, quiz and tutor YAML sources | Explains concepts, then sends the student out to an exercise, a quiz, and an AI tutor |
 | [`rstropek/ts-web-playground`](https://github.com/rstropek/ts-web-playground) | The browser IDE and every **exercise**: task description, starter code, sample solution, result images | Chapters link to exercises by raw YAML URL; goal images are hot-linked from the same repo |
-| [`Teaching-HTL-Leonding/novedu-chat-mvp`](https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp) | The **novedu** app (novedu.at) that runs AI learning activities, plus the CLI that validates and publishes them | Chapters link to a **quiz**, an **AI tutor**, and the **coding assistant** by registry key; the activity YAML lives here but is served to novedu from this repo's raw URLs |
+| [`Teaching-HTL-Leonding/novedu-chat-mvp`](https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp) | The **novedu** app (app.novedu.at) that runs AI learning activities, plus the CLI that validates and publishes them | Chapters link to a **quiz**, an **AI tutor**, and the **coding assistant** by registry key; the activity YAML lives here but is served to novedu from this repo's raw URLs |
 
 ```text
                   ┌────────────────────────────────────┐
@@ -83,7 +83,7 @@ quiz by its **registry key**, never by the code:
 {{< quiz first-program title="Your first program" >}}
 ```
 
-which renders a callout linking to `novedu.at/<code>`. The book never contains the
+which renders a callout linking to `app.novedu.at/<code>`. The book never contains the
 questions themselves.
 
 The quiz *sources* do live here, as `<chapter>-quiz.yaml` next to each `.qmd`, because
@@ -143,7 +143,7 @@ it by registry key like the others:
 {{< coding coding-buddy >}}
 ```
 
-The **code is not an API key**. A student opens `novedu.at/<code>`, signs in with their
+The **code is not an API key**. A student opens `app.novedu.at/<code>`, signs in with their
 school account, and that page mints them a personal `nvk-…` key, stable across visits and
 devices, which they paste into their coding agent. That is why the code can be printed in
 the book at all, and why the shortcode's fixed body text says the code alone opens nothing:
@@ -188,12 +188,15 @@ Publishing a new activity is therefore: write the YAML, validate it, push, add o
 npx @novedu/cli codes sync ddp-activities.yaml
 ```
 
-and commit both files. Re-running that command is routine: an activity whose file,
+and commit both files. The CLI talks to novedu's PROD environment (`app.novedu.at`) unless
+told otherwise, and PROD is where the book's codes live: every code in the lock file is a
+PROD code. Never run `codes sync` for this registry with `--server https://dev.novedu.at`
+or with `NOVEDU_SERVER` set to DEV, because the lock file would then point every chapter
+at DEV codes. Re-running that command is routine: an activity whose file,
 availability window, and model override are unchanged keeps its existing code, so only
 genuinely new entries are minted. The `writing-quizzes` skill has the full loop; the
-format reference is
-[`docs/registry.md`](https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp/blob/main/docs/registry.md)
-in the novedu repo.
+format reference is the teacher guide's
+[activity registry chapter](https://app.novedu.at/docs/30-sharing-activities/08-activity-registry/).
 
 The repo root holds two shared prompt-fragment libraries, one per activity kind:
 `ddp-quiz-fragments.yaml`, from which every chapter quiz pulls the same student-context and

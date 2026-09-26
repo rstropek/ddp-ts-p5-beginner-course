@@ -288,7 +288,7 @@ code, just like the animal exercise back in the first part
 (@sec-animal). Judging the answer and understanding it is the
 real work.
 
-{{< tutor tutor-bezier-patterns title="Your AI for this exercise" text="This AI writes code from your prompt. Describe the pattern you want, and paste your working bezier program below your description." cta="Open the exercise AI on novedu.at" >}}
+{{< tutor tutor-bezier-patterns title="Your AI for this exercise" text="This AI writes code from your prompt. Describe the pattern you want, and paste your working bezier program below your description." cta="Open the exercise AI on app.novedu.at" >}}
 
 1. **Design first.** Decide what should repeat before you write a
    word to the AI. Waves like water, roof tiles, flower petals,

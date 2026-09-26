@@ -88,7 +88,7 @@ writes code from your prompt, exactly the kind of AI this exercise is
 about. If your teacher picks a different AI tool for the class, use that
 one instead; the steps stay the same.
 
-{{< tutor tutor-elephant title="Your AI for this exercise" text="This AI writes code from your prompt. Like the genie in the lamp, it grants what you say, not what you mean." cta="Open the exercise AI on novedu.at" >}}
+{{< tutor tutor-elephant title="Your AI for this exercise" text="This AI writes code from your prompt. Like the genie in the lamp, it grants what you say, not what you mean." cta="Open the exercise AI on app.novedu.at" >}}
 
 Work like this:
 

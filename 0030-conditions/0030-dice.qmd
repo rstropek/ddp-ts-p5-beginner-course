@@ -203,7 +203,7 @@ that the code shows everything you have learned so far, so the answer
 stays inside what you can understand. Then ask the AI to rewrite the
 program so that it needs as few `circle` statements as possible.
 
-{{< tutor tutor-dice-rewrite title="Your AI for this exercise" text="This AI writes code from your prompt. Like the genie in the lamp, it grants what you say, not what you mean." cta="Open the exercise AI on novedu.at" >}}
+{{< tutor tutor-dice-rewrite title="Your AI for this exercise" text="This AI writes code from your prompt. Like the genie in the lamp, it grants what you say, not what you mean." cta="Open the exercise AI on app.novedu.at" >}}
 
 The AI will solve this, no surprise there. The real exercise is what
 happens next: don't just accept the answer. Read the new code line by

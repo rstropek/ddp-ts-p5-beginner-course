@@ -125,9 +125,11 @@ book:
 playground-base-url: "https://ts-web-playground-server-bfdfbjcthubcardq.westeurope-01.azurewebsites.net"
 
 # Base URL of the novedu chat app. The `quiz` and `tutor` shortcodes turn an
-# activity code into a link built from this base (<base>/<code>). If the app
+# activity code into a link built from this base (<base>/<code>). This is
+# novedu's PROD environment; the codes in ddp-activities.lock.yaml exist only
+# there (DEV at dev.novedu.at is a separate app with its own codes). If the app
 # ever moves, edit ONLY this line.
-novedu-base-url: "https://novedu.at"
+novedu-base-url: "https://app.novedu.at"
 
 # The generated key -> code map for every novedu activity this book links to.
 # A chapter names a quiz or a tutor by its registry KEY ({{< quiz

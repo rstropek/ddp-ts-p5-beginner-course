@@ -199,7 +199,7 @@ a forgotten `await`, a size that squashes the picture, and the canvas
 stays empty or looks wrong with no error message to read. That is
 worth its own helper.
 
-{{< tutor tutor-images title="Your image helper" text="Images bring new failure modes: a typo in the URL, a forgotten await, a distorted size. This AI helper specializes in images and helps you in every exercise from now on." cta="Open the image helper on novedu.at" >}}
+{{< tutor tutor-images title="Your image helper" text="Images bring new failure modes: a typo in the URL, a forgotten await, a distorted size. This AI helper specializes in images and helps you in every exercise from now on." cta="Open the image helper on app.novedu.at" >}}
 
 {{< example https://raw.githubusercontent.com/rstropek/ts-web-playground/main/exercises/0070-Functions/orthographic.yaml title="Orthographic Rendering" >}}
 

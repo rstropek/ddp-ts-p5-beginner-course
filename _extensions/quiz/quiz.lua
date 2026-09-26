@@ -263,7 +263,7 @@ local function quiz(args, kwargs, meta)
 
   local cta = pandoc.Div(
     pandoc.Para(pandoc.Link(
-      cta_label("Take the quiz on novedu.at"),
+      cta_label("Take the quiz on app.novedu.at"),
       url
     )),
     pandoc.Attr("", { "quiz-cta" })

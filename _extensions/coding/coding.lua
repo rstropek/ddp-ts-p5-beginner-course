@@ -265,7 +265,7 @@ local BODY_TEXT = "Sign in with your school account and the page gives you a "
   .. "below opens the page and nothing else."
 local ATTRIBUTION_TEXT = "Your teacher sees that you asked for a key, never "
   .. "what you ask the assistant."
-local CTA_TEXT = "Get your coding key on novedu.at"
+local CTA_TEXT = "Get your coding key on app.novedu.at"
 
 local function coding(args, kwargs, meta)
   if not args[1] then
