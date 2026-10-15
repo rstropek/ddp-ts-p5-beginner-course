@@ -1,6 +1,12 @@
 {
   "version": 1,
   "skills": {
+    "novedu-tutor-cli": {
+      "source": "htl-leo-novedu/novedu-app",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/novedu-tutor-cli/SKILL.md",
+      "computedHash": "cf683b1a81d3a6281e7d2c1dcfd3139b90285da4964c1ff2df57b5ee46e4e6ef"
+    },
     "skill-creator": {
       "source": "anthropics/skills",
       "sourceType": "github",
