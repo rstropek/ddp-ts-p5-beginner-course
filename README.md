@@ -28,7 +28,7 @@ the moment the sibling changes, so the book stores a URL or an activity key inst
 | --- | --- | --- |
 | **this repo** | Chapter prose, illustrations, quiz and tutor YAML sources | Explains concepts, then sends the student out to an exercise, a quiz, and an AI tutor |
 | [`rstropek/ts-web-playground`](https://github.com/rstropek/ts-web-playground) | The browser IDE and every **exercise**: task description, starter code, sample solution, result images | Chapters link to exercises by raw YAML URL; goal images are hot-linked from the same repo |
-| [`Teaching-HTL-Leonding/novedu-chat-mvp`](https://github.com/Teaching-HTL-Leonding/novedu-chat-mvp) | The **novedu** app (app.novedu.at) that runs AI learning activities, plus the CLI that validates and publishes them | Chapters link to a **quiz**, an **AI tutor**, and the **coding assistant** by registry key; the activity YAML lives here but is served to novedu from this repo's raw URLs |
+| [`htl-leo-novedu/novedu-app`](https://github.com/htl-leo-novedu/novedu-app) | The **novedu** app (app.novedu.at) that runs AI learning activities, plus the CLI that validates and publishes them | Chapters link to a **quiz**, an **AI tutor**, and the **coding assistant** by registry key; the activity YAML lives here but is served to novedu from this repo's raw URLs |
 
 ```text
                   ┌────────────────────────────────────┐
@@ -39,7 +39,7 @@ the moment the sibling changes, so the book stores a URL or an activity key inst
                           │                    │   {{< tutor key >}}
                           │                    │   {{< coding key >}}
                           ▼                    ▼
-           ts-web-playground            novedu (novedu-chat-mvp)
+           ts-web-playground            novedu (novedu-app)
            exercise YAML +              renders <base>/<code>, reads the
            browser IDE + p5.js          activity YAML back from this repo's
                                         raw GitHub URL
@@ -69,15 +69,16 @@ breaks the book's PDF. Add new result images to the playground repo, not here.
 Practical consequence: **writing a chapter usually means editing two repositories.** The
 exercise belongs in `ts-web-playground`; the teaching that leads up to it belongs here.
 
-### Relation to `novedu-chat-mvp` (the quizzes and the tutors)
+### Relation to `novedu-app` (the quizzes and the tutors)
 
 Every chapter ends with a "Check your understanding" quiz: open-ended questions, graded by
 a small LLM against a hidden rubric, with an optional per-question discussion chat.
 Students take them anonymously as self-checks, and answers in German are accepted.
 
-Those quizzes run on **novedu**, the app built in `novedu-chat-mvp`. Every quiz has a short
-**activity code** there, and a chapter links to it with the `quiz` shortcode — naming the
-quiz by its **registry key**, never by the code:
+Those quizzes run on **novedu** (https://docs.novedu.at/llms.txt), the app built in 
+`novedu-app`. Every quiz has a short **activity code** there, and a chapter 
+links to it with the `quiz` shortcode — naming the quiz by its **registry key**, 
+never by the code:
 
 ```markdown
 {{< quiz first-program title="Your first program" >}}
@@ -263,5 +264,5 @@ own file.
 
 Which repository does a change belong to? An **exercise** (task, starter code, solution,
 result image) is `ts-web-playground`. A **platform** change to how quizzes are graded or
-how activities are displayed is `novedu-chat-mvp`. A quiz's **questions**, a tutor's
+how activities are displayed is `novedu-app`. A quiz's **questions**, a tutor's
 **prompt**, and everything a student reads around them, is here.

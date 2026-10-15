@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/htl-leo-novedu/novedu-app/refs/heads/main/activities/evals/eval-yaml.schema.json
 # Golden-answer regression cases for the switch chapter quiz
 # (0030-conditions/0080-dice-switch.qmd). Teacher-only test data —
 # never publish as an activity, never mint a code.

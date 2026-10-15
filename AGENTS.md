@@ -5,8 +5,8 @@ course that teaches TypeScript with the p5.js drawing library by making things y
 can see. The chapters are Quarto Markdown (`*.qmd`) in the numbered part folders,
 and `quarto render` turns them into an HTML book and one PDF handout. The
 exercises live in the `ts-web-playground` repository and the quizzes and AI tutors
-run on novedu, so a chapter links to them and never copies their content. The
-`README.md` describes that three-repository split in full.
+run on novedu (https://docs.novedu.at/llms.txt), so a chapter links to them and 
+never copies their content. The `README.md` describes that three-repository split in full.
 
 ## Writing student-facing prose
 

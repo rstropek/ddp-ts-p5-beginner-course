@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/htl-leo-novedu/novedu-app/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
 # Quiz for the book chapter "A new workshop: Visual Studio Code, Node.js,
 # and npm" (0070-vscode/0010-new-workshop.qmd in ts-ddp-first).
 # Students check their understanding of the tools of the new workshop: what

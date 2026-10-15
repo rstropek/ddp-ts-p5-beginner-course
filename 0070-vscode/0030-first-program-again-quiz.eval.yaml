@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/htl-leo-novedu/novedu-app/refs/heads/main/activities/evals/eval-yaml.schema.json
 # Golden answers for the chapter quiz "Your first program, again"
 # (0070-vscode/0030-first-program-again-quiz.yaml). Teacher-only test data,
 # never published as an activity. All answers are synthetic and written the

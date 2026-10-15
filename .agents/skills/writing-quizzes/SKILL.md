@@ -24,8 +24,8 @@ self-checks. Eval files are teacher-only test data; never publish them as
 activities or mint codes for them.
 
 Ground truth for the platform lives in the novedu repo
-(`~/github/chat-prototype`): authoring guide `activities/quizzes/README.md`,
-eval guide `activities/evals/README.md`, teacher guide
+(`htl-leo-novedu/novedu-app`, local clone `~/github/chat-prototype`):
+authoring guide `activities/quizzes/README.md`, eval guide `activities/evals/README.md`, teacher guide
 `teacher-docs/content/10-yaml-for-teachers/06-testing-the-grader.md`, and CLI
 skill `.agents/skills/novedu-tutor-cli/SKILL.md` (the repo's `.claude` symlink
 exposes the same file at `.claude/skills/novedu-tutor-cli/SKILL.md`). Don't
@@ -47,7 +47,7 @@ Copy this structure exactly (it encodes decisions that have mechanical
 consequences — see the comments):
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/htl-leo-novedu/novedu-app/refs/heads/main/activities/quizzes/quiz-yaml.schema.json
 # Quiz for the book chapter "<Title>" (<folder>/<file>.qmd).
 
 id: <chapter-slug>-quiz

@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/Teaching-HTL-Leonding/novedu-chat-mvp/refs/heads/main/activities/evals/eval-yaml.schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/htl-leo-novedu/novedu-app/refs/heads/main/activities/evals/eval-yaml.schema.json
 # Golden answers for the chapter quiz "Pride in your craft"
 # (0070-vscode/0040-craftsmanship-quiz.yaml). Teacher-only test data, never
 # published as an activity. All answers are synthetic and written the way
