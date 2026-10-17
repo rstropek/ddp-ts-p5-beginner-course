@@ -37,8 +37,9 @@ exampleQuestions:
     question: "Ask me three short questions about arrays so I can check whether I understood this part."
 
 llm:
-  model: Qwen/Qwen3.8-27B-FP8
-  provider: SCCH
+  model: openai/gpt-6-luna
+  provider: OpenRouter
+  reasoning: medium
 
 prompt:
   fragment_files:

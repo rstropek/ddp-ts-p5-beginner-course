@@ -13,7 +13,9 @@ description: |
   so you can see what you already understand and what you should read again.
 
 llm:
-  model: Qwen/Qwen3.8-27B-FP8
+  model: openai/gpt-6-luna
+  provider: OpenRouter
+  reasoning: medium
 
 fragment_files:
   - id: shared

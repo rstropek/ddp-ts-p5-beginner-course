@@ -61,7 +61,9 @@ description: |
   answers, and answering in German is fine too.
 
 llm:
-  model: Qwen/Qwen3.8-27B-FP8
+  model: openai/gpt-6-luna
+  provider: OpenRouter
+  reasoning: medium
 
 # BOTH host texts below pull from the shared fragment library — never inline
 # their wording, never edit it per chapter (edit ddp-quiz-fragments.yaml at

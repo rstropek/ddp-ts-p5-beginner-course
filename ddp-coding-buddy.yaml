@@ -29,8 +29,9 @@ name: "Creative Coding: coding buddy (TypeScript + p5.js, course style)"
 title: "Coding buddy for the Creative Coding course"
 
 llm:
-  model: Qwen/Qwen3.8-27B-FP8
-  provider: SCCH
+  model: openai/gpt-6-luna
+  provider: OpenRouter
+  reasoning: medium
 
 fragment_files:
   - id: shared

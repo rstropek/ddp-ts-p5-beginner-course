@@ -40,8 +40,9 @@ exampleQuestions:
     question: "Two of my pictures overlap. What decides which one covers the other?"
 
 llm:
-  model: Qwen/Qwen3.8-27B-FP8
-  provider: SCCH
+  model: openai/gpt-6-luna
+  provider: OpenRouter
+  reasoning: medium
 
 prompt:
   fragment_files:

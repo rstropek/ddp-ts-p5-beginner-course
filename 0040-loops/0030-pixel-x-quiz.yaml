@@ -20,7 +20,9 @@ description: |
   answering in German is fine too.
 
 llm:
-  model: Qwen/Qwen3.8-27B-FP8
+  model: openai/gpt-6-luna
+  provider: OpenRouter
+  reasoning: medium
 
 # The shared context for BOTH the grader and the discussion chat (the app
 # prepends the rendered `instructions:` to both system prompts) comes from

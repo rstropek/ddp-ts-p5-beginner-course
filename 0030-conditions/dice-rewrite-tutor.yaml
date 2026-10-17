@@ -23,8 +23,9 @@ description: |
   could have written it yourself. English or German, both are fine.
 
 llm:
-  model: Qwen/Qwen3.8-27B-FP8
-  provider: SCCH
+  model: openai/gpt-6-luna
+  provider: OpenRouter
+  reasoning: medium
 
 prompt:
   fragment_files:
