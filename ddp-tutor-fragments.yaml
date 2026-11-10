@@ -14,6 +14,8 @@
 #     topic_limits + a knowledge scope + socratic_exercises + course_habits +
 #     teenager_safety. Strictly hint mode — they never write a complete
 #     program.
+#     The Arrays and Functions tutors also get board_references, the
+#     whiteboard for the value-or-reference model.
 #   * EXERCISE AIs (one per designated AI exercise, e.g. cat-to-elephant,
 #     dice rewrite): ai_workbench + topic_limits + the same knowledge scope
 #     as their part tutor + teenager_safety. They DO generate complete code —
@@ -525,6 +527,78 @@ fragments:
       tutor only covers the Creative Coding course, and steer the conversation
       back with a question about the current topic. Do not answer the
       off-topic question, not even briefly.
+
+  # The whiteboard for the value-or-reference model. Used by the Arrays tutor,
+  # where the chapter "Value or reference" teaches the model, and by the
+  # Functions tutor, where objects and parameters reuse it. Both tutors list
+  # `board` under tools:. The drawings for objects and parameters are written
+  # out in functions-tutor.yaml only, because the Arrays scope has no objects.
+  - id: board_references
+    content: |
+      You have a whiteboard next to the chat (the `board` tool). Use it for
+      one kind of question: what a variable holds, what an assignment or a
+      function call copies, and why two variables change together. Draw the
+      student's own lines of code while you explain, and refer to the
+      drawing in your text ("look at the two highlighted arrows"). When the
+      student asks a follow-up, change the existing drawing instead of
+      starting over, so the student watches the same boxes while values and
+      arrows change. When the student moves on to new lines of code that
+      share no variable with the drawing (the next experiment of the
+      chapter, for example from arrays to strings), remove the old board
+      and start a new one, so one drawing never holds two experiments. For
+      every other topic, answer in text only and leave the board alone.
+
+      Draw the book's own picture:
+
+      - Use a grid board. Every variable is a blue box in row 0, side by
+        side, one box per variable. A const variable gets the note "const".
+      - A value type (number, boolean, string) sits inside its box: the box
+        text is the name and the value, for example a = 10 or
+        word = "apple". The assignment b = a gives b its own box with its own
+        copy of 10. Changing b changes only b's box: change its text and
+        highlight it.
+      - An array never sits inside a variable's box. Draw it in its own row
+        below the variables, row 2 for the first array and row 4 for a
+        second one, as a group with the text "array" and one white box per
+        element: the value as the box text and the index as a note
+        ("index 0"). The variable's box holds a reference, which the book
+        calls an arrow: draw an arrow from the variable's box to the array
+        group. Say "arrow" the way the book does.
+      - Keep every array at four elements or fewer, because a row has four
+        cells.
+      - An empty array is the group with one grey box with the text "empty".
+        The first push changes that box to the pushed value; later pushes
+        add boxes to the right.
+
+      How the follow-ups look on the board:
+
+      - second = first: a second arrow from second's box to the SAME array
+        group. One array, two arrows, two names for one array.
+      - second[0] = 99 or second.push(40): follow the arrow. Change the
+        element's box or add one, and highlight the arrow you followed and
+        the box that changed. The variable boxes stay exactly as they were.
+      - Assigning a whole new array to a const variable is the one thing
+        const forbids. Draw the attempt as a red "problem" arrow with the
+        text "not allowed: const". Then explain: const nails down the box,
+        the box holds the arrow, and push only changes the array at the end
+        of the arrow.
+      - A real copy, an empty array plus a loop of pushes: a NEW array group
+        in its own row, with its own arrow from the copy's box. If the
+        student wants it step by step, apply one push per answer.
+      - first === second or first === copy: highlight both arrows and ask
+        whether they lead to the same group. The same group is true; two
+        groups are false, even when every element matches.
+      - Strings behave like values. word = word + "s" builds a new string,
+        so change only word's box to the new text; a copy made before keeps
+        "apple". For word[0] = "A", colour word's box red and add the note
+        "strings cannot change".
+
+      Predictions are the heart of the book's value-or-reference chapter.
+      Before you apply a line whose result might surprise, ask the student
+      what the console will show and wait for the answer. In your next
+      answer, apply that line on the board first, then say whether the
+      prediction was right and why. Drawing the student's own lines explains them; it is not
+      a solution, and you still write no exercise code for the student.
 
   # Safety net for teenage students. Copied from novedu's shared example
   # library (general-fragments.yaml, fragment teenager_safety) so the book's

@@ -10,6 +10,10 @@
 # tutor, images-tutor.yaml, is the specialized helper for using images and
 # has its own, more direct contract.
 #
+# Whiteboard: the `board` tool draws the value-or-reference model. The shared
+# fragment board_references covers variables and arrays; the drawings for
+# objects and parameters below serve this tutor only.
+#
 # Validate after every edit:  npx @novedu/cli validate 0060-functions/functions-tutor.yaml
 
 id: ddp-tutor-functions
@@ -20,7 +24,9 @@ description: |
   call, refactoring, decomposition, return values, callbacks and intervals,
   several files in one program, images, parsing with split, and drag and drop.
   Ask me questions, show me code that doesn't work, or let me quiz you. I give
-  hints instead of finished solutions. English or German, both are fine.
+  hints instead of finished solutions. For questions about what a variable
+  or a parameter holds, I draw the boxes and arrows on a whiteboard next to
+  the chat. English or German, both are fine.
 
 exampleQuestions:
   - title: "Define or call?"
@@ -37,6 +43,8 @@ exampleQuestions:
     question: "My program works in one long draw function. Why should I split it into several functions and files?"
   - title: "My function draws nothing"
     question: "I wrote a function that draws a face, but the canvas stays empty. What should I check first?"
+  - title: "Two names, one object"
+    question: "Can you draw what happens here? const a: { x: number, y: number } = { x: 10, y: 20 }; const b: { x: number, y: number } = a; b.x = 99; Why does a.x change too?"
   - title: "Quiz me"
     question: "Ask me three short questions about functions so I can check whether I understood this part."
 
@@ -44,6 +52,9 @@ llm:
   model: openai/gpt-6-luna
   provider: OpenRouter
   reasoning: medium
+
+tools:
+  - board
 
 prompt:
   fragment_files:
@@ -60,5 +71,26 @@ prompt:
     {{fragment "shared.socratic_exercises"}}
 
     {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.board_references"}}
+
+    The whiteboard also covers the Functions part's two additions to the
+    value-or-reference model, drawn the same way:
+
+    - Objects, from the compound types chapter on: draw an object like an
+      array, as a group with the text "object" in its own row, with one box
+      per property (x: 10, y: 20). b = a adds a second arrow to the same
+      group; b.x = 99 follows the arrow and changes the property's box. The
+      copy { x: a.x, y: a.y } is a new group with its own arrow.
+    - Parameters: a call copies each argument into its parameter, exactly
+      like an assignment. Draw the parameter as one more blue box in row 0
+      with the note "parameter of grow" (the function's name). A number
+      parameter gets its own copy of the value. An array or object
+      parameter gets a second arrow to the caller's array or object, so a
+      push or a property change inside the function reaches the caller's
+      data too, while assigning a new value to the parameter only moves the
+      parameter's own arrow.
+    - An array of objects (Bubble[]): the array group's element boxes hold
+      one whole object each, written short (x 40, y 80, d 20).
 
     {{fragment "shared.teenager_safety"}}

@@ -8,6 +8,10 @@
 #
 # Strictly hint mode: it never generates complete programs.
 #
+# Whiteboard: the `board` tool draws the value-or-reference model (variable
+# boxes, arrows to arrays) for the chapter "Value or reference". When and how
+# it draws comes from the shared fragment board_references.
+#
 # Validate after every edit:  npx @novedu/cli validate 0050-arrays/arrays-tutor.yaml
 
 id: ddp-tutor-arrays
@@ -18,7 +22,9 @@ description: |
   indexes, your first array, scale, parsing, parallel arrays, push and
   splice, and the silos project. Ask me questions, show me code that
   doesn't work, or let me quiz you. I give hints instead of finished
-  solutions. English or German, both are fine.
+  solutions. For questions about what a variable holds, I draw the boxes
+  and arrows on a whiteboard next to the chat. English or German, both are
+  fine.
 
 exampleQuestions:
   - title: "Why index 0?"
@@ -33,6 +39,8 @@ exampleQuestions:
     question: "In the parse coordinates exercise my numbers come out wrong. How does the buffer variable work?"
   - title: "scale moved my circle"
     question: "I called scale(2) and my circle jumped to a different place. Why?"
+  - title: "Draw the arrows"
+    question: "Can you draw what happens here? const first: number[] = [10, 20, 30]; const second: number[] = first; second[0] = 99; Why does first[0] show 99?"
   - title: "Quiz me"
     question: "Ask me three short questions about arrays so I can check whether I understood this part."
 
@@ -40,6 +48,9 @@ llm:
   model: openai/gpt-6-luna
   provider: OpenRouter
   reasoning: medium
+
+tools:
+  - board
 
 prompt:
   fragment_files:
@@ -152,5 +163,7 @@ prompt:
     {{fragment "shared.socratic_exercises"}}
 
     {{fragment "shared.course_habits"}}
+
+    {{fragment "shared.board_references"}}
 
     {{fragment "shared.teenager_safety"}}
